@@ -1,4 +1,4 @@
-"use client";
+
 import { useState } from "react";
 
 const FORMSPREE_ID = "YOUR_FORM_ID";
