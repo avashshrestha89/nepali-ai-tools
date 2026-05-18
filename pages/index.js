@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import Head from 'next/head'
 
 export default function Home() {
@@ -13,33 +13,21 @@ export default function Home() {
   const [subDragOver, setSubDragOver] = useState(false)
   const subInputRef = useRef(null)
 
+  // Hardcoded voices — only these 5 are exposed
+  const VOICES = [
+    { voice_id: '1zUSi8LeHs9M2mV8X6YS', name: 'Priyanka — Romantic' },
+    { voice_id: 'FszY75334ExxVmg7yl0U', name: 'Alphamale' },
+    { voice_id: 'LK1Sn9bmEczSFI65RF0v', name: 'Sunita' },
+    { voice_id: 'duDBJHU6G1oq7ZdK4Kxf', name: 'Motivational' },
+    { voice_id: 'WdZjiN0nNcik2LBjOHiv', name: 'David — Wise' },
+  ]
+
   // Voiceover state
   const [voiceText, setVoiceText] = useState('')
-  const [selectedVoice, setSelectedVoice] = useState('')
-  const [voices, setVoices] = useState([])
+  const [selectedVoice, setSelectedVoice] = useState('1zUSi8LeHs9M2mV8X6YS')
   const [voiceLoading, setVoiceLoading] = useState(false)
   const [voiceResult, setVoiceResult] = useState(null)
   const [voiceError, setVoiceError] = useState(null)
-  const [voiceFetching, setVoiceFetching] = useState(false)
-
-  useEffect(() => {
-    fetchVoices()
-  }, [])
-
-  async function fetchVoices() {
-    setVoiceFetching(true)
-    try {
-      const res = await fetch('/api/voices')
-      const data = await res.json()
-      if (data.voices) {
-        setVoices(data.voices)
-        if (data.voices.length > 0) setSelectedVoice(data.voices[0].voice_id)
-      }
-    } catch (e) {
-      console.error('Could not fetch voices:', e)
-    }
-    setVoiceFetching(false)
-  }
 
   function handleFileDrop(e) {
     e.preventDefault()
@@ -120,7 +108,7 @@ export default function Home() {
 
   const charCount = voiceText.length
   const charWarning = charCount > 5000
-  const charLimit = 3000
+  const charLimit = 10000
 
   return (
     <>
@@ -326,27 +314,21 @@ export default function Home() {
             {/* Voice selection */}
             <div style={{ marginBottom: 18 }}>
               <div style={{ fontSize: 11, fontWeight: 600, color: '#888', letterSpacing: '0.08em', marginBottom: 8, textTransform: 'uppercase' }}>
-                Select Voice {voiceFetching && '(loading...)'}
+                Select Voice
               </div>
-              {voices.length > 0 ? (
-                <select
-                  value={selectedVoice}
-                  onChange={e => setSelectedVoice(e.target.value)}
-                  style={{
-                    width: '100%', padding: '10px 14px', borderRadius: 10,
-                    border: '1.5px solid #E0DDD7', background: '#FAFAF8',
-                    fontSize: 13, color: '#1A1A1A', outline: 'none', cursor: 'pointer',
-                  }}
-                >
-                  {voices.map(v => (
-                    <option key={v.voice_id} value={v.voice_id}>{v.name} — {v.category}</option>
-                  ))}
-                </select>
-              ) : (
-                <div style={{ padding: '10px 14px', borderRadius: 10, border: '1.5px solid #E0DDD7', background: '#FAFAF8', fontSize: 13, color: '#888' }}>
-                  {voiceFetching ? 'Loading your ElevenLabs voices...' : 'No voices found — check your ElevenLabs API key'}
-                </div>
-              )}
+              <select
+                value={selectedVoice}
+                onChange={e => setSelectedVoice(e.target.value)}
+                style={{
+                  width: '100%', padding: '10px 14px', borderRadius: 10,
+                  border: '1.5px solid #E0DDD7', background: '#FAFAF8',
+                  fontSize: 13, color: '#1A1A1A', outline: 'none', cursor: 'pointer',
+                }}
+              >
+                {VOICES.map(v => (
+                  <option key={v.voice_id} value={v.voice_id}>{v.name}</option>
+                ))}
+              </select>
             </div>
 
             {/* Generate button */}
