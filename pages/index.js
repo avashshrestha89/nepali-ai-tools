@@ -120,7 +120,7 @@ export default function Home() {
 
   const charCount = voiceText.length
   const charWarning = charCount > 5000
-  const charLimit = 10000
+  const charLimit = 3000
 
   return (
     <>
