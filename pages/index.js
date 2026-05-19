@@ -80,17 +80,10 @@ export default function Landing() {
         padding:'0 32px',height:60,
         display:'flex',alignItems:'center',justifyContent:'space-between',
       }}>
-        <div style={{display:'flex',alignItems:'center',gap:16}}>
-          <div style={{display:'flex',alignItems:'center',gap:6,fontSize:11,color:'#666',fontWeight:500,letterSpacing:'0.04em'}}>
-            <div style={{width:18,height:18,borderRadius:4,background:'linear-gradient(135deg,#DC143C,#FF6B8A)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,color:'#fff',fontWeight:700}}>M</div>
-            MeroAD.ai
-          </div>
-          <span style={{color:'#CCC',fontSize:14}}>|</span>
-          <div style={{display:'flex',alignItems:'center',gap:8}}>
-            <div style={{width:28,height:28,borderRadius:7,background:'linear-gradient(135deg,#DC143C 0%,#FF6B8A 100%)',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontSize:13,fontWeight:800,fontFamily:'Sora,sans-serif'}}>स्</div>
-            <span style={{fontSize:16,fontWeight:700,fontFamily:'Sora,sans-serif',letterSpacing:'-0.3px'}}>Swor</span>
-          </div>
-        </div>
+        <Link href="/" style={{display:'flex',alignItems:'center',gap:8,textDecoration:'none'}}>
+          <div style={{width:30,height:30,borderRadius:8,background:'linear-gradient(135deg,#DC143C,#FF6B8A)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,color:'#fff',fontWeight:800}}>M</div>
+          <span style={{fontSize:16,fontWeight:700,fontFamily:'Sora,sans-serif',letterSpacing:'-0.3px',color:'#1d1d1f'}}>MeroAD.ai</span>
+        </Link>
         <div style={{display:'flex',alignItems:'center',gap:24}}>
           <a href="#features" className="nav-link" style={{fontSize:13,fontWeight:500,color:'#333'}}>Features</a>
           <a href="#how-it-works" className="nav-link" style={{fontSize:13,fontWeight:500,color:'#333'}}>How it works</a>
@@ -117,10 +110,9 @@ export default function Landing() {
           <span style={{color:'#1d1d1f'}}>In Seconds.</span>
         </h1>
 
-        <p className="fade-up fade-up-2" style={{fontSize:19,color:'#6e6e73',maxWidth:520,margin:'0 auto 44px',lineHeight:1.65,fontWeight:400}}>
-          Upload a video — get accurate Nepali captions instantly.
-          Type text — hear it in a natural Nepali AI voice.
-          Built for Nepal's creators and businesses.
+        <p className="fade-up fade-up-2" style={{fontSize:19,color:'#6e6e73',maxWidth:580,margin:'0 auto 44px',lineHeight:1.65,fontWeight:400}}>
+          The first AI that generates <strong style={{color:'#1d1d1f',fontWeight:700}}>natural Nepali voiceovers</strong> from text — accurately, in seconds.
+          Plus automatic Nepali subtitle generation. Built exclusively for Nepali creators and brands.
         </p>
 
         <div className="fade-up fade-up-3" style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap',marginBottom:64}}>
@@ -182,20 +174,30 @@ export default function Landing() {
               </div>
             </div>
 
-            {/* Bottom row: two smaller cards */}
-            <div className="feature-card" style={{background:'linear-gradient(145deg,#007AFF 0%,#0055C7 100%)',borderRadius:24,padding:'36px',color:'#fff',display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
-              <div>
-                <div style={{fontSize:36,marginBottom:16}}>⚡</div>
-                <h3 style={{fontFamily:'Sora,sans-serif',fontSize:22,fontWeight:700,marginBottom:10,letterSpacing:'-0.3px'}}>Built for speed</h3>
-                <p style={{fontSize:14,opacity:.85,lineHeight:1.65}}>Subtitles generated in under 60 seconds. Voiceovers in under 10 seconds. No waiting. No queues.</p>
+            {/* MeroAD.ai services card — full width */}
+            <div className="feature-card" style={{background:'linear-gradient(135deg,#0E0E16 0%,#1A0A1A 100%)',borderRadius:24,padding:'44px 40px',color:'#fff',gridColumn:'1 / -1',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:32,position:'relative',overflow:'hidden'}}>
+              <div style={{position:'absolute',top:'-30%',right:'5%',width:320,height:320,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.12) 0%,transparent 70%)',pointerEvents:'none'}} />
+              <div style={{position:'absolute',bottom:'-30%',right:'25%',width:200,height:200,borderRadius:'50%',background:'radial-gradient(circle,rgba(107,63,190,.1) 0%,transparent 70%)',pointerEvents:'none'}} />
+              <div style={{maxWidth:500,position:'relative',zIndex:1}}>
+                <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(220,20,60,.15)',border:'1px solid rgba(220,20,60,.3)',borderRadius:20,padding:'4px 12px',fontSize:11,fontWeight:700,color:'#FF6B8A',marginBottom:18,letterSpacing:'0.06em'}}>
+                  POWERED BY MEROAD.AI
+                </div>
+                <h3 style={{fontFamily:'Sora,sans-serif',fontSize:28,fontWeight:800,marginBottom:14,letterSpacing:'-0.5px',lineHeight:1.15}}>Need AI-powered ads &amp; commercials for your brand?</h3>
+                <p style={{fontSize:15,opacity:.65,lineHeight:1.75,marginBottom:0}}>MeroAD.ai creates full-scale AI-produced advertisements, product videos, and commercial content for Nepal brands — from concept to final delivery.</p>
               </div>
-            </div>
-
-            <div className="feature-card" style={{background:'linear-gradient(145deg,#34C759 0%,#1A9E6A 100%)',borderRadius:24,padding:'36px',color:'#fff',display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
-              <div>
-                <div style={{fontSize:36,marginBottom:16}}>🇳🇵</div>
-                <h3 style={{fontFamily:'Sora,sans-serif',fontSize:22,fontWeight:700,marginBottom:10,letterSpacing:'-0.3px'}}>Nepal-first design</h3>
-                <p style={{fontSize:14,opacity:.85,lineHeight:1.65}}>Built specifically for Nepali language and creators. Devanagari, Romanized, natural speech — done right.</p>
+              <div style={{display:'flex',flexDirection:'column',gap:10,position:'relative',zIndex:1}}>
+                {[
+                  {label:'Instagram',href:'https://instagram.com/meroadai',bg:'#E1306C'},
+                  {label:'Facebook',href:'https://facebook.com/meroadai',bg:'#1877F2'},
+                  {label:'TikTok',href:'https://tiktok.com/@meroadai',bg:'rgba(255,255,255,.15)'},
+                  {label:'DM for inquiries',href:'mailto:meroadaiofficial@gmail.com',bg:'#DC143C'},
+                ].map(s=>(
+                  <a key={s.label} href={s.href} target="_blank" rel="noreferrer"
+                    style={{background:s.bg,color:'#fff',borderRadius:10,padding:'10px 22px',fontSize:13,fontWeight:600,textDecoration:'none',textAlign:'center',border:'1px solid rgba(255,255,255,.1)',transition:'opacity .15s',minWidth:180}}
+                    onMouseOver={e=>e.currentTarget.style.opacity='.8'} onMouseOut={e=>e.currentTarget.style.opacity='1'}>
+                    {s.label}
+                  </a>
+                ))}
               </div>
             </div>
           </div>
