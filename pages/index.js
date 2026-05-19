@@ -1,13 +1,19 @@
 import Head from 'next/head'
-import { useState } from 'react'
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 
-const FORMSPREE_ID = 'YOUR_FORM_ID' // Replace with your Formspree ID
+const FORMSPREE_ID = 'YOUR_FORM_ID'
 
 export default function Landing() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', type: '', usecase: '', source: '' })
-  const [status, setStatus] = useState('idle') // idle | loading | success | error
-  const [count] = useState(7) // spots taken — update manually
+  const [status, setStatus] = useState('idle')
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -18,250 +24,310 @@ export default function Landing() {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(form),
       })
-      if (res.ok) setStatus('success')
-      else setStatus('error')
-    } catch {
-      setStatus('error')
-    }
+      setStatus(res.ok ? 'success' : 'error')
+    } catch { setStatus('error') }
   }
 
   return (
     <>
       <Head>
-        <title>Swor — AI Nepali Subtitles & Voiceover</title>
-        <meta name="description" content="Generate Nepali subtitles and AI voiceovers in seconds. Nepal's first AI-powered Nepali language content tool. Free beta — only 20 spots." />
-        <meta property="og:title" content="Swor — AI Nepali Subtitles & Voiceover" />
-        <meta property="og:description" content="Nepal's first AI tool for Nepali subtitles and voiceover generation." />
+        <title>Swor — AI Nepali Subtitles & Voiceover by MeroAD.ai</title>
+        <meta name="description" content="Generate accurate Nepali subtitles and natural AI voiceovers in seconds. Nepal's first AI-powered Nepali language content tool. Free beta — 20 spots only." />
+        <meta name="keywords" content="Nepali subtitle generator, Nepali voiceover AI, Nepali AI tools, Nepal content creator tools, Nepali caption generator, AI Nepali voice" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
 
       <style>{`
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #0E0E16; }
-        input, select, textarea { font-family: 'Plus Jakarta Sans', sans-serif; }
-        a { text-decoration: none; color: inherit; }
+        *{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth}
+        body{font-family:'Manrope',sans-serif;background:#fff;color:#1d1d1f;-webkit-font-smoothing:antialiased}
+        a{text-decoration:none;color:inherit}
+        ::selection{background:#DC143C22}
+
+        @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+        @keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+
+        .fade-up{animation:fadeUp .7s ease both}
+        .fade-up-1{animation-delay:.1s}
+        .fade-up-2{animation-delay:.2s}
+        .fade-up-3{animation-delay:.3s}
+        .fade-up-4{animation-delay:.45s}
+
+        .feature-card{transition:transform .3s ease,box-shadow .3s ease}
+        .feature-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.12)}
+        .cta-btn{transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+        .cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(220,20,60,.35)}
+        .cta-btn:active{transform:translateY(0)}
+        .ghost-btn{transition:background .15s,color .15s}
+        .ghost-btn:hover{background:#f5f5f7}
+        .nav-link{position:relative;transition:color .15s}
+        .nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1.5px;background:#DC143C;transition:width .2s}
+        .nav-link:hover::after{width:100%}
+        .form-input:focus{border-color:#DC143C!important;box-shadow:0 0 0 3px rgba(220,20,60,.1)!important;outline:none}
+        .step-card{transition:transform .25s,box-shadow .25s}
+        .step-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.08)}
       `}</style>
 
-      {/* NAV */}
-      <nav style={{ position: 'sticky', top: 0, zIndex: 100, background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #F0EDE8', padding: '0 24px', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 32, height: 32, borderRadius: 8, background: '#DC143C', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 16 }}>स्</div>
-          <span style={{ fontSize: 18, fontWeight: 700, letterSpacing: -0.3 }}>Swor</span>
-          <span style={{ fontSize: 11, color: '#999', borderLeft: '1px solid #E0DDD7', paddingLeft: 10, marginLeft: 2 }}>by MeroAD.ai</span>
+      {/* ── NAV ── */}
+      <nav style={{
+        position:'fixed',top:0,left:0,right:0,zIndex:200,
+        background: scrolled ? 'rgba(255,255,255,0.85)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(20px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(0,0,0,.06)' : 'none',
+        transition:'all .3s ease',
+        padding:'0 32px',height:60,
+        display:'flex',alignItems:'center',justifyContent:'space-between',
+      }}>
+        <div style={{display:'flex',alignItems:'center',gap:16}}>
+          <div style={{display:'flex',alignItems:'center',gap:6,fontSize:11,color:'#666',fontWeight:500,letterSpacing:'0.04em'}}>
+            <div style={{width:18,height:18,borderRadius:4,background:'linear-gradient(135deg,#DC143C,#FF6B8A)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,color:'#fff',fontWeight:700}}>M</div>
+            MeroAD.ai
+          </div>
+          <span style={{color:'#CCC',fontSize:14}}>|</span>
+          <div style={{display:'flex',alignItems:'center',gap:8}}>
+            <div style={{width:28,height:28,borderRadius:7,background:'linear-gradient(135deg,#DC143C 0%,#FF6B8A 100%)',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontSize:13,fontWeight:800,fontFamily:'Sora,sans-serif'}}>स्</div>
+            <span style={{fontSize:16,fontWeight:700,fontFamily:'Sora,sans-serif',letterSpacing:'-0.3px'}}>Swor</span>
+          </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <a href="#features" style={{ fontSize: 13, fontWeight: 500, color: '#555' }}>Features</a>
-          <a href="#how-it-works" style={{ fontSize: 13, fontWeight: 500, color: '#555' }}>How it works</a>
-          <Link href="/tool" style={{ fontSize: 13, fontWeight: 600, padding: '7px 16px', borderRadius: 8, border: '1.5px solid #DC143C', color: '#DC143C' }}>Access Tool →</Link>
+        <div style={{display:'flex',alignItems:'center',gap:24}}>
+          <a href="#features" className="nav-link" style={{fontSize:13,fontWeight:500,color:'#333'}}>Features</a>
+          <a href="#how-it-works" className="nav-link" style={{fontSize:13,fontWeight:500,color:'#333'}}>How it works</a>
+          <a href="#apply" className="nav-link" style={{fontSize:13,fontWeight:500,color:'#333'}}>Apply</a>
+          <Link href="/tool" style={{fontSize:13,fontWeight:600,padding:'7px 18px',borderRadius:20,background:'#DC143C',color:'#fff',letterSpacing:'0.01em'}}>Try Tool →</Link>
         </div>
       </nav>
 
-      {/* HERO */}
-      <section style={{ background: 'linear-gradient(160deg, #0E0E16 0%, #1A0A1A 60%, #0E0E16 100%)', padding: '80px 24px 90px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: -60, left: '50%', transform: 'translateX(-50%)', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(220,20,60,0.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(220,20,60,0.12)', border: '1px solid rgba(220,20,60,0.3)', borderRadius: 20, padding: '5px 14px', fontSize: 12, fontWeight: 600, color: '#FF6B8A', marginBottom: 24, letterSpacing: '0.04em' }}>
-          🇳🇵 &nbsp;NEPAL'S FIRST AI NEPALI LANGUAGE TOOL
+      {/* ── HERO ── */}
+      <section style={{minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'120px 24px 80px',textAlign:'center',background:'#fff',position:'relative',overflow:'hidden'}}>
+        {/* background blobs */}
+        <div style={{position:'absolute',top:'-10%',right:'-5%',width:600,height:600,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.06) 0%,transparent 70%)',pointerEvents:'none'}} />
+        <div style={{position:'absolute',bottom:'-10%',left:'-5%',width:500,height:500,borderRadius:'50%',background:'radial-gradient(circle,rgba(107,63,190,.05) 0%,transparent 70%)',pointerEvents:'none'}} />
+        <div style={{position:'absolute',top:'40%',left:'10%',width:300,height:300,borderRadius:'50%',background:'radial-gradient(circle,rgba(26,158,106,.04) 0%,transparent 70%)',pointerEvents:'none'}} />
+
+        <div className="fade-up" style={{display:'inline-flex',alignItems:'center',gap:8,background:'linear-gradient(90deg,#FFF0F3,#FFF5E6)',border:'1px solid rgba(220,20,60,.15)',borderRadius:24,padding:'6px 16px 6px 8px',fontSize:12,fontWeight:600,color:'#DC143C',marginBottom:28,letterSpacing:'0.02em'}}>
+          <span style={{background:'#DC143C',color:'#fff',borderRadius:16,padding:'2px 8px',fontSize:10,fontWeight:700}}>NEW</span>
+          Nepal's First AI Nepali Language Tool
         </div>
-        <h1 style={{ fontFamily: 'Instrument Serif, serif', fontSize: 56, fontWeight: 700, color: '#fff', lineHeight: 1.08, letterSpacing: -1, marginBottom: 20, maxWidth: 700, margin: '0 auto 20px' }}>
-          Nepali Subtitles &amp; Voiceovers,<br /><em style={{ color: '#FF6B8A' }}>Generated by AI</em>
+
+        <h1 className="fade-up fade-up-1" style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(42px,6vw,76px)',fontWeight:800,lineHeight:1.04,letterSpacing:'-2px',marginBottom:24,maxWidth:820}}>
+          Nepali Subtitles.<br />
+          <span style={{background:'linear-gradient(135deg,#DC143C 0%,#FF6B8A 50%,#FF9966 100%)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text',backgroundSize:'200%',animation:'shimmer 4s linear infinite'}}>AI Voiceover.</span><br />
+          <span style={{color:'#1d1d1f'}}>In Seconds.</span>
         </h1>
-        <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.6)', maxWidth: 520, margin: '0 auto 40px', lineHeight: 1.7 }}>
-          Upload a video → get Nepali subtitles in seconds.<br />
-          Type text → get a natural Nepali voiceover instantly.
+
+        <p className="fade-up fade-up-2" style={{fontSize:19,color:'#6e6e73',maxWidth:520,margin:'0 auto 44px',lineHeight:1.65,fontWeight:400}}>
+          Upload a video — get accurate Nepali captions instantly.
+          Type text — hear it in a natural Nepali AI voice.
+          Built for Nepal's creators and businesses.
         </p>
-        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <a href="#apply" style={{ background: '#DC143C', color: '#fff', padding: '14px 28px', borderRadius: 10, fontSize: 15, fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 8, boxShadow: '0 8px 32px rgba(220,20,60,0.35)' }}>
-            Apply for Free Beta &nbsp;→
+
+        <div className="fade-up fade-up-3" style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap',marginBottom:64}}>
+          <a href="#apply" className="cta-btn" style={{background:'#DC143C',color:'#fff',padding:'14px 32px',borderRadius:14,fontSize:16,fontWeight:700,fontFamily:'Sora,sans-serif',display:'inline-flex',alignItems:'center',gap:8,boxShadow:'0 4px 20px rgba(220,20,60,.25)'}}>
+            Apply for Free Beta
           </a>
-          <Link href="/tool" style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.15)', padding: '14px 28px', borderRadius: 10, fontSize: 15, fontWeight: 600 }}>
-            View the Tool
+          <Link href="/tool" className="ghost-btn" style={{background:'#f5f5f7',color:'#1d1d1f',padding:'14px 32px',borderRadius:14,fontSize:16,fontWeight:600,display:'inline-flex',alignItems:'center',gap:8}}>
+            Try the Tool
           </Link>
         </div>
-        <div style={{ marginTop: 32, display: 'flex', gap: 32, justifyContent: 'center', flexWrap: 'wrap' }}>
-          {[['51M+', 'Views on our AI content'], ['85K+', 'Followers on TikTok'], [String(20 - count) + ' left', 'Free beta spots'], ['Free', 'During beta period']].map(([n, l]) => (
-            <div key={n} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 22, fontWeight: 700, color: '#fff' }}>{n}</div>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 2 }}>{l}</div>
+
+        <div className="fade-up fade-up-4" style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:1,background:'#e8e8ed',borderRadius:16,overflow:'hidden',maxWidth:600,width:'100%'}}>
+          {[['51M+','Total views'],['85K+','Followers'],['🇳🇵 First','AI Nepali tool'],['20','Beta spots']].map(([n,l])=>(
+            <div key={n} style={{background:'#f5f5f7',padding:'20px 16px',textAlign:'center'}}>
+              <div style={{fontFamily:'Sora,sans-serif',fontSize:22,fontWeight:700,color:'#1d1d1f',lineHeight:1}}>{n}</div>
+              <div style={{fontSize:11,color:'#6e6e73',marginTop:4,fontWeight:500}}>{l}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* FEATURES */}
-      <section id="features" style={{ padding: '80px 24px', background: '#FAFAF8' }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: 48 }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: '#DC143C', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>What Swor does</div>
-            <h2 style={{ fontFamily: 'Instrument Serif, serif', fontSize: 38, fontWeight: 700, letterSpacing: -0.5 }}>Two tools. One platform.</h2>
+      {/* ── FEATURES ── */}
+      <section id="features" style={{padding:'100px 24px',background:'#f5f5f7'}}>
+        <div style={{maxWidth:1100,margin:'0 auto'}}>
+          <div style={{textAlign:'center',marginBottom:64}}>
+            <div style={{fontSize:12,fontWeight:700,color:'#DC143C',letterSpacing:'0.12em',textTransform:'uppercase',marginBottom:12}}>Two powerful tools</div>
+            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(32px,4vw,52px)',fontWeight:800,letterSpacing:'-1px',lineHeight:1.08}}>Everything you need for<br />Nepali content.</h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
-            {[
-              {
-                icon: '🎬', color: '#DC143C', bg: '#FFF5F6',
-                title: 'Nepali Subtitle Generator',
-                desc: 'Upload any video or audio file. Our AI transcribes and generates accurate Nepali subtitles with timestamps — ready to import into CapCut, TikTok, or YouTube in one click.',
-                points: ['Devanagari script support', 'Romanized Nepali option', 'Download as .SRT file', 'Works with MP4, MOV, MP3, WAV'],
-              },
-              {
-                icon: '🎙️', color: '#6B3FBE', bg: '#F8F5FF',
-                title: 'Nepali Voiceover Generator',
-                desc: 'Type your Nepali text and choose from multiple AI voices. Get a natural-sounding Nepali voiceover downloaded as an MP3 — no recording studio needed.',
-                points: ['5 Nepali voice options', 'Natural, expressive speech', 'Download as .MP3 file', 'Powered by ElevenLabs AI'],
-              },
-            ].map(f => (
-              <div key={f.title} style={{ background: f.bg, border: `1.5px solid ${f.color}22`, borderRadius: 16, padding: '32px 28px' }}>
-                <div style={{ fontSize: 36, marginBottom: 16 }}>{f.icon}</div>
-                <h3 style={{ fontSize: 20, fontWeight: 700, color: '#0E0E16', marginBottom: 10 }}>{f.title}</h3>
-                <p style={{ fontSize: 14, color: '#555', lineHeight: 1.7, marginBottom: 20 }}>{f.desc}</p>
-                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  {f.points.map(p => (
-                    <li key={p} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: '#333' }}>
-                      <span style={{ color: f.color, fontWeight: 700 }}>✓</span> {p}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* HOW IT WORKS */}
-      <section id="how-it-works" style={{ padding: '80px 24px', background: '#fff' }}>
-        <div style={{ maxWidth: 700, margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ fontSize: 12, fontWeight: 700, color: '#DC143C', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>The process</div>
-          <h2 style={{ fontFamily: 'Instrument Serif, serif', fontSize: 38, fontWeight: 700, letterSpacing: -0.5, marginBottom: 48 }}>How the beta works</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-            {[
-              { n: '01', title: 'Apply below', desc: 'Fill in the short form. Tell us who you are and how you plan to use Swor. We review every application.' },
-              { n: '02', title: 'Get approved', desc: 'We notify approved users within 24 hours via email with a private access link. Only 20 spots available.' },
-              { n: '03', title: 'Use it free', desc: 'Access the full tool — subtitle generator and voiceover generator — completely free during the beta period with a generous character allowance.' },
-            ].map((s, i) => (
-              <div key={s.n} style={{ display: 'flex', gap: 20, textAlign: 'left', paddingBottom: 32, paddingTop: i === 0 ? 0 : 32, borderTop: i === 0 ? 'none' : '1px solid #F0EDE8' }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: '#DC143C', minWidth: 28, paddingTop: 4 }}>{s.n}</div>
-                <div>
-                  <div style={{ fontSize: 17, fontWeight: 700, marginBottom: 6 }}>{s.title}</div>
-                  <div style={{ fontSize: 14, color: '#666', lineHeight: 1.7 }}>{s.desc}</div>
-                </div>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(340px,1fr))',gap:20}}>
+            {/* Subtitle card */}
+            <div className="feature-card" style={{background:'linear-gradient(145deg,#FF3B5C 0%,#DC143C 100%)',borderRadius:24,padding:'44px 36px',color:'#fff',position:'relative',overflow:'hidden'}}>
+              <div style={{position:'absolute',top:-30,right:-30,width:180,height:180,borderRadius:'50%',background:'rgba(255,255,255,.08)'}} />
+              <div style={{position:'absolute',bottom:-20,right:20,width:100,height:100,borderRadius:'50%',background:'rgba(255,255,255,.05)'}} />
+              <div style={{fontSize:44,marginBottom:20}}>🎬</div>
+              <h3 style={{fontFamily:'Sora,sans-serif',fontSize:26,fontWeight:700,marginBottom:14,letterSpacing:'-0.5px'}}>Nepali Subtitle Generator</h3>
+              <p style={{fontSize:15,opacity:.85,lineHeight:1.7,marginBottom:28}}>Upload your video or audio. Our AI transcribes and generates perfectly timed Nepali subtitles — ready to drop into CapCut, TikTok, or YouTube.</p>
+              <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                {['✓ Devanagari & Romanized Nepali','✓ Timestamped .SRT file','✓ Works with MP4, MOV, MP3, WAV','✓ Unlimited during beta'].map(p=>(
+                  <div key={p} style={{fontSize:13,fontWeight:500,opacity:.9}}>{p}</div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* APPLY FORM */}
-      <section id="apply" style={{ padding: '80px 24px', background: 'linear-gradient(160deg, #0E0E16, #1A0A1A)' }}>
-        <div style={{ maxWidth: 560, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: 40 }}>
-            <div style={{ display: 'inline-block', background: 'rgba(220,20,60,0.15)', border: '1px solid rgba(220,20,60,0.3)', borderRadius: 20, padding: '4px 14px', fontSize: 12, fontWeight: 700, color: '#FF6B8A', marginBottom: 16 }}>
-              {20 - count} of 20 spots remaining
             </div>
-            <h2 style={{ fontFamily: 'Instrument Serif, serif', fontSize: 36, color: '#fff', fontWeight: 700, marginBottom: 10 }}>Apply for free access</h2>
-            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', lineHeight: 1.7 }}>We review every application. Approved users get a private link within 24 hours.</p>
+
+            {/* Voiceover card */}
+            <div className="feature-card" style={{background:'linear-gradient(145deg,#5B2EB3 0%,#3B0D8F 100%)',borderRadius:24,padding:'44px 36px',color:'#fff',position:'relative',overflow:'hidden'}}>
+              <div style={{position:'absolute',top:-30,right:-30,width:180,height:180,borderRadius:'50%',background:'rgba(255,255,255,.08)'}} />
+              <div style={{position:'absolute',bottom:-20,right:20,width:100,height:100,borderRadius:'50%',background:'rgba(255,255,255,.05)'}} />
+              <div style={{fontSize:44,marginBottom:20}}>🎙️</div>
+              <h3 style={{fontFamily:'Sora,sans-serif',fontSize:26,fontWeight:700,marginBottom:14,letterSpacing:'-0.5px'}}>Nepali Voiceover Generator</h3>
+              <p style={{fontSize:15,opacity:.85,lineHeight:1.7,marginBottom:28}}>Type your Nepali text and choose a voice. Get a natural, expressive Nepali AI voiceover downloaded as MP3 — ready for any video project.</p>
+              <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                {['✓ 5 premium Nepali voices','✓ Natural, expressive speech','✓ MP3 download + preview','✓ Powered by ElevenLabs AI'].map(p=>(
+                  <div key={p} style={{fontSize:13,fontWeight:500,opacity:.9}}>{p}</div>
+                ))}
+              </div>
+              <div style={{marginTop:20,display:'inline-block',background:'rgba(255,255,255,.12)',border:'1px solid rgba(255,255,255,.2)',borderRadius:20,padding:'4px 12px',fontSize:11,fontWeight:600,opacity:.8}}>
+                Beta users get 5,000 free characters
+              </div>
+            </div>
+
+            {/* Bottom row: two smaller cards */}
+            <div className="feature-card" style={{background:'linear-gradient(145deg,#007AFF 0%,#0055C7 100%)',borderRadius:24,padding:'36px',color:'#fff',display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
+              <div>
+                <div style={{fontSize:36,marginBottom:16}}>⚡</div>
+                <h3 style={{fontFamily:'Sora,sans-serif',fontSize:22,fontWeight:700,marginBottom:10,letterSpacing:'-0.3px'}}>Built for speed</h3>
+                <p style={{fontSize:14,opacity:.85,lineHeight:1.65}}>Subtitles generated in under 60 seconds. Voiceovers in under 10 seconds. No waiting. No queues.</p>
+              </div>
+            </div>
+
+            <div className="feature-card" style={{background:'linear-gradient(145deg,#34C759 0%,#1A9E6A 100%)',borderRadius:24,padding:'36px',color:'#fff',display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
+              <div>
+                <div style={{fontSize:36,marginBottom:16}}>🇳🇵</div>
+                <h3 style={{fontFamily:'Sora,sans-serif',fontSize:22,fontWeight:700,marginBottom:10,letterSpacing:'-0.3px'}}>Nepal-first design</h3>
+                <p style={{fontSize:14,opacity:.85,lineHeight:1.65}}>Built specifically for Nepali language and creators. Devanagari, Romanized, natural speech — done right.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── HOW IT WORKS ── */}
+      <section id="how-it-works" style={{padding:'100px 24px',background:'#fff'}}>
+        <div style={{maxWidth:900,margin:'0 auto'}}>
+          <div style={{textAlign:'center',marginBottom:64}}>
+            <div style={{fontSize:12,fontWeight:700,color:'#DC143C',letterSpacing:'0.12em',textTransform:'uppercase',marginBottom:12}}>Simple process</div>
+            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(32px,4vw,52px)',fontWeight:800,letterSpacing:'-1px'}}>How the beta works</h2>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))',gap:20}}>
+            {[
+              {n:'01',icon:'📝',color:'#DC143C',bg:'#FFF0F3',title:'Apply below',desc:'Fill the short form. Tell us who you are and how you plan to use Swor. Takes 60 seconds.'},
+              {n:'02',icon:'✅',color:'#007AFF',bg:'#F0F7FF',title:'Get approved',desc:'We review every application and notify approved users within 24 hours via a private email link.'},
+              {n:'03',icon:'🚀',color:'#34C759',bg:'#F0FBF4',title:'Use it free',desc:'Full access to both tools — subtitle generator and voiceover — free for the entire beta period.'},
+            ].map(s=>(
+              <div key={s.n} className="step-card" style={{background:s.bg,borderRadius:20,padding:'36px 28px'}}>
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:20}}>
+                  <div style={{fontSize:32}}>{s.icon}</div>
+                  <div style={{fontFamily:'Sora,sans-serif',fontSize:13,fontWeight:700,color:s.color,opacity:.5}}>{s.n}</div>
+                </div>
+                <div style={{fontFamily:'Sora,sans-serif',fontSize:20,fontWeight:700,color:'#1d1d1f',marginBottom:10,letterSpacing:'-0.3px'}}>{s.title}</div>
+                <div style={{fontSize:14,color:'#6e6e73',lineHeight:1.7}}>{s.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── APPLY FORM ── */}
+      <section id="apply" style={{padding:'100px 24px',background:'#1d1d1f',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',top:'-20%',right:'-5%',width:500,height:500,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.12) 0%,transparent 70%)',pointerEvents:'none'}} />
+        <div style={{position:'absolute',bottom:'-20%',left:'-5%',width:400,height:400,borderRadius:'50%',background:'radial-gradient(circle,rgba(107,63,190,.1) 0%,transparent 70%)',pointerEvents:'none'}} />
+        <div style={{maxWidth:580,margin:'0 auto',position:'relative',zIndex:1}}>
+          <div style={{textAlign:'center',marginBottom:44}}>
+            <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(220,20,60,.15)',border:'1px solid rgba(220,20,60,.3)',borderRadius:24,padding:'5px 14px',fontSize:12,fontWeight:700,color:'#FF6B8A',marginBottom:20,letterSpacing:'0.04em'}}>
+              🔥 Only 20 beta spots — apply now
+            </div>
+            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(28px,4vw,44px)',fontWeight:800,color:'#fff',letterSpacing:'-1px',marginBottom:12}}>Apply for free beta access</h2>
+            <p style={{fontSize:15,color:'rgba(255,255,255,.5)',lineHeight:1.7}}>Approved users get a private access link within 24 hours.</p>
           </div>
 
-          {status === 'success' ? (
-            <div style={{ background: 'rgba(26,158,106,0.12)', border: '1.5px solid rgba(26,158,106,0.4)', borderRadius: 16, padding: '40px 32px', textAlign: 'center' }}>
-              <div style={{ fontSize: 40, marginBottom: 16 }}>🙏</div>
-              <div style={{ fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 8 }}>Application received!</div>
-              <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', lineHeight: 1.7 }}>We'll review your application and send a decision to your email within 24 hours. Thank you for your interest in Swor.</div>
+          {status==='success' ? (
+            <div style={{background:'rgba(52,199,89,.08)',border:'1.5px solid rgba(52,199,89,.25)',borderRadius:20,padding:'48px 32px',textAlign:'center'}}>
+              <div style={{fontSize:48,marginBottom:16}}>🙏</div>
+              <div style={{fontFamily:'Sora,sans-serif',fontSize:22,fontWeight:700,color:'#fff',marginBottom:10}}>Application received!</div>
+              <div style={{fontSize:14,color:'rgba(255,255,255,.5)',lineHeight:1.7}}>We'll send our decision to your email within 24 hours. Thank you for your interest in Swor.</div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: '32px 28px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <form onSubmit={handleSubmit} style={{background:'rgba(255,255,255,.04)',border:'1px solid rgba(255,255,255,.08)',borderRadius:20,padding:'36px 32px',display:'flex',flexDirection:'column',gap:18}}>
               {[
-                { id: 'name', label: 'Full Name *', placeholder: 'Your full name', type: 'text' },
-                { id: 'email', label: 'Email Address *', placeholder: 'your@email.com', type: 'email' },
-                { id: 'phone', label: 'WhatsApp / Phone', placeholder: '+977 98XXXXXXXX', type: 'tel' },
-              ].map(f => (
+                {id:'name',label:'Full Name *',ph:'Your full name',type:'text',req:true},
+                {id:'email',label:'Email Address *',ph:'your@email.com',type:'email',req:true},
+                {id:'phone',label:'WhatsApp Number',ph:'+977 98XXXXXXXX',type:'tel',req:false},
+              ].map(f=>(
                 <div key={f.id}>
-                  <label style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.06em', textTransform: 'uppercase', display: 'block', marginBottom: 6 }}>{f.label}</label>
+                  <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:7}}>{f.label}</label>
                   <input
-                    type={f.type}
-                    placeholder={f.placeholder}
-                    required={f.label.includes('*')}
-                    value={form[f.id]}
-                    onChange={e => setForm({ ...form, [f.id]: e.target.value })}
-                    style={{ width: '100%', padding: '11px 14px', borderRadius: 9, border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.06)', color: '#fff', fontSize: 14, outline: 'none' }}
+                    type={f.type} placeholder={f.ph} required={f.req}
+                    value={form[f.id]} onChange={e=>setForm({...form,[f.id]:e.target.value})}
+                    className="form-input"
+                    style={{width:'100%',padding:'12px 16px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'rgba(255,255,255,.07)',color:'#fff',fontSize:14,transition:'border-color .2s,box-shadow .2s'}}
                   />
                 </div>
               ))}
 
-              <div>
-                <label style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.06em', textTransform: 'uppercase', display: 'block', marginBottom: 6 }}>I am a *</label>
-                <select required value={form.type} onChange={e => setForm({ ...form, type: e.target.value })} style={{ width: '100%', padding: '11px 14px', borderRadius: 9, border: '1px solid rgba(255,255,255,0.12)', background: '#1A1A2E', color: form.type ? '#fff' : 'rgba(255,255,255,0.4)', fontSize: 14, outline: 'none' }}>
-                  <option value="">Select one</option>
-                  <option value="creator">Content Creator (TikTok / YouTube / Instagram)</option>
-                  <option value="business">Business / Brand</option>
-                  <option value="marketer">Social Media Manager / Marketer</option>
-                  <option value="ngo">NGO / Organization</option>
-                  <option value="individual">Individual / Personal use</option>
-                </select>
-              </div>
+              {[
+                {id:'type',label:'I am a *',opts:[['','Select one'],['creator','Content Creator (TikTok / YouTube / Instagram)'],['business','Business or Brand'],['marketer','Social Media Manager or Marketer'],['ngo','NGO or Organization'],['individual','Individual / Personal use']]},
+                {id:'usecase',label:'I will mainly use Swor for *',opts:[['','Select one'],['subtitles','Nepali subtitles for my videos'],['voiceover','Nepali voiceover for content'],['both','Both subtitles and voiceover']]},
+                {id:'source',label:'How did you hear about Swor?',opts:[['','Select one'],['tiktok','TikTok'],['instagram','Instagram'],['linkedin','LinkedIn'],['friend','Friend or Word of mouth'],['google','Google Search'],['other','Other']]},
+              ].map(f=>(
+                <div key={f.id}>
+                  <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:7}}>{f.label}</label>
+                  <select
+                    required={f.label.includes('*')} value={form[f.id]}
+                    onChange={e=>setForm({...form,[f.id]:e.target.value})}
+                    className="form-input"
+                    style={{width:'100%',padding:'12px 16px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'#2d2d2f',color:form[f.id]?'#fff':'rgba(255,255,255,.4)',fontSize:14}}
+                  >
+                    {f.opts.map(([v,l])=><option key={v} value={v}>{l}</option>)}
+                  </select>
+                </div>
+              ))}
 
-              <div>
-                <label style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.06em', textTransform: 'uppercase', display: 'block', marginBottom: 6 }}>I will mainly use Swor for *</label>
-                <select required value={form.usecase} onChange={e => setForm({ ...form, usecase: e.target.value })} style={{ width: '100%', padding: '11px 14px', borderRadius: 9, border: '1px solid rgba(255,255,255,0.12)', background: '#1A1A2E', color: form.usecase ? '#fff' : 'rgba(255,255,255,0.4)', fontSize: 14, outline: 'none' }}>
-                  <option value="">Select one</option>
-                  <option value="subtitles">Nepali subtitles for my videos</option>
-                  <option value="voiceover">Nepali voiceover for content</option>
-                  <option value="both">Both subtitles and voiceover</option>
-                </select>
-              </div>
-
-              <div>
-                <label style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.06em', textTransform: 'uppercase', display: 'block', marginBottom: 6 }}>How did you hear about Swor?</label>
-                <select value={form.source} onChange={e => setForm({ ...form, source: e.target.value })} style={{ width: '100%', padding: '11px 14px', borderRadius: 9, border: '1px solid rgba(255,255,255,0.12)', background: '#1A1A2E', color: form.source ? '#fff' : 'rgba(255,255,255,0.4)', fontSize: 14, outline: 'none' }}>
-                  <option value="">Select one</option>
-                  <option value="tiktok">TikTok</option>
-                  <option value="instagram">Instagram</option>
-                  <option value="linkedin">LinkedIn</option>
-                  <option value="friend">Friend / Word of mouth</option>
-                  <option value="google">Google Search</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              <button type="submit" disabled={status === 'loading'} style={{ background: status === 'loading' ? '#888' : '#DC143C', color: '#fff', border: 'none', padding: '14px', borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: status === 'loading' ? 'not-allowed' : 'pointer', marginTop: 4, boxShadow: '0 6px 24px rgba(220,20,60,0.3)' }}>
-                {status === 'loading' ? 'Submitting...' : 'Submit Application →'}
+              <button type="submit" disabled={status==='loading'} className="cta-btn"
+                style={{background:status==='loading'?'#555':'#DC143C',color:'#fff',border:'none',padding:'15px',borderRadius:12,fontSize:16,fontWeight:700,fontFamily:'Sora,sans-serif',cursor:status==='loading'?'not-allowed':'pointer',marginTop:4,boxShadow:'0 4px 20px rgba(220,20,60,.3)'}}>
+                {status==='loading'?'Submitting...':'Submit Application →'}
               </button>
 
-              {status === 'error' && <div style={{ fontSize: 13, color: '#FF6B8A', textAlign: 'center' }}>Something went wrong. Please email us at AVASHSHRESTHAUSA@GMAIL.COM</div>}
-
-              <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', textAlign: 'center', lineHeight: 1.6 }}>By applying you agree to our beta terms. We'll never spam you.</p>
+              {status==='error'&&<div style={{fontSize:13,color:'#FF6B8A',textAlign:'center'}}>Something went wrong. Email us at meroadaiofficial@gmail.com</div>}
+              <p style={{fontSize:11,color:'rgba(255,255,255,.25)',textAlign:'center',lineHeight:1.6}}>We respect your privacy. No spam — ever.</p>
             </form>
           )}
         </div>
       </section>
 
-      {/* PAYMENT METHODS */}
-      <section style={{ padding: '50px 24px', background: '#FAFAF8', borderTop: '1px solid #F0EDE8' }}>
-        <div style={{ maxWidth: 700, margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ fontSize: 12, fontWeight: 600, color: '#999', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 20 }}>Accepted payment methods</div>
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            {['eSewa', 'Khalti', 'IME Pay', 'Bank Transfer', 'PayPal'].map(p => (
-              <span key={p} style={{ background: '#fff', border: '1px solid #E0DDD7', borderRadius: 8, padding: '8px 18px', fontSize: 13, fontWeight: 600, color: '#444' }}>{p}</span>
+      {/* ── PAYMENT METHODS ── */}
+      <section style={{padding:'60px 24px',background:'#f5f5f7'}}>
+        <div style={{maxWidth:800,margin:'0 auto',textAlign:'center'}}>
+          <div style={{fontSize:12,fontWeight:700,color:'#6e6e73',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:24}}>Accepted payment methods (post-beta)</div>
+          <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap'}}>
+            {[{n:'eSewa',c:'#60B843'},{n:'Khalti',c:'#5C2D91'},{n:'IME Pay',c:'#E8392A'},{n:'Bank Transfer',c:'#1d1d1f'},{n:'PayPal',c:'#003087'}].map(p=>(
+              <span key={p.n} style={{background:'#fff',border:`1.5px solid ${p.c}22`,borderRadius:10,padding:'10px 20px',fontSize:13,fontWeight:700,color:p.c,boxShadow:'0 2px 8px rgba(0,0,0,.06)'}}>{p.n}</span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* MEROAD.AI SERVICES */}
-      <section style={{ padding: '60px 24px', background: '#0E0E16' }}>
-        <div style={{ maxWidth: 700, margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>Powered by</div>
-          <div style={{ fontSize: 22, fontWeight: 700, color: '#fff', marginBottom: 12 }}>MeroAD.ai</div>
-          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto 28px' }}>
-            We create AI-powered advertisements and commercials for Nepal brands. If you need full-scale AI content production for your business, we'd love to work with you.
+      {/* ── MEROAD.AI ── */}
+      <section style={{padding:'80px 24px',background:'#fff',borderTop:'1px solid #e8e8ed'}}>
+        <div style={{maxWidth:700,margin:'0 auto',textAlign:'center'}}>
+          <div style={{display:'inline-flex',alignItems:'center',gap:8,marginBottom:20}}>
+            <div style={{width:32,height:32,borderRadius:8,background:'linear-gradient(135deg,#DC143C,#FF6B8A)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,color:'#fff',fontWeight:800}}>M</div>
+            <span style={{fontFamily:'Sora,sans-serif',fontSize:20,fontWeight:700,letterSpacing:'-0.3px'}}>MeroAD.ai</span>
+          </div>
+          <h3 style={{fontFamily:'Sora,sans-serif',fontSize:26,fontWeight:700,marginBottom:12,letterSpacing:'-0.5px'}}>Need a full AI content campaign?</h3>
+          <p style={{fontSize:15,color:'#6e6e73',lineHeight:1.75,maxWidth:480,margin:'0 auto 32px'}}>
+            We create AI-powered advertisements and commercial content for Nepal brands. From concept to final video — fully AI-produced.
           </p>
-          <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap'}}>
             {[
-              { label: 'Instagram', href: 'https://instagram.com/meroadai' },
-              { label: 'Facebook', href: 'https://facebook.com/meroadai' },
-              { label: 'TikTok', href: 'https://tiktok.com/@meroadai' },
-              { label: 'DM for inquiries', href: 'mailto:AVASHSHRESTHAUSA@GMAIL.COM' },
-            ].map(s => (
-              <a key={s.label} href={s.href} target="_blank" rel="noreferrer" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 8, padding: '8px 18px', fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>
+              {label:'Instagram',href:'https://instagram.com/meroadai',bg:'#E1306C'},
+              {label:'Facebook',href:'https://facebook.com/meroadai',bg:'#1877F2'},
+              {label:'TikTok',href:'https://tiktok.com/@meroadai',bg:'#010101'},
+              {label:'DM for inquiries',href:'mailto:meroadaiofficial@gmail.com',bg:'#DC143C'},
+            ].map(s=>(
+              <a key={s.label} href={s.href} target="_blank" rel="noreferrer"
+                style={{background:s.bg,color:'#fff',borderRadius:10,padding:'10px 20px',fontSize:13,fontWeight:600,transition:'opacity .15s'}}
+                onMouseOver={e=>e.currentTarget.style.opacity='.85'} onMouseOut={e=>e.currentTarget.style.opacity='1'}>
                 {s.label}
               </a>
             ))}
@@ -269,9 +335,13 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer style={{ padding: '24px', background: '#07070F', textAlign: 'center', fontSize: 12, color: 'rgba(255,255,255,0.25)' }}>
-        © 2026 Swor by MeroAD.ai · Kathmandu, Nepal · AVASHSHRESTHAUSA@GMAIL.COM
+      {/* ── FOOTER ── */}
+      <footer style={{padding:'28px 24px',background:'#1d1d1f',textAlign:'center'}}>
+        <div style={{fontSize:12,color:'rgba(255,255,255,.3)',lineHeight:1.8}}>
+          © 2026 <span style={{color:'rgba(255,255,255,.5)',fontWeight:600}}>Swor</span> by MeroAD.ai · Kathmandu, Nepal
+          <span style={{margin:'0 12px',opacity:.3}}>·</span>
+          <a href="mailto:meroadaiofficial@gmail.com" style={{color:'rgba(255,255,255,.4)'}}>meroadaiofficial@gmail.com</a>
+        </div>
       </footer>
     </>
   )
