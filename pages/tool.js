@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('subtitle')
@@ -108,12 +109,12 @@ export default function Home() {
 
   const charCount = voiceText.length
   const charWarning = charCount > 5000
-  const charLimit = 10000
+  const charLimit = 100
 
   return (
     <>
       <Head>
-        <title>Nepali AI Tools — MeroAD.ai</title>
+        <title>Swor — AI Nepali Tools by MeroAD.ai</title>
         <meta name="description" content="Nepali subtitle and voiceover generator" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -126,15 +127,21 @@ export default function Home() {
       `}</style>
 
       {/* TOPBAR */}
-      <div style={{ background: '#0E0E16', padding: '0 32px', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 32, height: 32, borderRadius: 8, background: '#FF4757', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Noto Sans Devanagari, serif', fontSize: 14, color: '#fff', fontWeight: 500 }}>न</div>
-          <div>
-            <div style={{ color: '#fff', fontSize: 14, fontWeight: 600, lineHeight: 1.2 }}>Nepali AI Tools</div>
-            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>by MeroAD.ai</div>
-          </div>
+      <div style={{ background: '#0E0E16', padding: '0 24px', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
+            <div style={{ width: 28, height: 28, borderRadius: 7, background: 'linear-gradient(135deg,#DC143C,#FF6B8A)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 12, fontWeight: 800 }}>स्</div>
+            <span style={{ color: '#fff', fontSize: 15, fontWeight: 700, letterSpacing: '-0.3px' }}>Swor</span>
+          </Link>
+          <span style={{ color: 'rgba(255,255,255,0.15)', fontSize: 14 }}>|</span>
+          <Link href="/" style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', fontWeight: 500, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
+            ← Home
+          </Link>
         </div>
-        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.06em' }}>BETA — Internal Use Only</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Beta Tool</span>
+          <Link href="/#apply" style={{ fontSize: 12, fontWeight: 600, padding: '6px 14px', borderRadius: 20, background: '#DC143C', color: '#fff', textDecoration: 'none' }}>Apply for Beta →</Link>
+        </div>
       </div>
 
       {/* MAIN */}
@@ -309,6 +316,13 @@ export default function Home() {
               {charWarning && (
                 <div style={{ fontSize: 11, color: '#E8533A', marginTop: 4 }}>⚠ Over 5,000 characters may take longer to generate</div>
               )}
+              <div style={{ background: 'linear-gradient(90deg,#FFF0F3,#F8F0FF)', border: '1.5px solid rgba(220,20,60,.2)', borderRadius: 10, padding: '12px 14px', marginTop: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: '#DC143C' }}>🔒 Preview mode — 100 character limit</div>
+                  <div style={{ fontSize: 11, color: '#888', marginTop: 2 }}>Apply for beta access to unlock 5,000 characters/month free</div>
+                </div>
+                <a href="/" style={{ fontSize: 12, fontWeight: 700, padding: '6px 14px', borderRadius: 8, background: '#DC143C', color: '#fff', textDecoration: 'none', whiteSpace: 'nowrap' }}>Apply Free →</a>
+              </div>
             </div>
 
             {/* Voice selection */}
