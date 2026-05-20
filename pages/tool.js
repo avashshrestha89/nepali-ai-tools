@@ -14,13 +14,25 @@ export default function Home() {
   const [subDragOver, setSubDragOver] = useState(false)
   const subInputRef = useRef(null)
 
-  // Hardcoded voices — only these 5 are exposed
+  // 15 voices — Nepali audience naming
   const VOICES = [
-    { voice_id: '1zUSi8LeHs9M2mV8X6YS', name: 'Priyanka — Romantic' },
-    { voice_id: 'FszY75334ExxVmg7yl0U', name: 'Alphamale' },
-    { voice_id: 'LK1Sn9bmEczSFI65RF0v', name: 'Sunita' },
-    { voice_id: 'duDBJHU6G1oq7ZdK4Kxf', name: 'Motivational' },
-    { voice_id: 'WdZjiN0nNcik2LBjOHiv', name: 'David — Wise' },
+    // ── Female Voices ──
+    { voice_id: '1zUSi8LeHs9M2mV8X6YS', name: 'Priyanka — Romantic & Elegant (Female)' },
+    { voice_id: 'LK1Sn9bmEczSFI65RF0v', name: 'Sunita — Soft Spoken Nepali Aunty (Female)' },
+    { voice_id: 'duDBJHU6G1oq7ZdK4Kxf', name: 'Deshna — Motivational & Uplifting (Female)' },
+    { voice_id: 'TmPeb2hSxdVrThJLywkg', name: 'Vanishree — Professional & News Style (Female)' },
+    { voice_id: 'ecp3DWciuUyW7BYM7II1', name: 'Anika — Sweet & Lively Reels Voice (Female)' },
+    { voice_id: 'f0JpDwzbGK384Dd1WH2s', name: 'Diana — Friendly & Polished (Female)' },
+    { voice_id: 'Pc57DSBXmCXyEAmow7lW', name: 'Suzie — Credible & Trustworthy (Female)' },
+    { voice_id: '6qL48o1LBmtR94hIYAQh', name: 'Monika — Suspense & Drama Narrator (Female)' },
+    // ── Male Voices ──
+    { voice_id: 'FszY75334ExxVmg7yl0U', name: 'Dhurundhar — Deep & Commanding (Male)' },
+    { voice_id: 'WdZjiN0nNcik2LBjOHiv', name: 'David — Wise Documentary Narrator (Male)' },
+    { voice_id: 'CwhRBWXzGAHq8TQ4Fs17', name: 'Rohan — Casual & Laid-Back (Male)' },
+    { voice_id: 'TX3LPaxmHKxFdv7VOQHJ', name: 'Liam — Energetic Social Media Creator (Male)' },
+    { voice_id: 'g1FVKFidZjHPxXdfA89c', name: 'Vikram — Confident & Warm (Male)' },
+    { voice_id: '2W8HrWcBFzCEf5cQQdIL', name: 'Karan — Dark Documentary Narrator (Male)' },
+    { voice_id: 'rHhok70RpCi5GgianXRA', name: 'Rudra — Intense & Romantic (Male)' },
   ]
 
   // Voiceover state
