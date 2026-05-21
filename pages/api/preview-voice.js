@@ -31,7 +31,7 @@ export default async function handler(req, res) {
 
     const audioBuffer = await response.arrayBuffer()
     res.setHeader('Content-Type', 'audio/mpeg')
-    res.setHeader('Cache-Control', 'public, max-age=86400')
+    res.setHeader('Cache-Control', 'no-cache, no-store')
     return res.send(Buffer.from(audioBuffer))
   } catch (error) {
     return res.status(500).json({ error: error.message })
