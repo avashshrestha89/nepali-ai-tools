@@ -232,7 +232,14 @@ export default function Landing() {
             </div>
             <div style={{fontSize:13,color:'#DC143C',fontWeight:600}}>🔥 Only 20 beta spots — 7 already filled</div>
           </div>
-
+<div style={{textAlign:'center',marginBottom:12}}>
+  <div style={{display:'inline-flex',alignItems:'center',gap:8,
+    background:'rgba(220,20,60,.08)',border:'1px solid rgba(220,20,60,.2)',
+    borderRadius:20,padding:'6px 16px',fontSize:12,fontWeight:700,
+    color:'#DC143C',letterSpacing:'0.06em',textTransform:'uppercase'}}>
+    ▶ &nbsp;Test Demo Below — Click Any Voice
+  </div>
+</div>
           {/* RIGHT — 6 Voice Cards with Photos */}
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
             {FEATURED_VOICES.map((v,i)=>(
