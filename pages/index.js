@@ -151,7 +151,7 @@ export default function Landing() {
         .voice-card{background:#fff;border:1.5px solid #f0f0f0;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s}
         .voice-card:hover{border-color:rgba(220,20,60,.2);box-shadow:0 4px 20px rgba(0,0,0,.07);transform:translateY(-2px)}
 
-        .hero-voice-card{border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.9);box-shadow:0 4px 24px rgba(0,0,0,.1);cursor:pointer;transition:all .2s}
+        .hero-voice-card{border-radius:16px;padding:16px 18px;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.9);box-shadow:0 4px 24px rgba(0,0,0,.1);cursor:pointer;transition:all .2s}
         .hero-voice-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,.14)}
 
         .play-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;flex-shrink:0;transition:all .15s;font-size:12px;margin-left:auto}
@@ -242,7 +242,7 @@ export default function Landing() {
                 onClick={()=>playPreview(v.voice_id)}
                 style={{animation:`fadeUp .6s ease ${i*0.08}s both`}}
               >
-                <div style={{width:44,height:44,borderRadius:12,overflow:'hidden',flexShrink:0,border:'2px solid rgba(220,20,60,.1)'}}>
+                <div style={{width:64,height:64,borderRadius:14,overflow:'hidden',flexShrink:0,border:'2px solid rgba(220,20,60,.1)'}}>
                   <img
                     src={v.photo}
                     alt={v.name}
@@ -486,3 +486,5 @@ export default function Landing() {
     </>
   )
 }
+
+
