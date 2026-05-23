@@ -166,11 +166,14 @@ export default function Landing() {
         .email-input::placeholder{color:rgba(255,255,255,.35)}
         .feature-card{background:#f8f8f8;border-radius:20px;padding:32px 28px;transition:all .25s}
         .feature-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
-        @media(max-width:768px){
-          .hero-grid{grid-template-columns:1fr!important;gap:24px!important;padding:100px 24px 40px!important}
-          .hero-voices-grid{grid-template-columns:1fr 1fr!important}
-          .mid-strip{flex-direction:column!important;text-align:center!important;gap:8px!important}
-        }
+       @media(max-width:768px){
+  body{overflow-x:hidden}
+  .hero-grid{grid-template-columns:1fr!important;gap:24px!important;padding:90px 20px 40px!important}
+  .hero-voices-grid{grid-template-columns:1fr 1fr!important;width:100%!important}
+  .mid-strip{flex-direction:column!important;text-align:center!important;gap:8px!important;padding:20px 24px!important}
+  .hero-voice-card{padding:12px!important}
+  .swor-brand{font-size:clamp(40px,12vw,80px)!important}
+}
       `}</style>
 
       <div id="gt_element" />
