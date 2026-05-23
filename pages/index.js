@@ -162,10 +162,15 @@ export default function Landing() {
         .lang-btn-scroll{border-color:#e0e0e0;color:#555}
         .lang-btn-scroll:hover,.lang-btn-scroll.on{background:#DC143C;border-color:#DC143C;color:#fff}
         .email-input{width:100%;padding:15px 20px;border:2px solid #e8e8ed;border-radius:12px;font-size:16px;font-family:'Manrope',sans-serif;outline:none;transition:border-color .2s;background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.15)}
-        .email-input:focus{border-color:#DC143C}
+         .email-input:focus{border-color:#DC143C}
         .email-input::placeholder{color:rgba(255,255,255,.35)}
         .feature-card{background:#f8f8f8;border-radius:20px;padding:32px 28px;transition:all .25s}
         .feature-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
+        @media(max-width:768px){
+          .hero-grid{grid-template-columns:1fr!important;gap:24px!important;padding:100px 24px 40px!important}
+          .hero-voices-grid{grid-template-columns:1fr 1fr!important}
+          .mid-strip{flex-direction:column!important;text-align:center!important;gap:8px!important}
+        }
       `}</style>
 
       <div id="gt_element" />
