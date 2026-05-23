@@ -438,7 +438,144 @@ async function handleSubmit(e) {
           </div>
         </div>
       </section>
+{/* ══ PRICING SECTION ══ */}
+      {/* PASTE THIS BETWEEN THE SEEMA & GEETA SECTION AND THE EMAIL FORM SECTION */}
+      <section id="pricing" style={{padding:'100px 48px',background:'#f5f5f7'}}>
+        <div style={{maxWidth:1100,margin:'0 auto'}}>
 
+          {/* Header */}
+          <div style={{textAlign:'center',marginBottom:60}}>
+            <div style={{fontSize:12,fontWeight:700,color:'#DC143C',letterSpacing:'0.12em',textTransform:'uppercase',marginBottom:12}}>Simple pricing</div>
+            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(28px,3.5vw,46px)',fontWeight:800,letterSpacing:'-1px',marginBottom:14}}>
+              Choose your pack
+            </h2>
+            <p style={{fontSize:16,color:'#6e6e73',maxWidth:480,margin:'0 auto',lineHeight:1.65}}>
+              Pay once, use at your own pace. No subscriptions. No expiry. Credits never disappear.
+            </p>
+          </div>
+
+          {/* Founders' Deal — Full Width Dark Card */}
+          <div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1020 100%)',borderRadius:20,padding:'36px 40px',marginBottom:20,position:'relative',overflow:'hidden',border:'1px solid rgba(220,20,60,.2)'}}>
+            <div style={{position:'absolute',top:'-30%',right:'5%',width:400,height:400,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.1) 0%,transparent 70%)',pointerEvents:'none'}} />
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:24,position:'relative',zIndex:1}}>
+              <div>
+                <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:12,flexWrap:'wrap'}}>
+                  <div style={{background:'#DC143C',color:'#fff',fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:20,letterSpacing:'0.06em'}}>⚡ FOUNDERS' DEAL</div>
+                  <div style={{background:'rgba(255,255,255,.1)',color:'rgba(255,255,255,.6)',fontSize:11,fontWeight:600,padding:'4px 12px',borderRadius:20}}>Limited to first 15 buyers</div>
+                </div>
+                <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(24px,3vw,38px)',fontWeight:800,color:'#fff',letterSpacing:'-0.5px',marginBottom:8}}>
+                  Founders' Lifetime Pack
+                </div>
+                <div style={{fontSize:15,color:'rgba(255,255,255,.5)',lineHeight:1.7,maxWidth:480,marginBottom:16}}>
+                  500 total voiceover generations. Use them whenever you want — they never expire and never reset.
+                </div>
+                <div style={{display:'flex',gap:16,flexWrap:'wrap'}}>
+                  {['500 total voiceover generations','15 premium Nepali voices','Unlimited subtitle generation','Never expires'].map(f=>(
+                    <div key={f} style={{display:'flex',alignItems:'center',gap:6,fontSize:13,color:'rgba(255,255,255,.7)'}}>
+                      <span style={{color:'#34C759',fontWeight:700}}>✓</span> {f}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div style={{textAlign:'center',flexShrink:0}}>
+                <div style={{fontSize:13,color:'rgba(255,255,255,.4)',marginBottom:4,textDecoration:'line-through'}}>NPR 5,000</div>
+                <div style={{fontFamily:'Sora,sans-serif',fontSize:44,fontWeight:800,color:'#fff',lineHeight:1}}>NPR 2,500</div>
+                <div style={{fontSize:14,color:'rgba(255,255,255,.4)',marginBottom:20}}>$19.99 USD</div>
+                <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                  <a href={`https://wa.me/YOUR_WHATSAPP_NUMBER?text=Hi! I want to buy the Swor AI Founders' Lifetime Pack (NPR 2,500). Please send payment details.`}
+                    target="_blank" rel="noreferrer"
+                    style={{background:'#25D366',color:'#fff',padding:'12px 24px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center'}}>
+                    💬 Buy via WhatsApp (NPR)
+                  </a>
+                  <a href="https://paypal.me/meroadai"
+                    target="_blank" rel="noreferrer"
+                    style={{background:'#003087',color:'#fff',padding:'12px 24px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center'}}>
+                    💳 Buy via PayPal ($19.99)
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Standard Packs — Two Cards */}
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:16,marginBottom:32}}>
+
+            {/* Starter Pack */}
+            <div style={{background:'#fff',borderRadius:20,padding:'32px 28px',border:'1.5px solid #e8e8ed',position:'relative'}}>
+              <div style={{fontSize:13,fontWeight:700,color:'#6e6e73',marginBottom:8}}>Starter Pack</div>
+              <div style={{fontFamily:'Sora,sans-serif',fontSize:38,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 299</div>
+              <div style={{fontSize:13,color:'#999',marginBottom:24}}>$4.99 USD</div>
+              <div style={{display:'flex',flexDirection:'column',gap:10,marginBottom:28}}>
+                {['15 voiceover generations','15 premium Nepali voices','Up to 500 chars per generation','Unlimited subtitle generation','Credits never expire'].map(f=>(
+                  <div key={f} style={{display:'flex',alignItems:'center',gap:8,fontSize:14,color:'#555'}}>
+                    <span style={{color:'#DC143C',fontWeight:700,flexShrink:0}}>✓</span> {f}
+                  </div>
+                ))}
+              </div>
+              <div style={{fontSize:12,color:'#999',marginBottom:12,textAlign:'center'}}>Good for ~15 short TikTok voiceovers</div>
+              <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                <a href={`https://wa.me/YOUR_WHATSAPP_NUMBER?text=Hi! I want to buy the Swor AI Starter Pack (NPR 299). Please send payment details.`}
+                  target="_blank" rel="noreferrer"
+                  style={{background:'#1d1d1f',color:'#fff',padding:'12px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center'}}>
+                  💬 Buy via WhatsApp
+                </a>
+                <a href="https://paypal.me/meroadai"
+                  target="_blank" rel="noreferrer"
+                  style={{background:'#f5f5f7',color:'#1d1d1f',padding:'12px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',border:'1px solid #e8e8ed'}}>
+                  💳 PayPal ($4.99)
+                </a>
+              </div>
+            </div>
+
+            {/* Creator Pack — Most Popular */}
+            <div style={{background:'#fff',borderRadius:20,padding:'32px 28px',border:'2px solid #DC143C',position:'relative',boxShadow:'0 8px 32px rgba(220,20,60,.1)'}}>
+              <div style={{position:'absolute',top:-14,left:'50%',transform:'translateX(-50%)',background:'#DC143C',color:'#fff',fontSize:11,fontWeight:700,padding:'5px 16px',borderRadius:20,whiteSpace:'nowrap',letterSpacing:'0.06em'}}>
+                ★ MOST POPULAR
+              </div>
+              <div style={{fontSize:13,fontWeight:700,color:'#DC143C',marginBottom:8}}>Creator Value Pack</div>
+              <div style={{fontFamily:'Sora,sans-serif',fontSize:38,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 599</div>
+              <div style={{fontSize:13,color:'#999',marginBottom:24}}>$8.99 USD</div>
+              <div style={{display:'flex',flexDirection:'column',gap:10,marginBottom:28}}>
+                {['40 voiceover generations','15 premium Nepali voices','Up to 500 chars per generation','Unlimited subtitle generation','Credits never expire'].map(f=>(
+                  <div key={f} style={{display:'flex',alignItems:'center',gap:8,fontSize:14,color:'#555'}}>
+                    <span style={{color:'#DC143C',fontWeight:700,flexShrink:0}}>✓</span> {f}
+                  </div>
+                ))}
+              </div>
+              <div style={{fontSize:12,color:'#999',marginBottom:12,textAlign:'center'}}>Good for ~40 short TikTok voiceovers</div>
+              <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                <a href={`https://wa.me/YOUR_WHATSAPP_NUMBER?text=Hi! I want to buy the Swor AI Creator Pack (NPR 599). Please send payment details.`}
+                  target="_blank" rel="noreferrer"
+                  style={{background:'#DC143C',color:'#fff',padding:'12px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center',boxShadow:'0 4px 16px rgba(220,20,60,.25)'}}>
+                  💬 Buy via WhatsApp
+                </a>
+                <a href="https://paypal.me/meroadai"
+                  target="_blank" rel="noreferrer"
+                  style={{background:'#f5f5f7',color:'#1d1d1f',padding:'12px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',border:'1px solid #e8e8ed'}}>
+                  💳 PayPal ($8.99)
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Payment Instructions */}
+          <div style={{background:'#fff',borderRadius:16,padding:'24px 28px',border:'1px solid #e8e8ed',textAlign:'center'}}>
+            <div style={{fontSize:14,fontWeight:700,color:'#1d1d1f',marginBottom:8}}>How payment works</div>
+            <div style={{fontSize:13,color:'#6e6e73',lineHeight:1.8,maxWidth:560,margin:'0 auto'}}>
+              Click "Buy via WhatsApp" → send your eSewa, Khalti, or IME Pay transfer screenshot →
+              your credits are manually activated within <strong style={{color:'#1d1d1f'}}>10 minutes</strong>.
+              International users pay via PayPal and email the transaction ID to{' '}
+              <a href="mailto:meroadaiofficial@gmail.com" style={{color:'#DC143C'}}>meroadaiofficial@gmail.com</a>
+            </div>
+            <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap',marginTop:16}}>
+              {['eSewa','Khalti','IME Pay','Bank Transfer','PayPal'].map(p=>(
+                <span key={p} style={{background:'#f5f5f7',border:'1px solid #e8e8ed',borderRadius:8,padding:'6px 14px',fontSize:12,fontWeight:600,color:'#555'}}>{p}</span>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
       {/* ══ EMAIL FORM ══ */}
       <section id="access" style={{padding:'100px 48px',background:'linear-gradient(160deg,#1d1d1f 0%,#2d1020 100%)',position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',top:'-20%',right:'-5%',width:500,height:500,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.1) 0%,transparent 70%)',pointerEvents:'none'}} />
