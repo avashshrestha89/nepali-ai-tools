@@ -473,7 +473,7 @@ div{max-width:100%}
           </div>
 
           {/* Founders' Deal — Full Width Dark Card */}
-          <div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1020 100%)',borderRadius:20,padding:'36px 40px',marginBottom:20,position:'relative',overflow:'hidden',border:'1px solid rgba(220,20,60,.2)'}}>
+          <div style={{background:'linear-gradient(135deg,#7A5C08 0%,#C9940A 40%,#92700A 100%)',borderRadius:20,padding:'36px 40px',marginBottom:20,position:'relative',overflow:'hidden',border:'1px solid rgba(255,215,0,.4)',boxShadow:'0 8px 40px rgba(201,148,10,.25)'}}>
             <div style={{position:'absolute',top:'-30%',right:'5%',width:400,height:400,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.1) 0%,transparent 70%)',pointerEvents:'none'}} />
             <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:24,position:'relative',zIndex:1}}>
               <div>
@@ -630,17 +630,17 @@ div{max-width:100%}
   </div>
 </div>
           {/* Payment Instructions */}
-          <div style={{background:'#fff',borderRadius:16,padding:'24px 28px',border:'1px solid #e8e8ed',textAlign:'center'}}>
-            <div style={{fontSize:14,fontWeight:700,color:'#1d1d1f',marginBottom:8}}>How payment works</div>
-            <div style={{fontSize:13,color:'#6e6e73',lineHeight:1.8,maxWidth:560,margin:'0 auto'}}>
+          <div style={{background:'#1d1d1f',borderRadius:16,padding:'32px 28px',border:'1px solid rgba(255,255,255,.08)',textAlign:'center'}}>
+  <div style={{fontSize:16,fontWeight:700,color:'#fff',marginBottom:10}}>How payment works</div>
+  <div style={{fontSize:14,color:'rgba(255,255,255,.65)',lineHeight:1.9,maxWidth:560,margin:'0 auto'}}>
               Click "Buy via WhatsApp" → send your eSewa, Khalti, or IME Pay transfer screenshot →
               your credits are manually activated within <strong style={{color:'#1d1d1f'}}>10 minutes</strong>.
               International users pay via PayPal and email the transaction ID to{' '}
               <a href="mailto:meroadaiofficial@gmail.com" style={{color:'#DC143C'}}>meroadaiofficial@gmail.com</a>
             </div>
             <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap',marginTop:16}}>
-              {['eSewa','Khalti','IME Pay','Bank Transfer','PayPal'].map(p=>(
-                <span key={p} style={{background:'#f5f5f7',border:'1px solid #e8e8ed',borderRadius:8,padding:'6px 14px',fontSize:12,fontWeight:600,color:'#555'}}>{p}</span>
+              {[{n:'eSewa',c:'#60B843'},{n:'Khalti',c:'#5C2D91'},{n:'IME Pay',c:'#E8392A'},{n:'Bank Transfer',c:'rgba(255,255,255,.6)'},{n:'PayPal',c:'#009CDE'}].map(p=>(
+  <span key={p.n} style={{background:'rgba(255,255,255,.08)',border:`1px solid ${p.c}55`,borderRadius:8,padding:'8px 16px',fontSize:13,fontWeight:700,color:p.c}}>{p.n}</span>
               ))}
             </div>
           </div>
