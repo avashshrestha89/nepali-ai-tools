@@ -32,7 +32,7 @@ const ALL_VOICES = [
 ]
 
 export default function Landing() {
-  const [email, setEmail] = useState('')
+  const [form, setForm] = useState({ name:'', email:'', phone:'', type:'', usecase:'', source:'' })
   const [status, setStatus] = useState('idle')
   const [scrolled, setScrolled] = useState(false)
   const [isNepali, setIsNepali] = useState(false)
@@ -88,18 +88,18 @@ export default function Landing() {
 
   const filteredVoices = ALL_VOICES.filter(v => filter === 'all' || v.gender === filter)
 
-  async function handleSubmit(e) {
-    e.preventDefault()
-    setStatus('loading')
-    try {
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ email }),
-      })
-      setStatus(res.ok ? 'success' : 'error')
-    } catch { setStatus('error') }
-  }
+async function handleSubmit(e) {
+  e.preventDefault()
+  setStatus('loading')
+  try {
+    const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(form),
+    })
+    setStatus(res.ok ? 'success' : 'error')
+  } catch { setStatus('error') }
+}
 
   return (
     <>
@@ -459,16 +459,83 @@ export default function Landing() {
               <div style={{fontSize:14,color:'rgba(255,255,255,.5)',lineHeight:1.7}}>Check your email within 24 hours for your private access link.</div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit}>
-              <div style={{display:'flex',gap:10,marginBottom:12,flexWrap:'wrap'}}>
-                <input type="email" placeholder="your@email.com" required value={email} onChange={e=>setEmail(e.target.value)} className="email-input" style={{flex:1,minWidth:220}} />
-                <button type="submit" disabled={status==='loading'} className="btn-primary" style={{whiteSpace:'nowrap',opacity:status==='loading'?.7:1}}>
-                  {status==='loading'?'Sending...':'Get free access →'}
-                </button>
-              </div>
-              {status==='error'&&<p style={{fontSize:13,color:'#FF6B8A'}}>Something went wrong. Email meroadaiofficial@gmail.com</p>}
-              <p style={{fontSize:12,color:'rgba(255,255,255,.25)',marginTop:12}}>No spam. No credit card. Cancel anytime.</p>
-            </form>
+       <form onSubmit={handleSubmit} style={{display:'flex',flexDirection:'column',gap:14}}>
+
+  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+    <div>
+      <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:6}}>Full Name *</label>
+      <input
+        type="text" placeholder="Your full name" required
+        value={form.name} onChange={e=>setForm({...form,name:e.target.value})}
+        style={{width:'100%',padding:'12px 14px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'rgba(255,255,255,.07)',color:'#fff',fontSize:14,fontFamily:'Manrope,sans-serif',outline:'none'}}
+      />
+    </div>
+    <div>
+      <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:6}}>Email Address *</label>
+      <input
+        type="email" placeholder="your@email.com" required
+        value={form.email} onChange={e=>setForm({...form,email:e.target.value})}
+        style={{width:'100%',padding:'12px 14px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'rgba(255,255,255,.07)',color:'#fff',fontSize:14,fontFamily:'Manrope,sans-serif',outline:'none'}}
+      />
+    </div>
+  </div>
+
+  <div>
+    <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:6}}>WhatsApp / Phone</label>
+    <input
+      type="tel" placeholder="+977 98XXXXXXXX"
+      value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})}
+      style={{width:'100%',padding:'12px 14px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'rgba(255,255,255,.07)',color:'#fff',fontSize:14,fontFamily:'Manrope,sans-serif',outline:'none'}}
+    />
+  </div>
+
+  <div>
+    <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:6}}>I am a *</label>
+    <select required value={form.type} onChange={e=>setForm({...form,type:e.target.value})}
+      style={{width:'100%',padding:'12px 14px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'#2a1a1a',color:form.type?'#fff':'rgba(255,255,255,.4)',fontSize:14,fontFamily:'Manrope,sans-serif',outline:'none'}}>
+      <option value="">Select one</option>
+      <option value="creator">Content Creator (TikTok / YouTube / Instagram)</option>
+      <option value="business">Business or Brand</option>
+      <option value="marketer">Social Media Manager or Marketer</option>
+      <option value="ngo">NGO or Organization</option>
+      <option value="individual">Individual / Personal use</option>
+    </select>
+  </div>
+
+  <div>
+    <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:6}}>I will mainly use Swor for *</label>
+    <select required value={form.usecase} onChange={e=>setForm({...form,usecase:e.target.value})}
+      style={{width:'100%',padding:'12px 14px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'#2a1a1a',color:form.usecase?'#fff':'rgba(255,255,255,.4)',fontSize:14,fontFamily:'Manrope,sans-serif',outline:'none'}}>
+      <option value="">Select one</option>
+      <option value="subtitles">Nepali subtitles for my videos</option>
+      <option value="voiceover">Nepali voiceover for content</option>
+      <option value="both">Both subtitles and voiceover</option>
+    </select>
+  </div>
+
+  <div>
+    <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:6}}>How did you hear about Swor?</label>
+    <select value={form.source} onChange={e=>setForm({...form,source:e.target.value})}
+      style={{width:'100%',padding:'12px 14px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'#2a1a1a',color:form.source?'#fff':'rgba(255,255,255,.4)',fontSize:14,fontFamily:'Manrope,sans-serif',outline:'none'}}>
+      <option value="">Select one</option>
+      <option value="tiktok">TikTok</option>
+      <option value="instagram">Instagram</option>
+      <option value="linkedin">LinkedIn</option>
+      <option value="friend">Friend or Word of mouth</option>
+      <option value="google">Google Search</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+
+  <button type="submit" disabled={status==='loading'} className="btn-primary"
+    style={{padding:'15px',fontSize:15,width:'100%',marginTop:4,opacity:status==='loading'?.7:1}}>
+    {status==='loading'?'Submitting...':'Submit Application →'}
+  </button>
+
+  {status==='error'&&<p style={{fontSize:13,color:'#FF6B8A',textAlign:'center'}}>Something went wrong. Email meroadaiofficial@gmail.com</p>}
+  <p style={{fontSize:11,color:'rgba(255,255,255,.25)',textAlign:'center'}}>No spam. No credit card. We review every application.</p>
+
+</form>
           )}
         </div>
       </section>
