@@ -500,7 +500,7 @@ div{max-width:100%}
                 <div style={{fontFamily:'Sora,sans-serif',fontSize:44,fontWeight:800,color:'#fff',lineHeight:1}}>NPR 2,500</div>
                 <div style={{fontSize:15,fontWeight:700,color:'rgba(0,0,0,.55)',marginBottom:20}}>$19.99 USD</div>
                 <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                  <a href={`https://wa.me/9779851405178?text=Hi! I want to buy the Swor AI Founders' Lifetime Pack (NPR 2,500). Please send payment details.`}
+                  <a href={`https://wa.me/9779851405178?text=Hi! I want to buy the Swor AI Founders Lifetime Pack (NPR 2,500 / $19.99 USD). Nepal: eSewa/Khalti. International: PayPal @sworai, Venmo @TwentyfourAS, Zelle AVASHSHRESTHAUSA@GMAIL.COM. Please confirm.`}
                     target="_blank" rel="noreferrer"
                     style={{background:'#25D366',color:'#fff',padding:'12px 24px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center'}}>
                     💬 Buy via WhatsApp (NPR)
@@ -532,7 +532,7 @@ div{max-width:100%}
               </div>
               <div style={{fontSize:12,fontSize:13,fontWeight:600,color:'#FF9500',marginBottom:12,textAlign:'center',background:'rgba(255,149,0,.08)',padding:'6px 12px',borderRadius:8}}>Good for ~15 short TikTok voiceovers</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                <a href={`https://wa.me/9779851405178?text=Hi! I want to buy the Swor AI Starter Pack (NPR 299). Please send payment details.`}
+                <a href={`https://wa.me/9779851405178?text=Hi! I want to buy the Swor AI Starter Pack (NPR 299 / $4.99 USD). Nepal: eSewa/Khalti. International: PayPal @sworai, Venmo @TwentyfourAS, Zelle AVASHSHRESTHAUSA@GMAIL.COM. Please confirm.`}
                   target="_blank" rel="noreferrer"
                   style={{background:'#1d1d1f',color:'#fff',padding:'12px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center'}}>
                   💬 Buy via WhatsApp
@@ -562,7 +562,7 @@ div{max-width:100%}
               </div>
               <div style={{fontSize:12,fontSize:13,fontWeight:600,color:'#DC143C',marginBottom:12,textAlign:'center',background:'rgba(220,20,60,.06)',padding:'6px 12px',borderRadius:8}}>Good for ~40 short TikTok voiceovers</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                <a href={`https://wa.me/9779851405178?text=Hi! I want to buy the Swor AI Creator Pack (NPR 599). Please send payment details.`}
+                <a href={`https://wa.me/9779851405178?text=Hi! I want to buy the Swor AI Creator Pack (NPR 599 / $8.99 USD). Nepal: eSewa/Khalti. International: PayPal @sworai, Venmo @TwentyfourAS, Zelle AVASHSHRESTHAUSA@GMAIL.COM. Please confirm.`}
                   target="_blank" rel="noreferrer"
                   style={{background:'#DC143C',color:'#fff',padding:'12px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center',boxShadow:'0 4px 16px rgba(220,20,60,.25)'}}>
                   💬 Buy via WhatsApp
@@ -635,11 +635,11 @@ div{max-width:100%}
   <div style={{fontSize:14,color:'#555',lineHeight:1.9,maxWidth:560,margin:'0 auto'}}>
               Click "Buy via WhatsApp" → send your eSewa, Khalti, or IME Pay transfer screenshot →
               your credits are manually activated within <strong style={{color:'#1d1d1f'}}>10 minutes</strong>.
-              International users pay via PayPal and email the transaction ID to{' '}
+              International users pay via PayPal (@sworai), Venmo (@TwentyfourAS), or Zelle (AVASHSHRESTHAUSA@GMAIL.COM) and email the transaction ID to{' '}
               <a href="mailto:meroadaiofficial@gmail.com" style={{color:'#DC143C'}}>meroadaiofficial@gmail.com</a>
             </div>
             <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap',marginTop:16}}>
-              {[{n:'eSewa',c:'#60B843'},{n:'Khalti',c:'#7B3FC4'},{n:'IME Pay',c:'#E8392A'},{n:'Bank Transfer',c:'#1d1d1f'},{n:'PayPal',c:'#009CDE'}].map(p=>(
+              {[{n:'eSewa',c:'#60B843'},{n:'Khalti',c:'#7B3FC4'},{n:'IME Pay',c:'#E8392A'},{n:'Bank Transfer',c:'#1d1d1f'},{n:'PayPal',c:'#003087'},{n:'Venmo',c:'#008CFF'},{n:'Zelle',c:'#6D1ED4'}].map(p=>(
   <span key={p.n} style={{background:'rgba(255,255,255,.08)',border:`1px solid ${p.c}55`,borderRadius:8,padding:'8px 16px',fontSize:13,fontWeight:700,color:p.c}}>{p.n}</span>
               ))}
             </div>
