@@ -210,7 +210,7 @@ export default function Landing() {
         </div>
 
         {/* Two column layout */}
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:48,alignItems:'center',width:'100%',maxWidth:1100,position:'relative',zIndex:1,marginTop:32}}>
+        <div className="hero-grid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:48,alignItems:'center',width:'100%',maxWidth:1100,position:'relative',zIndex:1,marginTop:32}}>
 
           {/* LEFT */}
           <div>
