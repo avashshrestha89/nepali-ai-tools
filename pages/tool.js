@@ -66,7 +66,7 @@ export default function Tool() {
   const charCount = voiceText.length
 
   // Is voiceover locked?
-  const isLocked = session === false && anonGens >= ANON_GEN_LIMIT
+  const isLocked = session === false && anonGens > ANON_GEN_LIMIT
   const isRegisteredLocked = session && session.generationsRemaining <= 0
 
   async function sendMagicLink(e) {
