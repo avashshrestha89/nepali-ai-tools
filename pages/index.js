@@ -514,7 +514,7 @@ export default function Landing() {
                   </div>
                 ))}
               </div>
-              <div style={{fontSize:12,fontSize:13,fontWeight:600,color:'#FF9500',marginBottom:12,textAlign:'center',background:'rgba(255,149,0,.08)',padding:'6px 12px',borderRadius:8}}>Good for ~500 total voiceovers — never expires</div>
+              <div style={{fontSize:12,fontSize:13,fontWeight:600,color:'#FF9500',marginBottom:12,textAlign:'center',background:'rgba(255,149,0,.08)',padding:'6px 12px',borderRadius:8}}>Good for ~15 short TikTok voiceovers</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
                 <a href={`https://wa.me/YOUR_WHATSAPP_NUMBER?text=Hi! I want to buy the Swor AI Starter Pack (NPR 299). Please send payment details.`}
                   target="_blank" rel="noreferrer"
