@@ -412,7 +412,7 @@ async function handleSubmit(e) {
               Nepal's first virtual influencer
             </h2>
             <p style={{fontSize:15,color:'#6e6e73',lineHeight:1.75,marginBottom:40,maxWidth:440}}>
-              We didn't build Swor for someone else's problem. We built it because we needed it ourselves — and now we're sharing it with every Nepali creator.
+              We didn't build Swor for someone else's problem. We built it because we needed it ourselves, and now we're sharing it with every Nepali creator.
             </p>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:36}}>
               {[['51M+','Video views'],['85K+','Followers'],['1.6M+','Total likes'],['80K+','Shares']].map(([n,l])=>(
