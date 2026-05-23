@@ -512,7 +512,8 @@ async function handleSubmit(e) {
                   </div>
                 ))}
               </div>
-              <div style={{fontSize:12,color:'#999',marginBottom:12,textAlign:'center'}}>Good for ~15 short TikTok voiceovers</div>
+              <div style={{fontSize:13,fontWeight:600,color:'#DC143C',marginBottom:12,textAlign:'center',background:'rgba(220,20,60,.06)',padding:'6px 12px',borderRadius:8}}>
+  Good for ~15 short TikTok voiceovers
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
                 <a href={`https://wa.me/9779851405178?text=Hi! I want to buy the Swor AI Starter Pack (NPR 299). Please send payment details.`}
                   target="_blank" rel="noreferrer"
@@ -542,7 +543,9 @@ async function handleSubmit(e) {
                   </div>
                 ))}
               </div>
-              <div style={{fontSize:12,color:'#999',marginBottom:12,textAlign:'center'}}>Good for ~40 short TikTok voiceovers</div>
+            <div style={{fontSize:13,fontWeight:600,color:'#DC143C',marginBottom:12,textAlign:'center',background:'rgba(220,20,60,.06)',padding:'6px 12px',borderRadius:8}}>
+  Good for ~40 short TikTok voiceovers
+</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
                 <a href={`https://wa.me/9779851405178?text=Hi! I want to buy the Swor AI Creator Pack (NPR 599). Please send payment details.`}
                   target="_blank" rel="noreferrer"
