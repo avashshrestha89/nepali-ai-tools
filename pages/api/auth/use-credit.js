@@ -22,30 +22,43 @@ export default async function handler(req, res) {
 
     const user = typeof raw === 'string' ? JSON.parse(raw) : raw
 
-    // Check char limit
-    if (charCount > user.charsPerGeneration) {
+    const charLimit = user.charsPerGeneration || 500
+    if (charCount > charLimit) {
       return res.status(400).json({
-        error: `Text too long. Maximum ${user.charsPerGeneration} characters allowed.`,
-        limit: user.charsPerGeneration,
+        error: `Text too long. Maximum ${charLimit} characters allowed.`,
+        limit: charLimit,
       })
     }
 
-    // Check generation limit
-    if (user.generationsUsed >= user.generationsLimit) {
-      return res.status(403).json({
-        error: 'Generation limit reached',
-        generationsUsed: user.generationsUsed,
-        generationsLimit: user.generationsLimit,
+    // Use beta credits first
+    if (user.betaActive && user.generationsUsed < user.generationsLimit) {
+      user.generationsUsed += 1
+      await redis.set(`user:${email}`, JSON.stringify(user))
+      return res.status(200).json({
+        success: true,
+        source: 'beta',
+        betaRemaining: user.generationsLimit - user.generationsUsed,
+        paidBalance: user.balance || 0,
       })
     }
 
-    // Deduct one generation
-    user.generationsUsed += 1
-    await redis.set(`user:${email}`, JSON.stringify(user))
+    // Use paid balance
+    const balance = user.balance || 0
+    if (balance > 0) {
+      user.balance = balance - 1
+      await redis.set(`user:${email}`, JSON.stringify(user))
+      return res.status(200).json({
+        success: true,
+        source: 'paid',
+        betaRemaining: 0,
+        paidBalance: user.balance,
+      })
+    }
 
-    return res.status(200).json({
-      success: true,
-      generationsRemaining: user.generationsLimit - user.generationsUsed,
+    return res.status(403).json({
+      error: 'No credits remaining',
+      betaRemaining: 0,
+      paidBalance: 0,
     })
   } catch (error) {
     console.error('Use credit error:', error)
