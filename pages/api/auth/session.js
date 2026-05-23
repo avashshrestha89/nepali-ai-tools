@@ -20,14 +20,21 @@ export default async function handler(req, res) {
 
     const user = typeof raw === 'string' ? JSON.parse(raw) : raw
 
+    const betaRemaining = user.betaActive
+      ? Math.max(0, user.generationsLimit - user.generationsUsed)
+      : 0
+
+    const paidBalance = user.balance || 0
+    const totalRemaining = betaRemaining + paidBalance
+
     return res.status(200).json({
       loggedIn: true,
       email: user.email,
-      generationsUsed: user.generationsUsed,
-      generationsLimit: user.generationsLimit,
-      generationsRemaining: user.generationsLimit - user.generationsUsed,
-      charsPerGeneration: user.charsPerGeneration,
       betaActive: user.betaActive,
+      betaRemaining,
+      paidBalance,
+      totalRemaining,
+      charsPerGeneration: user.charsPerGeneration || 500,
     })
   } catch (error) {
     console.error('Session error:', error)
