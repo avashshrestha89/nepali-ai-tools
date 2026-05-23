@@ -245,7 +245,7 @@ export default function Landing() {
                 ▶ &nbsp;Test Demo Below — Click Any Voice
               </div>
             </div>
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+            <div className="hero-voices-grid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
             {FEATURED_VOICES.map((v,i)=>(
               <div
                 key={v.voice_id}
@@ -283,7 +283,7 @@ export default function Landing() {
       </section>
 
       {/* ══ MIDDLE STRIP ══ */}
-      <section style={{background:'#1d1d1f',padding:'28px 48px',textAlign:'center'}}>
+      <section className="mid-strip" style={{background:'#1d1d1f',padding:'28px 48px',textAlign:'center'}}>
         <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(16px,2vw,24px)',fontWeight:700,color:'#fff',letterSpacing:'-0.3px',marginBottom:8}}>
           Start saving <span style={{color:'#FF6B8A'}}>90%</span> of your time and budget today!
         </div>
