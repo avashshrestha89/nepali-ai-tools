@@ -489,16 +489,16 @@ div{max-width:100%}
                 </div>
                 <div style={{display:'flex',gap:16,flexWrap:'wrap'}}>
                   {['500 total voiceover generations','15 premium Nepali voices','Unlimited subtitle generation','Never expires'].map(f=>(
-                    <div key={f} style={{display:'flex',alignItems:'center',gap:6,fontSize:13,color:'rgba(255,255,255,.7)'}}>
+                    <div key={f} style={{display:'flex',alignItems:'center',gap:6,fontSize:13,fontWeight:600,color:'rgba(0,0,0,.75)'}}>
                       <span style={{color:'#34C759',fontWeight:700}}>✓</span> {f}
                     </div>
                   ))}
                 </div>
               </div>
               <div style={{textAlign:'center',flexShrink:0}}>
-                <div style={{fontSize:13,color:'rgba(255,255,255,.4)',marginBottom:4,textDecoration:'line-through'}}>NPR 5,000</div>
+                <div style={{fontSize:14,fontWeight:700,color:'rgba(0,0,0,.4)',marginBottom:4,textDecoration:'line-through'}}>NPR 5,000</div>
                 <div style={{fontFamily:'Sora,sans-serif',fontSize:44,fontWeight:800,color:'#fff',lineHeight:1}}>NPR 2,500</div>
-                <div style={{fontSize:14,color:'rgba(255,255,255,.4)',marginBottom:20}}>$19.99 USD</div>
+                <div style={{fontSize:15,fontWeight:700,color:'rgba(0,0,0,.55)',marginBottom:20}}>$19.99 USD</div>
                 <div style={{display:'flex',flexDirection:'column',gap:8}}>
                   <a href={`https://wa.me/9779851405178?text=Hi! I want to buy the Swor AI Founders' Lifetime Pack (NPR 2,500). Please send payment details.`}
                     target="_blank" rel="noreferrer"
@@ -630,16 +630,16 @@ div{max-width:100%}
   </div>
 </div>
           {/* Payment Instructions */}
-          <div style={{background:'#1d1d1f',borderRadius:16,padding:'32px 28px',border:'1px solid rgba(255,255,255,.08)',textAlign:'center'}}>
-  <div style={{fontSize:16,fontWeight:700,color:'#fff',marginBottom:10}}>How payment works</div>
-  <div style={{fontSize:14,color:'rgba(255,255,255,.65)',lineHeight:1.9,maxWidth:560,margin:'0 auto'}}>
+          <div style={{background:'#FFFBF0',borderRadius:16,padding:'32px 28px',border:'2px solid rgba(201,148,10,.25)',textAlign:'center'}}>
+  <div style={{fontSize:16,fontWeight:700,color:'#1d1d1f',marginBottom:10}}>How payment works</div>
+  <div style={{fontSize:14,color:'#555',lineHeight:1.9,maxWidth:560,margin:'0 auto'}}>
               Click "Buy via WhatsApp" → send your eSewa, Khalti, or IME Pay transfer screenshot →
               your credits are manually activated within <strong style={{color:'#1d1d1f'}}>10 minutes</strong>.
               International users pay via PayPal and email the transaction ID to{' '}
               <a href="mailto:meroadaiofficial@gmail.com" style={{color:'#DC143C'}}>meroadaiofficial@gmail.com</a>
             </div>
             <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap',marginTop:16}}>
-              {[{n:'eSewa',c:'#60B843'},{n:'Khalti',c:'#5C2D91'},{n:'IME Pay',c:'#E8392A'},{n:'Bank Transfer',c:'rgba(255,255,255,.6)'},{n:'PayPal',c:'#009CDE'}].map(p=>(
+              {[{n:'eSewa',c:'#60B843'},{n:'Khalti',c:'#7B3FC4'},{n:'IME Pay',c:'#E8392A'},{n:'Bank Transfer',c:'rgba(255,255,255,.6)'},{n:'PayPal',c:'#009CDE'}].map(p=>(
   <span key={p.n} style={{background:'rgba(255,255,255,.08)',border:`1px solid ${p.c}55`,borderRadius:8,padding:'8px 16px',fontSize:13,fontWeight:700,color:p.c}}>{p.n}</span>
               ))}
             </div>
