@@ -167,13 +167,15 @@ html,body{overflow-x:hidden;width:100%;max-width:100%}
         .email-input::placeholder{color:rgba(255,255,255,.35)}
         .feature-card{background:#f8f8f8;border-radius:20px;padding:32px 28px;transition:all .25s}
         .feature-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
-        @media(max-width:768px){
-        html,body{overflow-x:hidden;width:100%}
-        .hero-grid{grid-template-columns:1fr!important;gap:24px!important}
-        .hero-voices-grid{grid-template-columns:1fr 1fr!important;width:100%!important}
-        .mid-strip{flex-direction:column!important;text-align:center!important;gap:8px!important;padding:20px 24px!important}
-        .swor-brand{font-size:clamp(36px,10vw,72px)!important}
-        }
+      @media(max-width:768px){
+  html,body{overflow-x:hidden;width:100%}
+  .hero-section{padding:90px 20px 40px!important}
+  .hero-grid{grid-template-columns:1fr!important;gap:24px!important}
+  .hero-voices-grid{grid-template-columns:1fr 1fr!important;width:100%!important}
+  .mid-strip{flex-direction:column!important;text-align:center!important;gap:8px!important;padding:20px 24px!important}
+  .seema-grid{grid-template-columns:1fr!important;gap:32px!important}
+  .swor-brand{font-size:clamp(36px,10vw,72px)!important}
+}
       `}</style>
 
       <div id="gt_element" />
@@ -411,7 +413,7 @@ html,body{overflow-x:hidden;width:100%;max-width:100%}
 
       {/* ══ SEEMA & GEETA PROOF ══ */}
       <section style={{padding:'100px 48px',background:'#fff'}}>
-        <div style={{maxWidth:1100,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:64,alignItems:'center'}}>
+        <div className="seema-grid" style={{maxWidth:1100,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:64,alignItems:'center'}}>
           <div>
             <div style={{fontSize:12,fontWeight:700,color:'#DC143C',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:16}}>Built by creators, for creators</div>
             <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(24px,3vw,40px)',fontWeight:800,letterSpacing:'-0.8px',marginBottom:20,lineHeight:1.15}}>
