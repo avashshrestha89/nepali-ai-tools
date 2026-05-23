@@ -575,7 +575,60 @@ div{max-width:100%}
               </div>
             </div>
           </div>
-
+{/* Custom Plan */}
+<div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1a2d 100%)',borderRadius:20,padding:'36px 40px',marginBottom:20,border:'1px solid rgba(107,63,190,.3)',position:'relative',overflow:'hidden'}}>
+  <div style={{position:'absolute',top:'-30%',left:'5%',width:300,height:300,borderRadius:'50%',background:'radial-gradient(circle,rgba(107,63,190,.1) 0%,transparent 70%)',pointerEvents:'none'}} />
+  <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',flexWrap:'wrap',gap:32,position:'relative',zIndex:1}}>
+    <div style={{flex:1,minWidth:280}}>
+      <div style={{display:'inline-flex',alignItems:'center',gap:8,marginBottom:16}}>
+        <div style={{background:'rgba(107,63,190,.3)',color:'#C084FC',fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:20,letterSpacing:'0.06em'}}>✦ CUSTOM PLAN</div>
+        <div style={{background:'rgba(255,255,255,.08)',color:'rgba(255,255,255,.5)',fontSize:11,fontWeight:600,padding:'4px 12px',borderRadius:20}}>For agencies & brands</div>
+      </div>
+      <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(20px,2.5vw,30px)',fontWeight:800,color:'#fff',letterSpacing:'-0.3px',marginBottom:8}}>
+        Need more than our standard plans?
+      </div>
+      <div style={{fontSize:14,color:'rgba(255,255,255,.5)',lineHeight:1.7,marginBottom:24,maxWidth:420}}>
+        Built for high-volume creators, agencies, and Nepal brands who need a tailored solution. Pricing based on your specific needs.
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+        {[
+          {icon:'🎙️',title:'Custom Brand Voice Cloning',desc:'Clone your brand ambassador\'s voice instantly'},
+          {icon:'⚡',title:'High-Volume Bulk Access',desc:'Generate unlimited content without character limits'},
+          {icon:'🚀',title:'Priority Rendering',desc:'Skip the queue for instant voice generations'},
+          {icon:'👥',title:'Team Access Workspace',desc:'Single credit pool for your entire agency'},
+          {icon:'🧾',title:'Local Invoicing & PAN Billing',desc:'Tax-compliant corporate billing in NPR'},
+          {icon:'💬',title:'Dedicated WhatsApp Support',desc:'VIP troubleshooting via direct chat'},
+        ].map(f=>(
+          <div key={f.title} style={{display:'flex',gap:10,alignItems:'flex-start'}}>
+            <span style={{fontSize:18,flexShrink:0,marginTop:2}}>{f.icon}</span>
+            <div>
+              <div style={{fontSize:13,fontWeight:700,color:'#fff',marginBottom:2}}>{f.title}</div>
+              <div style={{fontSize:11,color:'rgba(255,255,255,.4)',lineHeight:1.5}}>{f.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0,minWidth:200}}>
+      <div style={{fontFamily:'Sora,sans-serif',fontSize:28,fontWeight:800,color:'#fff',textAlign:'center',marginBottom:4}}>
+        Let's talk
+      </div>
+      <div style={{fontSize:12,color:'rgba(255,255,255,.4)',textAlign:'center',marginBottom:8}}>
+        Custom pricing for your needs
+      </div>
+      <a href="https://wa.me/9779851405178?text=Hi! I'm interested in a Custom Plan for Swor AI. Can we discuss pricing?"
+        target="_blank" rel="noreferrer"
+        style={{background:'#25D366',color:'#fff',padding:'12px 24px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center'}}>
+        💬 WhatsApp Us
+      </a>
+      <a href="mailto:meroadaiofficial@gmail.com?subject=Custom Plan Inquiry — Swor AI"
+        target="_blank" rel="noreferrer"
+        style={{background:'rgba(255,255,255,.08)',color:'rgba(255,255,255,.8)',border:'1px solid rgba(255,255,255,.15)',padding:'12px 24px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center'}}>
+        ✉️ Email Us
+      </a>
+    </div>
+  </div>
+</div>
           {/* Payment Instructions */}
           <div style={{background:'#fff',borderRadius:16,padding:'24px 28px',border:'1px solid #e8e8ed',textAlign:'center'}}>
             <div style={{fontSize:14,fontWeight:700,color:'#1d1d1f',marginBottom:8}}>How payment works</div>
