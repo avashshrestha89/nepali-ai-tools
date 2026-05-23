@@ -484,7 +484,7 @@ export default function Landing() {
                 <div style={{fontFamily:'Sora,sans-serif',fontSize:44,fontWeight:800,color:'#fff',lineHeight:1}}>NPR 2,500</div>
                 <div style={{fontSize:14,color:'rgba(255,255,255,.4)',marginBottom:20}}>$19.99 USD</div>
                 <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                  <a href={`https://wa.me/YOUR_WHATSAPP_NUMBER?text=Hi! I want to buy the Swor AI Founders' Lifetime Pack (NPR 2,500). Please send payment details.`}
+                  <a href={`https://wa.me/9779851405178?text=Hi! I want to buy the Swor AI Founders' Lifetime Pack (NPR 2,500). Please send payment details.`}
                     target="_blank" rel="noreferrer"
                     style={{background:'#25D366',color:'#fff',padding:'12px 24px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center'}}>
                     💬 Buy via WhatsApp (NPR)
@@ -516,7 +516,7 @@ export default function Landing() {
               </div>
               <div style={{fontSize:12,fontSize:13,fontWeight:600,color:'#FF9500',marginBottom:12,textAlign:'center',background:'rgba(255,149,0,.08)',padding:'6px 12px',borderRadius:8}}>Good for ~15 short TikTok voiceovers</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                <a href={`https://wa.me/YOUR_WHATSAPP_NUMBER?text=Hi! I want to buy the Swor AI Starter Pack (NPR 299). Please send payment details.`}
+                <a href={`https://wa.me/9779851405178?text=Hi! I want to buy the Swor AI Starter Pack (NPR 299). Please send payment details.`}
                   target="_blank" rel="noreferrer"
                   style={{background:'#1d1d1f',color:'#fff',padding:'12px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center'}}>
                   💬 Buy via WhatsApp
@@ -546,7 +546,7 @@ export default function Landing() {
               </div>
               <div style={{fontSize:12,fontSize:13,fontWeight:600,color:'#DC143C',marginBottom:12,textAlign:'center',background:'rgba(220,20,60,.06)',padding:'6px 12px',borderRadius:8}}>Good for ~40 short TikTok voiceovers</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                <a href={`https://wa.me/YOUR_WHATSAPP_NUMBER?text=Hi! I want to buy the Swor AI Creator Pack (NPR 599). Please send payment details.`}
+                <a href={`https://wa.me/9779851405178?text=Hi! I want to buy the Swor AI Creator Pack (NPR 599). Please send payment details.`}
                   target="_blank" rel="noreferrer"
                   style={{background:'#DC143C',color:'#fff',padding:'12px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center',boxShadow:'0 4px 16px rgba(220,20,60,.25)'}}>
                   💬 Buy via WhatsApp
