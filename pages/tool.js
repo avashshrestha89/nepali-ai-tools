@@ -373,9 +373,13 @@ export default function Tool() {
                       <strong style={{color:'#0E0E16'}}>Desktop:</strong> Open project → Click <strong>Text</strong> in left sidebar → Click <strong>Local Captions</strong> → Click <strong>Import</strong> → Select your .SRT file
                     </div>
                     <div style={{background:'#E8E8F8',height:1}} />
-                    <div style={{fontSize:12,color:'#555',lineHeight:1.7}}>
-                      <strong style={{color:'#0E0E16'}}>Mobile:</strong> Open project → Tap <strong>Text</strong> at bottom → Tap <strong>Auto Captions</strong> → Tap <strong>Import subtitles</strong> → Select your .SRT file
-                    </div>
+                   <div style={{fontSize:12,color:'#555',lineHeight:1.7}}>
+  <strong style={{color:'#0E0E16'}}>Mobile (recommended):</strong> On your computer open <strong>capcut.com</strong> → Create project → Text → Local Captions → Import your .SRT → Project auto-saves to CapCut Cloud → Open CapCut app on phone → find project in Cloud tab → edit and export on phone
+</div>
+<div style={{background:'#E8E8F8',height:1,margin:'6px 0'}} />
+<div style={{fontSize:12,color:'#555',lineHeight:1.7}}>
+  <strong style={{color:'#0E0E16'}}>Mobile (phone only):</strong> Import video → Tap <strong>Text</strong> → Tap <strong>Auto Captions</strong> → Set language to <strong>Nepali</strong> → Tap Start. Note: may have minor spelling errors.
+</div>
                   </div>
                 </div>
               </div>
