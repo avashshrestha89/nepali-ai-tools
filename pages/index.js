@@ -549,11 +549,11 @@ div{max-width:100%}
           <div style={{position:'relative'}}>
             <div style={{borderRadius:24,overflow:'hidden',boxShadow:'0 24px 60px rgba(0,0,0,.12)',aspectRatio:'9/16',maxWidth:360,margin:'0 auto'}}>
               <iframe src="https://www.tiktok.com/embed/v2/7625496104615890206" style={{width:'100%',height:'100%',border:'none'}} allowFullScreen allow="encrypted-media" loading="lazy" />
-              <div style={{position:'absolute',bottom:20,left:20,right:20,background:'rgba(255,255,255,.92)',backdropFilter:'blur(12px)',borderRadius:12,padding:'12px 16px',display:'flex',alignItems:'center',gap:10}}>
+             <div style={{marginTop:12,background:'#f5f5f7',borderRadius:12,padding:'12px 16px',display:'flex',alignItems:'center',gap:10}}>
                 <div style={{width:9,height:9,borderRadius:'50%',background:'#34C759',flexShrink:0}} />
                 <div>
                   <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f'}}>@seemaandgeetatwins</div>
-                  <div style={{fontSize:11,color:'#999'}}>Nepal's first virtual influencer · 51M+ views</div>
+                  <div style={{fontSize:11,color:'#999'}}>Nepal's first virtual influencer · 54M+ views</div>
                 </div>
               </div>
             </div>
