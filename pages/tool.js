@@ -370,7 +370,7 @@ export default function Tool() {
                   <div style={{fontSize:12,fontWeight:700,color:'#1d1d1f',marginBottom:10}}>📲 How to import in CapCut:</div>
                   <div style={{display:'flex',flexDirection:'column',gap:8}}>
                     <div style={{fontSize:12,color:'#555',lineHeight:1.7}}>
-                      <strong style={{color:'#0E0E16'}}>Desktop:</strong> Open project → Click <strong>Text</strong> in left sidebar → Click <strong>Auto Captions</strong> → Click <strong>Import</strong> → Select your .SRT file
+                      <strong style={{color:'#0E0E16'}}>Desktop:</strong> Open project → Click <strong>Text</strong> in left sidebar → Click <strong>Local Captions</strong> → Click <strong>Import</strong> → Select your .SRT file
                     </div>
                     <div style={{background:'#E8E8F8',height:1}} />
                     <div style={{fontSize:12,color:'#555',lineHeight:1.7}}>
