@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const form = formidable({ maxFileSize: 25 * 1024 * 1024 })
+  const form = formidable({ maxFileSize: 100 * 1024 * 1024 })
 
   form.parse(req, async (err, fields, files) => {
     if (err) return res.status(500).json({ error: 'File upload failed: ' + err.message })
