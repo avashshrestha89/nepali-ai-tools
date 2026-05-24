@@ -228,6 +228,7 @@ export default function Tool() {
   return (
     <>
       <Head>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>Swor AI — Nepali Subtitle & Voiceover Tool</title>
         <meta name="description" content="Generate Nepali subtitles and AI voiceovers" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
