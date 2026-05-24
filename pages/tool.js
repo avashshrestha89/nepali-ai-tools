@@ -367,15 +367,15 @@ export default function Tool() {
 
                 {/* CapCut instructions */}
                 <div style={{background:'#F8F8FF',border:'1px solid #E0E0F0',borderRadius:10,padding:'16px'}}>
-                  <div style={{fontSize:12,fontWeight:700,color:'#1d1d1f',marginBottom:10}}>📲 How to import in CapCut:</div>
+          <div style={{fontSize:12,fontWeight:700,color:'#1d1d1f',marginBottom:10}}>📲 How to import in CapCut:</div>
                   <div style={{display:'flex',flexDirection:'column',gap:8}}>
                     <div style={{fontSize:12,color:'#555',lineHeight:1.7}}>
-                      <strong style={{color:'#0E0E16'}}>Desktop:</strong> Open project → Click <strong>Text</strong> in left sidebar → Click <strong>Local Captions</strong> → Click <strong>Import</strong> → Select your .SRT file
+                      <strong style={{color:'#0E0E16'}}>CapCut Desktop/Web:</strong> Open project → Click <strong>Text</strong> in left sidebar → Click <strong>Local Captions</strong> → Click <strong>Import</strong> → Select your .SRT file
                     </div>
-                    <div style={{background:'#E8E8F8',height:1}} />
-                   <div style={{fontSize:12,color:'#555',lineHeight:1.7}}>
-  <strong style={{color:'#0E0E16'}}>Mobile (recommended):</strong> On your computer open <strong>capcut.com</strong> → Create project → Text → Local Captions → Import your .SRT → Project auto-saves to CapCut Cloud → Open CapCut app on phone → find project in Cloud tab → edit and export on phone
-</div>
+                    <div style={{background:'#FFF3CD',border:'1px solid #FFD700',borderRadius:8,padding:'8px 12px',marginTop:4}}>
+                      <div style={{fontSize:11,color:'#856404',fontWeight:600}}>⚠️ CapCut mobile does not support direct SRT import. Use CapCut on your computer or browser instead.</div>
+                    </div>
+                  </div>
 <div style={{background:'#E8E8F8',height:1,margin:'6px 0'}} />
 <div style={{fontSize:12,color:'#555',lineHeight:1.7}}>
   <strong style={{color:'#0E0E16'}}>Mobile (phone only):</strong> Import video → Tap <strong>Text</strong> → Tap <strong>Auto Captions</strong> → Set language to <strong>Nepali</strong> → Tap Start. Note: may have minor spelling errors.
