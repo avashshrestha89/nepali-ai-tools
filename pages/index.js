@@ -530,7 +530,7 @@ div{max-width:100%}
           <div>
             <div style={{fontSize:12,fontWeight:700,color:'#DC143C',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:16}}>Built by creators, for creators</div>
             <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(24px,3vw,40px)',fontWeight:800,letterSpacing:'-0.8px',marginBottom:20,lineHeight:1.15}}>
-              Built by the team behind<br />
+              Built by the creator behind<br />
               <span style={{color:'#DC143C'}}>@seemaandgeetatwins</span> —<br />
               Nepal's first virtual influencer
             </h2>
