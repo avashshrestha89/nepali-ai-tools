@@ -537,7 +537,7 @@ div{max-width:100%}
               We didn't build Swor for someone else's problem. We built it because we needed it ourselves, and now we're sharing it with every Nepali creator.
             </p>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:36}}>
-              {[['51M+','Video views'],['85K+','Followers'],['1.6M+','Total likes'],['80K+','Shares']].map(([n,l])=>(
+              {[['54M+','Video views'],['91K+','Followers'],['1.6M+','Total likes'],['80K+','Shares']].map(([n,l])=>(
                 <div key={n} style={{background:'#f5f5f7',borderRadius:14,padding:'18px 16px'}}>
                   <div style={{fontFamily:'Sora,sans-serif',fontSize:26,fontWeight:800,color:'#1d1d1f',marginBottom:4}}>{n}</div>
                   <div style={{fontSize:12,color:'#999',fontWeight:500}}>{l}</div>
@@ -547,8 +547,8 @@ div{max-width:100%}
             <a href="#access"><button className="btn-primary">Get free beta access →</button></a>
           </div>
           <div style={{position:'relative'}}>
-            <div style={{borderRadius:24,overflow:'hidden',boxShadow:'0 24px 60px rgba(0,0,0,.12)'}}>
-              <img src="/seema-geeta.jpg" alt="Seema and Geeta" style={{width:'100%',height:'auto',display:'block'}} />
+            <div style={{borderRadius:24,overflow:'hidden',boxShadow:'0 24px 60px rgba(0,0,0,.12)',aspectRatio:'9/16',maxWidth:360,margin:'0 auto'}}>
+              <iframe src="https://www.tiktok.com/embed/v2/7625496104615890206" style={{width:'100%',height:'100%',border:'none'}} allowFullScreen allow="encrypted-media" loading="lazy" />
               <div style={{position:'absolute',bottom:20,left:20,right:20,background:'rgba(255,255,255,.92)',backdropFilter:'blur(12px)',borderRadius:12,padding:'12px 16px',display:'flex',alignItems:'center',gap:10}}>
                 <div style={{width:9,height:9,borderRadius:'50%',background:'#34C759',flexShrink:0}} />
                 <div>
