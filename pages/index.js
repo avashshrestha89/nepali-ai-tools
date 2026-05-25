@@ -592,7 +592,7 @@ div{max-width:100%}
                   Founders' Lifetime Pack
                 </div>
                 <div style={{fontSize:15,color:'rgba(255,255,255,.5)',lineHeight:1.7,maxWidth:480,marginBottom:16}}>
-                  500 total voiceover generations. Use them whenever you want — they never expire and never reset.
+                  500 viral videos in your pocket. Launch your next year of content without a single monthly bill or studio fee.
                 </div>
                 <div style={{display:'flex',gap:16,flexWrap:'wrap'}}>
                   {['500 total voiceover generations','15 premium Nepali voices','Unlimited subtitle generation','Never expires'].map(f=>(
@@ -637,7 +637,7 @@ div{max-width:100%}
                   </div>
                 ))}
               </div>
-              <div style={{fontSize:12,fontSize:13,fontWeight:600,color:'#FF9500',marginBottom:12,textAlign:'center',background:'rgba(255,149,0,.08)',padding:'6px 12px',borderRadius:8}}>Good for ~15 short TikTok voiceovers</div>
+              <div style={{fontSize:12,fontSize:13,fontWeight:600,color:'#FF9500',marginBottom:12,textAlign:'center',background:'rgba(255,149,0,.08)',padding:'6px 12px',borderRadius:8}}>Your next 2 weeks of video content, sorted. Launch your new channel idea this weekend.</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
                 <a href={`https://wa.me/19255379425?text=Hi! I want to buy the Swor AI Starter Pack (NPR 299 / $4.99 USD). Nepal: eSewa/Khalti. International: PayPal @sworai, Venmo @TwentyfourAS, Zelle AVASHSHRESTHAUSA@GMAIL.COM. Please confirm.`}
                   target="_blank" rel="noreferrer"
@@ -667,7 +667,7 @@ div{max-width:100%}
                   </div>
                 ))}
               </div>
-              <div style={{fontSize:12,fontSize:13,fontWeight:600,color:'#DC143C',marginBottom:12,textAlign:'center',background:'rgba(220,20,60,.06)',padding:'6px 12px',borderRadius:8}}>Good for ~40 short TikTok voiceovers</div>
+              <div style={{fontSize:12,fontSize:13,fontWeight:600,color:'#DC143C',marginBottom:12,textAlign:'center',background:'rgba(220,20,60,.06)',padding:'6px 12px',borderRadius:8}}>Go daily for a full month. Build your audience with consistent uploads without touching a microphone.</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
                 <a href={`https://wa.me/19255379425?text=Hi! I want to buy the Swor AI Creator Pack (NPR 599 / $8.99 USD). Nepal: eSewa/Khalti. International: PayPal @sworai, Venmo @TwentyfourAS, Zelle AVASHSHRESTHAUSA@GMAIL.COM. Please confirm.`}
                   target="_blank" rel="noreferrer"
