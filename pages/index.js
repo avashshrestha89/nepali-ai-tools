@@ -591,7 +591,7 @@ div{max-width:100%}
                 <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(24px,3vw,38px)',fontWeight:800,color:'#fff',letterSpacing:'-0.5px',marginBottom:8}}>
                   Founders' Lifetime Pack
                 </div>
-               <div style={{fontSize:15,color:'#1a0a00',fontWeight:700,lineHeight:1.7,maxWidth:480,marginBottom:16,background:'rgba(0,0,0,.08)',padding:'10px 14px',borderRadius:10,borderLeft:'3px solid rgba(0,0,0,.2)'}}>
+               <div style={{fontSize:15,color:'#ffffff',fontWeight:700,lineHeight:1.7,maxWidth:480,marginBottom:16,background:'rgba(0,0,0,.08)',padding:'10px 14px',borderRadius:10,borderLeft:'3px solid rgba(0,0,0,.2)'}}>
   500 viral videos in your pocket. Launch your next year of content without a single monthly bill or studio fee.
 </div>
                 <div style={{display:'flex',gap:16,flexWrap:'wrap'}}>
