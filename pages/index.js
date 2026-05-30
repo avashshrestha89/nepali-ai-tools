@@ -179,7 +179,8 @@ export default function Landing() {
   .mid-strip{flex-direction:column!important;text-align:center!important;gap:8px!important;padding:20px 16px!important}
   .seema-grid{grid-template-columns:1fr!important;gap:32px!important}
   .swor-brand{font-size:clamp(32px,9vw,64px)!important}
-  h1{font-size:clamp(22px,5vw,44px)!important}
+  h1{font-size:18px!important;line-height:1.15!important;letter-spacing:-0.5px!important}
+  .fu1{font-size:10px!important;letter-spacing:0!important}
   .pricing-grid{grid-template-columns:1fr!important}
   #pricing{padding:60px 16px!important}
   .founders-card{flex-direction:column!important;text-align:center!important}
