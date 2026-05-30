@@ -586,7 +586,7 @@ export default function Landing() {
               <div>
                 <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:12,flexWrap:'wrap'}}>
                   <div style={{background:'#DC143C',color:'#fff',fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:20,letterSpacing:'0.06em'}}>⚡ FOUNDERS' DEAL</div>
-                  <div style={{background:'rgba(220,20,60,.15)',color:'#DC143C',fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:20}}>⏰ Closes July 31, 2026 — 100 slots only</div>
+                  <div style={{background:'#fff',color:'#DC143C',fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:20,boxShadow:'0 2px 8px rgba(0,0,0,.15)'}}>⏰ Closes July 31, 2026 — 100 slots only</div>
                 </div>
                 <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(22px,3vw,34px)',fontWeight:800,color:'#fff',letterSpacing:'-0.5px',marginBottom:6}}>
                   Founders' Lifetime Pack
