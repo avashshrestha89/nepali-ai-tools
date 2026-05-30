@@ -576,7 +576,7 @@ export default function Landing() {
                 </div>
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
                   {[
-                    {icon:'🎙️',title:'Custom Brand Voice Cloning',desc:'Clone your brand ambassador's voice instantly'},
+                    {icon:'🎙️',title:'Custom Brand Voice Cloning',desc:"Clone your brand ambassador's voice instantly"},
                     {icon:'⚡',title:'High-Volume Bulk Access',desc:'Generate unlimited content without limits'},
                     {icon:'🚀',title:'Priority Rendering',desc:'Skip the queue for instant generations'},
                     {icon:'👥',title:'Team Access Workspace',desc:'Single credit pool for your entire agency'},
