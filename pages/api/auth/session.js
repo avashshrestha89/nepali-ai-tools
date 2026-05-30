@@ -24,17 +24,30 @@ export default async function handler(req, res) {
       ? Math.max(0, user.generationsLimit - user.generationsUsed)
       : 0
 
-    const paidBalance = user.balance || 0
-    const totalRemaining = betaRemaining + paidBalance
+    const credits = user.credits || 0
+
+    // Founder monthly music remaining
+    let founderMusicRemaining = 0
+    if (user.isFounder) {
+      const now = new Date()
+      const resetDate = user.founderMusicResetAt ? new Date(user.founderMusicResetAt) : null
+      if (!resetDate || now >= resetDate) {
+        founderMusicRemaining = 5
+      } else {
+        founderMusicRemaining = user.founderMusicThisMonth || 0
+      }
+    }
 
     return res.status(200).json({
       loggedIn: true,
       email: user.email,
+      credits,
       betaActive: user.betaActive,
       betaRemaining,
-      paidBalance,
-      totalRemaining,
       charsPerGeneration: user.charsPerGeneration || 500,
+      musicFreeUsed: user.musicFreeUsed || false,
+      isFounder: user.isFounder || false,
+      founderMusicRemaining,
     })
   } catch (error) {
     console.error('Session error:', error)
