@@ -168,6 +168,23 @@ export default function Landing() {
         .email-input::placeholder{color:rgba(255,255,255,.35)}
         .feature-card{background:#f8f8f8;border-radius:20px;padding:32px 28px;transition:all .25s}
         .feature-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
+@media(max-width:768px){
+  html,body,section{overflow-x:hidden!important;max-width:100vw!important}
+  .hero-section{padding:80px 16px 40px!important}
+  .hero-grid{grid-template-columns:1fr!important;gap:24px!important;width:100%!important;overflow:hidden!important}
+  .hero-grid > div{max-width:100%!important;overflow:hidden!important;width:100%!important}
+  .hero-voices-grid{grid-template-columns:1fr 1fr!important;width:100%!important;overflow:hidden!important;gap:8px!important}
+  .hero-voice-card{width:100%!important;min-width:0!important;padding:10px!important}
+  .hero-voice-card img{width:44px!important;height:44px!important}
+  .mid-strip{flex-direction:column!important;text-align:center!important;gap:8px!important;padding:20px 16px!important}
+  .seema-grid{grid-template-columns:1fr!important;gap:32px!important}
+  .swor-brand{font-size:clamp(32px,9vw,64px)!important}
+  h1{font-size:clamp(22px,5vw,44px)!important}
+  .pricing-grid{grid-template-columns:1fr!important}
+  #pricing{padding:60px 16px!important}
+  .founders-card{flex-direction:column!important;text-align:center!important}
+  .founders-card > div{min-width:unset!important;width:100%!important}
+}
       `}</style>
 
       <div id="gt_element" />
