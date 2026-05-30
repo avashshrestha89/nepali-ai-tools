@@ -410,6 +410,113 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* ══ MEROAD AI SECTION ══ */}
+      {/* PASTE THIS DIRECTLY ABOVE THE SEEMA & GEETA SECTION */}
+      <section style={{padding:'100px 48px',background:'#0E0E16',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',top:'10%',left:'50%',transform:'translateX(-50%)',width:800,height:800,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.06) 0%,transparent 65%)',pointerEvents:'none'}} />
+
+        <div style={{maxWidth:1100,margin:'0 auto',position:'relative',zIndex:1}}>
+
+          {/* ── TEXT BLOCK ── */}
+          <div style={{textAlign:'center',marginBottom:64}}>
+            <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(220,20,60,.12)',border:'1px solid rgba(220,20,60,.25)',borderRadius:24,padding:'6px 16px',fontSize:12,fontWeight:700,color:'#FF6B8A',letterSpacing:'0.08em',marginBottom:20}}>
+              ✦ MEROAD.AI — Nepal's First AI-Powered Advertisement Agency
+            </div>
+
+            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(28px,4vw,52px)',fontWeight:800,color:'#fff',letterSpacing:'-1.5px',lineHeight:1.05,marginBottom:20}}>
+              Premium commercial visuals.<br />
+              <span style={{color:'#DC143C'}}>75% less cost.</span>
+            </h2>
+
+            <p style={{fontSize:17,color:'rgba(255,255,255,.55)',lineHeight:1.8,maxWidth:640,margin:'0 auto 32px'}}>
+              You need breathtaking, ultra-realistic images and videos to make your brand stand out.
+              But hiring models, booking photographers, and managing locations drains your budget.
+              Skip the traditional <em style={{color:'rgba(255,255,255,.7)'}}>jhanjhat</em> — get the exact same cinematic commercial content
+              using advanced AI, and cut production costs by up to 75%.
+            </p>
+
+            {/* Benefits */}
+            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:12,maxWidth:720,margin:'0 auto 36px',textAlign:'left'}}>
+              {[
+                {icon:'✓',text:'Ultra-Realistic AI images & cinematic video'},
+                {icon:'✓',text:'75% cheaper — zero model, crew, or location fees'},
+                {icon:'✓',text:'Commercial ready — built to sell your product instantly'},
+                {icon:'✓',text:'Unlimited revisions until you love it'},
+                {icon:'✓',text:'Delivered in 24-48 hours — not weeks'},
+                {icon:'✓',text:'Works for any industry — food, fashion, real estate, NGOs'},
+              ].map(b=>(
+                <div key={b.text} style={{display:'flex',alignItems:'flex-start',gap:10,background:'rgba(255,255,255,.04)',borderRadius:10,padding:'12px 14px',border:'1px solid rgba(255,255,255,.06)'}}>
+                  <span style={{color:'#34C759',fontWeight:700,fontSize:14,flexShrink:0,marginTop:1}}>{b.icon}</span>
+                  <span style={{fontSize:13,color:'rgba(255,255,255,.65)',lineHeight:1.5}}>{b.text}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Social proof */}
+            <div style={{fontSize:13,color:'rgba(255,255,255,.35)',marginBottom:28,fontStyle:'italic'}}>
+              Trusted by top corporate brands in Nepal and internationally.
+            </div>
+
+            {/* Offer */}
+            <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(255,149,0,.1)',border:'1px solid rgba(255,149,0,.25)',borderRadius:12,padding:'10px 20px',fontSize:13,color:'#FFB347',fontWeight:600,marginBottom:32}}>
+              🎁 First 20-second AI demo video — free for businesses.{' '}
+              <span style={{color:'rgba(255,255,255,.3)',fontWeight:400,fontSize:11}}>*Terms apply</span>
+            </div>
+
+            {/* CTA */}
+            <div>
+              <a href="https://wa.me/9779851405178?text=Hi! I want to get my free 20-second AI demo video for my business from MeroAD.ai"
+                target="_blank" rel="noreferrer"
+                style={{display:'inline-block',background:'linear-gradient(135deg,#DC143C,#FF3366)',color:'#fff',padding:'16px 36px',borderRadius:14,fontSize:15,fontWeight:700,textDecoration:'none',boxShadow:'0 8px 32px rgba(220,20,60,.3)',fontFamily:'Sora,sans-serif',letterSpacing:'-0.2px'}}>
+                Cut Your Production Costs Today →
+              </a>
+            </div>
+          </div>
+
+          {/* ── 2×2 VIDEO GRID ── */}
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
+            {[
+              {id:'7586270616106388791',url:'https://www.tiktok.com/@meroad.ai/video/7586270616106388791',label:'AI Product Ad'},
+              {id:'7571005612088102158',url:'https://www.tiktok.com/@meroad.ai/video/7571005612088102158',label:'AI Brand Video'},
+              {id:'7526381188886334734',url:'https://www.tiktok.com/@meroad.ai/video/7526381188886334734',label:'AI Commercial'},
+              {id:'7517909753054432525',url:'https://www.tiktok.com/@meroad.ai/video/7517909753054432525',label:'AI Visual Campaign'},
+            ].map(v=>(
+              <a key={v.id} href={v.url} target="_blank" rel="noreferrer"
+                style={{display:'block',textDecoration:'none',position:'relative',borderRadius:16,overflow:'hidden',background:'#1a1a2e',border:'1px solid rgba(255,255,255,.08)',transition:'transform .2s',aspectRatio:'9/16'}}
+                onMouseEnter={e=>e.currentTarget.style.transform='translateY(-4px)'}
+                onMouseLeave={e=>e.currentTarget.style.transform='translateY(0)'}
+              >
+                {/* TikTok embed iframe */}
+                <iframe
+                  src={`https://www.tiktok.com/embed/v2/${v.id}`}
+                  style={{width:'100%',height:'100%',border:'none',position:'absolute',inset:0}}
+                  allowFullScreen
+                  allow="encrypted-media"
+                  loading="lazy"
+                />
+                {/* Overlay label */}
+                <div style={{position:'absolute',bottom:0,left:0,right:0,background:'linear-gradient(transparent,rgba(0,0,0,.7)',padding:'20px 14px 14px',pointerEvents:'none'}}>
+                  <div style={{display:'flex',alignItems:'center',gap:6}}>
+                    <div style={{width:20,height:20,borderRadius:'50%',background:'linear-gradient(135deg,#DC143C,#FF6B8A)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,color:'#fff',fontWeight:800,flexShrink:0}}>M</div>
+                    <span style={{fontSize:11,color:'rgba(255,255,255,.8)',fontWeight:600}}>@meroad.ai</span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {/* View all on TikTok */}
+          <div style={{textAlign:'center',marginTop:28}}>
+            <a href="https://www.tiktok.com/@meroad.ai" target="_blank" rel="noreferrer"
+              style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(255,255,255,.06)',border:'1px solid rgba(255,255,255,.1)',borderRadius:24,padding:'10px 22px',fontSize:13,fontWeight:600,color:'rgba(255,255,255,.6)',textDecoration:'none'}}>
+              View all videos on TikTok →
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+
       {/* ══ SEEMA & GEETA PROOF ══ */}
       <section style={{padding:'100px 48px',background:'#fff'}}>
         <div style={{maxWidth:1100,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:64,alignItems:'center'}}>
