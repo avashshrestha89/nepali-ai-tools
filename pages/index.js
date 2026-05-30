@@ -106,7 +106,6 @@ export default function Landing() {
       <Head>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <title>Swor AI — नेपाली AI Voice & Subtitle Generator</title>
-        <title>Swor AI — नेपाली AI Voice & Subtitle Generator</title>
         <meta name="description" content="Nepal's most realistic AI Nepali voice generator and subtitle tool. Generate natural Nepali voiceovers and subtitles in seconds." />
         <meta name="keywords" content="Nepali AI voice generator, नेपाली voiceover, Nepali subtitle generator, AI Nepali text to speech, Swor AI" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -212,7 +211,7 @@ export default function Landing() {
       </nav>
 
       {/* ══ HERO ══ */}
-      <section style={{minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',padding:'90px 48px 60px',background:'linear-gradient(160deg,#fff 0%,#fff5f7 40%,#fff8f0 70%,#fff 100%)',position:'relative',overflow:'hidden'}}>
+      <section className="hero-section" style={{minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',padding:'90px 48px 60px',background:'linear-gradient(160deg,#fff 0%,#fff5f7 40%,#fff8f0 70%,#fff 100%)',position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',top:'5%',left:'50%',transform:'translateX(-50%)',width:800,height:800,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.04) 0%,transparent 65%)',pointerEvents:'none'}} />
         <div style={{position:'absolute',top:'20%',right:'5%',width:300,height:300,borderRadius:'50%',background:'radial-gradient(circle,rgba(255,149,0,.05) 0%,transparent 70%)',pointerEvents:'none'}} />
 
@@ -269,7 +268,7 @@ export default function Landing() {
                 ▶ &nbsp;Test Demo Below — Click Any Voice
               </div>
             </div>
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+            <div className="hero-voices-grid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
             {FEATURED_VOICES.map((v,i)=>(
               <div
                 key={v.voice_id}
@@ -600,7 +599,7 @@ export default function Landing() {
           {/* Founders Deal */}
           <div style={{background:'linear-gradient(135deg,#7A5C08 0%,#C9940A 40%,#92700A 100%)',borderRadius:20,padding:'36px 40px',marginBottom:20,position:'relative',overflow:'hidden',border:'1px solid rgba(255,215,0,.4)',boxShadow:'0 8px 40px rgba(201,148,10,.25)'}}>
             <div style={{position:'absolute',top:'-30%',right:'5%',width:400,height:400,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.1) 0%,transparent 70%)',pointerEvents:'none'}} />
-            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:24,position:'relative',zIndex:1}}>
+            <div className="founders-card" style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:24,position:'relative',zIndex:1}}>
               <div>
                 <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:12,flexWrap:'wrap'}}>
                   <div style={{background:'#DC143C',color:'#fff',fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:20,letterSpacing:'0.06em'}}>⚡ FOUNDERS' DEAL</div>
@@ -639,7 +638,7 @@ export default function Landing() {
           </div>
 
           {/* Credit Packs Grid */}
-          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:16,marginBottom:20}}>
+          <div className="pricing-grid" style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:16,marginBottom:20}}>
             {[
               {key:'starter',name:'Starter Pack',credits:500,bonus:'',npr:499,usd:4.99,popular:false,voice:20,music:5,
                hook:'Your next 2 weeks of video content, sorted. Launch your new channel idea this weekend.'},
