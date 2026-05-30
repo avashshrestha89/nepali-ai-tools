@@ -5,25 +5,38 @@ const redis = new Redis({
   token: process.env.UPSTASH_REDIS_REST_TOKEN,
 })
 
+// Credit packs
+const PACKS = {
+  starter:   { credits: 500,  label: 'Starter Pack (NPR 499)' },
+  creator:   { credits: 1100, label: 'Creator Pack (NPR 999)' },
+  pro:       { credits: 3000, label: 'Pro Studio Pack (NPR 2,499)' },
+  founders:  { credits: 0,    label: "Founders' Lifetime Pack (NPR 2,500)", isFounder: true },
+  custom:    { credits: 0,    label: 'Custom amount' },
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
-  const { email, amount, adminPassword } = req.body
+  const { email, pack, customCredits, adminPassword } = req.body
 
-  // Verify admin password
   if (adminPassword !== process.env.ADMIN_PASSWORD) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 
-  if (!email || !amount || amount <= 0) {
-    return res.status(400).json({ error: 'Email and valid amount required' })
-  }
+  if (!email) return res.status(400).json({ error: 'Email required' })
 
   try {
     const raw = await redis.get(`user:${email}`)
 
+    const packData = PACKS[pack]
+    const creditsToAdd = pack === 'custom'
+      ? parseInt(customCredits) || 0
+      : packData?.credits || 0
+
+    const isFounderPack = packData?.isFounder || false
+
     if (!raw) {
-      // Create user if they don't exist yet
+      // Create new user
       const newUser = {
         email,
         createdAt: new Date().toISOString(),
@@ -33,31 +46,48 @@ export default async function handler(req, res) {
         charsPerGeneration: 500,
         betaActive: false,
         betaEndNotified: false,
-        balance: parseInt(amount),
+        credits: creditsToAdd,
+        musicFreeUsed: false,
+        isFounder: isFounderPack,
+        founderMusicThisMonth: isFounderPack ? 5 : 0,
+        founderMusicResetAt: isFounderPack
+          ? new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).toISOString()
+          : null,
       }
       await redis.set(`user:${email}`, JSON.stringify(newUser))
       return res.status(200).json({
         success: true,
         email,
-        newBalance: parseInt(amount),
-        message: `New user created with ${amount} credits`,
+        newCredits: creditsToAdd,
+        isFounder: isFounderPack,
+        message: `New user created — ${packData?.label || 'custom'} activated`,
       })
     }
 
     const user = typeof raw === 'string' ? JSON.parse(raw) : raw
-    const oldBalance = user.balance || 0
-    user.balance = oldBalance + parseInt(amount)
-    user.tier = 'paid'
+    const oldCredits = user.credits || 0
+    user.credits = oldCredits + creditsToAdd
 
+    if (isFounderPack) {
+      user.isFounder = true
+      user.founderMusicThisMonth = 5
+      user.founderMusicResetAt = new Date(
+        new Date().getFullYear(), new Date().getMonth() + 1, 1
+      ).toISOString()
+    }
+
+    user.tier = 'paid'
     await redis.set(`user:${email}`, JSON.stringify(user))
 
     return res.status(200).json({
       success: true,
       email,
-      oldBalance,
-      added: parseInt(amount),
-      newBalance: user.balance,
-      message: `Added ${amount} credits to ${email}`,
+      packActivated: packData?.label || 'custom',
+      oldCredits,
+      creditsAdded: creditsToAdd,
+      newCredits: user.credits,
+      isFounder: user.isFounder,
+      message: `${packData?.label || `${creditsToAdd} credits`} activated for ${email}`,
     })
   } catch (error) {
     console.error('Add balance error:', error)
