@@ -229,12 +229,12 @@ export default function Landing() {
 
           {/* LEFT */}
           <div>
-            <div className="fu fu1" style={{fontSize:12,fontWeight:700,color:'#888',letterSpacing:'0.04em',marginBottom:18,lineHeight:1.6}}>
+            <div className="fu fu1" style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.02em',marginBottom:18,lineHeight:1.5}}>
               Nepali AI Voice Generator: Most Realistic{' '}
               <span style={{color:'#DC143C',fontFamily:'Noto Sans Devanagari, sans-serif'}}>नेपाली</span>{' '}
               AI Text to Speech
             </div>
-            <h1 className="fu fu2" style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(28px,3.8vw,50px)',fontWeight:800,lineHeight:1.08,letterSpacing:'-1.2px',marginBottom:20,color:'#1d1d1f'}}>
+            <h1 className="fu fu2" style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(16px,3.8vw,50px)',fontWeight:800,lineHeight:1.08,letterSpacing:'-1.2px',marginBottom:20,color:'#1d1d1f'}}>
               Hyper realistic Nepali AI<br />
               voice generator that{' '}
               <span style={{color:'#DC143C',fontStyle:'italic'}}>captivates</span><br />
