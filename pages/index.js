@@ -104,7 +104,6 @@ export default function Landing() {
   return (
     <>
       <Head>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>Swor AI — नेपाली AI Voice & Subtitle Generator</title>
         <meta name="description" content="Nepal's most realistic AI Nepali voice generator and subtitle tool. Generate natural Nepali voiceovers and subtitles in seconds." />
         <meta name="keywords" content="Nepali AI voice generator, नेपाली voiceover, Nepali subtitle generator, AI Nepali text to speech, Swor AI" />
@@ -114,9 +113,6 @@ export default function Landing() {
 
       <style>{`
         *{box-sizing:border-box;margin:0;padding:0}
-html,body{overflow-x:hidden;width:100%;max-width:100vw}
-section{max-width:100vw;overflow-x:hidden}
-div{max-width:100%}
         html{scroll-behavior:smooth}
         body{font-family:'Manrope',sans-serif;background:#fff;color:#1d1d1f;-webkit-font-smoothing:antialiased}
         a{text-decoration:none;color:inherit}
@@ -166,23 +162,10 @@ div{max-width:100%}
         .lang-btn-scroll{border-color:#e0e0e0;color:#555}
         .lang-btn-scroll:hover,.lang-btn-scroll.on{background:#DC143C;border-color:#DC143C;color:#fff}
         .email-input{width:100%;padding:15px 20px;border:2px solid #e8e8ed;border-radius:12px;font-size:16px;font-family:'Manrope',sans-serif;outline:none;transition:border-color .2s;background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.15)}
-         .email-input:focus{border-color:#DC143C}
+        .email-input:focus{border-color:#DC143C}
         .email-input::placeholder{color:rgba(255,255,255,.35)}
         .feature-card{background:#f8f8f8;border-radius:20px;padding:32px 28px;transition:all .25s}
         .feature-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
-@media(max-width:768px){
-  html,body,section{overflow-x:hidden!important;max-width:100vw!important}
-  .hero-section{padding:80px 16px 40px!important}
-  .hero-grid{grid-template-columns:1fr!important;gap:24px!important;width:100%!important;overflow:hidden!important}
-  .hero-grid > div{max-width:100%!important;overflow:hidden!important;width:100%!important}
-  .hero-voices-grid{grid-template-columns:1fr 1fr!important;width:100%!important;overflow:hidden!important;gap:8px!important}
-  .hero-voice-card{width:100%!important;min-width:0!important;padding:10px!important}
-  .hero-voice-card img{width:44px!important;height:44px!important}
-  .mid-strip{flex-direction:column!important;text-align:center!important;gap:8px!important;padding:20px 16px!important}
-  .seema-grid{grid-template-columns:1fr!important;gap:32px!important}
-  .swor-brand{font-size:clamp(32px,9vw,64px)!important}
-  h1{font-size:clamp(22px,5vw,44px)!important}
-}
       `}</style>
 
       <div id="gt_element" />
@@ -209,7 +192,7 @@ div{max-width:100%}
       </nav>
 
       {/* ══ HERO ══ */}
-      <section className="hero-section" style={{minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',padding:'90px 48px 60px',background:'linear-gradient(160deg,#fff 0%,#fff5f7 40%,#fff8f0 70%,#fff 100%)',position:'relative',overflow:'hidden'}}>
+      <section style={{minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',padding:'90px 48px 60px',background:'linear-gradient(160deg,#fff 0%,#fff5f7 40%,#fff8f0 70%,#fff 100%)',position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',top:'5%',left:'50%',transform:'translateX(-50%)',width:800,height:800,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.04) 0%,transparent 65%)',pointerEvents:'none'}} />
         <div style={{position:'absolute',top:'20%',right:'5%',width:300,height:300,borderRadius:'50%',background:'radial-gradient(circle,rgba(255,149,0,.05) 0%,transparent 70%)',pointerEvents:'none'}} />
 
@@ -222,7 +205,7 @@ div{max-width:100%}
         </div>
 
         {/* Two column layout */}
-        <div className="hero-grid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:48,alignItems:'center',width:'100%',maxWidth:1100,position:'relative',zIndex:1,marginTop:32}}>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:48,alignItems:'center',width:'100%',maxWidth:1100,position:'relative',zIndex:1,marginTop:32}}>
 
           {/* LEFT */}
           <div>
@@ -243,6 +226,15 @@ div{max-width:100%}
               subtitles and voiceovers to your videos takes hours.
               Swor AI does it in seconds.
             </p>
+            {/* Music announcement */}
+            <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'linear-gradient(135deg,rgba(107,63,190,.1),rgba(220,20,60,.08))',border:'1px solid rgba(107,63,190,.25)',borderRadius:12,padding:'10px 16px',marginBottom:20,flexWrap:'wrap'}}>
+              <span style={{fontSize:16}}>🎵</span>
+              <div>
+                <div style={{fontSize:13,fontWeight:700,color:'#6B3FBE'}}>Now also: Generate original Nepali music</div>
+                <div style={{fontSize:11,color:'#888',marginTop:1}}>Type a prompt. Get a royalty-free Nepali song in seconds.</div>
+              </div>
+              <Link href="/tool"><button style={{background:'#6B3FBE',color:'#fff',border:'none',padding:'6px 14px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer',flexShrink:0}}>Try Music →</button></Link>
+            </div>
             <div className="fu fu4" style={{display:'flex',gap:12,flexWrap:'wrap',marginBottom:20}}>
               <a href="#access"><button className="btn-primary">Get free access</button></a>
               <Link href="/tool"><button className="btn-secondary">Try the tool first</button></Link>
@@ -257,7 +249,7 @@ div{max-width:100%}
                 ▶ &nbsp;Test Demo Below — Click Any Voice
               </div>
             </div>
-            <div className="hero-voices-grid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
             {FEATURED_VOICES.map((v,i)=>(
               <div
                 key={v.voice_id}
@@ -295,7 +287,7 @@ div{max-width:100%}
       </section>
 
       {/* ══ MIDDLE STRIP ══ */}
-      <section className="mid-strip" style={{background:'#1d1d1f',padding:'28px 48px',textAlign:'center'}}>
+      <section style={{background:'#1d1d1f',padding:'28px 48px',textAlign:'center'}}>
         <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(16px,2vw,24px)',fontWeight:700,color:'#fff',letterSpacing:'-0.3px',marginBottom:8}}>
           Start saving <span style={{color:'#FF6B8A'}}>90%</span> of your time and budget today!
         </div>
@@ -418,119 +410,13 @@ div{max-width:100%}
         </div>
       </section>
 
-{/* ══ MEROAD AI SECTION ══ */}
-      {/* PASTE THIS DIRECTLY ABOVE THE SEEMA & GEETA SECTION */}
-      <section style={{padding:'100px 48px',background:'#0E0E16',position:'relative',overflow:'hidden'}}>
-        <div style={{position:'absolute',top:'10%',left:'50%',transform:'translateX(-50%)',width:800,height:800,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.06) 0%,transparent 65%)',pointerEvents:'none'}} />
-
-        <div style={{maxWidth:1100,margin:'0 auto',position:'relative',zIndex:1}}>
-
-          {/* ── TEXT BLOCK ── */}
-          <div style={{textAlign:'center',marginBottom:64}}>
-            <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(220,20,60,.12)',border:'1px solid rgba(220,20,60,.25)',borderRadius:24,padding:'6px 16px',fontSize:12,fontWeight:700,color:'#FF6B8A',letterSpacing:'0.08em',marginBottom:20}}>
-              ✦ MEROAD.AI — Nepal's First AI-Powered Advertisement Agency
-            </div>
-
-            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(28px,4vw,52px)',fontWeight:800,color:'#fff',letterSpacing:'-1.5px',lineHeight:1.05,marginBottom:20}}>
-              Premium commercial visuals.<br />
-              <span style={{color:'#DC143C'}}>75% less cost.</span>
-            </h2>
-
-            <p style={{fontSize:17,color:'rgba(255,255,255,.55)',lineHeight:1.8,maxWidth:640,margin:'0 auto 32px'}}>
-              You need breathtaking, ultra-realistic images and videos to make your brand stand out.
-              But hiring models, booking photographers, and managing locations drains your budget.
-              Skip the traditional <em style={{color:'rgba(255,255,255,.7)'}}>jhanjhat</em> — get the exact same cinematic commercial content
-              using advanced AI, and cut production costs by up to 75%.
-            </p>
-
-            {/* Benefits */}
-            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:12,maxWidth:720,margin:'0 auto 36px',textAlign:'left'}}>
-              {[
-                {icon:'✓',text:'Ultra-Realistic AI images & cinematic video'},
-                {icon:'✓',text:'75% cheaper — zero model, crew, or location fees'},
-                {icon:'✓',text:'Commercial ready — built to sell your product instantly'},
-                {icon:'✓',text:'Unlimited revisions until you love it'},
-                {icon:'✓',text:'Delivered in 24-48 hours — not weeks'},
-                {icon:'✓',text:'Works for any industry — food, fashion, real estate, NGOs'},
-              ].map(b=>(
-                <div key={b.text} style={{display:'flex',alignItems:'flex-start',gap:10,background:'rgba(255,255,255,.04)',borderRadius:10,padding:'12px 14px',border:'1px solid rgba(255,255,255,.06)'}}>
-                  <span style={{color:'#34C759',fontWeight:700,fontSize:14,flexShrink:0,marginTop:1}}>{b.icon}</span>
-                  <span style={{fontSize:13,color:'rgba(255,255,255,.65)',lineHeight:1.5}}>{b.text}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Social proof */}
-            <div style={{fontSize:13,color:'rgba(255,255,255,.35)',marginBottom:28,fontStyle:'italic'}}>
-              Trusted by top corporate brands in Nepal and internationally.
-            </div>
-
-            {/* Offer */}
-            <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(255,149,0,.1)',border:'1px solid rgba(255,149,0,.25)',borderRadius:12,padding:'10px 20px',fontSize:13,color:'#FFB347',fontWeight:600,marginBottom:32}}>
-              🎁 First 20-second AI demo video — free for businesses.{' '}
-              <span style={{color:'rgba(255,255,255,.3)',fontWeight:400,fontSize:11}}>*Terms apply</span>
-            </div>
-
-            {/* CTA */}
-            <div>
-              <a href="https://wa.me/19255379425?text=Hi! I want to get my free 20-second AI demo video for my business from MeroAD.ai"
-                target="_blank" rel="noreferrer"
-                style={{display:'inline-block',background:'linear-gradient(135deg,#DC143C,#FF3366)',color:'#fff',padding:'16px 36px',borderRadius:14,fontSize:15,fontWeight:700,textDecoration:'none',boxShadow:'0 8px 32px rgba(220,20,60,.3)',fontFamily:'Sora,sans-serif',letterSpacing:'-0.2px'}}>
-                Cut Your Production Costs Today →
-              </a>
-            </div>
-          </div>
-
-          {/* ── 2×2 VIDEO GRID ── */}
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
-            {[
-              {id:'7586270616106388791',url:'https://www.tiktok.com/@meroad.ai/video/7586270616106388791',label:'AI Product Ad'},
-              {id:'7571005612088102158',url:'https://www.tiktok.com/@meroad.ai/video/7571005612088102158',label:'AI Brand Video'},
-              {id:'7526381188886334734',url:'https://www.tiktok.com/@meroad.ai/video/7526381188886334734',label:'AI Commercial'},
-              {id:'7517909753054432525',url:'https://www.tiktok.com/@meroad.ai/video/7517909753054432525',label:'AI Visual Campaign'},
-            ].map(v=>(
-              <a key={v.id} href={v.url} target="_blank" rel="noreferrer"
-                style={{display:'block',textDecoration:'none',position:'relative',borderRadius:16,overflow:'hidden',background:'#1a1a2e',border:'1px solid rgba(255,255,255,.08)',transition:'transform .2s',aspectRatio:'9/16'}}
-                onMouseEnter={e=>e.currentTarget.style.transform='translateY(-4px)'}
-                onMouseLeave={e=>e.currentTarget.style.transform='translateY(0)'}
-              >
-                {/* TikTok embed iframe */}
-                <iframe
-                  src={`https://www.tiktok.com/embed/v2/${v.id}`}
-                  style={{width:'100%',height:'100%',border:'none',position:'absolute',inset:0}}
-                  allowFullScreen
-                  allow="encrypted-media"
-                  loading="lazy"
-                />
-                {/* Overlay label */}
-                <div style={{position:'absolute',bottom:0,left:0,right:0,background:'linear-gradient(transparent,rgba(0,0,0,.7)',padding:'20px 14px 14px',pointerEvents:'none'}}>
-                  <div style={{display:'flex',alignItems:'center',gap:6}}>
-                    <div style={{width:20,height:20,borderRadius:'50%',background:'linear-gradient(135deg,#DC143C,#FF6B8A)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,color:'#fff',fontWeight:800,flexShrink:0}}>M</div>
-                    <span style={{fontSize:11,color:'rgba(255,255,255,.8)',fontWeight:600}}>@meroad.ai</span>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-
-          {/* View all on TikTok */}
-          <div style={{textAlign:'center',marginTop:28}}>
-            <a href="https://www.tiktok.com/@meroad.ai" target="_blank" rel="noreferrer"
-              style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(255,255,255,.06)',border:'1px solid rgba(255,255,255,.1)',borderRadius:24,padding:'10px 22px',fontSize:13,fontWeight:600,color:'rgba(255,255,255,.6)',textDecoration:'none'}}>
-              View all videos on TikTok →
-            </a>
-          </div>
-
-        </div>
-      </section>
-
       {/* ══ SEEMA & GEETA PROOF ══ */}
       <section style={{padding:'100px 48px',background:'#fff'}}>
-        <div className="seema-grid" style={{maxWidth:1100,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:64,alignItems:'center'}}>
+        <div style={{maxWidth:1100,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:64,alignItems:'center'}}>
           <div>
             <div style={{fontSize:12,fontWeight:700,color:'#DC143C',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:16}}>Built by creators, for creators</div>
             <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(24px,3vw,40px)',fontWeight:800,letterSpacing:'-0.8px',marginBottom:20,lineHeight:1.15}}>
-              Built by the creator behind<br />
+              Built by the team behind<br />
               <span style={{color:'#DC143C'}}>@seemaandgeetatwins</span> —<br />
               Nepal's first virtual influencer
             </h2>
@@ -538,7 +424,7 @@ div{max-width:100%}
               We didn't build Swor for someone else's problem. We built it because we needed it ourselves, and now we're sharing it with every Nepali creator.
             </p>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:36}}>
-              {[['54M+','Video views'],['91K+','Followers'],['1.6M+','Total likes'],['80K+','Shares']].map(([n,l])=>(
+              {[['51M+','Video views'],['85K+','Followers'],['1.6M+','Total likes'],['80K+','Shares']].map(([n,l])=>(
                 <div key={n} style={{background:'#f5f5f7',borderRadius:14,padding:'18px 16px'}}>
                   <div style={{fontFamily:'Sora,sans-serif',fontSize:26,fontWeight:800,color:'#1d1d1f',marginBottom:4}}>{n}</div>
                   <div style={{fontSize:12,color:'#999',fontWeight:500}}>{l}</div>
@@ -548,13 +434,13 @@ div{max-width:100%}
             <a href="#access"><button className="btn-primary">Get free beta access →</button></a>
           </div>
           <div style={{position:'relative'}}>
-            <div style={{borderRadius:24,overflow:'hidden',boxShadow:'0 24px 60px rgba(0,0,0,.12)',aspectRatio:'9/16',maxWidth:360,margin:'0 auto'}}>
-              <iframe src="https://www.tiktok.com/embed/v2/7625496104615890206" style={{width:'100%',height:'100%',border:'none'}} allowFullScreen allow="encrypted-media" loading="lazy" />
-             <div style={{marginTop:12,background:'#f5f5f7',borderRadius:12,padding:'12px 16px',display:'flex',alignItems:'center',gap:10}}>
+            <div style={{borderRadius:24,overflow:'hidden',boxShadow:'0 24px 60px rgba(0,0,0,.12)'}}>
+              <img src="/seema-geeta.jpg" alt="Seema and Geeta" style={{width:'100%',height:'auto',display:'block'}} />
+              <div style={{position:'absolute',bottom:20,left:20,right:20,background:'rgba(255,255,255,.92)',backdropFilter:'blur(12px)',borderRadius:12,padding:'12px 16px',display:'flex',alignItems:'center',gap:10}}>
                 <div style={{width:9,height:9,borderRadius:'50%',background:'#34C759',flexShrink:0}} />
                 <div>
                   <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f'}}>@seemaandgeetatwins</div>
-                  <div style={{fontSize:11,color:'#999'}}>Nepal's first virtual influencer · 54M+ views</div>
+                  <div style={{fontSize:11,color:'#999'}}>Nepal's first virtual influencer · 51M+ views</div>
                 </div>
               </div>
             </div>
@@ -564,38 +450,43 @@ div{max-width:100%}
 
 
       {/* ══ PRICING SECTION ══ */}
-      {/* PASTE THIS BETWEEN THE SEEMA & GEETA SECTION AND THE EMAIL FORM SECTION */}
       <section id="pricing" style={{padding:'100px 48px',background:'#f5f5f7'}}>
         <div style={{maxWidth:1100,margin:'0 auto'}}>
-
-          {/* Header */}
           <div style={{textAlign:'center',marginBottom:60}}>
             <div style={{fontSize:12,fontWeight:700,color:'#DC143C',letterSpacing:'0.12em',textTransform:'uppercase',marginBottom:12}}>Simple pricing</div>
             <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(28px,3.5vw,46px)',fontWeight:800,letterSpacing:'-1px',marginBottom:14}}>
-              Choose your pack
+              Choose your credit pack
             </h2>
-            <p style={{fontSize:16,color:'#6e6e73',maxWidth:480,margin:'0 auto',lineHeight:1.65}}>
-              Pay once, use at your own pace. No subscriptions. No expiry. Credits never disappear.
+            <p style={{fontSize:16,color:'#6e6e73',maxWidth:520,margin:'0 auto 16px',lineHeight:1.65}}>
+              One universal currency for everything — voiceovers, subtitles, and music.
+              Credits never expire. Use them however you want.
             </p>
+            <div style={{display:'inline-flex',gap:16,background:'#fff',borderRadius:12,padding:'12px 20px',border:'1px solid #e8e8ed',fontSize:13,color:'#555',flexWrap:'wrap',justifyContent:'center'}}>
+              <span>🎙️ <strong style={{color:'#1d1d1f'}}>25 credits</strong> = 1 voiceover</span>
+              <span style={{color:'#e8e8ed'}}>|</span>
+              <span>🎵 <strong style={{color:'#1d1d1f'}}>100 credits</strong> = 30s music</span>
+              <span style={{color:'#e8e8ed'}}>|</span>
+              <span>🎬 <strong style={{color:'#34C759'}}>Subtitles FREE</strong> always</span>
+            </div>
           </div>
 
-          {/* Founders' Deal — Full Width Dark Card */}
+          {/* Founders Deal */}
           <div style={{background:'linear-gradient(135deg,#7A5C08 0%,#C9940A 40%,#92700A 100%)',borderRadius:20,padding:'36px 40px',marginBottom:20,position:'relative',overflow:'hidden',border:'1px solid rgba(255,215,0,.4)',boxShadow:'0 8px 40px rgba(201,148,10,.25)'}}>
             <div style={{position:'absolute',top:'-30%',right:'5%',width:400,height:400,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.1) 0%,transparent 70%)',pointerEvents:'none'}} />
             <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:24,position:'relative',zIndex:1}}>
               <div>
                 <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:12,flexWrap:'wrap'}}>
                   <div style={{background:'#DC143C',color:'#fff',fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:20,letterSpacing:'0.06em'}}>⚡ FOUNDERS' DEAL</div>
-                  <div style={{background:'rgba(255,255,255,.1)',color:'rgba(255,255,255,.6)',fontSize:11,fontWeight:600,padding:'4px 12px',borderRadius:20}}>Limited to first 15 buyers</div>
+                  <div style={{background:'rgba(255,255,255,.1)',color:'rgba(0,0,0,.5)',fontSize:11,fontWeight:600,padding:'4px 12px',borderRadius:20}}>Limited to first 15 buyers</div>
                 </div>
-                <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(24px,3vw,38px)',fontWeight:800,color:'#fff',letterSpacing:'-0.5px',marginBottom:8}}>
+                <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(22px,3vw,34px)',fontWeight:800,color:'#fff',letterSpacing:'-0.5px',marginBottom:6}}>
                   Founders' Lifetime Pack
                 </div>
-               <div style={{fontSize:15,color:'#ffffff',fontWeight:700,lineHeight:1.7,maxWidth:480,marginBottom:16,background:'rgba(0,0,0,.08)',padding:'10px 14px',borderRadius:10,borderLeft:'3px solid rgba(0,0,0,.2)'}}>
-  500 viral videos in your pocket. Launch your next year of content without a single monthly bill or studio fee.
-</div>
+                <div style={{fontSize:14,fontWeight:700,color:'rgba(0,0,0,.6)',lineHeight:1.6,maxWidth:480,marginBottom:16}}>
+                  500 viral videos in your pocket. Launch your next year of content without a single monthly bill or studio fee.
+                </div>
                 <div style={{display:'flex',gap:16,flexWrap:'wrap'}}>
-                  {['500 total voiceover generations','15 premium Nepali voices','Unlimited subtitle generation','Never expires'].map(f=>(
+                  {['500 voiceover generations','5 music tracks free every month','Unlimited subtitles forever','Credits never expire','Founders status — forever'].map(f=>(
                     <div key={f} style={{display:'flex',alignItems:'center',gap:6,fontSize:13,fontWeight:600,color:'rgba(0,0,0,.75)'}}>
                       <span style={{color:'#34C759',fontWeight:700}}>✓</span> {f}
                     </div>
@@ -607,13 +498,11 @@ div{max-width:100%}
                 <div style={{fontFamily:'Sora,sans-serif',fontSize:44,fontWeight:800,color:'#fff',lineHeight:1}}>NPR 2,500</div>
                 <div style={{fontSize:15,fontWeight:700,color:'rgba(0,0,0,.55)',marginBottom:20}}>$19.99 USD</div>
                 <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                  <a href={`https://wa.me/19255379425?text=Hi! I want to buy the Swor AI Founders Lifetime Pack (NPR 2,500 / $19.99 USD). Nepal: eSewa/Khalti. International: PayPal @sworai, Venmo @TwentyfourAS, Zelle AVASHSHRESTHAUSA@GMAIL.COM. Please confirm.`}
-                    target="_blank" rel="noreferrer"
+                  <a href={`https://wa.me/19255379425?text=Hi! I want to buy the Swor AI Founders Lifetime Pack (NPR 2,500 / $19.99 USD). Nepal: eSewa/Khalti. International: PayPal @sworai, Venmo @TwentyfourAS, Zelle AVASHSHRESTHAUSA@GMAIL.COM. Please confirm.`} target="_blank" rel="noreferrer"
                     style={{background:'#25D366',color:'#fff',padding:'12px 24px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center'}}>
                     💬 Buy via WhatsApp (NPR)
                   </a>
-                  <a href="https://paypal.me/sworai"
-                    target="_blank" rel="noreferrer"
+                  <a href="https://paypal.me/sworai" target="_blank" rel="noreferrer"
                     style={{background:'#003087',color:'#fff',padding:'12px 24px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center'}}>
                     💳 Buy via PayPal ($19.99)
                   </a>
@@ -622,136 +511,120 @@ div{max-width:100%}
             </div>
           </div>
 
-          {/* Standard Packs — Two Cards */}
-          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:16,marginBottom:32}}>
+          {/* Credit Packs Grid */}
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:16,marginBottom:20}}>
+            {[
+              {key:'starter',name:'Starter Pack',credits:500,bonus:'',npr:499,usd:4.99,popular:false,voice:20,music:5,
+               hook:'Your next 2 weeks of video content, sorted. Launch your new channel idea this weekend.'},
+              {key:'creator',name:'Creator Value Pack',credits:1100,bonus:'+10% bonus',npr:999,usd:12.99,popular:true,voice:44,music:11,
+               hook:'Go daily for a full month. Build your audience with consistent uploads without touching a microphone.'},
+              {key:'pro',name:'Pro Studio Pack',credits:3000,bonus:'+20% bonus',npr:2499,usd:29.99,popular:false,voice:120,music:30,
+               hook:'A full year of professional content. For agencies, brands, and serious creators.'},
+            ].map(p=>(
+              <div key={p.key} style={{background:'#fff',borderRadius:20,padding:'28px 24px',border:p.popular?'2px solid #DC143C':'1.5px solid #e8e8ed',position:'relative',boxShadow:p.popular?'0 8px 32px rgba(220,20,60,.1)':'none'}}>
+                {p.popular&&<div style={{position:'absolute',top:-14,left:'50%',transform:'translateX(-50%)',background:'#DC143C',color:'#fff',fontSize:11,fontWeight:700,padding:'5px 16px',borderRadius:20,whiteSpace:'nowrap',letterSpacing:'0.06em'}}>★ MOST POPULAR</div>}
+                <div style={{fontSize:13,fontWeight:700,color:p.popular?'#DC143C':'#6e6e73',marginBottom:8}}>{p.name}</div>
+                <div style={{display:'flex',alignItems:'baseline',gap:8,marginBottom:4}}>
+                  <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1}}>NPR {p.npr.toLocaleString()}</div>
+                </div>
+                <div style={{fontSize:13,color:'#999',marginBottom:4}}>${p.usd} USD</div>
+                <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:20}}>
+                  <span>{p.credits.toLocaleString()} Swor Credits</span>
+                  {p.bonus&&<span style={{color:'#34C759'}}>{p.bonus}</span>}
+                </div>
+                <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:20}}>
+                  {[
+                    `🎙️ ${p.voice} voiceover generations`,
+                    `🎵 ${p.music} music tracks (30s each)`,
+                    '🎬 Unlimited subtitle generation',
+                    '✓ Credits never expire',
+                    '✓ Mix voiceover + music freely',
+                  ].map(f=>(
+                    <div key={f} style={{fontSize:13,color:'#555'}}>{f}</div>
+                  ))}
+                </div>
+                <div style={{fontSize:13,fontWeight:600,color:'#DC143C',marginBottom:16,background:'rgba(220,20,60,.06)',padding:'8px 12px',borderRadius:8}}>
+                  {p.hook}
+                </div>
+                <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                  <a href={`https://wa.me/19255379425?text=Hi! I want to buy the Swor AI ${p.name} (NPR ${p.npr} / $${p.usd} USD). Nepal: eSewa/Khalti. International: PayPal @sworai, Venmo @TwentyfourAS, Zelle AVASHSHRESTHAUSA@GMAIL.COM. Please confirm.`}
+                    target="_blank" rel="noreferrer"
+                    style={{background:p.popular?'#DC143C':'#1d1d1f',color:'#fff',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',boxShadow:p.popular?'0 4px 16px rgba(220,20,60,.25)':'none'}}>
+                    💬 Buy via WhatsApp
+                  </a>
+                  <a href="https://paypal.me/sworai" target="_blank" rel="noreferrer"
+                    style={{background:'#f5f5f7',color:'#1d1d1f',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',border:'1px solid #e8e8ed'}}>
+                    💳 PayPal (${p.usd})
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
 
-            {/* Starter Pack */}
-            <div style={{background:'#fff',borderRadius:20,padding:'32px 28px',border:'1.5px solid #e8e8ed',position:'relative'}}>
-              <div style={{fontSize:13,fontWeight:700,color:'#6e6e73',marginBottom:8}}>Starter Pack</div>
-              <div style={{fontFamily:'Sora,sans-serif',fontSize:38,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 299</div>
-              <div style={{fontSize:13,color:'#999',marginBottom:24}}>$4.99 USD</div>
-              <div style={{display:'flex',flexDirection:'column',gap:10,marginBottom:28}}>
-                {['15 voiceover generations','15 premium Nepali voices','Up to 500 chars per generation','Unlimited subtitle generation','Credits never expire'].map(f=>(
-                  <div key={f} style={{display:'flex',alignItems:'center',gap:8,fontSize:14,color:'#555'}}>
-                    <span style={{color:'#DC143C',fontWeight:700,flexShrink:0}}>✓</span> {f}
-                  </div>
-                ))}
+          {/* Custom Plan */}
+          <div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1a2d 100%)',borderRadius:20,padding:'36px 40px',marginBottom:20,border:'1px solid rgba(107,63,190,.3)',position:'relative',overflow:'hidden'}}>
+            <div style={{position:'absolute',top:'-30%',left:'5%',width:300,height:300,borderRadius:'50%',background:'radial-gradient(circle,rgba(107,63,190,.1) 0%,transparent 70%)',pointerEvents:'none'}} />
+            <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',flexWrap:'wrap',gap:32,position:'relative',zIndex:1}}>
+              <div style={{flex:1,minWidth:280}}>
+                <div style={{display:'inline-flex',alignItems:'center',gap:8,marginBottom:16}}>
+                  <div style={{background:'rgba(107,63,190,.3)',color:'#C084FC',fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:20,letterSpacing:'0.06em'}}>✦ CUSTOM PLAN</div>
+                  <div style={{background:'rgba(255,255,255,.08)',color:'rgba(255,255,255,.5)',fontSize:11,fontWeight:600,padding:'4px 12px',borderRadius:20}}>For agencies & brands</div>
+                </div>
+                <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(20px,2.5vw,30px)',fontWeight:800,color:'#fff',letterSpacing:'-0.3px',marginBottom:8}}>Need more than our standard plans?</div>
+                <div style={{fontSize:14,color:'rgba(255,255,255,.5)',lineHeight:1.7,marginBottom:24,maxWidth:420}}>
+                  Built for high-volume creators, agencies, and Nepal brands who need a tailored solution.
+                </div>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+                  {[
+                    {icon:'🎙️',title:'Custom Brand Voice Cloning',desc:'Clone your brand ambassador's voice instantly'},
+                    {icon:'⚡',title:'High-Volume Bulk Access',desc:'Generate unlimited content without limits'},
+                    {icon:'🚀',title:'Priority Rendering',desc:'Skip the queue for instant generations'},
+                    {icon:'👥',title:'Team Access Workspace',desc:'Single credit pool for your entire agency'},
+                    {icon:'🧾',title:'Local Invoicing & PAN Billing',desc:'Tax-compliant corporate billing in NPR'},
+                    {icon:'💬',title:'Dedicated WhatsApp Support',desc:'VIP troubleshooting via direct chat'},
+                  ].map(f=>(
+                    <div key={f.title} style={{display:'flex',gap:10,alignItems:'flex-start'}}>
+                      <span style={{fontSize:18,flexShrink:0,marginTop:2}}>{f.icon}</span>
+                      <div>
+                        <div style={{fontSize:13,fontWeight:700,color:'#fff',marginBottom:2}}>{f.title}</div>
+                        <div style={{fontSize:11,color:'rgba(255,255,255,.4)',lineHeight:1.5}}>{f.desc}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div style={{fontSize:12,fontSize:13,fontWeight:600,color:'#FF9500',marginBottom:12,textAlign:'center',background:'rgba(255,149,0,.08)',padding:'6px 12px',borderRadius:8}}>Your next 2 weeks of video content, sorted. Launch your new channel idea this weekend.</div>
-              <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                <a href={`https://wa.me/19255379425?text=Hi! I want to buy the Swor AI Starter Pack (NPR 299 / $4.99 USD). Nepal: eSewa/Khalti. International: PayPal @sworai, Venmo @TwentyfourAS, Zelle AVASHSHRESTHAUSA@GMAIL.COM. Please confirm.`}
-                  target="_blank" rel="noreferrer"
-                  style={{background:'#1d1d1f',color:'#fff',padding:'12px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center'}}>
-                  💬 Buy via WhatsApp
+              <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0,minWidth:200}}>
+                <div style={{fontFamily:'Sora,sans-serif',fontSize:28,fontWeight:800,color:'#fff',textAlign:'center',marginBottom:4}}>Let's talk</div>
+                <div style={{fontSize:12,color:'rgba(255,255,255,.4)',textAlign:'center',marginBottom:8}}>Custom pricing for your needs</div>
+                <a href="https://wa.me/19255379425?text=Hi! I'm interested in a Custom Plan for Swor AI. Can we discuss pricing?" target="_blank" rel="noreferrer"
+                  style={{background:'#25D366',color:'#fff',padding:'12px 24px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center'}}>
+                  💬 WhatsApp Us
                 </a>
-                <a href="https://paypal.me/sworai"
-                  target="_blank" rel="noreferrer"
-                  style={{background:'#f5f5f7',color:'#1d1d1f',padding:'12px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',border:'1px solid #e8e8ed'}}>
-                  💳 PayPal ($4.99)
-                </a>
-              </div>
-            </div>
-
-            {/* Creator Pack — Most Popular */}
-            <div style={{background:'#fff',borderRadius:20,padding:'32px 28px',border:'2px solid #DC143C',position:'relative',boxShadow:'0 8px 32px rgba(220,20,60,.1)'}}>
-              <div style={{position:'absolute',top:-14,left:'50%',transform:'translateX(-50%)',background:'#DC143C',color:'#fff',fontSize:11,fontWeight:700,padding:'5px 16px',borderRadius:20,whiteSpace:'nowrap',letterSpacing:'0.06em'}}>
-                ★ MOST POPULAR
-              </div>
-              <div style={{fontSize:13,fontWeight:700,color:'#DC143C',marginBottom:8}}>Creator Value Pack</div>
-              <div style={{fontFamily:'Sora,sans-serif',fontSize:38,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 599</div>
-              <div style={{fontSize:13,color:'#999',marginBottom:24}}>$8.99 USD</div>
-              <div style={{display:'flex',flexDirection:'column',gap:10,marginBottom:28}}>
-                {['40 voiceover generations','15 premium Nepali voices','Up to 500 chars per generation','Unlimited subtitle generation','Credits never expire'].map(f=>(
-                  <div key={f} style={{display:'flex',alignItems:'center',gap:8,fontSize:14,color:'#555'}}>
-                    <span style={{color:'#DC143C',fontWeight:700,flexShrink:0}}>✓</span> {f}
-                  </div>
-                ))}
-              </div>
-              <div style={{fontSize:12,fontSize:13,fontWeight:600,color:'#DC143C',marginBottom:12,textAlign:'center',background:'rgba(220,20,60,.06)',padding:'6px 12px',borderRadius:8}}>Go daily for a full month. Build your audience with consistent uploads without touching a microphone.</div>
-              <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                <a href={`https://wa.me/19255379425?text=Hi! I want to buy the Swor AI Creator Pack (NPR 599 / $8.99 USD). Nepal: eSewa/Khalti. International: PayPal @sworai, Venmo @TwentyfourAS, Zelle AVASHSHRESTHAUSA@GMAIL.COM. Please confirm.`}
-                  target="_blank" rel="noreferrer"
-                  style={{background:'#DC143C',color:'#fff',padding:'12px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center',boxShadow:'0 4px 16px rgba(220,20,60,.25)'}}>
-                  💬 Buy via WhatsApp
-                </a>
-                <a href="https://paypal.me/sworai"
-                  target="_blank" rel="noreferrer"
-                  style={{background:'#f5f5f7',color:'#1d1d1f',padding:'12px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',border:'1px solid #e8e8ed'}}>
-                  💳 PayPal ($8.99)
+                <a href="mailto:meroadaiofficial@gmail.com?subject=Custom Plan Inquiry — Swor AI" target="_blank" rel="noreferrer"
+                  style={{background:'rgba(255,255,255,.08)',color:'rgba(255,255,255,.8)',border:'1px solid rgba(255,255,255,.15)',padding:'12px 24px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center'}}>
+                  ✉️ Email Us
                 </a>
               </div>
             </div>
           </div>
-{/* Custom Plan */}
-<div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1a2d 100%)',borderRadius:20,padding:'36px 40px',marginBottom:20,border:'1px solid rgba(107,63,190,.3)',position:'relative',overflow:'hidden'}}>
-  <div style={{position:'absolute',top:'-30%',left:'5%',width:300,height:300,borderRadius:'50%',background:'radial-gradient(circle,rgba(107,63,190,.1) 0%,transparent 70%)',pointerEvents:'none'}} />
-  <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',flexWrap:'wrap',gap:32,position:'relative',zIndex:1}}>
-    <div style={{flex:1,minWidth:280}}>
-      <div style={{display:'inline-flex',alignItems:'center',gap:8,marginBottom:16}}>
-        <div style={{background:'rgba(107,63,190,.3)',color:'#C084FC',fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:20,letterSpacing:'0.06em'}}>✦ CUSTOM PLAN</div>
-        <div style={{background:'rgba(255,255,255,.08)',color:'rgba(255,255,255,.5)',fontSize:11,fontWeight:600,padding:'4px 12px',borderRadius:20}}>For agencies & brands</div>
-      </div>
-      <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(20px,2.5vw,30px)',fontWeight:800,color:'#fff',letterSpacing:'-0.3px',marginBottom:8}}>
-        Need more than our standard plans?
-      </div>
-      <div style={{fontSize:14,color:'rgba(255,255,255,.5)',lineHeight:1.7,marginBottom:24,maxWidth:420}}>
-        Built for high-volume creators, agencies, and Nepal brands who need a tailored solution. Pricing based on your specific needs.
-      </div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
-        {[
-          {icon:'🎙️',title:'Custom Brand Voice Cloning',desc:'Clone your brand ambassador\'s voice instantly'},
-          {icon:'⚡',title:'High-Volume Bulk Access',desc:'Generate unlimited content without character limits'},
-          {icon:'🚀',title:'Priority Rendering',desc:'Skip the queue for instant voice generations'},
-          {icon:'👥',title:'Team Access Workspace',desc:'Single credit pool for your entire agency'},
-          {icon:'🧾',title:'Local Invoicing & PAN Billing',desc:'Tax-compliant corporate billing in NPR'},
-          {icon:'💬',title:'Dedicated WhatsApp Support',desc:'VIP troubleshooting via direct chat'},
-        ].map(f=>(
-          <div key={f.title} style={{display:'flex',gap:10,alignItems:'flex-start'}}>
-            <span style={{fontSize:18,flexShrink:0,marginTop:2}}>{f.icon}</span>
-            <div>
-              <div style={{fontSize:13,fontWeight:700,color:'#fff',marginBottom:2}}>{f.title}</div>
-              <div style={{fontSize:11,color:'rgba(255,255,255,.4)',lineHeight:1.5}}>{f.desc}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-    <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0,minWidth:200}}>
-      <div style={{fontFamily:'Sora,sans-serif',fontSize:28,fontWeight:800,color:'#fff',textAlign:'center',marginBottom:4}}>
-        Let's talk
-      </div>
-      <div style={{fontSize:12,color:'rgba(255,255,255,.4)',textAlign:'center',marginBottom:8}}>
-        Custom pricing for your needs
-      </div>
-      <a href="https://wa.me/19255379425?text=Hi! I'm interested in a Custom Plan for Swor AI. Can we discuss pricing?"
-        target="_blank" rel="noreferrer"
-        style={{background:'#25D366',color:'#fff',padding:'12px 24px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center'}}>
-        💬 WhatsApp Us
-      </a>
-      <a href="mailto:meroadaiofficial@gmail.com?subject=Custom Plan Inquiry — Swor AI"
-        target="_blank" rel="noreferrer"
-        style={{background:'rgba(255,255,255,.08)',color:'rgba(255,255,255,.8)',border:'1px solid rgba(255,255,255,.15)',padding:'12px 24px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center'}}>
-        ✉️ Email Us
-      </a>
-    </div>
-  </div>
-</div>
+
           {/* Payment Instructions */}
-          <div style={{background:'#FFFBF0',borderRadius:16,padding:'32px 28px',border:'2px solid rgba(201,148,10,.25)',textAlign:'center'}}>
-  <div style={{fontSize:16,fontWeight:700,color:'#1d1d1f',marginBottom:10}}>How payment works</div>
-  <div style={{fontSize:14,color:'#555',lineHeight:1.9,maxWidth:560,margin:'0 auto'}}>
+          <div style={{background:'#FFFBF0',borderRadius:16,padding:'28px',border:'2px solid rgba(201,148,10,.25)',textAlign:'center'}}>
+            <div style={{fontSize:16,fontWeight:700,color:'#1d1d1f',marginBottom:10}}>How payment works</div>
+            <div style={{fontSize:14,color:'#555',lineHeight:1.9,maxWidth:560,margin:'0 auto 16px'}}>
               Click "Buy via WhatsApp" → send your eSewa, Khalti, or IME Pay transfer screenshot →
-              your credits are manually activated within <strong style={{color:'#1d1d1f'}}>10 minutes</strong>.
-              International users pay via PayPal (@sworai), Venmo (@TwentyfourAS), or Zelle (AVASHSHRESTHAUSA@GMAIL.COM) and email the transaction ID to{' '}
-              <a href="mailto:meroadaiofficial@gmail.com" style={{color:'#DC143C'}}>meroadaiofficial@gmail.com</a>
+              credits activated within <strong style={{color:'#1d1d1f'}}>10 minutes</strong>.
+              International users pay via PayPal (<a href="https://paypal.me/sworai" style={{color:'#DC143C'}}>@sworai</a>), Venmo (@TwentyfourAS), or Zelle (AVASHSHRESTHAUSA@GMAIL.COM).
             </div>
-            <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap',marginTop:16}}>
+            <div style={{background:'rgba(255,149,0,.1)',border:'1px solid rgba(255,149,0,.3)',borderRadius:10,padding:'10px 16px',display:'inline-flex',alignItems:'center',gap:8,fontSize:13,color:'#B45309',fontWeight:600,marginBottom:16}}>
+              ⏰ Credits activated daily at <strong>8AM and 6PM Nepal time</strong>. WhatsApp for urgent activation.
+            </div>
+            <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap'}}>
               {[{n:'eSewa',c:'#60B843'},{n:'Khalti',c:'#7B3FC4'},{n:'IME Pay',c:'#E8392A'},{n:'Bank Transfer',c:'#1d1d1f'},{n:'PayPal',c:'#003087'},{n:'Venmo',c:'#008CFF'},{n:'Zelle',c:'#6D1ED4'}].map(p=>(
-  <span key={p.n} style={{background:'rgba(255,255,255,.08)',border:`1px solid ${p.c}55`,borderRadius:8,padding:'8px 16px',fontSize:13,fontWeight:700,color:p.c}}>{p.n}</span>
+                <span key={p.n} style={{background:'rgba(255,255,255,.8)',border:`1.5px solid ${p.c}`,borderRadius:8,padding:'7px 14px',fontSize:12,fontWeight:700,color:p.c}}>{p.n}</span>
               ))}
             </div>
           </div>
-
         </div>
       </section>
 
