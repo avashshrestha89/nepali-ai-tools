@@ -115,6 +115,7 @@ export default function Landing() {
   return (
     <>
       <Head>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>Swor AI — नेपाली AI Voice & Subtitle Generator</title>
         <meta name="description" content="Nepal's most realistic AI Nepali voice generator and subtitle tool. Generate natural Nepali voiceovers and subtitles in seconds." />
         <meta name="keywords" content="Nepali AI voice generator, नेपाली voiceover, Nepali subtitle generator, AI Nepali text to speech, Swor AI" />
