@@ -100,10 +100,13 @@ export default function Landing() {
     e.preventDefault()
     setStatus('loading')
     try {
+      const formData = new FormData(e.target)
+      const data = Object.fromEntries(formData.entries())
+      data.email = email
       const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify(data),
       })
       setStatus(res.ok ? 'success' : 'error')
     } catch { setStatus('error') }
@@ -744,35 +747,135 @@ export default function Landing() {
       </section>
 
 
-      {/* ══ EMAIL FORM ══ */}
-      <section id="access" style={{padding:'100px 48px',background:'linear-gradient(160deg,#1d1d1f 0%,#2d1020 100%)',position:'relative',overflow:'hidden'}}>
+      {/* ══ APPLICATION FORM ══ */}
+      <section id="access" style={{padding:isMobile?'60px 16px':'100px 48px',background:'linear-gradient(160deg,#1d1d1f 0%,#2d1020 100%)',position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',top:'-20%',right:'-5%',width:500,height:500,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.1) 0%,transparent 70%)',pointerEvents:'none'}} />
-        <div style={{maxWidth:540,margin:'0 auto',textAlign:'center',position:'relative',zIndex:1}}>
-          <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(220,20,60,.15)',border:'1px solid rgba(220,20,60,.3)',borderRadius:24,padding:'5px 14px',fontSize:12,fontWeight:700,color:'#FF6B8A',marginBottom:24}}>
-            🔥 20 spots — apply now
+        <div style={{maxWidth:600,margin:'0 auto',position:'relative',zIndex:1}}>
+          <div style={{textAlign:'center',marginBottom:40}}>
+            <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(220,20,60,.15)',border:'1px solid rgba(220,20,60,.3)',borderRadius:24,padding:'5px 14px',fontSize:12,fontWeight:700,color:'#FF6B8A',marginBottom:24}}>
+              🔥 20 beta spots — apply now
+            </div>
+            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(26px,4vw,42px)',fontWeight:800,color:'#fff',letterSpacing:'-1px',marginBottom:14}}>
+              Apply for free beta access.
+            </h2>
+            <p style={{fontSize:15,color:'rgba(255,255,255,.5)',lineHeight:1.7}}>
+              Tell us a little about yourself — we review every application personally.
+            </p>
           </div>
-          <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(28px,4vw,46px)',fontWeight:800,color:'#fff',letterSpacing:'-1px',marginBottom:14}}>
-            Get your free access.
-          </h2>
-          <p style={{fontSize:16,color:'rgba(255,255,255,.5)',marginBottom:40,lineHeight:1.7}}>
-            Enter your email. We'll send a private access link within 24 hours.
-          </p>
+
           {status==='success' ? (
-            <div style={{background:'rgba(52,199,89,.08)',border:'1.5px solid rgba(52,199,89,.25)',borderRadius:20,padding:'48px 32px'}}>
+            <div style={{background:'rgba(52,199,89,.08)',border:'1.5px solid rgba(52,199,89,.25)',borderRadius:20,padding:'48px 32px',textAlign:'center'}}>
               <div style={{fontSize:44,marginBottom:16}}>🙏</div>
-              <div style={{fontFamily:'Sora,sans-serif',fontSize:22,fontWeight:700,color:'#fff',marginBottom:10}}>You're on the list!</div>
-              <div style={{fontSize:14,color:'rgba(255,255,255,.5)',lineHeight:1.7}}>Check your email within 24 hours for your private access link.</div>
+              <div style={{fontFamily:'Sora,sans-serif',fontSize:22,fontWeight:700,color:'#fff',marginBottom:10}}>Application received!</div>
+              <div style={{fontSize:14,color:'rgba(255,255,255,.5)',lineHeight:1.7}}>We review every application personally. Expect a reply within 24 hours.</div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit}>
-              <div style={{display:'flex',gap:10,marginBottom:12,flexWrap:'wrap'}}>
-                <input type="email" placeholder="your@email.com" required value={email} onChange={e=>setEmail(e.target.value)} className="email-input" style={{flex:1,minWidth:220}} />
-                <button type="submit" disabled={status==='loading'} className="btn-primary" style={{whiteSpace:'nowrap',opacity:status==='loading'?.7:1}}>
-                  {status==='loading'?'Sending...':'Get free access →'}
-                </button>
+            <form onSubmit={handleSubmit} style={{display:'flex',flexDirection:'column',gap:14}}>
+
+              {/* Row 1: Name + Email */}
+              <div style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:12}}>
+                <div>
+                  <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:6}}>Full Name *</label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Sita Sharma"
+                    required
+                    style={{width:'100%',padding:'13px 16px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'rgba(255,255,255,.06)',color:'#fff',fontSize:14,outline:'none',fontFamily:'inherit'}}
+                  />
+                </div>
+                <div>
+                  <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:6}}>Email *</label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    required
+                    value={email}
+                    onChange={e=>setEmail(e.target.value)}
+                    style={{width:'100%',padding:'13px 16px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'rgba(255,255,255,.06)',color:'#fff',fontSize:14,outline:'none',fontFamily:'inherit'}}
+                  />
+                </div>
               </div>
-              {status==='error'&&<p style={{fontSize:13,color:'#FF6B8A'}}>Something went wrong. Email meroadaiofficial@gmail.com</p>}
-              <p style={{fontSize:12,color:'rgba(255,255,255,.25)',marginTop:12}}>No spam. No credit card. Cancel anytime.</p>
+
+              {/* Row 2: Channel/Company */}
+              <div>
+                <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:6}}>TikTok / YouTube / Company Name</label>
+                <input
+                  type="text"
+                  name="channel_or_company"
+                  placeholder="@yourchannel or Company Pvt Ltd"
+                  style={{width:'100%',padding:'13px 16px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'rgba(255,255,255,.06)',color:'#fff',fontSize:14,outline:'none',fontFamily:'inherit'}}
+                />
+              </div>
+
+              {/* Row 3: Content Type */}
+              <div>
+                <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:8}}>What do you create? *</label>
+                <select
+                  name="content_type"
+                  required
+                  style={{width:'100%',padding:'13px 16px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'#2a1a2a',color:'#fff',fontSize:14,outline:'none',fontFamily:'inherit',cursor:'pointer'}}
+                >
+                  <option value="">Select your content type...</option>
+                  <option value="tiktok_reels">TikTok / Instagram Reels creator</option>
+                  <option value="youtube">YouTube creator</option>
+                  <option value="business_ads">Business owner (product/service ads)</option>
+                  <option value="agency">Agency / Production house</option>
+                  <option value="ngo_org">NGO / Organization</option>
+                  <option value="music">Music / Podcast creator</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              {/* Row 4: How did you hear */}
+              <div>
+                <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:8}}>How did you hear about Swor AI?</label>
+                <select
+                  name="source"
+                  style={{width:'100%',padding:'13px 16px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'#2a1a2a',color:'#fff',fontSize:14,outline:'none',fontFamily:'inherit',cursor:'pointer'}}
+                >
+                  <option value="">Select...</option>
+                  <option value="tiktok">TikTok (@seemaandgeetatwins)</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="linkedin">LinkedIn</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="friend">Friend / Word of mouth</option>
+                  <option value="google">Google Search</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              {/* Row 5: Why do you want access */}
+              <div>
+                <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:6}}>Why do you want beta access? *</label>
+                <textarea
+                  name="reason"
+                  required
+                  placeholder="Tell us what you plan to create with Swor AI (2-3 sentences)..."
+                  style={{width:'100%',minHeight:90,padding:'13px 16px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'rgba(255,255,255,.06)',color:'#fff',fontSize:14,outline:'none',fontFamily:'inherit',resize:'vertical',lineHeight:1.6}}
+                />
+              </div>
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={status==='loading'}
+                className="btn-primary"
+                style={{width:'100%',padding:'15px',fontSize:16,opacity:status==='loading'?.7:1,marginTop:4}}
+              >
+                {status==='loading'?'Submitting...':'Apply for free beta access →'}
+              </button>
+
+              {status==='error'&&(
+                <p style={{fontSize:13,color:'#FF6B8A',textAlign:'center'}}>
+                  Something went wrong. Email us at meroadaiofficial@gmail.com
+                </p>
+              )}
+
+              <p style={{fontSize:12,color:'rgba(255,255,255,.2)',textAlign:'center',marginTop:4}}>
+                No spam. No credit card. We review every application personally.
+              </p>
             </form>
           )}
         </div>
