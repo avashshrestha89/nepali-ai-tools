@@ -601,18 +601,18 @@ export default function Landing() {
                 <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(22px,3vw,34px)',fontWeight:800,color:'#fff',letterSpacing:'-0.5px',marginBottom:6}}>
                   Founders' Lifetime Pack
                 </div>
-                <div style={{fontSize:14,fontWeight:700,color:'rgba(0,0,0,.6)',lineHeight:1.6,maxWidth:480,marginBottom:16}}>
+             <div style={{fontSize:14,fontWeight:700,color:'rgba(255,255,255,.9)',lineHeight:1.6,maxWidth:480,marginBottom:0}}>
                   500 viral videos in your pocket. Launch your next year of content without a single monthly bill or studio fee.
                 </div>
-                <div style={{display:'flex',gap:16,flexWrap:'wrap'}}>
+              </div>
+         <div style={{textAlign:'center',flexShrink:0,minWidth:240}}>
+                <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:20,textAlign:'left'}}>
                   {['12,500 Swor Credits (Lifetime Pool)','500 bonus credits every month forever','Unlimited subtitles forever','Credits never expire','Founders status — forever'].map(f=>(
-                    <div key={f} style={{display:'flex',alignItems:'center',gap:6,fontSize:13,fontWeight:600,color:'rgba(0,0,0,.75)'}}>
-                      <span style={{color:'#34C759',fontWeight:700}}>✓</span> {f}
+                    <div key={f} style={{display:'flex',alignItems:'center',gap:8,fontSize:13,fontWeight:700,color:'#fff'}}>
+                      <span style={{color:'#34C759',fontWeight:800,fontSize:15}}>✓</span> {f}
                     </div>
                   ))}
                 </div>
-              </div>
-              <div style={{textAlign:'center',flexShrink:0}}>
                 <div style={{fontSize:14,fontWeight:700,color:'rgba(0,0,0,.4)',marginBottom:4,textDecoration:'line-through'}}>NPR 5,000</div>
                 <div style={{fontFamily:'Sora,sans-serif',fontSize:44,fontWeight:800,color:'#fff',lineHeight:1}}>NPR 2,500</div>
                 <div style={{fontSize:15,fontWeight:700,color:'rgba(0,0,0,.55)',marginBottom:20}}>$19.99 USD</div>
