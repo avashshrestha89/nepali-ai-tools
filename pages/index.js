@@ -636,8 +636,6 @@ export default function Landing() {
                hook:'Your next 2 weeks of video content, sorted. Launch your new channel idea this weekend.'},
               {key:'creator',name:'Creator Value Pack',credits:1100,bonus:'+10% bonus',npr:999,usd:12.99,popular:true,voice:44,music:11,
                hook:'Go daily for a full month. Build your audience with consistent uploads without touching a microphone.'},
-              {key:'pro',name:'Pro Studio Pack',credits:3000,bonus:'+20% bonus',npr:2499,usd:29.99,popular:false,voice:120,music:30,
-               hook:'A full year of professional content. For agencies, brands, and serious creators.'},
             ].map(p=>(
               <div key={p.key} style={{background:'#fff',borderRadius:20,padding:'28px 24px',border:p.popular?'2px solid #DC143C':'1.5px solid #e8e8ed',position:'relative',boxShadow:p.popular?'0 8px 32px rgba(220,20,60,.1)':'none'}}>
                 {p.popular&&<div style={{position:'absolute',top:-14,left:'50%',transform:'translateX(-50%)',background:'#DC143C',color:'#fff',fontSize:11,fontWeight:700,padding:'5px 16px',borderRadius:20,whiteSpace:'nowrap',letterSpacing:'0.06em'}}>★ MOST POPULAR</div>}
