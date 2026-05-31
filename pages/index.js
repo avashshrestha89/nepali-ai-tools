@@ -39,11 +39,19 @@ export default function Landing() {
   const [filter, setFilter] = useState('all')
   const [playingId, setPlayingId] = useState(null)
   const audioRef = useRef(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   useEffect(() => {
@@ -104,8 +112,7 @@ export default function Landing() {
   return (
     <>
       <Head>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-<title>Swor AI — नेपाली AI Voice & Subtitle Generator</title>
+        <title>Swor AI — नेपाली AI Voice & Subtitle Generator</title>
         <meta name="description" content="Nepal's most realistic AI Nepali voice generator and subtitle tool. Generate natural Nepali voiceovers and subtitles in seconds." />
         <meta name="keywords" content="Nepali AI voice generator, नेपाली voiceover, Nepali subtitle generator, AI Nepali text to speech, Swor AI" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -167,24 +174,6 @@ export default function Landing() {
         .email-input::placeholder{color:rgba(255,255,255,.35)}
         .feature-card{background:#f8f8f8;border-radius:20px;padding:32px 28px;transition:all .25s}
         .feature-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
-@media(max-width:768px){
-  html,body,section{overflow-x:hidden!important;max-width:100vw!important}
-  .hero-section{padding:80px 16px 40px!important}
-  .hero-grid{grid-template-columns:1fr!important;gap:24px!important;width:100%!important;overflow:hidden!important}
-  .hero-grid > div{max-width:100%!important;overflow:hidden!important;width:100%!important}
-  .hero-voices-grid{grid-template-columns:1fr 1fr!important;width:100%!important;overflow:hidden!important;gap:8px!important}
-  .hero-voice-card{width:100%!important;min-width:0!important;padding:10px!important}
-  .hero-voice-card img{width:44px!important;height:44px!important}
-  .mid-strip{flex-direction:column!important;text-align:center!important;gap:8px!important;padding:20px 16px!important}
-  .seema-grid{grid-template-columns:1fr!important;gap:32px!important}
-  .swor-brand{font-size:clamp(32px,9vw,64px)!important}
-  h1{font-size:18px!important;line-height:1.15!important;letter-spacing:-0.5px!important}
-  .fu1{font-size:10px!important;letter-spacing:0!important}
-  .pricing-grid{grid-template-columns:1fr!important}
-  #pricing{padding:60px 16px!important}
-  .founders-card{flex-direction:column!important;text-align:center!important}
-  .founders-card > div{min-width:unset!important;width:100%!important}
-}
       `}</style>
 
       <div id="gt_element" />
@@ -211,7 +200,7 @@ export default function Landing() {
       </nav>
 
       {/* ══ HERO ══ */}
-      <section className="hero-section" style={{minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',padding:'90px 48px 60px',background:'linear-gradient(160deg,#fff 0%,#fff5f7 40%,#fff8f0 70%,#fff 100%)',position:'relative',overflow:'hidden'}}>
+      <section style={{minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',padding:isMobile?'80px 16px 40px':'90px 48px 60px',background:'linear-gradient(160deg,#fff 0%,#fff5f7 40%,#fff8f0 70%,#fff 100%)',position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',top:'5%',left:'50%',transform:'translateX(-50%)',width:800,height:800,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.04) 0%,transparent 65%)',pointerEvents:'none'}} />
         <div style={{position:'absolute',top:'20%',right:'5%',width:300,height:300,borderRadius:'50%',background:'radial-gradient(circle,rgba(255,149,0,.05) 0%,transparent 70%)',pointerEvents:'none'}} />
 
@@ -224,16 +213,16 @@ export default function Landing() {
         </div>
 
         {/* Two column layout */}
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:48,alignItems:'center',width:'100%',maxWidth:1100,position:'relative',zIndex:1,marginTop:32}}>
+        <div style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:isMobile?24:48,alignItems:'center',width:'100%',maxWidth:1100,position:'relative',zIndex:1,marginTop:32}}>
 
           {/* LEFT */}
           <div>
-            <div className="fu fu1" style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.02em',marginBottom:18,lineHeight:1.5}}>
+            <div className="fu fu1" style={{fontSize:12,fontWeight:700,color:'#888',letterSpacing:'0.04em',marginBottom:18,lineHeight:1.6}}>
               Nepali AI Voice Generator: Most Realistic{' '}
               <span style={{color:'#DC143C',fontFamily:'Noto Sans Devanagari, sans-serif'}}>नेपाली</span>{' '}
               AI Text to Speech
             </div>
-            <h1 className="fu fu2" style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(16px,3.8vw,50px)',fontWeight:800,lineHeight:1.08,letterSpacing:'-1.2px',marginBottom:20,color:'#1d1d1f'}}>
+            <h1 className="fu fu2" style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?'20px':'clamp(28px,3.8vw,50px)',fontWeight:800,lineHeight:1.15,letterSpacing:'-1.2px',marginBottom:20,color:'#1d1d1f'}}>
               Hyper realistic Nepali AI<br />
               voice generator that{' '}
               <span style={{color:'#DC143C',fontStyle:'italic'}}>captivates</span><br />
@@ -268,15 +257,15 @@ export default function Landing() {
                 ▶ &nbsp;Test Demo Below — Click Any Voice
               </div>
             </div>
-            <div className="hero-voices-grid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:isMobile?6:10,width:'100%'}}>
             {FEATURED_VOICES.map((v,i)=>(
               <div
                 key={v.voice_id}
                 className="hero-voice-card"
                 onClick={()=>playPreview(v.voice_id)}
-                style={{animation:`fadeUp .6s ease ${i*0.08}s both`,padding:'16px 18px'}}
+                style={{animation:`fadeUp .6s ease ${i*0.08}s both`,padding:isMobile?'10px 8px':'16px 18px'}}
               >
-                <div style={{width:64,height:64,borderRadius:14,overflow:'hidden',flexShrink:0,border:'2px solid rgba(220,20,60,.1)'}}>
+                <div style={{width:isMobile?44:64,height:isMobile?44:64,borderRadius:14,overflow:'hidden',flexShrink:0,border:'2px solid rgba(220,20,60,.1)'}}>
                   <img
                     src={v.photo}
                     alt={v.name}
@@ -306,7 +295,7 @@ export default function Landing() {
       </section>
 
       {/* ══ MIDDLE STRIP ══ */}
-      <section style={{background:'#1d1d1f',padding:'28px 48px',textAlign:'center'}}>
+      <section style={{background:'#1d1d1f',padding:isMobile?'20px 16px':'28px 48px',textAlign:'center'}}>
         <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(16px,2vw,24px)',fontWeight:700,color:'#fff',letterSpacing:'-0.3px',marginBottom:8}}>
           Start saving <span style={{color:'#FF6B8A'}}>90%</span> of your time and budget today!
         </div>
@@ -318,7 +307,7 @@ export default function Landing() {
       </section>
 
       {/* ══ VOICE LIBRARY ══ */}
-      <section style={{padding:'100px 48px',background:'#fff'}}>
+      <section style={{padding:isMobile?'60px 16px':'100px 48px',background:'#fff'}}>
         <div style={{maxWidth:1100,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:48}}>
             <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(26px,3.5vw,44px)',fontWeight:800,letterSpacing:'-1px',marginBottom:14}}>
@@ -431,7 +420,7 @@ export default function Landing() {
 
       {/* ══ MEROAD AI SECTION ══ */}
       {/* PASTE THIS DIRECTLY ABOVE THE SEEMA & GEETA SECTION */}
-      <section style={{padding:'100px 48px',background:'#0E0E16',position:'relative',overflow:'hidden'}}>
+      <section style={{padding:isMobile?'60px 16px':'100px 48px',background:'#0E0E16',position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',top:'10%',left:'50%',transform:'translateX(-50%)',width:800,height:800,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.06) 0%,transparent 65%)',pointerEvents:'none'}} />
 
         <div style={{maxWidth:1100,margin:'0 auto',position:'relative',zIndex:1}}>
@@ -538,7 +527,7 @@ export default function Landing() {
 
       {/* ══ SEEMA & GEETA PROOF ══ */}
       <section style={{padding:'100px 48px',background:'#fff'}}>
-        <div style={{maxWidth:1100,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:64,alignItems:'center'}}>
+        <div style={{maxWidth:1100,margin:'0 auto',display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:isMobile?32:64,alignItems:'center'}}>
           <div>
             <div style={{fontSize:12,fontWeight:700,color:'#DC143C',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:16}}>Built by creators, for creators</div>
             <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(24px,3vw,40px)',fontWeight:800,letterSpacing:'-0.8px',marginBottom:20,lineHeight:1.15}}>
@@ -550,7 +539,7 @@ export default function Landing() {
               We didn't build Swor for someone else's problem. We built it because we needed it ourselves, and now we're sharing it with every Nepali creator.
             </p>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:36}}>
-              {[['51M+','Video views'],['85K+','Followers'],['1.6M+','Total likes'],['80K+','Shares']].map(([n,l])=>(
+              {[['54M+','Video views'],['91K+','Followers'],['1.6M+','Total likes'],['80K+','Shares']].map(([n,l])=>(
                 <div key={n} style={{background:'#f5f5f7',borderRadius:14,padding:'18px 16px'}}>
                   <div style={{fontFamily:'Sora,sans-serif',fontSize:26,fontWeight:800,color:'#1d1d1f',marginBottom:4}}>{n}</div>
                   <div style={{fontSize:12,color:'#999',fontWeight:500}}>{l}</div>
@@ -560,14 +549,14 @@ export default function Landing() {
             <a href="#access"><button className="btn-primary">Get free beta access →</button></a>
           </div>
           <div style={{position:'relative'}}>
-            <div style={{borderRadius:24,overflow:'hidden',boxShadow:'0 24px 60px rgba(0,0,0,.12)'}}>
-              <img src="/seema-geeta.jpg" alt="Seema and Geeta" style={{width:'100%',height:'auto',display:'block'}} />
-              <div style={{position:'absolute',bottom:20,left:20,right:20,background:'rgba(255,255,255,.92)',backdropFilter:'blur(12px)',borderRadius:12,padding:'12px 16px',display:'flex',alignItems:'center',gap:10}}>
-                <div style={{width:9,height:9,borderRadius:'50%',background:'#34C759',flexShrink:0}} />
-                <div>
-                  <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f'}}>@seemaandgeetatwins</div>
-                  <div style={{fontSize:11,color:'#999'}}>Nepal's first virtual influencer · 51M+ views</div>
-                </div>
+            <div style={{borderRadius:24,overflow:'hidden',boxShadow:'0 24px 60px rgba(0,0,0,.12)',aspectRatio:'9/16',maxWidth:360,margin:'0 auto'}}>
+              <iframe src="https://www.tiktok.com/embed/v2/7625496104615890206" style={{width:'100%',height:'100%',border:'none'}} allowFullScreen allow="encrypted-media" loading="lazy" />
+            </div>
+            <div style={{marginTop:12,background:'#f5f5f7',borderRadius:12,padding:'12px 16px',display:'flex',alignItems:'center',gap:10}}>
+              <div style={{width:9,height:9,borderRadius:'50%',background:'#34C759',flexShrink:0}} />
+              <div>
+                <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f'}}>@seemaandgeetatwins</div>
+                <div style={{fontSize:11,color:'#999'}}>Nepal's first virtual influencer · 54M+ views</div>
               </div>
             </div>
           </div>
@@ -576,7 +565,7 @@ export default function Landing() {
 
 
       {/* ══ PRICING SECTION ══ */}
-      <section id="pricing" style={{padding:'100px 48px',background:'#f5f5f7'}}>
+      <section id="pricing" style={{padding:isMobile?'60px 16px':'100px 48px',background:'#f5f5f7'}}>
         <div style={{maxWidth:1100,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:60}}>
             <div style={{fontSize:12,fontWeight:700,color:'#DC143C',letterSpacing:'0.12em',textTransform:'uppercase',marginBottom:12}}>Simple pricing</div>
@@ -599,27 +588,27 @@ export default function Landing() {
           {/* Founders Deal */}
           <div style={{background:'linear-gradient(135deg,#7A5C08 0%,#C9940A 40%,#92700A 100%)',borderRadius:20,padding:'36px 40px',marginBottom:20,position:'relative',overflow:'hidden',border:'1px solid rgba(255,215,0,.4)',boxShadow:'0 8px 40px rgba(201,148,10,.25)'}}>
             <div style={{position:'absolute',top:'-30%',right:'5%',width:400,height:400,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.1) 0%,transparent 70%)',pointerEvents:'none'}} />
-            <div className="founders-card" style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:24,position:'relative',zIndex:1}}>
+            <div style={{display:'flex',alignItems:isMobile?'flex-start':'center',flexDirection:isMobile?'column':'row',justifyContent:'space-between',flexWrap:'wrap',gap:24,position:'relative',zIndex:1}}>
               <div>
                 <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:12,flexWrap:'wrap'}}>
                   <div style={{background:'#DC143C',color:'#fff',fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:20,letterSpacing:'0.06em'}}>⚡ FOUNDERS' DEAL</div>
-                  <div style={{background:'#fff',color:'#DC143C',fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:20,boxShadow:'0 2px 8px rgba(0,0,0,.15)'}}>⏰ Closes July 31, 2026 — 100 slots only</div>
+                  <div style={{background:'rgba(255,255,255,.1)',color:'rgba(0,0,0,.5)',fontSize:11,fontWeight:600,padding:'4px 12px',borderRadius:20}}>Limited to first 15 buyers</div>
                 </div>
                 <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(22px,3vw,34px)',fontWeight:800,color:'#fff',letterSpacing:'-0.5px',marginBottom:6}}>
                   Founders' Lifetime Pack
                 </div>
-                <div style={{fontSize:14,fontWeight:700,color:'rgba(255,255,255,.9)',lineHeight:1.6,maxWidth:480,marginBottom:16}}>
+                <div style={{fontSize:14,fontWeight:700,color:'rgba(0,0,0,.6)',lineHeight:1.6,maxWidth:480,marginBottom:16}}>
                   500 viral videos in your pocket. Launch your next year of content without a single monthly bill or studio fee.
                 </div>
                 <div style={{display:'flex',gap:16,flexWrap:'wrap'}}>
                   {['500 voiceover generations','5 music tracks free every month','Unlimited subtitles forever','Credits never expire','Founders status — forever'].map(f=>(
-                    <div key={f} style={{display:'flex',alignItems:'center',gap:6,fontSize:13,fontWeight:600,color:'#fff'}}>
+                    <div key={f} style={{display:'flex',alignItems:'center',gap:6,fontSize:13,fontWeight:600,color:'rgba(0,0,0,.75)'}}>
                       <span style={{color:'#34C759',fontWeight:700}}>✓</span> {f}
                     </div>
                   ))}
                 </div>
               </div>
-              <div style={{textAlign:'center',flexShrink:0,minWidth:240}}>
+              <div style={{textAlign:'center',flexShrink:0}}>
                 <div style={{fontSize:14,fontWeight:700,color:'rgba(0,0,0,.4)',marginBottom:4,textDecoration:'line-through'}}>NPR 5,000</div>
                 <div style={{fontFamily:'Sora,sans-serif',fontSize:44,fontWeight:800,color:'#fff',lineHeight:1}}>NPR 2,500</div>
                 <div style={{fontSize:15,fontWeight:700,color:'rgba(0,0,0,.55)',marginBottom:20}}>$19.99 USD</div>
@@ -638,13 +627,14 @@ export default function Landing() {
           </div>
 
           {/* Credit Packs Grid */}
-          <div className="pricing-grid" style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:16,marginBottom:20}}>
+          <div style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'repeat(auto-fit,minmax(280px,1fr))',gap:16,marginBottom:20}}>
             {[
               {key:'starter',name:'Starter Pack',credits:500,bonus:'',npr:499,usd:4.99,popular:false,voice:20,music:5,
                hook:'Your next 2 weeks of video content, sorted. Launch your new channel idea this weekend.'},
               {key:'creator',name:'Creator Value Pack',credits:1100,bonus:'+10% bonus',npr:999,usd:12.99,popular:true,voice:44,music:11,
                hook:'Go daily for a full month. Build your audience with consistent uploads without touching a microphone.'},
-             
+              {key:'pro',name:'Pro Studio Pack',credits:3000,bonus:'+20% bonus',npr:2499,usd:29.99,popular:false,voice:120,music:30,
+               hook:'A full year of professional content. For agencies, brands, and serious creators.'},
             ].map(p=>(
               <div key={p.key} style={{background:'#fff',borderRadius:20,padding:'28px 24px',border:p.popular?'2px solid #DC143C':'1.5px solid #e8e8ed',position:'relative',boxShadow:p.popular?'0 8px 32px rgba(220,20,60,.1)':'none'}}>
                 {p.popular&&<div style={{position:'absolute',top:-14,left:'50%',transform:'translateX(-50%)',background:'#DC143C',color:'#fff',fontSize:11,fontWeight:700,padding:'5px 16px',borderRadius:20,whiteSpace:'nowrap',letterSpacing:'0.06em'}}>★ MOST POPULAR</div>}
