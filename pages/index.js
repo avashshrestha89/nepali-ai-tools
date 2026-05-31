@@ -239,13 +239,13 @@ export default function Landing() {
               Swor AI does it in seconds.
             </p>
             {/* Music announcement */}
-            <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'linear-gradient(135deg,rgba(107,63,190,.1),rgba(220,20,60,.08))',border:'1px solid rgba(107,63,190,.25)',borderRadius:12,padding:'10px 16px',marginBottom:20,flexWrap:'wrap'}}>
-              <span style={{fontSize:16}}>🎵</span>
-              <div>
-                <div style={{fontSize:13,fontWeight:700,color:'#6B3FBE'}}>Now also: Generate original Nepali music</div>
-                <div style={{fontSize:11,color:'#888',marginTop:1}}>Type a prompt. Get a royalty-free Nepali song in seconds.</div>
+          <div style={{display:'flex',alignItems:'center',gap:12,background:'linear-gradient(135deg,#5B2D9E,#7B3FBE)',border:'1px solid rgba(107,63,190,.4)',borderRadius:14,padding:'14px 20px',marginBottom:20,flexWrap:'wrap',boxShadow:'0 4px 20px rgba(107,63,190,.25)'}}>
+              <span style={{fontSize:22,flexShrink:0}}>🎵</span>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:isMobile?13:15,fontWeight:800,color:'#fff',letterSpacing:'-0.3px'}}>Now also: Generate original Nepali music</div>
+                <div style={{fontSize:isMobile?12:14,color:'rgba(255,255,255,.8)',marginTop:3,fontWeight:500}}>Type a prompt. Get a royalty-free Nepali song in seconds.</div>
               </div>
-              <Link href="/tool"><button style={{background:'#6B3FBE',color:'#fff',border:'none',padding:'6px 14px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer',flexShrink:0}}>Try Free Music →</button></Link>
+              <Link href="/tool"><button style={{background:'#fff',color:'#6B3FBE',border:'none',padding:'8px 16px',borderRadius:8,fontSize:13,fontWeight:800,cursor:'pointer',flexShrink:0,whiteSpace:'nowrap'}}>Try Free Music →</button></Link>
             </div>
             <div className="fu fu4" style={{display:'flex',gap:12,flexWrap:'wrap',marginBottom:20}}>
               <a href="#access"><button className="btn-primary">Get free access</button></a>
