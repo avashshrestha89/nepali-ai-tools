@@ -222,9 +222,9 @@ export default function Landing() {
           {/* LEFT */}
           <div>
             <div className="fu fu1" style={{fontSize:12,fontWeight:700,color:'#888',letterSpacing:'0.04em',marginBottom:18,lineHeight:1.6}}>
-              Nepali AI Voice Generator: Most Realistic{' '}
+             Nepal's #1 Nepali Text to Speech &{' '}
               <span style={{color:'#DC143C',fontFamily:'Noto Sans Devanagari, sans-serif'}}>नेपाली</span>{' '}
-              AI Text to Speech
+              AI Voiceover Generator
             </div>
             <h1 className="fu fu2" style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?'20px':'clamp(28px,3.8vw,50px)',fontWeight:800,lineHeight:1.15,letterSpacing:'-1.2px',marginBottom:20,color:'#1d1d1f'}}>
               Hyper realistic Nepali AI<br />
@@ -245,7 +245,7 @@ export default function Landing() {
                 <div style={{fontSize:13,fontWeight:700,color:'#6B3FBE'}}>Now also: Generate original Nepali music</div>
                 <div style={{fontSize:11,color:'#888',marginTop:1}}>Type a prompt. Get a royalty-free Nepali song in seconds.</div>
               </div>
-              <Link href="/tool"><button style={{background:'#6B3FBE',color:'#fff',border:'none',padding:'6px 14px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer',flexShrink:0}}>Try Music →</button></Link>
+              <Link href="/tool"><button style={{background:'#6B3FBE',color:'#fff',border:'none',padding:'6px 14px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer',flexShrink:0}}>Try Free Music →</button></Link>
             </div>
             <div className="fu fu4" style={{display:'flex',gap:12,flexWrap:'wrap',marginBottom:20}}>
               <a href="#access"><button className="btn-primary">Get free access</button></a>
@@ -477,7 +477,7 @@ export default function Landing() {
 
             {/* CTA */}
             <div>
-              <a href="https://wa.me/9779851405178?text=Hi! I want to get my free 20-second AI demo video for my business from MeroAD.ai"
+              <a href="#pricing"
                 target="_blank" rel="noreferrer"
                 style={{display:'inline-block',background:'linear-gradient(135deg,#DC143C,#FF3366)',color:'#fff',padding:'16px 36px',borderRadius:14,fontSize:15,fontWeight:700,textDecoration:'none',boxShadow:'0 8px 32px rgba(220,20,60,.3)',fontFamily:'Sora,sans-serif',letterSpacing:'-0.2px'}}>
                 Cut Your Production Costs Today →
@@ -605,7 +605,7 @@ export default function Landing() {
                   500 viral videos in your pocket. Launch your next year of content without a single monthly bill or studio fee.
                 </div>
                 <div style={{display:'flex',gap:16,flexWrap:'wrap'}}>
-                  {['500 voiceover generations','5 music tracks free every month','Unlimited subtitles forever','Credits never expire','Founders status — forever'].map(f=>(
+                  {['12,500 Swor Credits (Lifetime Pool)','500 bonus credits every month forever','Unlimited subtitles forever','Credits never expire','Founders status — forever'].map(f=>(
                     <div key={f} style={{display:'flex',alignItems:'center',gap:6,fontSize:13,fontWeight:600,color:'rgba(0,0,0,.75)'}}>
                       <span style={{color:'#34C759',fontWeight:700}}>✓</span> {f}
                     </div>
