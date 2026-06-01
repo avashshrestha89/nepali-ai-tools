@@ -21,7 +21,7 @@ export default function AdminBalance() {
     e.preventDefault()
     setStatus('loading'); setResult(null)
     try {
-      const res = await fetch('/api/auth/add-balance', {
+      const res = await fetch('/api/add-balance', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, pack, customCredits: custom, adminPassword: password }),
