@@ -43,7 +43,7 @@ export default async function handler(req, res) {
     const magicLink = `${process.env.NEXT_PUBLIC_BASE_URL}/verify?token=${token}`
 
     await resend.emails.send({
-      from: 'Swor AI <onboarding@resend.dev>',
+      from: 'Swor AI <hello@meroadai.com>',
       to: email,
       subject: 'Your Swor AI access link',
       html: `
