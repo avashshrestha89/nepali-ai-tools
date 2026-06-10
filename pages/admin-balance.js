@@ -21,6 +21,11 @@ export default function AdminBalance() {
   const [checkStatus, setCheckStatus] = useState('idle')
   const [checkResult, setCheckResult] = useState(null)
 
+  // Generate API key
+  const [keyEmail, setKeyEmail] = useState('')
+  const [keyStatus, setKeyStatus] = useState('idle')
+  const [keyResult, setKeyResult] = useState(null)
+
   async function handleSubmit(e) {
     e.preventDefault()
     setStatus('loading'); setResult(null)
@@ -50,6 +55,21 @@ export default function AdminBalance() {
       setCheckResult(res.ok ? { success: true, ...data } : { success: false, error: data.error })
     } catch (err) { setCheckResult({ success: false, error: err.message }) }
     setCheckStatus('idle')
+  }
+
+  async function handleGenerateKey(e) {
+    e.preventDefault()
+    setKeyStatus('loading'); setKeyResult(null)
+    try {
+      const res = await fetch('/api/generate-api-key', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: keyEmail, adminPassword: password }),
+      })
+      const data = await res.json()
+      setKeyResult(res.ok ? { success: true, ...data } : { success: false, error: data.error })
+    } catch (err) { setKeyResult({ success: false, error: err.message }) }
+    setKeyStatus('idle')
   }
 
   const inputStyle = {width:'100%',padding:'11px 14px',borderRadius:10,border:'1.5px solid #E0DDD7',fontSize:14,outline:'none',fontFamily:'inherit'}
@@ -159,6 +179,50 @@ export default function AdminBalance() {
               </div>
             ):(
               <div style={{fontSize:13,color:'#CC3333'}}>❌ {checkResult.error}</div>
+            )}
+          </div>
+        )}
+      </div>
+      {/* ── GENERATE API KEY ── */}
+      <div style={{background:'#fff',borderRadius:20,padding:'36px 32px',width:'100%',maxWidth:440,boxShadow:'0 24px 60px rgba(0,0,0,.3)'}}>
+        <div style={{textAlign:'center',marginBottom:28}}>
+          <div style={{fontSize:22,fontWeight:800,background:'linear-gradient(135deg,#1A9E6A,#34C759)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',letterSpacing:'2px',marginBottom:4}}>SWOR AI</div>
+          <div style={{fontSize:13,color:'#999'}}>Admin — Generate API Key</div>
+        </div>
+        <form onSubmit={handleGenerateKey} style={{display:'flex',flexDirection:'column',gap:12}}>
+          <div>
+            <label style={labelStyle}>Admin Password</label>
+            <input type="password" placeholder="Enter password" required value={password} onChange={e=>setPassword(e.target.value)} style={inputStyle}/>
+          </div>
+          <div>
+            <label style={labelStyle}>Customer Email</label>
+            <input type="email" placeholder="customer@email.com" required value={keyEmail} onChange={e=>setKeyEmail(e.target.value)} style={inputStyle}/>
+          </div>
+          <div style={{background:'#F0FAF5',border:'1px solid rgba(26,158,106,.15)',borderRadius:10,padding:'10px 14px',fontSize:12,color:'#555'}}>
+            <strong style={{color:'#1A9E6A'}}>API costs:</strong> Same credits system · 25 cr per voiceover · Rate limit: 10 req/min
+          </div>
+          <button type="submit" disabled={keyStatus==='loading'}
+            style={{background:keyStatus==='loading'?'#ccc':'#1A9E6A',color:'#fff',border:'none',padding:'13px',borderRadius:10,fontSize:15,fontWeight:700,cursor:keyStatus==='loading'?'not-allowed':'pointer',marginTop:4}}>
+            {keyStatus==='loading'?'Generating...':'Generate API Key →'}
+          </button>
+        </form>
+        {keyResult&&(
+          <div style={{marginTop:14,padding:'16px',borderRadius:10,background:keyResult.success?'#F0FAF5':'#FFF0F0',border:`1px solid ${keyResult.success?'#1A9E6A':'#FFB8B8'}`}}>
+            {keyResult.success?(
+              <div style={{fontSize:13,lineHeight:1.8}}>
+                <div style={{fontWeight:700,color:'#1A9E6A',marginBottom:8}}>✅ API Key Generated!</div>
+                <div style={{background:'#1d1d1f',borderRadius:8,padding:'10px 12px',marginBottom:8,wordBreak:'break-all'}}>
+                  <div style={{fontSize:10,color:'#888',marginBottom:4,fontWeight:600}}>API KEY — SEND THIS VIA WHATSAPP:</div>
+                  <div style={{fontSize:12,color:'#34C759',fontWeight:700,fontFamily:'monospace'}}>{keyResult.api_key}</div>
+                </div>
+                <div style={{fontSize:11,color:'#888',lineHeight:1.7}}>
+                  <div><strong>Endpoint:</strong> POST /api/v1/voiceover</div>
+                  <div><strong>Header:</strong> x-swor-api-key: {keyResult.api_key}</div>
+                  <div><strong>Credits check:</strong> GET /api/v1/credits</div>
+                </div>
+              </div>
+            ):(
+              <div style={{fontSize:13,color:'#CC3333'}}>❌ {keyResult.error}</div>
             )}
           </div>
         )}
