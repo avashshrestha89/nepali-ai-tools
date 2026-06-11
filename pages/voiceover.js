@@ -253,7 +253,6 @@ export default function Voiceover() {
   </div>
 )}
 <button onClick={handleGenerate} disabled={!canGenerate}
-          <button onClick={handleGenerate} disabled={!canGenerate}
             style={{width:'100%',padding:'14px',borderRadius:12,border:'none',
               background:canGenerate?'#1976D2':'#ccc',
               color:'#fff',fontSize:15,fontWeight:700,cursor:canGenerate?'pointer':'not-allowed',
