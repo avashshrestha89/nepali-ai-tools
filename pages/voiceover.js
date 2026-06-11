@@ -249,7 +249,17 @@ export default function Voiceover() {
           {/* Generate button */}
 {text.length > 0 && /^[a-zA-Z\s.,!?]+$/.test(text) && (
   <div style={{background:'#FFF8F0',border:'1px solid rgba(255,149,0,.3)',borderRadius:10,padding:'10px 14px',marginBottom:10,fontSize:13,color:'#B45309',fontWeight:500}}>
-    ⚠️ Devanagari script मा लेख्नुस् — "namaste" होइन "नमस्ते"
+   ⚠️ Devanagari script मा लेख्नुस् — "namaste" होइन "नमस्ते"
+                    <div style={{display:'flex',flexDirection:'column',gap:5,marginTop:8}}>
+                      <div style={{display:'flex',alignItems:'center',gap:8,fontSize:12}}>
+                        <span style={{color:'#34C759',fontWeight:700,fontSize:14}}>✓</span>
+                        <span style={{fontFamily:'Noto Sans Devanagari,sans-serif',color:'#34C759',fontWeight:600}}>नमस्ते! आज हामी एउटा नयाँ उत्पादन लिएर आएका छौं।</span>
+                      </div>
+                      <div style={{display:'flex',alignItems:'center',gap:8,fontSize:12}}>
+                        <span style={{color:'#DC143C',fontWeight:700,fontSize:14}}>✗</span>
+                        <span style={{color:'#DC143C',fontWeight:600}}>Namaste! Aaja hami euta naya utpadan liera aayeka chhau.</span>
+                      </div>
+                    </div>
   </div>
 )}
 <button onClick={handleGenerate} disabled={!canGenerate}
