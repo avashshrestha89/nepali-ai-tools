@@ -212,11 +212,11 @@ export default function Voiceover() {
             <textarea
               value={text}
               onChange={e => setText(e.target.value.slice(0, CHAR_LIMIT))}
-              placeholder="नमस्ते! यहाँ आफ्नो नेपाली पाठ टाइप गर्नुस्..."
+              placeholder="नमस्ते! यहाँ आफ्नो नेपाली पाठ टाइप गर्नुस्... (Devanagari script only — देवनागरी मा लेख्नुस्)"
               style={{width:'100%',minHeight:isMobile?160:220,padding:'16px',fontSize:15,lineHeight:1.8,border:'none',background:'transparent',color:'#1d1d1f'}}
             />
             <div style={{padding:'8px 16px',borderTop:'1px solid #f0f0f0',display:'flex',justifyContent:'space-between',alignItems:'center',background:'#fafafa'}}>
-              <span style={{fontSize:12,color:'#888'}}>Nepali (Devanagari) recommended</span>
+              <span style={{fontSize:12,color:'#DC143C',fontWeight:600}}>⚠️ Devanagari script only — type in नेपाली not Roman</span>
               <span style={{fontSize:12,fontWeight:600,color:text.length > CHAR_LIMIT * 0.9 ? '#DC143C' : '#888'}}>{text.length} / {CHAR_LIMIT}</span>
             </div>
           </div>
@@ -247,6 +247,12 @@ export default function Voiceover() {
         <div style={{display:'flex',flexDirection:'column',gap:12}}>
 
           {/* Generate button */}
+{text.length > 0 && /^[a-zA-Z\s.,!?]+$/.test(text) && (
+  <div style={{background:'#FFF8F0',border:'1px solid rgba(255,149,0,.3)',borderRadius:10,padding:'10px 14px',marginBottom:10,fontSize:13,color:'#B45309',fontWeight:500}}>
+    ⚠️ Devanagari script मा लेख्नुस् — "namaste" होइन "नमस्ते"
+  </div>
+)}
+<button onClick={handleGenerate} disabled={!canGenerate}
           <button onClick={handleGenerate} disabled={!canGenerate}
             style={{width:'100%',padding:'14px',borderRadius:12,border:'none',
               background:canGenerate?'#1976D2':'#ccc',
