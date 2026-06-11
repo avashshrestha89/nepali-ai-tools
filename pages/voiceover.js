@@ -304,18 +304,7 @@ export default function Voiceover() {
             </button>
           </div>
 
-          {/* Model info */}
-          <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
-            <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>Model</div>
-            <div style={{display:'flex',alignItems:'center',gap:8}}>
-              <div style={{width:28,height:28,borderRadius:6,background:'linear-gradient(135deg,#DC143C,#FF9500)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:800,color:'#fff'}}>v3</div>
-              <div>
-                <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f'}}>Eleven v3</div>
-                <div style={{fontSize:11,color:'#888'}}>Multilingual, highest quality</div>
-              </div>
-            </div>
-          </div>
-
+      
           {/* Other tools */}
           <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
             <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>Other Tools</div>
