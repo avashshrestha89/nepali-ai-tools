@@ -157,6 +157,30 @@ export default function Voiceover() {
 
         {/* LEFT — TEXT AREA */}
         <div>
+          {session === false && triesLeft > 0 && (
+  <div style={{background:'#E8F4FD',border:'1.5px solid #90CAF9',borderRadius:12,padding:'12px 16px',marginBottom:12,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+    <div>
+      <div style={{fontSize:13,fontWeight:700,color:'#1976D2'}}>🎁 {triesLeft} free {triesLeft === 1 ? 'try' : 'tries'} remaining</div>
+      <div style={{fontSize:11,color:'#888',marginTop:2}}>No signup needed. Try any voice free.</div>
+    </div>
+    <button onClick={() => setShowSignup(true)}
+      style={{background:'#1976D2',color:'#fff',border:'none',padding:'7px 14px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer',flexShrink:0}}>
+      Get more →
+    </button>
+  </div>
+)}
+{session === false && triesLeft === 0 && (
+  <div style={{background:'#FFF0F0',border:'1.5px solid #FFB8B8',borderRadius:12,padding:'12px 16px',marginBottom:12,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+    <div>
+      <div style={{fontSize:13,fontWeight:700,color:'#CC3333'}}>Free tries used up</div>
+      <div style={{fontSize:11,color:'#888',marginTop:2}}>Sign up free to get 10 more generations.</div>
+    </div>
+    <button onClick={() => setShowSignup(true)}
+      style={{background:'#DC143C',color:'#fff',border:'none',padding:'7px 14px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer',flexShrink:0}}>
+      Sign up free →
+    </button>
+  </div>
+)}
           {/* Voice selector pill */}
           <div style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',padding:'12px 16px',marginBottom:12,display:'flex',alignItems:'center',justifyContent:'space-between',cursor:'pointer'}}
             onClick={() => setShowVoicePanel(!showVoicePanel)}>
