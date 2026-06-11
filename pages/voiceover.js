@@ -94,7 +94,7 @@ export default function Voiceover() {
     setLoading(false)
   }
 
-  const canGenerate = text.trim().length > 0 && text.length <= CHAR_LIMIT && !loading
+  const canGenerate = text.trim().length > 0 && text.length <= CHAR_LIMIT && !loading && session !== null
   const filteredVoices = VOICES.filter(v => genderFilter === 'all' || (genderFilter === 'female' ? v.gender === 'F' : v.gender === 'M'))
   const credits = session ? session.credits || 0 : null
   const isAnon = session === false
