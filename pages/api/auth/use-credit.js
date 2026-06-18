@@ -86,29 +86,17 @@ export default async function handler(req, res) {
         return res.status(200).json({ success: true, source: 'free_trial', credits: user.credits || 0 })
       }
 
-      // Founders monthly music bonus
-      if (user.isFounder) {
-        const now = new Date()
-        const resetDate = user.founderMusicResetAt ? new Date(user.founderMusicResetAt) : null
-
-        // Reset monthly counter if new month
-        if (!resetDate || now >= resetDate) {
-          user.founderMusicThisMonth = 5
-          const nextReset = new Date(now.getFullYear(), now.getMonth() + 1, 1)
-          user.founderMusicResetAt = nextReset.toISOString()
-        }
-
-        if (user.founderMusicThisMonth > 0) {
-          user.founderMusicThisMonth -= 1
-          await redis.set(`user:${email}`, JSON.stringify(user))
-          return res.status(200).json({
-            success: true,
-            source: 'founder_bonus',
-            founderMusicRemaining: user.founderMusicThisMonth,
-            credits: user.credits || 0,
-          })
-        }
-      }
+// Founders lifetime music bonus (50 tracks total, never resets)
+if (user.isFounder && user.founderMusicRemaining > 0) {
+  user.founderMusicRemaining -= 1
+  await redis.set(`user:${email}`, JSON.stringify(user))
+  return res.status(200).json({
+    success: true,
+    source: 'founder_bonus',
+    founderMusicRemaining: user.founderMusicRemaining,
+    credits: user.credits || 0,
+  })
+}
 
       // Use paid credits
       const creditCost = getMusicCreditCost(dur)
