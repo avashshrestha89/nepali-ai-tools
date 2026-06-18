@@ -261,12 +261,12 @@ export default function Music() {
             <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>Balance</div>
             {session ? (
               <div>
-                {session.isFounder && session.founderMusicRemaining > 0 ? (
-                  <>
-                    <div style={{fontSize:22,fontWeight:800,color:'#2E7D32',fontFamily:'Sora,sans-serif'}}>{session.founderMusicRemaining}/5</div>
-                    <div style={{fontSize:12,color:'#888',marginTop:2}}>Founders bonus tracks this month</div>
-                  </>
-                ) : (
+          {session.isFounder && session.founderMusicRemaining > 0 ? (
+  <>
+    <div style={{fontSize:22,fontWeight:800,color:'#2E7D32',fontFamily:'Sora,sans-serif'}}>{session.founderMusicRemaining}/50</div>
+    <div style={{fontSize:12,color:'#888',marginTop:2}}>Founders bonus tracks remaining (lifetime)</div>
+  </>
+) : (
                   <>
                     <div style={{fontSize:22,fontWeight:800,color:'#2E7D32',fontFamily:'Sora,sans-serif'}}>{credits}</div>
                     <div style={{fontSize:12,color:'#888',marginTop:2}}>Swor Credits remaining</div>
