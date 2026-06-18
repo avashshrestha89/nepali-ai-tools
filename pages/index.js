@@ -603,12 +603,12 @@ export default function Landing() {
                   Founders' Lifetime Pack
                 </div>
              <div style={{fontSize:14,fontWeight:700,color:'rgba(255,255,255,.9)',lineHeight:1.6,maxWidth:480,marginBottom:0}}>
-                  500 viral videos in your pocket. Launch your next year of content without a single monthly bill or studio fee.
+                  Create fearlessly for a full year. 12,500 voiceovers + 50 soundtracks. No subscriptions. No limits.
                 </div>
               </div>
          <div style={{textAlign:'center',flexShrink:0,minWidth:240}}>
                 <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:20,textAlign:'left'}}>
-                  {['12,500 Swor Credits (Lifetime Pool)','500 bonus credits every month forever','Unlimited subtitles forever','Credits never expire','Founders status — forever'].map(f=>(
+                  {['12,500 Swor Credits (Lifetime Pool)','50 Total AI Music Tracks (Lifetime Balance)','Unlimited subtitles forever','Credits never expire','Founders status — forever'].map(f=>(
                     <div key={f} style={{display:'flex',alignItems:'center',gap:8,fontSize:13,fontWeight:700,color:'#fff'}}>
                       <span style={{color:'#34C759',fontWeight:800,fontSize:15}}>✓</span> {f}
                     </div>
