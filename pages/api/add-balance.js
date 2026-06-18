@@ -48,10 +48,7 @@ export default async function handler(req, res) {
         credits: creditsToAdd,
         musicFreeUsed: false,
         isFounder: isFounderPack,
-        founderMusicThisMonth: isFounderPack ? 5 : 0,
-        founderMusicResetAt: isFounderPack
-          ? new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).toISOString()
-          : null,
+       founderMusicRemaining: isFounderPack ? 50 : 0,
       }
       await redis.set(`user:${email}`, JSON.stringify(newUser))
       return res.status(200).json({
@@ -67,13 +64,10 @@ export default async function handler(req, res) {
     const oldCredits = user.credits || 0
     user.credits = oldCredits + creditsToAdd
 
-    if (isFounderPack) {
-      user.isFounder = true
-      user.founderMusicThisMonth = 5
-      user.founderMusicResetAt = new Date(
-        new Date().getFullYear(), new Date().getMonth() + 1, 1
-      ).toISOString()
-    }
+if (isFounderPack) {
+  user.isFounder = true
+  user.founderMusicRemaining = 50
+}
 
     user.tier = 'paid'
     await redis.set(`user:${email}`, JSON.stringify(user))
