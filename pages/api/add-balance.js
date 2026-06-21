@@ -16,7 +16,8 @@ const PACKS = {
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
-  const { email, pack, customCredits, adminPassword } = req.body
+const { email: rawEmail, pack, customCredits, adminPassword } = req.body
+const email = rawEmail?.trim().toLowerCase()
 
   if (adminPassword !== process.env.ADMIN_PASSWORD) {
     return res.status(401).json({ error: 'Unauthorized' })
