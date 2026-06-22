@@ -803,6 +803,18 @@ export default function Landing() {
                 </div>
               </div>
 
+{/* Row 1.5: Phone */}
+              <div>
+                <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:6}}>Phone / WhatsApp *</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="+977 98XXXXXXXX"
+                  required
+                  style={{width:'100%',padding:'13px 16px',borderRadius:10,border:'1.5px solid rgba(255,255,255,.1)',background:'rgba(255,255,255,.06)',color:'#fff',fontSize:14,outline:'none',fontFamily:'inherit'}}
+                />
+              </div>
+
               {/* Row 2: Channel/Company */}
               <div>
                 <label style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.4)',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:6}}>TikTok / YouTube / Company Name</label>
