@@ -217,7 +217,7 @@ export default function ForBusiness() {
       <section style={{padding:isMobile?'60px 20px':'80px 24px',background:'#fff'}}>
         <div style={{maxWidth:900,margin:'0 auto'}}>
           <h2 style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?'22px':'clamp(22px,3.5vw,36px)',fontWeight:800,textAlign:'center',letterSpacing:'-0.8px',marginBottom:12}}>
-            15 Premium Nepali Voices
+            20 Premium Nepali Voices
           </h2>
           <p style={{textAlign:'center',color:'#6e6e73',fontSize:16,marginBottom:48}}>
             हरेक content type को लागि perfect voice
