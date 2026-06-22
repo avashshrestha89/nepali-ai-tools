@@ -18,6 +18,11 @@ const VOICES = [
   { voice_id: 'g1FVKFidZjHPxXdfA89c', name: 'Vikram', desc: 'Confident & Warm', gender: 'M', color: '#2E7D32' },
   { voice_id: '2W8HrWcBFzCEf5cQQdIL', name: 'Karan', desc: 'Dark Documentary', gender: 'M', color: '#212121' },
   { voice_id: 'rHhok70RpCi5GgianXRA', name: 'Rudra', desc: 'Intense & Romantic', gender: 'M', color: '#880E4F' },
+{ voice_id: '34lPwSZ54D8fWbX1aHzk', name: 'Suraj', desc: 'Upbeat TV & Radio Announcer', gender: 'M', color: '#FFA000' },
+{ voice_id: 'gU0LNdkMOQCOrPrwtbee', name: 'Saurav', desc: 'Sports Commentator', gender: 'M', color: '#B71C1C' },
+{ voice_id: 'BtWabtumIemAotTjP5sk', name: 'Prakash', desc: 'Clear & Professional', gender: 'M', color: '#37474F' },
+{ voice_id: 'e6h2ged6ThVk1jTnIwnC', name: 'Ridhi', desc: 'Elegant Ad Narration', gender: 'F', color: '#00ACC1' },
+{ voice_id: 'm3yAHyFEFKtbCIM5n7GF', name: 'Asha', desc: 'Conversational & Bright', gender: 'F', color: '#D81B60' },
 ]
 
 const ANON_LIMIT = 2
