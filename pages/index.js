@@ -28,7 +28,12 @@ const ALL_VOICES = [
   { voice_id: 'TX3LPaxmHKxFdv7VOQHJ', name: 'Arjun', desc: 'Energetic Reels', color: '#F57C00', initial: 'A', gender: 'male' },
   { voice_id: 'g1FVKFidZjHPxXdfA89c', name: 'Vikram', desc: 'Confident & Warm', color: '#2E7D32', initial: 'V', gender: 'male' },
   { voice_id: '2W8HrWcBFzCEf5cQQdIL', name: 'Karan', desc: 'Dark Documentary', color: '#212121', initial: 'K', gender: 'male' },
-  { voice_id: 'rHhok70RpCi5GgianXRA', name: 'Rudra', desc: 'Intense & Romantic', color: '#880E4F', initial: 'R', gender: 'male' },
+{ voice_id: 'rHhok70RpCi5GgianXRA', name: 'Rudra', desc: 'Intense & Romantic', color: '#880E4F', initial: 'R', gender: 'male' },
+{ voice_id: '34lPwSZ54D8fWbX1aHzk', name: 'Suraj', desc: 'Upbeat TV & Radio Announcer', color: '#FFA000', initial: 'S', gender: 'male' },
+{ voice_id: 'gU0LNdkMOQCOrPrwtbee', name: 'Saurav', desc: 'Sports Commentator', color: '#B71C1C', initial: 'S', gender: 'male' },
+{ voice_id: 'BtWabtumIemAotTjP5sk', name: 'Prakash', desc: 'Clear & Professional', color: '#37474F', initial: 'P', gender: 'male' },
+{ voice_id: 'e6h2ged6ThVk1jTnIwnC', name: 'Ridhi', desc: 'Elegant Ad Narration', color: '#00ACC1', initial: 'R', gender: 'female' },
+{ voice_id: 'm3yAHyFEFKtbCIM5n7GF', name: 'Asha', desc: 'Conversational & Bright', color: '#D81B60', initial: 'A', gender: 'female' },
 ]
 
 export default function Landing() {
@@ -401,7 +406,7 @@ export default function Landing() {
                 </div>
                 <div style={{fontSize:11,color:'#999'}}>नमस्ते! म तपाईँको आवाज हुँ...</div>
               </div>
-              <h3 style={{fontFamily:'Sora,sans-serif',fontSize:20,fontWeight:700,marginBottom:10}}>15 natural Nepali voices</h3>
+              <h3 style={{fontFamily:'Sora,sans-serif',fontSize:20,fontWeight:700,marginBottom:10}}>20 natural Nepali voices</h3>
               <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.7}}>From romantic to documentary — choose the voice that fits your content perfectly.</p>
             </div>
 
