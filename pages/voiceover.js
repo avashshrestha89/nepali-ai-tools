@@ -18,21 +18,18 @@ const VOICES = [
   { voice_id: 'g1FVKFidZjHPxXdfA89c', name: 'Vikram', desc: 'Confident & Warm', gender: 'M', color: '#2E7D32' },
   { voice_id: '2W8HrWcBFzCEf5cQQdIL', name: 'Karan', desc: 'Dark Documentary', gender: 'M', color: '#212121' },
   { voice_id: 'rHhok70RpCi5GgianXRA', name: 'Rudra', desc: 'Intense & Romantic', gender: 'M', color: '#880E4F' },
-{ voice_id: '34lPwSZ54D8fWbX1aHzk', name: 'Suraj', desc: 'Upbeat TV & Radio Announcer', gender: 'M', color: '#FFA000' },
-{ voice_id: 'gU0LNdkMOQCOrPrwtbee', name: 'Saurav', desc: 'Sports Commentator', gender: 'M', color: '#B71C1C' },
-{ voice_id: 'BtWabtumIemAotTjP5sk', name: 'Prakash', desc: 'Clear & Professional', gender: 'M', color: '#37474F' },
-{ voice_id: 'e6h2ged6ThVk1jTnIwnC', name: 'Ridhi', desc: 'Elegant Ad Narration', gender: 'F', color: '#00ACC1' },
-{ voice_id: 'm3yAHyFEFKtbCIM5n7GF', name: 'Asha', desc: 'Conversational & Bright', gender: 'F', color: '#D81B60' },
+  { voice_id: '34lPwSZ54D8fWbX1aHzk', name: 'Suraj', desc: 'Upbeat TV & Radio Announcer', gender: 'M', color: '#FFA000' },
+  { voice_id: 'gU0LNdkMOQCOrPrwtbee', name: 'Saurav', desc: 'Sports Commentator', gender: 'M', color: '#B71C1C' },
+  { voice_id: 'BtWabtumIemAotTjP5sk', name: 'Prakash', desc: 'Clear & Professional', gender: 'M', color: '#37474F' },
+  { voice_id: 'e6h2ged6ThVk1jTnIwnC', name: 'Ridhi', desc: 'Elegant Ad Narration', gender: 'F', color: '#00ACC1' },
+  { voice_id: 'm3yAHyFEFKtbCIM5n7GF', name: 'Asha', desc: 'Conversational & Bright', gender: 'F', color: '#D81B60' },
 ]
 
-const ANON_LIMIT = 2
-const ANON_KEY = 'swor_anon_gens'
 const CHAR_LIMIT = 500
 
 export default function Voiceover() {
   const [isMobile, setIsMobile] = useState(false)
   const [session, setSession] = useState(null)
-  const [anonGens, setAnonGens] = useState(0)
   const [text, setText] = useState('')
   const [selectedVoice, setSelectedVoice] = useState(VOICES[0])
   const [showVoicePanel, setShowVoicePanel] = useState(false)
@@ -54,7 +51,6 @@ export default function Voiceover() {
   }, [])
 
   useEffect(() => {
-    setAnonGens(parseInt(localStorage.getItem(ANON_KEY) || '0'))
     fetch('/api/auth/session').then(r => r.json()).then(d => setSession(d.loggedIn ? d : false)).catch(() => setSession(false))
   }, [])
 
@@ -79,8 +75,7 @@ export default function Voiceover() {
   async function handleGenerate() {
     if (!text.trim()) return
     const isAnon = session === false
-    const isLocked = isAnon && anonGens >= ANON_LIMIT
-    if (isLocked) { setShowSignup(true); return }
+    if (isAnon) { setShowSignup(true); return }
     setLoading(true); setResult(null); setError(null)
     try {
       if (session) {
@@ -88,8 +83,6 @@ export default function Voiceover() {
         const cd = await cr.json()
         if (!cr.ok) throw new Error(cd.error)
         setSession(prev => ({ ...prev, credits: cd.credits }))
-      } else {
-        const n = anonGens + 1; localStorage.setItem(ANON_KEY, String(n)); setAnonGens(n)
       }
       const res = await fetch('/api/voiceover', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voiceId: selectedVoice.voice_id }) })
       if (!res.ok) { const e = await res.json(); throw new Error(e.error) }
@@ -103,14 +96,13 @@ export default function Voiceover() {
   const filteredVoices = VOICES.filter(v => genderFilter === 'all' || (genderFilter === 'female' ? v.gender === 'F' : v.gender === 'M'))
   const credits = session ? session.credits || 0 : null
   const isAnon = session === false
-  const triesLeft = Math.max(0, ANON_LIMIT - anonGens)
 
   return (
     <>
       <Head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>Nepali AI Voiceover Generator — Swor AI</title>
-        <meta name="description" content="Generate realistic Nepali AI voiceovers in seconds. 15 premium voices. Type text, download MP3." />
+        <meta name="description" content="Generate realistic Nepali AI voiceovers in seconds. 20 premium voices. Type text, download MP3." />
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet" />
       </Head>
 
@@ -141,7 +133,6 @@ export default function Voiceover() {
         </div>
         <div style={{display:'flex',alignItems:'center',gap:10}}>
           {session && <div style={{fontSize:13,fontWeight:600,background:'#E8F4FD',color:'#1976D2',padding:'5px 12px',borderRadius:20}}>{credits} credits</div>}
-          {isAnon && <div style={{fontSize:13,color:'#888',background:'#f5f5f7',padding:'5px 12px',borderRadius:20}}>{triesLeft} free tries left</div>}
           {!session && <button onClick={() => setShowSignup(true)} style={{background:'#1976D2',color:'#fff',border:'none',padding:'7px 16px',borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer'}}>Sign in</button>}
         </div>
       </nav>
@@ -162,30 +153,19 @@ export default function Voiceover() {
 
         {/* LEFT — TEXT AREA */}
         <div>
-          {session === false && triesLeft > 0 && (
-  <div style={{background:'#E8F4FD',border:'1.5px solid #90CAF9',borderRadius:12,padding:'12px 16px',marginBottom:12,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <div>
-      <div style={{fontSize:13,fontWeight:700,color:'#1976D2'}}>🎁 {triesLeft} free {triesLeft === 1 ? 'try' : 'tries'} remaining</div>
-      <div style={{fontSize:11,color:'#888',marginTop:2}}>No signup needed. Try any voice free.</div>
-    </div>
-    <button onClick={() => setShowSignup(true)}
-      style={{background:'#1976D2',color:'#fff',border:'none',padding:'7px 14px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer',flexShrink:0}}>
-      Get more →
-    </button>
-  </div>
-)}
-{session === false && triesLeft === 0 && (
-  <div style={{background:'#FFF0F0',border:'1.5px solid #FFB8B8',borderRadius:12,padding:'12px 16px',marginBottom:12,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-    <div>
-      <div style={{fontSize:13,fontWeight:700,color:'#CC3333'}}>Free tries used up</div>
-      <div style={{fontSize:11,color:'#888',marginTop:2}}>Sign up free to get 10 more generations.</div>
-    </div>
-    <button onClick={() => setShowSignup(true)}
-      style={{background:'#DC143C',color:'#fff',border:'none',padding:'7px 14px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer',flexShrink:0}}>
-      Sign up free →
-    </button>
-  </div>
-)}
+          {session === false && (
+            <div style={{background:'#E8F4FD',border:'1.5px solid #90CAF9',borderRadius:12,padding:'12px 16px',marginBottom:12,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+              <div>
+                <div style={{fontSize:13,fontWeight:700,color:'#1976D2'}}>🎙️ Sign in to generate your free voiceover</div>
+                <div style={{fontSize:11,color:'#888',marginTop:2}}>Free to try. No credit card needed.</div>
+              </div>
+              <button onClick={() => setShowSignup(true)}
+                style={{background:'#1976D2',color:'#fff',border:'none',padding:'7px 14px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer',flexShrink:0}}>
+                Sign in free →
+              </button>
+            </div>
+          )}
+
           {/* Voice selector pill */}
           <div style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',padding:'12px 16px',marginBottom:12,display:'flex',alignItems:'center',justifyContent:'space-between',cursor:'pointer'}}
             onClick={() => setShowVoicePanel(!showVoicePanel)}>
@@ -275,23 +255,25 @@ export default function Voiceover() {
         {/* RIGHT PANEL */}
         <div style={{display:'flex',flexDirection:'column',gap:12}}>
 
+          {/* Roman text warning */}
+          {text.length > 0 && /^[a-zA-Z\s.,!?]+$/.test(text) && (
+            <div style={{background:'#FFF8F0',border:'1px solid rgba(255,149,0,.3)',borderRadius:10,padding:'10px 14px',marginBottom:10,fontSize:13,color:'#B45309',fontWeight:500}}>
+              ⚠️ Devanagari script मा लेख्नुस् — "namaste" होइन "नमस्ते"
+              <div style={{display:'flex',flexDirection:'column',gap:5,marginTop:8}}>
+                <div style={{display:'flex',alignItems:'center',gap:8,fontSize:12}}>
+                  <span style={{color:'#34C759',fontWeight:700,fontSize:14}}>✓</span>
+                  <span style={{fontFamily:'Noto Sans Devanagari,sans-serif',color:'#34C759',fontWeight:600}}>नमस्ते! आज हामी एउटा नयाँ उत्पादन लिएर आएका छौं।</span>
+                </div>
+                <div style={{display:'flex',alignItems:'center',gap:8,fontSize:12}}>
+                  <span style={{color:'#DC143C',fontWeight:700,fontSize:14}}>✗</span>
+                  <span style={{color:'#DC143C',fontWeight:600}}>Namaste! Aaja hami euta naya utpadan liera aayeka chhau.</span>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Generate button */}
-{text.length > 0 && /^[a-zA-Z\s.,!?]+$/.test(text) && (
-  <div style={{background:'#FFF8F0',border:'1px solid rgba(255,149,0,.3)',borderRadius:10,padding:'10px 14px',marginBottom:10,fontSize:13,color:'#B45309',fontWeight:500}}>
-   ⚠️ Devanagari script मा लेख्नुस् — "namaste" होइन "नमस्ते"
-                    <div style={{display:'flex',flexDirection:'column',gap:5,marginTop:8}}>
-                      <div style={{display:'flex',alignItems:'center',gap:8,fontSize:12}}>
-                        <span style={{color:'#34C759',fontWeight:700,fontSize:14}}>✓</span>
-                        <span style={{fontFamily:'Noto Sans Devanagari,sans-serif',color:'#34C759',fontWeight:600}}>नमस्ते! आज हामी एउटा नयाँ उत्पादन लिएर आएका छौं।</span>
-                      </div>
-                      <div style={{display:'flex',alignItems:'center',gap:8,fontSize:12}}>
-                        <span style={{color:'#DC143C',fontWeight:700,fontSize:14}}>✗</span>
-                        <span style={{color:'#DC143C',fontWeight:600}}>Namaste! Aaja hami euta naya utpadan liera aayeka chhau.</span>
-                      </div>
-                    </div>
-  </div>
-)}
-<button onClick={handleGenerate} disabled={!canGenerate}
+          <button onClick={handleGenerate} disabled={!canGenerate}
             style={{width:'100%',padding:'14px',borderRadius:12,border:'none',
               background:canGenerate?'#1976D2':'#ccc',
               color:'#fff',fontSize:15,fontWeight:700,cursor:canGenerate?'pointer':'not-allowed',
@@ -300,7 +282,7 @@ export default function Voiceover() {
             {loading ? '⏳ Generating...' : '🎙️ Generate Voiceover'}
           </button>
 
-          {/* Credits / tries info */}
+          {/* Credits info */}
           <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
             <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>Balance</div>
             {session ? (
@@ -316,14 +298,11 @@ export default function Voiceover() {
               </div>
             ) : isAnon ? (
               <div>
-                <div style={{fontSize:24,fontWeight:800,color:'#555',fontFamily:'Sora,sans-serif'}}>{triesLeft}</div>
-                <div style={{fontSize:12,color:'#888',marginTop:2}}>free tries remaining</div>
-                {triesLeft === 0 && (
-                  <button onClick={() => setShowSignup(true)}
-                    style={{width:'100%',marginTop:10,background:'#1976D2',color:'#fff',border:'none',padding:'8px 12px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer'}}>
-                    Sign up for more →
-                  </button>
-                )}
+                <div style={{fontSize:13,fontWeight:700,color:'#1976D2',marginBottom:8}}>Sign in to start generating</div>
+                <button onClick={() => setShowSignup(true)}
+                  style={{width:'100%',background:'#1976D2',color:'#fff',border:'none',padding:'8px 12px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer'}}>
+                  Sign in free →
+                </button>
               </div>
             ) : (
               <div style={{fontSize:13,color:'#888'}}>Loading...</div>
@@ -348,7 +327,6 @@ export default function Voiceover() {
             </button>
           </div>
 
-      
           {/* Other tools */}
           <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
             <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>Other Tools</div>
@@ -370,7 +348,7 @@ export default function Voiceover() {
           <div className="modal">
             <div style={{textAlign:'center',marginBottom:24}}>
               <div style={{fontSize:26,fontWeight:800,color:'#1976D2',fontFamily:'Sora,sans-serif',marginBottom:4}}>SWOR AI</div>
-              <div style={{fontSize:14,fontWeight:700,marginBottom:6}}>Sign up for free beta access</div>
+              <div style={{fontSize:14,fontWeight:700,marginBottom:6}}>Sign in to start generating</div>
               <p style={{fontSize:13,color:'#888',lineHeight:1.6}}>Magic link sent instantly. No password needed.</p>
             </div>
             {signupStatus === 'sent' ? (
