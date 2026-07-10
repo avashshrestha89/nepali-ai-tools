@@ -62,18 +62,7 @@ export default async function handler(req, res) {
     if (type === 'music') {
       const dur = parseInt(durationSeconds) || 30
 
-      // Free 15-second trial
-      if (isFreeMusciTrial) {
-        if (user.musicFreeUsed) {
-          return res.status(403).json({ error: 'Free music trial already used.' })
-        }
-        if (dur > 15) {
-          return res.status(400).json({ error: 'Free trial is limited to 15 seconds.' })
-        }
-        user.musicFreeUsed = true
-        await redis.set(`user:${email}`, JSON.stringify(user))
-        return res.status(200).json({ success: true, source: 'free_trial', credits: user.credits || 0 })
-      }
+  
 
 // Founders lifetime music bonus (50 tracks total, never resets)
 if (user.isFounder && user.founderMusicRemaining > 0) {
