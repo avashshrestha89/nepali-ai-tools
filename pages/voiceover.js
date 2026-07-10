@@ -156,8 +156,8 @@ export default function Voiceover() {
           {session === false && (
             <div style={{background:'#E8F4FD',border:'1.5px solid #90CAF9',borderRadius:12,padding:'12px 16px',marginBottom:12,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
               <div>
-                <div style={{fontSize:13,fontWeight:700,color:'#1976D2'}}>🎙️ Sign in to generate your free voiceover</div>
-                <div style={{fontSize:11,color:'#888',marginTop:2}}>Free to try. No credit card needed.</div>
+         <div style={{fontSize:13,fontWeight:700,color:'#1976D2'}}>🎙️ Sign in to access Swor AI</div>
+<div style={{fontSize:11,color:'#888',marginTop:2}}>Credits required to generate. Purchase a pack to get started.</div>
               </div>
               <button onClick={() => setShowSignup(true)}
                 style={{background:'#1976D2',color:'#fff',border:'none',padding:'7px 14px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer',flexShrink:0}}>
@@ -298,11 +298,11 @@ export default function Voiceover() {
               </div>
             ) : isAnon ? (
               <div>
-                <div style={{fontSize:13,fontWeight:700,color:'#1976D2',marginBottom:8}}>Sign in to start generating</div>
-                <button onClick={() => setShowSignup(true)}
-                  style={{width:'100%',background:'#1976D2',color:'#fff',border:'none',padding:'8px 12px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer'}}>
-                  Sign in free →
-                </button>
+           <div style={{fontSize:13,fontWeight:700,color:'#1976D2',marginBottom:8}}>Sign in to access your credits</div>
+<button onClick={() => setShowSignup(true)}
+  style={{width:'100%',background:'#1976D2',color:'#fff',border:'none',padding:'8px 12px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer'}}>
+  Sign in →
+</button>
               </div>
             ) : (
               <div style={{fontSize:13,color:'#888'}}>Loading...</div>
@@ -348,8 +348,8 @@ export default function Voiceover() {
           <div className="modal">
             <div style={{textAlign:'center',marginBottom:24}}>
               <div style={{fontSize:26,fontWeight:800,color:'#1976D2',fontFamily:'Sora,sans-serif',marginBottom:4}}>SWOR AI</div>
-              <div style={{fontSize:14,fontWeight:700,marginBottom:6}}>Sign in to start generating</div>
-              <p style={{fontSize:13,color:'#888',lineHeight:1.6}}>Magic link sent instantly. No password needed.</p>
+<div style={{fontSize:14,fontWeight:700,marginBottom:6}}>Sign in to access Swor AI</div>
+<p style={{fontSize:13,color:'#888',lineHeight:1.6}}>Magic link sent instantly. No password needed. A credit pack is required to generate voiceovers.</p>
             </div>
             {signupStatus === 'sent' ? (
               <div style={{textAlign:'center',padding:'20px 0'}}>
