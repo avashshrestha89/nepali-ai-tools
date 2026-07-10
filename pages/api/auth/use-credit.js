@@ -37,17 +37,6 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: `Maximum ${charLimit} characters allowed.` })
       }
 
-      // Use beta gens first
-      if (user.betaActive && user.generationsUsed < user.generationsLimit) {
-        user.generationsUsed += 1
-        await redis.set(`user:${email}`, JSON.stringify(user))
-        return res.status(200).json({
-          success: true,
-          source: 'beta',
-          betaRemaining: user.generationsLimit - user.generationsUsed,
-          credits: user.credits || 0,
-        })
-      }
 
       // Use paid credits
       const credits = user.credits || 0
