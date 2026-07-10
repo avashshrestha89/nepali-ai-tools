@@ -45,7 +45,7 @@ export default function Music() {
 
   const selectedDuration = DURATIONS.find(d => d.seconds === duration) || DURATIONS[1]
   const credits = session ? session.credits || 0 : null
-  const canUseFreeMusic = session && !session.musicFreeUsed && duration <= 15
+  const canUseFreeMusic = false
   const hasEnoughCredits = session && (
     canUseFreeMusic ||
     (session.isFounder && session.founderMusicRemaining > 0) ||
@@ -194,7 +194,7 @@ export default function Music() {
                   onClick={() => setDuration(d.seconds)}>
                   <div>{d.label}</div>
                   <div style={{fontSize:10,opacity:.7,marginTop:2}}>
-                    {d.seconds === 15 && session && !session.musicFreeUsed ? 'FREE' : `${d.credits} cr`}
+                    {`${d.credits} cr`}
                   </div>
                 </button>
               ))}
@@ -247,14 +247,6 @@ export default function Music() {
               boxShadow:canGenerate?'0 4px 20px rgba(46,125,50,.3)':'none'}}>
             {loading ? '🎵 Generating...' : '🎵 Create Music'}
           </button>
-
-          {/* Free trial badge */}
-          {session && !session.musicFreeUsed && (
-            <div style={{background:'#E8F5E9',border:'1px solid #A5D6A7',borderRadius:10,padding:'10px 14px',fontSize:12,color:'#2E7D32',fontWeight:600,textAlign:'center'}}>
-              🎁 1 free 15-second track available!
-              <div style={{fontSize:11,color:'#555',fontWeight:400,marginTop:3}}>Select 15s duration to use it</div>
-            </div>
-          )}
 
           {/* Credits */}
           <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
