@@ -264,7 +264,14 @@ export default function Voiceover() {
               <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
                 <span style={{fontWeight:700,color:'#1976D2'}}>2. Emotion tags —</span> Add emotion tags in <span style={{fontWeight:700}}>[brackets]</span> to control how the voice sounds:
                 <div style={{display:'flex',flexWrap:'wrap',gap:5,marginTop:6}}>
-                  {['[excited]','[whispers]','[laughs]','[sad]','[calm]','[sighs]','[nervous]','[angry]'].map(tag => (
+                  {[
+  '[excited]','[whispers]','[laughs]','[sad]','[calm]',
+  '[sighs]','[nervous]','[angry]','[frustrated]','[sorrowful]',
+  '[happy]','[crying]','[gasps]','[gulps]','[hesitates]',
+  '[stammers]','[pauses]','[cheerfully]','[flatly]','[deadpan]',
+  '[playfully]','[shouts]','[sarcastic]','[curious]','[tired]',
+  '[resigned tone]','[regretful]','[serious]','[quietly]','[slowly]'
+].map(tag => (
                     <span key={tag} style={{background:'#E8EEFF',color:'#1976D2',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600}}>{tag}</span>
                   ))}
                 </div>
