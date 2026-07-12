@@ -254,6 +254,43 @@ export default function Voiceover() {
               <span style={{fontSize:12,fontWeight:600,color:text.length > CHAR_LIMIT * 0.9 ? '#DC143C' : '#888'}}>{text.length} / {CHAR_LIMIT}</span>
             </div>
           </div>
+{/* Pro Tips */}
+          <div style={{background:'#F8F9FF',border:'1.5px solid #E8EEFF',borderRadius:12,padding:'14px 16px',marginBottom:12}}>
+            <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>💡 Pro Tips</div>
+            <div style={{display:'flex',flexDirection:'column',gap:8}}>
+              <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
+                <span style={{fontWeight:700,color:'#1976D2'}}>1. Devanagari only —</span> Always type in नेपाली script, not Roman. Example: <span style={{fontFamily:'Noto Sans Devanagari,sans-serif',color:'#34C759',fontWeight:600}}>नमस्ते</span> not "Namaste"
+              </div>
+              <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
+                <span style={{fontWeight:700,color:'#1976D2'}}>2. Emotion tags —</span> Add emotion tags in <span style={{fontWeight:700}}>[brackets]</span> to control how the voice sounds:
+                <div style={{display:'flex',flexWrap:'wrap',gap:5,marginTop:6}}>
+                  {['[excited]','[whispers]','[laughs]','[sad]','[calm]','[sighs]','[nervous]','[angry]'].map(tag => (
+                    <span key={tag} style={{background:'#E8EEFF',color:'#1976D2',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600}}>{tag}</span>
+                  ))}
+                </div>
+              </div>
+              <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
+                <span style={{fontWeight:700,color:'#1976D2'}}>3. Examples —</span>
+                <div style={{display:'flex',flexDirection:'column',gap:6,marginTop:6}}>
+                  <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
+                    <div style={{fontSize:10,fontWeight:700,color:'#DC143C',marginBottom:4}}>🎬 REELS / TIKTOK</div>
+                    <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
+                      [excited] साथीहरू, आज म तपाईंलाई एउटा कमालको कुरा बताउँछु! [whispers] यो कुरा धेरैलाई थाहा छैन। [laughs] तर अब तपाईंलाई थाहा हुन्छ!
+                    </div>
+                  </div>
+                  <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
+                    <div style={{fontSize:10,fontWeight:700,color:'#4E342E',marginBottom:4}}>🎙️ DOCUMENTARY</div>
+                    <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
+                      [calm] नेपालको इतिहास हजारौं वर्ष पुरानो छ। [sorrowful] तर यति सुन्दर देशका मान्छेहरूले धेरै कठिनाइ भोगेका छन्। [sighs] तैपनि, हामी सधैं उठ्छौं।
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
+                <span style={{fontWeight:700,color:'#1976D2'}}>4. Long scripts —</span> Max 500 characters per generation. Split long scripts into parts and join in CapCut.
+              </div>
+            </div>
+          </div>
 
           {/* Error */}
           {error && (
