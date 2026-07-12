@@ -41,6 +41,8 @@ export default function Voiceover() {
   const [showSignup, setShowSignup] = useState(false)
   const [signupEmail, setSignupEmail] = useState('')
   const [signupStatus, setSignupStatus] = useState('idle')
+  const [history, setHistory] = useState([])
+  const [historyLoading, setHistoryLoading] = useState(false)
   const audioRef = useRef(null)
 
   useEffect(() => {
@@ -51,8 +53,21 @@ export default function Voiceover() {
   }, [])
 
   useEffect(() => {
-    fetch('/api/auth/session').then(r => r.json()).then(d => setSession(d.loggedIn ? d : false)).catch(() => setSession(false))
+    fetch('/api/auth/session').then(r => r.json()).then(d => {
+      setSession(d.loggedIn ? d : false)
+      if (d.loggedIn) fetchHistory()
+    }).catch(() => setSession(false))
   }, [])
+
+  async function fetchHistory() {
+    setHistoryLoading(true)
+    try {
+      const res = await fetch('/api/history')
+      const d = await res.json()
+      if (d.success) setHistory(d.history || [])
+    } catch {}
+    setHistoryLoading(false)
+  }
 
   function playPreview(voiceId) {
     if (playingPreview === voiceId) {
@@ -87,7 +102,10 @@ export default function Voiceover() {
       const res = await fetch('/api/voiceover', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voiceId: selectedVoice.voice_id, voiceName: selectedVoice.name }) })
       if (!res.ok) { const e = await res.json(); throw new Error(e.error) }
       const blob = await res.blob()
-      setResult({ url: URL.createObjectURL(blob), filename: `swor_${selectedVoice.name.toLowerCase()}_${Date.now()}.mp3` })
+      const url = URL.createObjectURL(blob)
+      setResult({ url, filename: `swor_${selectedVoice.name.toLowerCase()}_${Date.now()}.mp3` })
+      // Refresh history after generation
+      setTimeout(() => fetchHistory(), 2000)
     } catch (e) { setError(e.message) }
     setLoading(false)
   }
@@ -96,6 +114,11 @@ export default function Voiceover() {
   const filteredVoices = VOICES.filter(v => genderFilter === 'all' || (genderFilter === 'female' ? v.gender === 'F' : v.gender === 'M'))
   const credits = session ? session.credits || 0 : null
   const isAnon = session === false
+
+  function formatDate(iso) {
+    const d = new Date(iso)
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+  }
 
   return (
     <>
@@ -118,6 +141,8 @@ export default function Voiceover() {
         .fade-in{animation:fadeIn .2s ease}
         .overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
         .modal{background:#fff;border-radius:20px;padding:32px;max-width:420px;width:90%;box-shadow:0 24px 60px rgba(0,0,0,.15)}
+        .history-item{background:#f8f8f8;border-radius:10px;padding:10px 12px;border:1px solid #e8e8ed}
+        .history-item:hover{border-color:#1976D2;background:#E8F4FD}
       `}</style>
 
       {/* NAV */}
@@ -156,12 +181,12 @@ export default function Voiceover() {
           {session === false && (
             <div style={{background:'#E8F4FD',border:'1.5px solid #90CAF9',borderRadius:12,padding:'12px 16px',marginBottom:12,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
               <div>
-         <div style={{fontSize:13,fontWeight:700,color:'#1976D2'}}>🎙️ Sign in to access Swor AI</div>
-<div style={{fontSize:11,color:'#888',marginTop:2}}>Credits required to generate. Purchase a pack to get started.</div>
+                <div style={{fontSize:13,fontWeight:700,color:'#1976D2'}}>🎙️ Sign in to access Swor AI</div>
+                <div style={{fontSize:11,color:'#888',marginTop:2}}>Credits required to generate. Purchase a pack to get started.</div>
               </div>
               <button onClick={() => setShowSignup(true)}
                 style={{background:'#1976D2',color:'#fff',border:'none',padding:'7px 14px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer',flexShrink:0}}>
-                Sign in free →
+                Sign in →
               </button>
             </div>
           )}
@@ -298,11 +323,11 @@ export default function Voiceover() {
               </div>
             ) : isAnon ? (
               <div>
-           <div style={{fontSize:13,fontWeight:700,color:'#1976D2',marginBottom:8}}>Sign in to access your credits</div>
-<button onClick={() => setShowSignup(true)}
-  style={{width:'100%',background:'#1976D2',color:'#fff',border:'none',padding:'8px 12px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer'}}>
-  Sign in →
-</button>
+                <div style={{fontSize:13,fontWeight:700,color:'#1976D2',marginBottom:8}}>Sign in to access your credits</div>
+                <button onClick={() => setShowSignup(true)}
+                  style={{width:'100%',background:'#1976D2',color:'#fff',border:'none',padding:'8px 12px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer'}}>
+                  Sign in →
+                </button>
               </div>
             ) : (
               <div style={{fontSize:13,color:'#888'}}>Loading...</div>
@@ -327,6 +352,38 @@ export default function Voiceover() {
             </button>
           </div>
 
+          {/* HISTORY PANEL */}
+          {session && (
+            <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
+              <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>
+                Recent Generations
+              </div>
+              {historyLoading ? (
+                <div style={{fontSize:12,color:'#888',textAlign:'center',padding:'10px 0'}}>Loading history...</div>
+              ) : history.length === 0 ? (
+                <div style={{fontSize:12,color:'#888',textAlign:'center',padding:'10px 0'}}>No generations yet</div>
+              ) : (
+                <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                  {history.map((item) => (
+                    <div key={item.id} className="history-item">
+                      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:4}}>
+                        <div style={{fontSize:11,fontWeight:700,color:'#1976D2'}}>{item.voiceName}</div>
+                        <div style={{fontSize:10,color:'#aaa'}}>{formatDate(item.createdAt)}</div>
+                      </div>
+                      <div style={{fontSize:11,color:'#555',marginBottom:6,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',fontFamily:'Noto Sans Devanagari,sans-serif'}}>
+                        {item.text}
+                      </div>
+                      <a href={item.url} download={`swor_${item.voiceName}_${item.id}.mp3`}
+                        style={{display:'inline-flex',alignItems:'center',gap:4,background:'#1976D2',color:'#fff',padding:'4px 10px',borderRadius:6,fontSize:11,fontWeight:700,textDecoration:'none'}}>
+                        ⬇ Download
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Other tools */}
           <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
             <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>Other Tools</div>
@@ -348,8 +405,8 @@ export default function Voiceover() {
           <div className="modal">
             <div style={{textAlign:'center',marginBottom:24}}>
               <div style={{fontSize:26,fontWeight:800,color:'#1976D2',fontFamily:'Sora,sans-serif',marginBottom:4}}>SWOR AI</div>
-<div style={{fontSize:14,fontWeight:700,marginBottom:6}}>Sign in to access Swor AI</div>
-<p style={{fontSize:13,color:'#888',lineHeight:1.6}}>Magic link sent instantly. No password needed. A credit pack is required to generate voiceovers.</p>
+              <div style={{fontSize:14,fontWeight:700,marginBottom:6}}>Sign in to access Swor AI</div>
+              <p style={{fontSize:13,color:'#888',lineHeight:1.6}}>Magic link sent instantly. No password needed. A credit pack is required to generate voiceovers.</p>
             </div>
             {signupStatus === 'sent' ? (
               <div style={{textAlign:'center',padding:'20px 0'}}>
