@@ -84,7 +84,7 @@ export default function Voiceover() {
         if (!cr.ok) throw new Error(cd.error)
         setSession(prev => ({ ...prev, credits: cd.credits }))
       }
-      const res = await fetch('/api/voiceover', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voiceId: selectedVoice.voice_id }) })
+      const res = await fetch('/api/voiceover', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voiceId: selectedVoice.voice_id, voiceName: selectedVoice.name }) })
       if (!res.ok) { const e = await res.json(); throw new Error(e.error) }
       const blob = await res.blob()
       setResult({ url: URL.createObjectURL(blob), filename: `swor_${selectedVoice.name.toLowerCase()}_${Date.now()}.mp3` })
