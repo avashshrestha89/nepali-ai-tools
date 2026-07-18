@@ -19,13 +19,12 @@ export default function ForBusiness() {
     { emoji: '🎵', title: 'Music only भएर पुग्दैन', desc: 'Background music मात्र भएको content ले audience सँग emotional connection बनाउन सक्दैन।' },
   ]
 
-  const benefits = [
+const benefits = [
     { stat: '8s', label: 'मा professional voiceover ready' },
-    { stat: '15', label: 'premium Nepali AI voices' },
+    { stat: '20', label: 'premium Nepali AI voices' },
     { stat: '75%', label: 'कम cost — voice artist भन्दा' },
     { stat: '500+', label: 'characters per generation' },
   ]
-
   const useCases = [
     { emoji: '📱', who: 'TikTok & Reels Creators', use: 'आफ्नो face नदेखाई professional narration। Daily content को लागि perfect।' },
     { emoji: '🏢', who: 'Nepal Businesses & Brands', use: 'Product ads, promotional videos, social media content — studio-quality audio at fraction of cost।' },
@@ -117,7 +116,7 @@ export default function ForBusiness() {
               </button>
             </a>
           </div>
-          <p style={{fontSize:13,color:'#999',marginTop:12}}>No credit card needed · eSewa / Khalti / IME Pay accepted</p>
+          <p style={{fontSize:13,color:'#999',marginTop:12}}>eSewa / Khalti / IME Pay / PayPal accepted · 20 natural Nepali voices</p>
         </div>
       </section>
 
@@ -236,7 +235,7 @@ export default function ForBusiness() {
               </div>
             ))}
           </div>
-          <p style={{textAlign:'center',fontSize:13,color:'#888'}}>+ 9 more voices available on the platform</p>
+          <p style={{textAlign:'center',fontSize:13,color:'#888'}}>+ 14 more voices available on the platform</p>
         </div>
       </section>
 
@@ -276,7 +275,7 @@ export default function ForBusiness() {
               <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.1em',marginBottom:12}}>STARTER</div>
               <div style={{fontFamily:'Sora,sans-serif',fontSize:32,fontWeight:800,color:'#1d1d1f',marginBottom:4}}>NPR 499</div>
               <div style={{fontSize:13,color:'#888',marginBottom:20}}>500 Swor Credits</div>
-              {['20 voiceover generations','Subtitles always free','All 15 voices','MP3 download'].map((f,i) => (
+              {['20 voiceover generations','Subtitles always free','All 20 voices','MP3 download'].map((f,i) => (
                 <div key={i} style={{display:'flex',gap:8,marginBottom:8,fontSize:13,color:'#555'}}>
                   <span style={{color:'#34C759',fontWeight:700}}>✓</span> {f}
                 </div>
@@ -286,7 +285,7 @@ export default function ForBusiness() {
               <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.6)',letterSpacing:'0.1em',marginBottom:12}}>CREATOR — MOST POPULAR</div>
               <div style={{fontFamily:'Sora,sans-serif',fontSize:32,fontWeight:800,color:'#fff',marginBottom:4}}>NPR 999</div>
               <div style={{fontSize:13,color:'rgba(255,255,255,.6)',marginBottom:20}}>1,100 Swor Credits (+10% bonus)</div>
-              {['44 voiceover generations','Free music generation trial','All 15 voices','Priority support'].map((f,i) => (
+              {['44 voiceover generations','50 AI music tracks','All 20 voices','Priority support'].map((f,i) => (
                 <div key={i} style={{display:'flex',gap:8,marginBottom:8,fontSize:13,color:'rgba(255,255,255,.85)'}}>
                   <span style={{color:'#fff',fontWeight:700}}>✓</span> {f}
                 </div>
@@ -327,14 +326,13 @@ export default function ForBusiness() {
       {/* FINAL CTA */}
       <section style={{padding:isMobile?'60px 20px':'100px 24px',background:'linear-gradient(160deg,#1d1d1f 0%,#2d1020 100%)',textAlign:'center'}}>
         <div style={{maxWidth:600,margin:'0 auto'}}>
-          <h2 style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?'26px':'clamp(26px,4vw,44px)',fontWeight:800,color:'#fff',letterSpacing:'-1px',marginBottom:16,lineHeight:1.2}}>
+         <h2 style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?'26px':'clamp(26px,4vw,44px)',fontWeight:800,color:'#fff',letterSpacing:'-1px',marginBottom:16,lineHeight:1.2}}>
             आजै सुरु गर्नुस्।
             <br />
-            <span style={{color:'#DC143C'}}>No credit card needed।</span>
+            <span style={{color:'#DC143C'}}>Nepal को #1 Nepali AI Voice।</span>
           </h2>
-          <p style={{fontSize:16,color:'rgba(255,255,255,.5)',lineHeight:1.7,marginBottom:40,maxWidth:440,margin:'0 auto 40px'}}>
-            First 2 generations free।
-            No signup required।
+        <p style={{fontSize:16,color:'rgba(255,255,255,.5)',lineHeight:1.7,marginBottom:40,maxWidth:440,margin:'0 auto 40px'}}>
+            Sign up with your email and get started today।
             eSewa / Khalti / IME Pay accepted।
           </p>
           <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap',marginBottom:20}}>
