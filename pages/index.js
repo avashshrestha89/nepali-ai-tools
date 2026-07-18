@@ -899,6 +899,61 @@ export default function Landing() {
         </div>
       </section>
 
+{/* ══ FAQ SECTION ══ */}
+      <section style={{padding:isMobile?'60px 16px':'100px 48px',background:'#f5f5f7'}}>
+        <div style={{maxWidth:900,margin:'0 auto'}}>
+          <div style={{textAlign:'center',marginBottom:48}}>
+            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(24px,3.5vw,40px)',fontWeight:800,letterSpacing:'-1px',marginBottom:14}}>
+              Frequently Asked Questions
+            </h2>
+            <p style={{fontSize:16,color:'#6e6e73',lineHeight:1.65}}>
+              Everything you need to know about Nepali AI voiceover and text to speech.
+            </p>
+          </div>
+          <div style={{background:'#fff',borderRadius:20,padding:'8px 32px'}}>
+            {[
+              {
+                q:'What is Swor AI?',
+                a:'Swor AI is Nepal\'s #1 Nepali AI voice generator and text to speech platform. Built specifically for Nepali creators and businesses, it lets you generate professional Nepali voiceovers, AI music, and subtitles in seconds — no microphone, no studio, no voice artist needed.'
+              },
+              {
+                q:'How does Nepali text to speech work?',
+                a:'Simply type your Nepali text in Devanagari script, choose from 20 natural-sounding Nepali voices, and click Generate. Your professional Nepali voiceover is ready in seconds as an MP3 file you can download and use anywhere.'
+              },
+              {
+                q:'Can I use Swor AI for TikTok and YouTube voiceover?',
+                a:'Yes — Swor AI is specifically designed for TikTok, YouTube, and Instagram Reels creators. Generate professional Nepali narration for your videos without recording your own voice. All audio is 100% royalty-free and copyright-free on any platform.'
+              },
+              {
+                q:'Can I create a faceless Nepali YouTube channel with Swor AI?',
+                a:'Absolutely. Swor AI is the go-to tool for faceless Nepali YouTube channels. Generate professional narration for documentary, educational, and entertainment channels without showing your face or recording your voice.'
+              },
+              {
+                q:'How many Nepali voices are available?',
+                a:'Swor AI has 20 premium Nepali AI voices — male and female, covering every content style including romantic, professional news, deep documentary, energetic reels, sports commentary, elegant ad narration, and conversational styles.'
+              },
+              {
+                q:'Does Swor AI support emotion and tone control?',
+                a:'Yes — use emotion tags like [excited], [whispers], [calm], [laughs], [sad], [angry] directly in your script to control how the voice sounds. This makes Swor AI far more powerful than standard text to speech tools.'
+              },
+              {
+                q:'Does Swor AI generate Nepali music too?',
+                a:'Yes — Swor AI also generates original royalty-free Nepali AI music. Type a prompt like "upbeat Nepali folk with madal drums" and get a custom music track in seconds. Perfect for video backgrounds, intros, and ads.'
+              },
+              {
+                q:'What are the pricing plans?',
+                a:'Starter Pack: NPR 499 (500 credits / 20 voiceovers). Creator Pack: NPR 999 (1,100 credits / 44 voiceovers). Founders Lifetime Pack: NPR 2,500 one-time (500 voiceovers + 50 AI music tracks, no monthly fees ever). All plans include unlimited free Nepali subtitles.'
+              },
+            ].map((faq,i)=>(
+              <div key={i} style={{borderBottom:'1px solid #f0f0f0',padding:'20px 0'}}>
+                <div style={{fontFamily:'Sora,sans-serif',fontSize:16,fontWeight:700,color:'#1d1d1f',marginBottom:8}}>{faq.q}</div>
+                <div style={{fontSize:15,color:'#6e6e73',lineHeight:1.75}}>{faq.a}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ══ FOOTER ══ */}
       <footer style={{padding:'40px 48px',background:'#111',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:20}}>
         <div>
