@@ -322,7 +322,58 @@ const benefits = [
           </div>
         </div>
       </section>
-
+{/* FAQ SECTION */}
+      <section style={{padding:isMobile?'60px 20px':'80px 24px',background:'#fff'}}>
+        <div style={{maxWidth:760,margin:'0 auto'}}>
+          <h2 style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?'22px':'clamp(22px,3.5vw,36px)',fontWeight:800,textAlign:'center',letterSpacing:'-0.8px',marginBottom:12}}>
+            Frequently Asked Questions
+          </h2>
+          <p style={{textAlign:'center',color:'#6e6e73',fontSize:16,marginBottom:48,lineHeight:1.6}}>
+            Nepal businesses र content creators का common questions
+          </p>
+          <div style={{display:'flex',flexDirection:'column',gap:0,background:'#f5f5f7',borderRadius:20,padding:'8px 32px'}}>
+            {[
+              {
+                q:'Swor AI कसरी काम गर्छ?',
+                a:'Swor AI एउटा Nepali AI voice generator हो। तपाईं Devanagari script मा आफ्नो script type गर्नुहोस्, 20 premium Nepali voices मध्ये एउटा छान्नुहोस्, र Generate थिच्नुहोस्। 8 seconds मा professional Nepali voiceover MP3 ready हुन्छ।'
+              },
+              {
+                q:'के Swor AI को audio TikTok र YouTube मा copyright हुन्छ?',
+                a:'हुँदैन। Swor AI बाट generate भएको सबै audio 100% royalty-free हो। TikTok, YouTube, Instagram, Facebook — जुनसुकै platform मा freely use गर्न सकिन्छ। Commercial use को लागि पनि ठिकै छ।'
+              },
+              {
+                q:'Nepali text to speech र Nepali AI voiceover मा के फरक छ?',
+                a:'Basic text to speech robotic र unnatural सुनिन्छ। Swor AI को Nepali AI voiceover ElevenLabs technology मा built छ — human जस्तो natural, emotional, र expressive। [excited], [whispers], [calm] जस्ता emotion tags पनि use गर्न सकिन्छ।'
+              },
+              {
+                q:'एउटा generation मा कति text type गर्न मिल्छ?',
+                a:'एउटा generation मा 500 characters — roughly 30-40 seconds को voiceover। लामो script भए टुक्राटुक्रा गरेर generate गर्नुस् र CapCut मा join गर्नुस्। Founders Pack मा 500 generations मिल्छ — total 4+ hours को content।'
+              },
+              {
+                q:'Payment कसरी गर्ने? USD card चाहिन्छ?',
+                a:'USD card चाहिँदैन। Nepal मा eSewa, Khalti, र IME Pay बाट pay गर्न मिल्छ। International users को लागि PayPal, Venmo, र Zelle accept गर्छौं। Payment confirm भएको 10 minutes भित्र credits activate हुन्छ।'
+              },
+              {
+                q:'Voice cloning available छ?',
+                a:'हो — Swor AI मा voice cloning feature छ। आफ्नो brand ambassador को voice clone गरेर consistent narration बनाउन सकिन्छ। Voice cloning को लागि WhatsApp मा +1 925 537 9425 मा contact गर्नुस्।'
+              },
+              {
+                q:'Business को लागि Custom Plan छ?',
+                a:'छ। High-volume agencies, media companies, र brands को लागि हामी custom plan बनाउँछौं। Bulk credits, dedicated support, र team access सहित। WhatsApp मा +1 925 537 9425 मा contact गर्नुस् र आफ्नो requirement share गर्नुस्।'
+              },
+              {
+                q:'Swor AI र अरु global TTS tools मा के फरक छ?',
+                a:'Google TTS, ElevenLabs, र अरु global tools मा Nepali एउटा afterthought हो — 100+ languages मध्ये एउटा। Swor AI specifically Nepali content creators र Nepal businesses को लागि बनाइएको हो। 20 dedicated Nepali voices, NPR मा pricing, eSewa/Khalti payment, र Kathmandu बाट direct support।'
+              },
+            ].map((faq,i)=>(
+              <div key={i} style={{borderBottom:'1px solid #e8e8ed',padding:'20px 0'}}>
+                <div style={{fontFamily:'Sora,sans-serif',fontSize:15,fontWeight:700,color:'#1d1d1f',marginBottom:8}}>{faq.q}</div>
+                <div style={{fontSize:14,color:'#6e6e73',lineHeight:1.75}}>{faq.a}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
       {/* FINAL CTA */}
       <section style={{padding:isMobile?'60px 20px':'100px 24px',background:'linear-gradient(160deg,#1d1d1f 0%,#2d1020 100%)',textAlign:'center'}}>
         <div style={{maxWidth:600,margin:'0 auto'}}>
