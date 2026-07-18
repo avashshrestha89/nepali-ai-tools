@@ -121,8 +121,9 @@ export default function Landing() {
     <>
       <Head>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <title>Swor AI — नेपाली AI Voice & Subtitle Generator</title>
-        <meta name="description" content="Nepal's most realistic AI Nepali voice generator and subtitle tool. Generate natural Nepali voiceovers and subtitles in seconds." />
+        <title>Swor AI — Nepal's #1 Nepali AI Voice Generator & Text to Speech</title>
+<meta name="description" content="Nepal's #1 Nepali AI voice generator. Nepali text to speech, AI voiceover, music and subtitles for TikTok, YouTube and ads. 20 natural Nepali voices. Try free at meroadai.com" />
+<meta name="keywords" content="nepali text to speech, nepali ai voice generator, nepali voiceover, nepali tts free, ai nepali voice, swor ai, meroadai, nepali voice generator, nepali youtube voiceover, nepali tiktok voiceover, nepali ai music, devanagari text to speech" />
         <meta name="keywords" content="Nepali AI voice generator, नेपाली voiceover, Nepali subtitle generator, AI Nepali text to speech, Swor AI" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=Righteous&display=swap" rel="stylesheet" />
