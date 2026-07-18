@@ -66,7 +66,100 @@ export default function NepaliTextToSpeech() {
         <link rel="canonical" href="https://meroadai.com/nepali-text-to-speech" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet" />
-      </Head>
+      <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{__html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebApplication",
+                "name": "Swor AI — Nepali Text to Speech",
+                "url": "https://meroadai.com/nepali-text-to-speech",
+                "description": "Nepal's #1 Nepali AI voice generator. Convert Nepali text to speech online with 20 natural voices for TikTok, YouTube, documentary, news and ads.",
+                "applicationCategory": "MultimediaApplication",
+                "operatingSystem": "Web",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "499",
+                  "priceCurrency": "NPR",
+                  "description": "Starter Pack — 500 Swor Credits"
+                },
+                "creator": {
+                  "@type": "Organization",
+                  "name": "MeroAD.ai",
+                  "url": "https://meroadai.com",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Kathmandu",
+                    "addressCountry": "NP"
+                  }
+                }
+              },
+              {
+                "@type": "FAQPage",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "What is Nepali text to speech?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Nepali text to speech (TTS) is AI technology that converts written Nepali Devanagari text into natural-sounding spoken audio. Swor AI uses advanced ElevenLabs technology to generate the most realistic Nepali voices available."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "How do I convert Nepali text to audio?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "With Swor AI, it takes 3 steps: Type or paste your Nepali text in Devanagari script, choose from 20 premium Nepali voices, click Generate and download your MP3 in seconds. No recording equipment, no studio, no voice artist needed."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Can I use Swor AI for TikTok and YouTube voiceover?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes — Swor AI is specifically designed for TikTok creators, YouTube channels, and Instagram Reels. Generate professional Nepali narration for your videos in seconds without a microphone. All audio is 100% royalty-free and copyright-free for use on any platform."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Can I create a faceless Nepali YouTube channel using Swor AI?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Absolutely — Swor AI is the go-to tool for faceless Nepali YouTube channels. Generate professional narration without showing your face or recording your own voice."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Does Swor AI support voice cloning?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes — Swor AI offers voice cloning for select creators and businesses. Contact us via WhatsApp at +1 925 537 9425 to discuss voice cloning options."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Does Swor AI generate Nepali music too?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes — Swor AI also generates original royalty-free Nepali AI music. Type a prompt describing the mood and style you want and get a custom music track in seconds. Perfect for video background music, intros, and ads."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "What are the pricing plans?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Starter Pack: NPR 499. Creator Pack: NPR 999. Founders Lifetime Pack: NPR 2,500 one-time payment — 500 voiceovers plus 50 AI music tracks, no monthly fees ever."
+                    }
+                  }
+                ]
+              }
+            ]
+          })}}
+        />
+    </Head>
 
       <style>{`
         *{box-sizing:border-box;margin:0;padding:0}
