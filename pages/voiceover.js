@@ -124,8 +124,9 @@ export default function Voiceover() {
     <>
       <Head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <title>Nepali AI Voiceover Generator — Swor AI</title>
-        <meta name="description" content="Generate realistic Nepali AI voiceovers in seconds. 20 premium voices. Type text, download MP3." />
+<title>Nepali AI Voice Generator — Free Nepali Text to Speech Online | Swor AI</title>
+<meta name="description" content="Nepal's #1 Nepali AI voice generator. Free Nepali text to speech online — 20 natural voices for TikTok, YouTube, ads and documentary. Generate professional Nepali voiceover in seconds. Try free at meroadai.com" />
+<meta name="keywords" content="nepali text to speech, nepali ai voice generator, nepali voiceover generator, nepali tts, devanagari text to speech, nepali voice generator online, faceless nepali youtube voice, nepali documentary voice, nepali news voiceover ai, nepali reels voiceover, nepali tiktok voiceover, nepali voice without microphone, AI nepali voice" />
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet" />
       </Head>
 
