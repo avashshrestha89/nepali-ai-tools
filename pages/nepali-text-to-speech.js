@@ -52,7 +52,6 @@ const FAQS = [
     a: 'Yes — Swor AI also generates original royalty-free Nepali AI music. Type a prompt describing the mood and style you want (e.g. "upbeat Nepali folk with madal drums") and get a custom music track in seconds. Perfect for video background music, intros, and ads.'
   },
 ]
-]
 
 export default function NepaliTextToSpeech() {
   const [openFaq, setOpenFaq] = useState(null)
