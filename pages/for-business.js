@@ -274,8 +274,8 @@ const benefits = [
             <div style={{background:'#f5f5f7',borderRadius:20,padding:28,textAlign:'left'}}>
               <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.1em',marginBottom:12}}>STARTER</div>
               <div style={{fontFamily:'Sora,sans-serif',fontSize:32,fontWeight:800,color:'#1d1d1f',marginBottom:4}}>NPR 499</div>
-              <div style={{fontSize:13,color:'#888',marginBottom:20}}>500 Swor Credits</div>
-              {['20 voiceover generations','Subtitles always free','All 20 voices','MP3 download'].map((f,i) => (
+              <div style={{fontSize:13,color:'#888',marginBottom:20}}>2,500 Swor Credits</div>
+              {['2,500 Swor Credits','1 credit per character typed','All 20 voices','Credits never expire'].map((f,i) => (
                 <div key={i} style={{display:'flex',gap:8,marginBottom:8,fontSize:13,color:'#555'}}>
                   <span style={{color:'#34C759',fontWeight:700}}>✓</span> {f}
                 </div>
@@ -284,8 +284,8 @@ const benefits = [
             <div style={{background:'linear-gradient(135deg,#DC143C,#c01030)',borderRadius:20,padding:28,textAlign:'left'}}>
               <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.6)',letterSpacing:'0.1em',marginBottom:12}}>CREATOR — MOST POPULAR</div>
               <div style={{fontFamily:'Sora,sans-serif',fontSize:32,fontWeight:800,color:'#fff',marginBottom:4}}>NPR 999</div>
-              <div style={{fontSize:13,color:'rgba(255,255,255,.6)',marginBottom:20}}>1,100 Swor Credits (+10% bonus)</div>
-              {['44 voiceover generations','50 AI music tracks','All 20 voices','Priority support'].map((f,i) => (
+              <div style={{fontSize:13,color:'rgba(255,255,255,.6)',marginBottom:20}}>5,500 Swor Credits</div>
+              {['5,500 Swor Credits','1 credit per character typed','All 20 voices','Priority support'].map((f,i) => (
                 <div key={i} style={{display:'flex',gap:8,marginBottom:8,fontSize:13,color:'rgba(255,255,255,.85)'}}>
                   <span style={{color:'#fff',fontWeight:700}}>✓</span> {f}
                 </div>
