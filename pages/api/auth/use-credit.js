@@ -6,7 +6,7 @@ const redis = new Redis({
 })
 
 // Credit costs
-const VOICEOVER_CREDIT_COST = 25
+
 const MUSIC_CREDIT_COST_PER_30S = 100
 
 function getMusicCreditCost(durationSeconds) {
@@ -30,23 +30,30 @@ export default async function handler(req, res) {
 
     const user = typeof raw === 'string' ? JSON.parse(raw) : raw
 
-    // ── VOICEOVER ──
+// ── VOICEOVER ──
     if (type === 'voiceover') {
-      const charLimit = 500
-      if (charCount > charLimit) {
-        return res.status(400).json({ error: `Maximum ${charLimit} characters allowed.` })
+      const charsToCharge = parseInt(charCount) || 0
+      if (charsToCharge <= 0) {
+        return res.status(400).json({ error: 'No text provided.' })
       }
-
-
-      // Use paid credits
+      // Use paid credits — 1 credit per character
       const credits = user.credits || 0
-      if (credits < VOICEOVER_CREDIT_COST) {
+      if (credits < charsToCharge) {
         return res.status(403).json({
-          error: 'Not enough credits. Purchase a credit pack to continue.',
+          error: `Not enough credits. This generation costs ${charsToCharge} credits.`,
           credits,
-          required: VOICEOVER_CREDIT_COST,
+          required: charsToCharge,
         })
       }
+      user.credits = credits - charsToCharge
+      await redis.set(`user:${email}`, JSON.stringify(user))
+      return res.status(200).json({
+        success: true,
+        source: 'credits',
+        credits: user.credits,
+        creditsUsed: charsToCharge,
+      })
+    }
 
       user.credits = credits - VOICEOVER_CREDIT_COST
       await redis.set(`user:${email}`, JSON.stringify(user))
