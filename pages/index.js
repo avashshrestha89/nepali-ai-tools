@@ -588,7 +588,7 @@ export default function Landing() {
               Credits never expire. Use them however you want.
             </p>
             <div style={{display:'inline-flex',gap:16,background:'#fff',borderRadius:12,padding:'12px 20px',border:'1px solid #e8e8ed',fontSize:13,color:'#555',flexWrap:'wrap',justifyContent:'center'}}>
-              <span>🎙️ <strong style={{color:'#1d1d1f'}}>25 credits</strong> = 1 voiceover</span>
+              <span>🎙️ <strong style={{color:'#1d1d1f'}}>1 credit</strong> = 1 character</span>
               <span style={{color:'#e8e8ed'}}>|</span>
               <span>🎵 <strong style={{color:'#1d1d1f'}}>100 credits</strong> = 30s music</span>
               <span style={{color:'#e8e8ed'}}>|</span>
@@ -609,12 +609,12 @@ export default function Landing() {
                   Founders' Lifetime Pack
                 </div>
              <div style={{fontSize:14,fontWeight:700,color:'rgba(255,255,255,.9)',lineHeight:1.6,maxWidth:480,marginBottom:0}}>
-                  Create fearlessly for a full year. 12,500 voiceovers + 50 soundtracks. No subscriptions. No limits.
+                  Create fearlessly for a full year. 62,500 characters of voiceover + 50 soundtracks. No subscriptions. No limits.
                 </div>
               </div>
          <div style={{textAlign:'center',flexShrink:0,minWidth:240}}>
                 <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:20,textAlign:'left'}}>
-                  {['12,500 Swor Credits (Lifetime Pool)','50 Total AI Music Tracks (Lifetime Balance)','Unlimited subtitles forever','Credits never expire','Founders status — forever'].map(f=>(
+                  {['62,500 Swor Credits (Lifetime Pool)','50 Total AI Music Tracks (Lifetime Balance)','Unlimited subtitles forever','Credits never expire','Founders status — forever'].map(f=>(
                     <div key={f} style={{display:'flex',alignItems:'center',gap:8,fontSize:13,fontWeight:700,color:'#fff'}}>
                       <span style={{color:'#34C759',fontWeight:800,fontSize:15}}>✓</span> {f}
                     </div>
@@ -640,9 +640,9 @@ export default function Landing() {
           {/* Credit Packs Grid */}
           <div style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'repeat(auto-fit,minmax(280px,1fr))',gap:16,marginBottom:20}}>
             {[
-              {key:'starter',name:'Starter Pack',credits:500,bonus:'',npr:499,usd:4.99,popular:false,voice:20,music:5,
+              {key:'starter',name:'Starter Pack',credits:2500,bonus:'',npr:499,usd:4.99,popular:false,voice:20,music:5,
                hook:'Your next 2 weeks of video content, sorted. Launch your new channel idea this weekend.'},
-              {key:'creator',name:'Creator Value Pack',credits:1100,bonus:'+10% bonus',npr:999,usd:12.99,popular:true,voice:44,music:11,
+              {key:'creator',name:'Creator Value Pack',credits:5500,bonus:'',npr:999,usd:12.99,popular:true,voice:44,music:11,
                hook:'Go daily for a full month. Build your audience with consistent uploads without touching a microphone.'},
             ].map(p=>(
               <div key={p.key} style={{background:'#fff',borderRadius:20,padding:'28px 24px',border:p.popular?'2px solid #DC143C':'1.5px solid #e8e8ed',position:'relative',boxShadow:p.popular?'0 8px 32px rgba(220,20,60,.1)':'none'}}>
@@ -657,9 +657,9 @@ export default function Landing() {
                   {p.bonus&&<span style={{color:'#34C759'}}>{p.bonus}</span>}
                 </div>
                 <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:20}}>
-                  {[
-                    `🎙️ ${p.voice} voiceover generations`,
-                    `🎵 ${p.music} music tracks (30s each)`,
+             {[
+                    `🎙️ ${p.credits.toLocaleString()} Swor Credits`,
+                    '🎙️ 1 credit per character typed',
                     '🎬 Unlimited subtitle generation',
                     '✓ Credits never expire',
                     '✓ Mix voiceover + music freely',
@@ -942,7 +942,7 @@ export default function Landing() {
               },
               {
                 q:'What are the pricing plans?',
-                a:'Starter Pack: NPR 499 (500 credits / 20 voiceovers). Creator Pack: NPR 999 (1,100 credits / 44 voiceovers). Founders Lifetime Pack: NPR 2,500 one-time (500 voiceovers + 50 AI music tracks, no monthly fees ever). All plans include unlimited free Nepali subtitles.'
+                a:'Starter Pack: NPR 499 (2,500 credits). Creator Pack: NPR 999 (5,500 credits). Founders Lifetime Pack: NPR 2,500 one-time (62,500 credits + 50 AI music tracks, no monthly fees ever). All plans charged at 1 credit per character. All plans include unlimited free Nepali subtitles.'
               },
             ].map((faq,i)=>(
               <div key={i} style={{borderBottom:'1px solid #f0f0f0',padding:'20px 0'}}>
