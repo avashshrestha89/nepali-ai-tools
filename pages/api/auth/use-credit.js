@@ -6,7 +6,6 @@ const redis = new Redis({
 })
 
 // Credit costs
-
 const MUSIC_CREDIT_COST_PER_30S = 100
 
 function getMusicCreditCost(durationSeconds) {
@@ -16,7 +15,7 @@ function getMusicCreditCost(durationSeconds) {
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
-  const { type, charCount, durationSeconds, isFreeMusciTrial } = req.body
+  const { type, charCount, durationSeconds } = req.body
   const sessionToken = req.cookies.swor_session
 
   if (!sessionToken) return res.status(401).json({ error: 'Not logged in' })
@@ -30,13 +29,15 @@ export default async function handler(req, res) {
 
     const user = typeof raw === 'string' ? JSON.parse(raw) : raw
 
-// ── VOICEOVER ──
+    // ── VOICEOVER ──
     if (type === 'voiceover') {
       const charsToCharge = parseInt(charCount) || 0
+
       if (charsToCharge <= 0) {
         return res.status(400).json({ error: 'No text provided.' })
       }
-      // Use paid credits — 1 credit per character
+
+      // 1 credit per character
       const credits = user.credits || 0
       if (credits < charsToCharge) {
         return res.status(403).json({
@@ -45,6 +46,7 @@ export default async function handler(req, res) {
           required: charsToCharge,
         })
       }
+
       user.credits = credits - charsToCharge
       await redis.set(`user:${email}`, JSON.stringify(user))
       return res.status(200).json({
@@ -55,33 +57,21 @@ export default async function handler(req, res) {
       })
     }
 
-      user.credits = credits - VOICEOVER_CREDIT_COST
-      await redis.set(`user:${email}`, JSON.stringify(user))
-      return res.status(200).json({
-        success: true,
-        source: 'credits',
-        credits: user.credits,
-        creditsUsed: VOICEOVER_CREDIT_COST,
-      })
-    }
-
     // ── MUSIC ──
     if (type === 'music') {
       const dur = parseInt(durationSeconds) || 30
 
-  
-
-// Founders lifetime music bonus (50 tracks total, never resets)
-if (user.isFounder && user.founderMusicRemaining > 0) {
-  user.founderMusicRemaining -= 1
-  await redis.set(`user:${email}`, JSON.stringify(user))
-  return res.status(200).json({
-    success: true,
-    source: 'founder_bonus',
-    founderMusicRemaining: user.founderMusicRemaining,
-    credits: user.credits || 0,
-  })
-}
+      // Founders lifetime music bonus (50 tracks total, never resets)
+      if (user.isFounder && user.founderMusicRemaining > 0) {
+        user.founderMusicRemaining -= 1
+        await redis.set(`user:${email}`, JSON.stringify(user))
+        return res.status(200).json({
+          success: true,
+          source: 'founder_bonus',
+          founderMusicRemaining: user.founderMusicRemaining,
+          credits: user.credits || 0,
+        })
+      }
 
       // Use paid credits
       const creditCost = getMusicCreditCost(dur)
@@ -106,6 +96,7 @@ if (user.isFounder && user.founderMusicRemaining > 0) {
     }
 
     return res.status(400).json({ error: 'Invalid type. Use voiceover or music.' })
+
   } catch (error) {
     console.error('Use credit error:', error)
     return res.status(500).json({ error: error.message })
