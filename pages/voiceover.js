@@ -297,7 +297,7 @@ export default function Voiceover() {
                 </div>
               </div>
               <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
-                <span style={{fontWeight:700,color:'#1976D2'}}>4. Long scripts —</span> Max 500 characters per generation. Split long scripts into parts and join in CapCut.
+                <span style={{fontWeight:700,color:'#1976D2'}}>4. Credits —</span> You are charged 1 credit per character typed. Type more = more credits used. Check your balance before generating.
               </div>
             </div>
           </div>
@@ -362,11 +362,11 @@ export default function Voiceover() {
                 <div style={{fontSize:24,fontWeight:800,color:'#1976D2',fontFamily:'Sora,sans-serif'}}>{credits}</div>
                 <div style={{fontSize:12,color:'#888',marginTop:2}}>Swor Credits remaining</div>
                 <div style={{fontSize:12,color:'#888',marginTop:6}}>1 credit per character</div>
-                {credits < 25 && (
-                  <Link href="/#pricing" style={{display:'block',marginTop:10,background:'#DC143C',color:'#fff',padding:'8px 12px',borderRadius:8,fontSize:12,fontWeight:700,textAlign:'center',textDecoration:'none'}}>
-                    Buy more credits →
-                  </Link>
-                )}
+             {credits < 100 && (
+  <Link href="/#pricing" style={{display:'block',marginTop:10,background:'#DC143C',color:'#fff',padding:'8px 12px',borderRadius:8,fontSize:12,fontWeight:700,textAlign:'center',textDecoration:'none'}}>
+    Buy more credits →
+  </Link>
+)}
               </div>
             ) : isAnon ? (
               <div>
