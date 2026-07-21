@@ -25,7 +25,7 @@ const VOICES = [
   { voice_id: 'm3yAHyFEFKtbCIM5n7GF', name: 'Asha', desc: 'Conversational & Bright', gender: 'F', color: '#D81B60' },
 ]
 
-const CHAR_LIMIT = 500
+const CHAR_LIMIT = 5000
 
 export default function Voiceover() {
   const [isMobile, setIsMobile] = useState(false)
@@ -110,7 +110,7 @@ export default function Voiceover() {
     setLoading(false)
   }
 
-  const canGenerate = text.trim().length > 0 && text.length <= CHAR_LIMIT && !loading && session !== null
+  const canGenerate = text.trim().length > 0 && !loading && session !== null && (session === false || (session && (session.credits || 0) >= text.length))
   const filteredVoices = VOICES.filter(v => genderFilter === 'all' || (genderFilter === 'female' ? v.gender === 'F' : v.gender === 'M'))
   const credits = session ? session.credits || 0 : null
   const isAnon = session === false
@@ -246,13 +246,15 @@ export default function Voiceover() {
           <div style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',overflow:'hidden',marginBottom:12}}>
             <textarea
               value={text}
-              onChange={e => setText(e.target.value.slice(0, CHAR_LIMIT))}
+              onChange={e => setText(e.target.value)}
               placeholder="नमस्ते! यहाँ आफ्नो नेपाली पाठ टाइप गर्नुस्... (Devanagari script only — देवनागरी मा लेख्नुस्)"
               style={{width:'100%',minHeight:isMobile?160:220,padding:'16px',fontSize:15,lineHeight:1.8,border:'none',background:'transparent',color:'#1d1d1f'}}
             />
             <div style={{padding:'8px 16px',borderTop:'1px solid #f0f0f0',display:'flex',justifyContent:'space-between',alignItems:'center',background:'#fafafa'}}>
               <span style={{fontSize:12,color:'#DC143C',fontWeight:600}}>⚠️ Devanagari script only — type in नेपाली not Roman</span>
-              <span style={{fontSize:12,fontWeight:600,color:text.length > CHAR_LIMIT * 0.9 ? '#DC143C' : '#888'}}>{text.length} / {CHAR_LIMIT}</span>
+              <span style={{fontSize:12,fontWeight:600,color:(session && (session.credits || 0) < text.length) ? '#DC143C' : '#888'}}>
+  {text.length} chars = {text.length} credits
+</span>
             </div>
           </div>
 {/* Pro Tips */}
@@ -359,7 +361,7 @@ export default function Voiceover() {
               <div>
                 <div style={{fontSize:24,fontWeight:800,color:'#1976D2',fontFamily:'Sora,sans-serif'}}>{credits}</div>
                 <div style={{fontSize:12,color:'#888',marginTop:2}}>Swor Credits remaining</div>
-                <div style={{fontSize:12,color:'#888',marginTop:6}}>25 credits per generation</div>
+                <div style={{fontSize:12,color:'#888',marginTop:6}}>1 credit per character</div>
                 {credits < 25 && (
                   <Link href="/#pricing" style={{display:'block',marginTop:10,background:'#DC143C',color:'#fff',padding:'8px 12px',borderRadius:8,fontSize:12,fontWeight:700,textAlign:'center',textDecoration:'none'}}>
                     Buy more credits →
