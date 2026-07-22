@@ -99,10 +99,10 @@ function DemoBoxInline() {
   }
 
   return (
-    <div style={{background:'#f8f8f8',borderRadius:12,padding:16,border:'1.5px solid #e8e8ed',marginBottom:12}}>
-      <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>
-        🎙️ Try a Sample First
-      </div>
+    <div style={{background:'#E8F4FD',borderRadius:12,padding:16,border:'1.5px solid #90CAF9',marginBottom:12}}>
+  <div style={{fontSize:11,fontWeight:700,color:'#1976D2',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>
+    🎙️ Try a Sample First
+  </div>
       <div style={{display:'flex',gap:6,marginBottom:10,flexWrap:'wrap'}}>
         {DEMO_VOICES.map(v => (
           <button key={v.voice_id} onClick={() => setDemoVoice(v)}
