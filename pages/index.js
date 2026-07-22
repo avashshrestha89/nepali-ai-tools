@@ -304,7 +304,23 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
+{/* ══ HOMEPAGE DEMO BOX ══ */}
+      <section style={{padding:isMobile?'40px 16px':'60px 48px',background:'#fff',borderTop:'1px solid #f0f0f0'}}>
+        <div style={{maxWidth:640,margin:'0 auto'}}>
+          <div style={{textAlign:'center',marginBottom:28}}>
+            <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(220,20,60,.08)',border:'1px solid rgba(220,20,60,.15)',borderRadius:20,padding:'5px 14px',fontSize:12,fontWeight:700,color:'#DC143C',marginBottom:12}}>
+              🎙️ TRY FREE — NO SIGNUP NEEDED
+            </div>
+            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?'20px':'clamp(20px,3vw,30px)',fontWeight:800,letterSpacing:'-0.8px',marginBottom:8}}>
+              Hear a Nepali AI Voice Right Now
+            </h2>
+            <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.65}}>
+              Type up to 50 Devanagari characters, enter your details and get 1 free voiceover sample instantly
+            </p>
+          </div>
+          <HomepageDemoBox isMobile={isMobile} />
+        </div>
+      </section>
       {/* ══ MIDDLE STRIP ══ */}
       <section style={{background:'#1d1d1f',padding:isMobile?'20px 16px':'28px 48px',textAlign:'center'}}>
         <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(16px,2vw,24px)',fontWeight:700,color:'#fff',letterSpacing:'-0.3px',marginBottom:8}}>
