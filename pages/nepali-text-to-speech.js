@@ -212,7 +212,24 @@ export default function NepaliTextToSpeech() {
           <div style={{fontSize:13,color:'#999',marginTop:8}}>Nepal's only AI Nepali voice generator with 20 voices, emotion control and voice cloning</div>
         </div>
       </section>
+{/* FREE DEMO BOX */}
+      <section style={{padding:'60px 24px',background:'#fff'}}>
+        <div style={{maxWidth:760,margin:'0 auto'}}>
+          <div style={{textAlign:'center',marginBottom:32}}>
+            <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(220,20,60,.08)',border:'1px solid rgba(220,20,60,.15)',borderRadius:20,padding:'5px 14px',fontSize:12,fontWeight:700,color:'#DC143C',marginBottom:16}}>
+              🎙️ TRY IT FREE — NO SIGNUP NEEDED
+            </div>
+            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(20px,3vw,32px)',fontWeight:800,letterSpacing:'-0.8px',marginBottom:8}}>
+              Hear a Nepali AI Voice Right Now
+            </h2>
+            <p style={{fontSize:15,color:'#6e6e73',lineHeight:1.65}}>
+              Type up to 50 Devanagari characters and hear the difference instantly
+            </p>
+          </div>
 
+          <DemoBox />
+        </div>
+      </section>
       {/* HOW IT WORKS */}
       <section style={{padding:'80px 24px',background:'#fff'}}>
         <div style={{maxWidth:900,margin:'0 auto'}}>
@@ -292,6 +309,146 @@ export default function NepaliTextToSpeech() {
         </div>
       </section>
 
+
+import { useRef } from 'react'
+
+const DEMO_VOICES = [
+  { voice_id: '1zUSi8LeHs9M2mV8X6YS', name: 'Priyanka', desc: 'Romantic & Elegant', color: '#FF6B8A' },
+  { voice_id: 'WdZjiN0nNcik2LBjOHiv', name: 'Bishnu', desc: 'Wise Documentary', color: '#4E342E' },
+  { voice_id: 'TX3LPaxmHKxFdv7VOQHJ', name: 'Arjun', desc: 'Energetic Reels', color: '#F57C00' },
+]
+
+const DEMO_CHAR_LIMIT = 50
+
+function DemoBox() {
+  const [demoText, setDemoText] = useState('')
+  const [demoVoice, setDemoVoice] = useState(DEMO_VOICES[0])
+  const [demoLoading, setDemoLoading] = useState(false)
+  const [demoError, setDemoError] = useState(null)
+  const [demoPlaying, setDemoPlaying] = useState(false)
+  const demoAudioRef = useRef(null)
+
+  async function handleDemo() {
+    if (!demoText.trim() || demoLoading) return
+    setDemoLoading(true)
+    setDemoError(null)
+    setDemoPlaying(false)
+
+    try {
+      const res = await fetch('/api/demo-voice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: demoText, voiceId: demoVoice.voice_id }),
+      })
+
+      if (!res.ok) {
+        const e = await res.json()
+        throw new Error(e.error)
+      }
+
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+
+      if (demoAudioRef.current) {
+        demoAudioRef.current.pause()
+      }
+
+      const audio = new Audio(url)
+      demoAudioRef.current = audio
+      audio.play()
+      setDemoPlaying(true)
+      audio.onended = () => setDemoPlaying(false)
+
+    } catch (e) {
+      setDemoError(e.message)
+    }
+
+    setDemoLoading(false)
+  }
+
+  return (
+    <div style={{background:'#f5f5f7',borderRadius:20,padding:32,border:'1.5px solid #e8e8ed'}}>
+      
+      {/* Voice selector */}
+      <div style={{display:'flex',gap:10,marginBottom:20,flexWrap:'wrap'}}>
+        {DEMO_VOICES.map(v => (
+          <button key={v.voice_id} onClick={() => setDemoVoice(v)}
+            style={{
+              display:'flex',alignItems:'center',gap:8,
+              padding:'8px 16px',borderRadius:10,border:'1.5px solid',
+              borderColor: demoVoice.voice_id === v.voice_id ? v.color : '#e8e8ed',
+              background: demoVoice.voice_id === v.voice_id ? `${v.color}15` : '#fff',
+              cursor:'pointer',fontSize:13,fontWeight:600,
+              color: demoVoice.voice_id === v.voice_id ? v.color : '#555',
+              transition:'all .15s'
+            }}>
+            <div style={{width:20,height:20,borderRadius:5,background:v.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,fontWeight:700,color:'#fff',flexShrink:0}}>
+              {v.name[0]}
+            </div>
+            {v.name} — {v.desc}
+          </button>
+        ))}
+      </div>
+
+      {/* Text input */}
+      <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',overflow:'hidden',marginBottom:16}}>
+        <textarea
+          value={demoText}
+          onChange={e => setDemoText(e.target.value.slice(0, DEMO_CHAR_LIMIT))}
+          placeholder="नमस्ते! यहाँ नेपाली टाइप गर्नुस्..."
+          style={{
+            width:'100%',height:100,padding:'14px 16px',
+            fontSize:16,lineHeight:1.8,border:'none',
+            background:'transparent',color:'#1d1d1f',
+            fontFamily:'Noto Sans Devanagari, Manrope, sans-serif',
+            resize:'none',outline:'none'
+          }}
+        />
+        <div style={{padding:'8px 16px',borderTop:'1px solid #f0f0f0',background:'#fafafa',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <span style={{fontSize:12,color:'#DC143C',fontWeight:600}}>⚠️ Devanagari only — type in नेपाली</span>
+          <span style={{fontSize:12,fontWeight:600,color: demoText.length >= DEMO_CHAR_LIMIT ? '#DC143C' : '#888'}}>
+            {demoText.length} / {DEMO_CHAR_LIMIT}
+          </span>
+        </div>
+      </div>
+
+      {/* Error */}
+      {demoError && (
+        <div style={{background:'#FFF0F0',border:'1px solid #FFB8B8',borderRadius:10,padding:'10px 14px',fontSize:13,color:'#CC3333',marginBottom:12}}>
+          ❌ {demoError}
+        </div>
+      )}
+
+      {/* Generate button */}
+      <button
+        onClick={handleDemo}
+        disabled={!demoText.trim() || demoLoading}
+        style={{
+          width:'100%',padding:'14px',borderRadius:12,border:'none',
+          background: demoText.trim() && !demoLoading ? '#DC143C' : '#ccc',
+          color:'#fff',fontSize:15,fontWeight:700,
+          cursor: demoText.trim() && !demoLoading ? 'pointer' : 'not-allowed',
+          fontFamily:'Sora,sans-serif',
+          boxShadow: demoText.trim() ? '0 4px 20px rgba(220,20,60,.25)' : 'none',
+          marginBottom:16
+        }}>
+        {demoLoading ? '⏳ Generating...' : demoPlaying ? '🔊 Playing...' : '🎙️ Hear This Voice Free'}
+      </button>
+
+      {/* Upsell */}
+      <div style={{textAlign:'center',padding:'16px',background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed'}}>
+        <div style={{fontSize:13,color:'#1d1d1f',fontWeight:600,marginBottom:6}}>
+          Like what you hear? Get 17 more voices + full scripts
+        </div>
+        <Link href="/tool">
+          <button style={{background:'#1d1d1f',color:'#fff',border:'none',padding:'10px 24px',borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer'}}>
+            Get Full Access →
+          </button>
+        </Link>
+      </div>
+    </div>
+  )
+}
       {/* FAQ */}
       <section style={{padding:'80px 24px',background:'#f5f5f7'}}>
         <div style={{maxWidth:760,margin:'0 auto'}}>
