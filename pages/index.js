@@ -2,6 +2,181 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
 
+const DEMO_VOICES_HP = [
+  { voice_id: '1zUSi8LeHs9M2mV8X6YS', name: 'Priyanka', desc: 'Romantic & Elegant', color: '#FF6B8A' },
+  { voice_id: 'WdZjiN0nNcik2LBjOHiv', name: 'Bishnu', desc: 'Wise Documentary', color: '#4E342E' },
+  { voice_id: 'TX3LPaxmHKxFdv7VOQHJ', name: 'Arjun', desc: 'Energetic Reels', color: '#F57C00' },
+]
+
+const HP_DEMO_CHAR_LIMIT = 50
+
+function HomepageDemoBox({ isMobile }) {
+  const [demoText, setDemoText] = useState('')
+  const [demoVoice, setDemoVoice] = useState(DEMO_VOICES_HP[0])
+  const [demoLoading, setDemoLoading] = useState(false)
+  const [demoError, setDemoError] = useState(null)
+  const [demoPlaying, setDemoPlaying] = useState(false)
+  const [showForm, setShowForm] = useState(false)
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [used, setUsed] = useState(false)
+  const demoAudioRef = useRef(null)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setUsed(localStorage.getItem('swor_hp_demo_used') === 'true')
+    }
+  }, [])
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    if (!name || !phone || !email || !demoText.trim()) return
+    setDemoLoading(true)
+    setDemoError(null)
+    try {
+      const res = await fetch('/api/homepage-demo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, email, text: demoText, voiceId: demoVoice.voice_id }),
+      })
+      if (!res.ok) { const e = await res.json(); throw new Error(e.error) }
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      if (demoAudioRef.current) demoAudioRef.current.pause()
+      const audio = new Audio(url)
+      demoAudioRef.current = audio
+      audio.play()
+      setDemoPlaying(true)
+      audio.onended = () => setDemoPlaying(false)
+      localStorage.setItem('swor_hp_demo_used', 'true')
+      setUsed(true)
+      setShowForm(false)
+    } catch (err) { setDemoError(err.message) }
+    setDemoLoading(false)
+  }
+
+  if (used) {
+    return (
+      <div style={{background:'#f5f5f7',borderRadius:16,padding:24,textAlign:'center',border:'1.5px solid #e8e8ed'}}>
+        <div style={{fontSize:16,fontWeight:700,marginBottom:8}}>🎉 You&apos;ve already tried the free demo!</div>
+        <p style={{fontSize:14,color:'#6e6e73',marginBottom:16}}>Ready for full access? Get unlimited Nepali voiceovers.</p>
+        <Link href="/tool">
+          <button style={{background:'#DC143C',color:'#fff',border:'none',padding:'12px 28px',borderRadius:10,fontSize:14,fontWeight:700,cursor:'pointer'}}>
+            Get Full Access →
+          </button>
+        </Link>
+      </div>
+    )
+  }
+
+  return (
+    <div style={{background:'#f5f5f7',borderRadius:16,padding:isMobile?20:28,border:'1.5px solid #e8e8ed'}}>
+      {/* Voice selector */}
+      <div style={{display:'flex',gap:8,marginBottom:16,flexWrap:'wrap'}}>
+        {DEMO_VOICES_HP.map(v => (
+          <button key={v.voice_id} onClick={() => setDemoVoice(v)}
+            style={{
+              display:'flex',alignItems:'center',gap:6,
+              padding:'7px 14px',borderRadius:10,border:'1.5px solid',
+              borderColor: demoVoice.voice_id === v.voice_id ? v.color : '#e8e8ed',
+              background: demoVoice.voice_id === v.voice_id ? `${v.color}15` : '#fff',
+              cursor:'pointer',fontSize:12,fontWeight:600,
+              color: demoVoice.voice_id === v.voice_id ? v.color : '#555',
+            }}>
+            <div style={{width:18,height:18,borderRadius:5,background:v.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,fontWeight:700,color:'#fff'}}>
+              {v.name[0]}
+            </div>
+            {v.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Text input */}
+      <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',overflow:'hidden',marginBottom:12}}>
+        <textarea
+          value={demoText}
+          onChange={e => setDemoText(e.target.value.slice(0, HP_DEMO_CHAR_LIMIT))}
+          placeholder="नमस्ते! यहाँ नेपाली टाइप गर्नुस्..."
+          style={{
+            width:'100%',height:90,padding:'12px 14px',
+            fontSize:15,lineHeight:1.8,border:'none',
+            background:'transparent',color:'#1d1d1f',
+            fontFamily:'Noto Sans Devanagari, Manrope, sans-serif',
+            resize:'none',outline:'none'
+          }}
+        />
+        <div style={{padding:'6px 14px',borderTop:'1px solid #f0f0f0',background:'#fafafa',display:'flex',justifyContent:'space-between'}}>
+          <span style={{fontSize:11,color:'#DC143C',fontWeight:600}}>⚠️ Devanagari only</span>
+          <span style={{fontSize:11,fontWeight:600,color: demoText.length >= HP_DEMO_CHAR_LIMIT ? '#DC143C' : '#888'}}>
+            {demoText.length}/{HP_DEMO_CHAR_LIMIT}
+          </span>
+        </div>
+      </div>
+
+      {/* Error */}
+      {demoError && (
+        <div style={{fontSize:12,color:'#CC3333',marginBottom:10}}>❌ {demoError}</div>
+      )}
+
+      {/* Generate button — triggers form */}
+      {!showForm && (
+        <button
+          onClick={() => { if (demoText.trim()) setShowForm(true) }}
+          disabled={!demoText.trim()}
+          style={{
+            width:'100%',padding:'13px',borderRadius:12,border:'none',
+            background: demoText.trim() ? '#DC143C' : '#ccc',
+            color:'#fff',fontSize:15,fontWeight:700,
+            cursor: demoText.trim() ? 'pointer' : 'not-allowed',
+            fontFamily:'Sora,sans-serif',
+            boxShadow: demoText.trim() ? '0 4px 20px rgba(220,20,60,.25)' : 'none',
+          }}>
+          🎙️ Generate Free Sample →
+        </button>
+      )}
+
+      {/* Form — shown after clicking generate */}
+      {showForm && (
+        <form onSubmit={handleSubmit} style={{display:'flex',flexDirection:'column',gap:10}}>
+          <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f',marginBottom:4}}>
+            Almost there! Enter your details to unlock your free sample:
+          </div>
+          <input
+            type="text" placeholder="Your name" required value={name}
+            onChange={e => setName(e.target.value)}
+            style={{padding:'11px 14px',borderRadius:10,border:'1.5px solid #e8e8ed',fontSize:14,outline:'none',fontFamily:'inherit'}}
+          />
+          <input
+            type="tel" placeholder="Phone number (e.g. 98XXXXXXXX)" required value={phone}
+            onChange={e => setPhone(e.target.value)}
+            style={{padding:'11px 14px',borderRadius:10,border:'1.5px solid #e8e8ed',fontSize:14,outline:'none',fontFamily:'inherit'}}
+          />
+          <input
+            type="email" placeholder="Email address" required value={email}
+            onChange={e => setEmail(e.target.value)}
+            style={{padding:'11px 14px',borderRadius:10,border:'1.5px solid #e8e8ed',fontSize:14,outline:'none',fontFamily:'inherit'}}
+          />
+          <button type="submit" disabled={demoLoading}
+            style={{
+              padding:'13px',borderRadius:12,border:'none',
+              background: demoLoading ? '#ccc' : '#DC143C',
+              color:'#fff',fontSize:15,fontWeight:700,
+              cursor: demoLoading ? 'not-allowed' : 'pointer',
+              fontFamily:'Sora,sans-serif',
+            }}>
+            {demoLoading ? '⏳ Generating your sample...' : demoPlaying ? '🔊 Playing...' : '🎙️ Hear My Free Sample →'}
+          </button>
+          <button type="button" onClick={() => setShowForm(false)}
+            style={{background:'transparent',border:'none',fontSize:12,color:'#888',cursor:'pointer'}}>
+            ← Back
+          </button>
+        </form>
+      )}
+    </div>
+  )
+}
+
 const FORMSPREE_ID = 'xaqkjezd'
 
 const FEATURED_VOICES = [
