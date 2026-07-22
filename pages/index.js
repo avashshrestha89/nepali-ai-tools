@@ -963,12 +963,26 @@ export default function Landing() {
           </div>
           <div style={{fontSize:11,color:'rgba(255,255,255,.25)'}}>© 2026 Swor AI · Kathmandu, Nepal</div>
         </div>
-        <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-          {[{l:'Instagram',h:'https://instagram.com/meroadai'},{l:'Facebook',h:'https://facebook.com/meroadai'},{l:'TikTok',h:'https://tiktok.com/@meroadai'},{l:'Contact',h:'mailto:meroadaiofficial@gmail.com'}].map(s=>(
-            <a key={s.l} href={s.h} target="_blank" rel="noreferrer" style={{background:'rgba(255,255,255,.06)',border:'1px solid rgba(255,255,255,.08)',borderRadius:8,padding:'7px 14px',fontSize:12,fontWeight:600,color:'rgba(255,255,255,.5)'}}>
-              {s.l}
-            </a>
-          ))}
+      <div style={{display:'flex',flexDirection:'column',gap:12,alignItems:'flex-end'}}>
+          <div style={{display:'flex',gap:8,flexWrap:'wrap',justifyContent:'flex-end'}}>
+            {[{l:'Instagram',h:'https://instagram.com/meroadai'},{l:'Facebook',h:'https://facebook.com/meroadai'},{l:'TikTok',h:'https://tiktok.com/@meroadai'},{l:'Contact',h:'mailto:meroadaiofficial@gmail.com'}].map(s=>(
+              <a key={s.l} href={s.h} target="_blank" rel="noreferrer" style={{background:'rgba(255,255,255,.06)',border:'1px solid rgba(255,255,255,.08)',borderRadius:8,padding:'7px 14px',fontSize:12,fontWeight:600,color:'rgba(255,255,255,.5)'}}>
+                {s.l}
+              </a>
+            ))}
+          </div>
+          <div style={{display:'flex',gap:8,flexWrap:'wrap',justifyContent:'flex-end'}}>
+            {[
+              {l:'Nepali Text to Speech',h:'/nepali-text-to-speech'},
+              {l:'Nepali Voice Generator',h:'/nepali-voice-generator'},
+              {l:'TikTok Voiceover',h:'/nepali-tiktok-voiceover'},
+              {l:'YouTube Voiceover',h:'/nepali-youtube-voiceover'},
+            ].map(s=>(
+              <a key={s.l} href={s.h} style={{background:'rgba(255,255,255,.03)',border:'1px solid rgba(255,255,255,.06)',borderRadius:8,padding:'7px 14px',fontSize:11,fontWeight:600,color:'rgba(255,255,255,.35)'}}>
+                {s.l}
+              </a>
+            ))}
+          </div>
         </div>
       </footer>
     </>
