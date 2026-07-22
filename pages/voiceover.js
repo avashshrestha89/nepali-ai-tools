@@ -25,6 +25,132 @@ const VOICES = [
   { voice_id: 'm3yAHyFEFKtbCIM5n7GF', name: 'Asha', desc: 'Conversational & Bright', gender: 'F', color: '#D81B60' },
 ]
 
+const DEMO_VOICES = [
+  { voice_id: '1zUSi8LeHs9M2mV8X6YS', name: 'Priyanka', desc: 'Romantic & Elegant', color: '#FF6B8A' },
+  { voice_id: 'WdZjiN0nNcik2LBjOHiv', name: 'Bishnu', desc: 'Wise Documentary', color: '#4E342E' },
+  { voice_id: 'TX3LPaxmHKxFdv7VOQHJ', name: 'Arjun', desc: 'Energetic Reels', color: '#F57C00' },
+]
+
+const DEMO_CHAR_LIMIT = 50
+
+const PACKS = [
+  {
+    key: 'starter',
+    name: 'Starter Pack',
+    npr: 499,
+    usd: 4.99,
+    credits: '2,500',
+    popular: false,
+    features: ['2,500 Swor Credits', '1 credit per character', 'All 20 voices', 'Credits never expire'],
+    color: '#1976D2',
+  },
+  {
+    key: 'creator',
+    name: 'Creator Pack',
+    npr: 999,
+    usd: 12.99,
+    credits: '5,500',
+    popular: true,
+    features: ['5,500 Swor Credits', '1 credit per character', 'All 20 voices', 'Credits never expire'],
+    color: '#DC143C',
+  },
+  {
+    key: 'founders',
+    name: 'Founders Lifetime',
+    npr: 2500,
+    usd: 19.99,
+    credits: '62,500',
+    popular: false,
+    features: ['62,500 Swor Credits', '50 free AI music tracks', 'All 20 voices', 'Credits never expire', 'Founders status forever'],
+    color: '#C9940A',
+  },
+]
+
+function DemoBoxInline() {
+  const [demoText, setDemoText] = useState('')
+  const [demoVoice, setDemoVoice] = useState(DEMO_VOICES[0])
+  const [demoLoading, setDemoLoading] = useState(false)
+  const [demoError, setDemoError] = useState(null)
+  const [demoPlaying, setDemoPlaying] = useState(false)
+  const demoAudioRef = useRef(null)
+
+  async function handleDemo() {
+    if (!demoText.trim() || demoLoading) return
+    setDemoLoading(true)
+    setDemoError(null)
+    setDemoPlaying(false)
+    try {
+      const res = await fetch('/api/demo-voice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: demoText, voiceId: demoVoice.voice_id }),
+      })
+      if (!res.ok) { const e = await res.json(); throw new Error(e.error) }
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      if (demoAudioRef.current) demoAudioRef.current.pause()
+      const audio = new Audio(url)
+      demoAudioRef.current = audio
+      audio.play()
+      setDemoPlaying(true)
+      audio.onended = () => setDemoPlaying(false)
+    } catch (e) { setDemoError(e.message) }
+    setDemoLoading(false)
+  }
+
+  return (
+    <div style={{background:'#f8f8f8',borderRadius:12,padding:16,border:'1.5px solid #e8e8ed',marginBottom:12}}>
+      <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>
+        🎙️ Try a Sample First
+      </div>
+      <div style={{display:'flex',gap:6,marginBottom:10,flexWrap:'wrap'}}>
+        {DEMO_VOICES.map(v => (
+          <button key={v.voice_id} onClick={() => setDemoVoice(v)}
+            style={{
+              padding:'4px 10px',borderRadius:8,border:'1.5px solid',
+              borderColor: demoVoice.voice_id === v.voice_id ? v.color : '#e8e8ed',
+              background: demoVoice.voice_id === v.voice_id ? `${v.color}15` : '#fff',
+              cursor:'pointer',fontSize:11,fontWeight:600,
+              color: demoVoice.voice_id === v.voice_id ? v.color : '#555',
+            }}>
+            {v.name}
+          </button>
+        ))}
+      </div>
+      <textarea
+        value={demoText}
+        onChange={e => setDemoText(e.target.value.slice(0, DEMO_CHAR_LIMIT))}
+        placeholder="नमस्ते! यहाँ नेपाली टाइप गर्नुस्..."
+        style={{
+          width:'100%',height:70,padding:'10px 12px',
+          fontSize:13,lineHeight:1.7,border:'1.5px solid #e8e8ed',
+          borderRadius:8,background:'#fff',color:'#1d1d1f',
+          fontFamily:'Noto Sans Devanagari, Manrope, sans-serif',
+          resize:'none',outline:'none',marginBottom:6
+        }}
+      />
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+        <span style={{fontSize:10,color:'#DC143C',fontWeight:600}}>⚠️ Devanagari only</span>
+        <span style={{fontSize:10,fontWeight:600,color: demoText.length >= DEMO_CHAR_LIMIT ? '#DC143C' : '#888'}}>
+          {demoText.length}/{DEMO_CHAR_LIMIT}
+        </span>
+      </div>
+      {demoError && (
+        <div style={{fontSize:11,color:'#CC3333',marginBottom:8}}>❌ {demoError}</div>
+      )}
+      <button onClick={handleDemo} disabled={!demoText.trim() || demoLoading}
+        style={{
+          width:'100%',padding:'9px',borderRadius:8,border:'none',
+          background: demoText.trim() && !demoLoading ? '#1976D2' : '#ccc',
+          color:'#fff',fontSize:12,fontWeight:700,
+          cursor: demoText.trim() && !demoLoading ? 'pointer' : 'not-allowed',
+        }}>
+        {demoLoading ? '⏳ Generating...' : demoPlaying ? '🔊 Playing...' : '▶ Hear Sample (Free)'}
+      </button>
+    </div>
+  )
+}
+
 const CHAR_LIMIT = 5000
 
 export default function Voiceover() {
@@ -104,16 +230,16 @@ export default function Voiceover() {
       const blob = await res.blob()
       const url = URL.createObjectURL(blob)
       setResult({ url, filename: `swor_${selectedVoice.name.toLowerCase()}_${Date.now()}.mp3` })
-      // Refresh history after generation
       setTimeout(() => fetchHistory(), 2000)
     } catch (e) { setError(e.message) }
     setLoading(false)
   }
 
-  const canGenerate = text.trim().length > 0 && !loading && session !== null && (session === false || (session && (session.credits || 0) >= text.length))
+  const canGenerate = text.trim().length > 0 && !loading && session !== null && session !== false && (session.credits || 0) >= text.length
   const filteredVoices = VOICES.filter(v => genderFilter === 'all' || (genderFilter === 'female' ? v.gender === 'F' : v.gender === 'M'))
   const credits = session ? session.credits || 0 : null
   const isAnon = session === false
+  const hasNoCredits = session && session !== false && credits === 0
 
   function formatDate(iso) {
     const d = new Date(iso)
@@ -124,9 +250,8 @@ export default function Voiceover() {
     <>
       <Head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-<title>Nepali AI Voice Generator — Free Nepali Text to Speech Online | Swor AI</title>
-<meta name="description" content="Nepal's #1 Nepali AI voice generator. Free Nepali text to speech online — 20 natural voices for TikTok, YouTube, ads and documentary. Generate professional Nepali voiceover in seconds. Try free at meroadai.com" />
-<meta name="keywords" content="nepali text to speech, nepali ai voice generator, nepali voiceover generator, nepali tts, devanagari text to speech, nepali voice generator online, faceless nepali youtube voice, nepali documentary voice, nepali news voiceover ai, nepali reels voiceover, nepali tiktok voiceover, nepali voice without microphone, AI nepali voice" />
+        <title>Nepali AI Voiceover Generator — Swor AI</title>
+        <meta name="description" content="Generate realistic Nepali AI voiceovers in seconds. 20 premium voices. Type text, download MP3." />
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet" />
       </Head>
 
@@ -253,11 +378,33 @@ export default function Voiceover() {
             <div style={{padding:'8px 16px',borderTop:'1px solid #f0f0f0',display:'flex',justifyContent:'space-between',alignItems:'center',background:'#fafafa'}}>
               <span style={{fontSize:12,color:'#DC143C',fontWeight:600}}>⚠️ Devanagari script only — type in नेपाली not Roman</span>
               <span style={{fontSize:12,fontWeight:600,color:(session && (session.credits || 0) < text.length) ? '#DC143C' : '#888'}}>
-  {text.length} chars = {text.length} credits
-</span>
+                {text.length} chars = {text.length} credits
+              </span>
             </div>
           </div>
-{/* Pro Tips */}
+
+          {/* Error */}
+          {error && (
+            <div style={{background:'#FFF0F0',border:'1px solid #FFB8B8',borderRadius:10,padding:'12px 16px',fontSize:13,color:'#CC3333',marginBottom:12}}>
+              ❌ {error}
+            </div>
+          )}
+
+          {/* Result */}
+          {result && (
+            <div className="fade-in" style={{background:'#E8F4FD',border:'1.5px solid #90CAF9',borderRadius:14,padding:16,marginBottom:12}}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
+                <div style={{fontSize:13,fontWeight:700,color:'#1976D2'}}>✓ Voiceover ready!</div>
+                <a href={result.url} download={result.filename}
+                  style={{background:'#1976D2',color:'#fff',padding:'7px 16px',borderRadius:8,fontSize:12,fontWeight:700,textDecoration:'none'}}>
+                  ⬇ Download MP3
+                </a>
+              </div>
+              <audio controls src={result.url} style={{width:'100%',borderRadius:8}} />
+            </div>
+          )}
+
+          {/* Pro Tips */}
           <div style={{background:'#F8F9FF',border:'1.5px solid #E8EEFF',borderRadius:12,padding:'14px 16px',marginBottom:12}}>
             <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>💡 Pro Tips</div>
             <div style={{display:'flex',flexDirection:'column',gap:8}}>
@@ -267,14 +414,7 @@ export default function Voiceover() {
               <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
                 <span style={{fontWeight:700,color:'#1976D2'}}>2. Emotion tags —</span> Add emotion tags in <span style={{fontWeight:700}}>[brackets]</span> to control how the voice sounds:
                 <div style={{display:'flex',flexWrap:'wrap',gap:5,marginTop:6}}>
-                  {[
-  '[excited]','[whispers]','[laughs]','[sad]','[calm]',
-  '[sighs]','[nervous]','[angry]','[frustrated]','[sorrowful]',
-  '[happy]','[crying]','[gasps]','[gulps]','[hesitates]',
-  '[stammers]','[pauses]','[cheerfully]','[flatly]','[deadpan]',
-  '[playfully]','[shouts]','[sarcastic]','[curious]','[tired]',
-  '[resigned tone]','[regretful]','[serious]','[quietly]','[slowly]'
-].map(tag => (
+                  {['[excited]','[whispers]','[laughs]','[sad]','[calm]','[sighs]','[nervous]','[angry]','[frustrated]','[sorrowful]','[happy]','[crying]','[gasps]','[gulps]','[hesitates]','[stammers]','[pauses]','[cheerfully]','[flatly]','[deadpan]','[playfully]','[shouts]','[sarcastic]','[curious]','[tired]','[resigned tone]','[regretful]','[serious]','[quietly]','[slowly]'].map(tag => (
                     <span key={tag} style={{background:'#E8EEFF',color:'#1976D2',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600}}>{tag}</span>
                   ))}
                 </div>
@@ -301,27 +441,6 @@ export default function Voiceover() {
               </div>
             </div>
           </div>
-
-          {/* Error */}
-          {error && (
-            <div style={{background:'#FFF0F0',border:'1px solid #FFB8B8',borderRadius:10,padding:'12px 16px',fontSize:13,color:'#CC3333',marginBottom:12}}>
-              ❌ {error}
-            </div>
-          )}
-
-          {/* Result */}
-          {result && (
-            <div className="fade-in" style={{background:'#E8F4FD',border:'1.5px solid #90CAF9',borderRadius:14,padding:16,marginBottom:12}}>
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
-                <div style={{fontSize:13,fontWeight:700,color:'#1976D2'}}>✓ Voiceover ready!</div>
-                <a href={result.url} download={result.filename}
-                  style={{background:'#1976D2',color:'#fff',padding:'7px 16px',borderRadius:8,fontSize:12,fontWeight:700,textDecoration:'none'}}>
-                  ⬇ Download MP3
-                </a>
-              </div>
-              <audio controls src={result.url} style={{width:'100%',borderRadius:8}} />
-            </div>
-          )}
         </div>
 
         {/* RIGHT PANEL */}
@@ -359,14 +478,9 @@ export default function Voiceover() {
             <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>Balance</div>
             {session ? (
               <div>
-                <div style={{fontSize:24,fontWeight:800,color:'#1976D2',fontFamily:'Sora,sans-serif'}}>{credits}</div>
+                <div style={{fontSize:24,fontWeight:800,color:credits === 0 ? '#DC143C' : '#1976D2',fontFamily:'Sora,sans-serif'}}>{credits}</div>
                 <div style={{fontSize:12,color:'#888',marginTop:2}}>Swor Credits remaining</div>
-                <div style={{fontSize:12,color:'#888',marginTop:6}}>1 credit per character</div>
-             {credits < 100 && (
-  <Link href="/#pricing" style={{display:'block',marginTop:10,background:'#DC143C',color:'#fff',padding:'8px 12px',borderRadius:8,fontSize:12,fontWeight:700,textAlign:'center',textDecoration:'none'}}>
-    Buy more credits →
-  </Link>
-)}
+                <div style={{fontSize:12,color:'#888',marginTop:6}}>1 credit per character typed</div>
               </div>
             ) : isAnon ? (
               <div>
@@ -381,26 +495,69 @@ export default function Voiceover() {
             )}
           </div>
 
-          {/* Voice info card */}
-          <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
-            <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>Selected Voice</div>
-            <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
-              <div style={{width:40,height:40,borderRadius:10,background:selectedVoice.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,color:'#fff'}}>
-                {selectedVoice.name[0]}
+          {/* ZERO CREDITS — Show Demo + Pricing */}
+          {hasNoCredits && (
+            <>
+              {/* Demo Box */}
+              <DemoBoxInline />
+
+              {/* Pricing */}
+              <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
+                <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:12}}>
+                  Get Full Access
+                </div>
+                <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                  {PACKS.map(p => (
+                    <div key={p.key} style={{
+                      borderRadius:10,padding:'12px 14px',border:'1.5px solid',
+                      borderColor: p.popular ? p.color : '#e8e8ed',
+                      background: p.popular ? `${p.color}08` : '#fafafa',
+                      position:'relative'
+                    }}>
+                      {p.popular && (
+                        <div style={{position:'absolute',top:-8,right:10,background:p.color,color:'#fff',fontSize:9,fontWeight:700,padding:'2px 8px',borderRadius:10,letterSpacing:'0.06em'}}>
+                          MOST POPULAR
+                        </div>
+                      )}
+                      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:4}}>
+                        <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f'}}>{p.name}</div>
+                        <div style={{fontSize:14,fontWeight:800,color:p.color}}>NPR {p.npr.toLocaleString()}</div>
+                      </div>
+                      <div style={{fontSize:11,color:'#888',marginBottom:8}}>{p.credits} Swor Credits</div>
+                      <a href={`https://wa.me/19255379425?text=Hi! I want to buy the Swor AI ${p.name} (NPR ${p.npr}). Please confirm.`}
+                        target="_blank" rel="noreferrer"
+                        style={{display:'block',background:p.color,color:'#fff',padding:'7px 12px',borderRadius:8,fontSize:12,fontWeight:700,textAlign:'center',textDecoration:'none'}}>
+                        💬 Buy via WhatsApp
+                      </a>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div>
-                <div style={{fontSize:14,fontWeight:700,color:'#1d1d1f'}}>{selectedVoice.name}</div>
-                <div style={{fontSize:12,color:'#888'}}>{selectedVoice.desc}</div>
+            </>
+          )}
+
+          {/* Voice info card — only show when user has credits */}
+          {!hasNoCredits && (
+            <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
+              <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>Selected Voice</div>
+              <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
+                <div style={{width:40,height:40,borderRadius:10,background:selectedVoice.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,color:'#fff'}}>
+                  {selectedVoice.name[0]}
+                </div>
+                <div>
+                  <div style={{fontSize:14,fontWeight:700,color:'#1d1d1f'}}>{selectedVoice.name}</div>
+                  <div style={{fontSize:12,color:'#888'}}>{selectedVoice.desc}</div>
+                </div>
               </div>
+              <button onClick={() => playPreview(selectedVoice.voice_id)}
+                style={{width:'100%',padding:'8px',borderRadius:8,border:'1.5px solid #e8e8ed',background:'#fafafa',fontSize:12,fontWeight:600,cursor:'pointer',color:'#555'}}>
+                {playingPreview === selectedVoice.voice_id ? '■ Stop preview' : '▶ Preview voice'}
+              </button>
             </div>
-            <button onClick={() => playPreview(selectedVoice.voice_id)}
-              style={{width:'100%',padding:'8px',borderRadius:8,border:'1.5px solid #e8e8ed',background:'#fafafa',fontSize:12,fontWeight:600,cursor:'pointer',color:'#555'}}>
-              {playingPreview === selectedVoice.voice_id ? '■ Stop preview' : '▶ Preview voice'}
-            </button>
-          </div>
+          )}
 
           {/* HISTORY PANEL */}
-          {session && (
+          {session && !hasNoCredits && (
             <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
               <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>
                 Recent Generations
