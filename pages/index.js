@@ -430,7 +430,7 @@ export default function Landing() {
               <Link href="/tool"><button style={{background:'#fff',color:'#6B3FBE',border:'none',padding:'8px 16px',borderRadius:8,fontSize:13,fontWeight:800,cursor:'pointer',flexShrink:0,whiteSpace:'nowrap'}}>Try Free Music →</button></Link>
             </div>
             <div className="fu fu4" style={{display:'flex',gap:12,flexWrap:'wrap',marginBottom:20}}>
-              <a href="#access"><button className="btn-primary">Get free access</button></a>
+              <a href="#homepage-demo"><button className="btn-primary">Get free access</button></a>
               <Link href="/tool"><button className="btn-secondary">Try the tool first</button></Link>
             </div>
             <div style={{fontSize:13,color:'#DC143C',fontWeight:600}}>🔥 Only 20 beta spots — 7 already filled</div>
@@ -480,7 +480,7 @@ export default function Landing() {
         </div>
       </section>
 {/* ══ HOMEPAGE DEMO BOX ══ */}
-      <section style={{padding:isMobile?'40px 16px':'60px 48px',background:'#fff',borderTop:'1px solid #f0f0f0'}}>
+<section id="homepage-demo" style={{padding:isMobile?'40px 16px':'60px 48px',background:'#fff',borderTop:'1px solid #f0f0f0'}}>
         <div style={{maxWidth:640,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:28}}>
             <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(220,20,60,.08)',border:'1px solid rgba(220,20,60,.15)',borderRadius:20,padding:'5px 14px',fontSize:12,fontWeight:700,color:'#DC143C',marginBottom:12}}>
