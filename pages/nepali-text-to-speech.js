@@ -328,35 +328,43 @@ export default function NepaliTextToSpeech() {
             Every voice is trained specifically for natural Nepali speech — not a generic multilingual model
           </p>
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:12}}>
-            {[
-              {name:'Priyanka',desc:'Romantic & Elegant',gender:'Female',color:'#FF6B8A'},
-              {name:'Sunita',desc:'Soft Spoken Aunty',gender:'Female',color:'#E91E8C'},
-              {name:'Anjali',desc:'Motivational',gender:'Female',color:'#FF8C42'},
-              {name:'Vanishree',desc:'Professional News',gender:'Female',color:'#0077CC'},
-              {name:'Anika',desc:'Sweet & Lively',gender:'Female',color:'#7B2FBE'},
-              {name:'Mina',desc:'Friendly & Polished',gender:'Female',color:'#00897B'},
-              {name:'Shraddha',desc:'Credible & Trustworthy',gender:'Female',color:'#5C6BC0'},
-              {name:'Monika',desc:'Suspense & Drama',gender:'Female',color:'#1C1C2E'},
-              {name:'Ridhi',desc:'Elegant Ad Narration',gender:'Female',color:'#00ACC1'},
-              {name:'Asha',desc:'Conversational & Bright',gender:'Female',color:'#D81B60'},
-              {name:'Dhurundhar',desc:'Deep & Commanding',gender:'Male',color:'#1A3A5C'},
-              {name:'Bishnu',desc:'Wise Documentary',gender:'Male',color:'#4E342E'},
-              {name:'Rohan',desc:'Casual & Laid-Back',gender:'Male',color:'#546E7A'},
-              {name:'Arjun',desc:'Energetic Reels',gender:'Male',color:'#F57C00'},
-              {name:'Vikram',desc:'Confident & Warm',gender:'Male',color:'#2E7D32'},
-              {name:'Karan',desc:'Dark Documentary',gender:'Male',color:'#212121'},
-              {name:'Rudra',desc:'Intense & Romantic',gender:'Male',color:'#880E4F'},
-              {name:'Suraj',desc:'Upbeat TV Announcer',gender:'Male',color:'#FFA000'},
-              {name:'Saurav',desc:'Sports Commentator',gender:'Male',color:'#B71C1C'},
-              {name:'Prakash',desc:'Clear & Professional',gender:'Male',color:'#37474F'},
-            ].map(v=>(
-              <div key={v.name} style={{background:'#f8f8f8',borderRadius:12,padding:'14px 16px',border:'1.5px solid #e8e8ed'}}>
-                <div style={{width:36,height:36,borderRadius:9,background:v.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:700,color:'#fff',marginBottom:8}}>{v.name[0]}</div>
-                <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f'}}>{v.name}</div>
-                <div style={{fontSize:11,color:'#888',marginTop:2}}>{v.desc}</div>
-                <div style={{fontSize:10,fontWeight:700,color:v.gender==='Female'?'#E91E8C':'#1565C0',marginTop:4,textTransform:'uppercase'}}>{v.gender}</div>
-              </div>
-            ))}
+    {[
+  {voice_id:'1zUSi8LeHs9M2mV8X6YS',name:'Priyanka',desc:'Romantic & Elegant',gender:'Female',color:'#FF6B8A'},
+  {voice_id:'LK1Sn9bmEczSFI65RF0v',name:'Sunita',desc:'Soft Spoken Aunty',gender:'Female',color:'#E91E8C'},
+  {voice_id:'duDBJHU6G1oq7ZdK4Kxf',name:'Anjali',desc:'Motivational',gender:'Female',color:'#FF8C42'},
+  {voice_id:'TmPeb2hSxdVrThJLywkg',name:'Vanishree',desc:'Professional News',gender:'Female',color:'#0077CC'},
+  {voice_id:'ecp3DWciuUyW7BYM7II1',name:'Anika',desc:'Sweet & Lively',gender:'Female',color:'#7B2FBE'},
+  {voice_id:'f0JpDwzbGK384Dd1WH2s',name:'Mina',desc:'Friendly & Polished',gender:'Female',color:'#00897B'},
+  {voice_id:'Pc57DSBXmCXyEAmow7lW',name:'Shraddha',desc:'Credible & Trustworthy',gender:'Female',color:'#5C6BC0'},
+  {voice_id:'6qL48o1LBmtR94hIYAQh',name:'Monika',desc:'Suspense & Drama',gender:'Female',color:'#1C1C2E'},
+  {voice_id:'e6h2ged6ThVk1jTnIwnC',name:'Ridhi',desc:'Elegant Ad Narration',gender:'Female',color:'#00ACC1'},
+  {voice_id:'m3yAHyFEFKtbCIM5n7GF',name:'Asha',desc:'Conversational & Bright',gender:'Female',color:'#D81B60'},
+  {voice_id:'FszY75334ExxVmg7yl0U',name:'Dhurundhar',desc:'Deep & Commanding',gender:'Male',color:'#1A3A5C'},
+  {voice_id:'WdZjiN0nNcik2LBjOHiv',name:'Bishnu',desc:'Wise Documentary',gender:'Male',color:'#4E342E'},
+  {voice_id:'CwhRBWXzGAHq8TQ4Fs17',name:'Rohan',desc:'Casual & Laid-Back',gender:'Male',color:'#546E7A'},
+  {voice_id:'TX3LPaxmHKxFdv7VOQHJ',name:'Arjun',desc:'Energetic Reels',gender:'Male',color:'#F57C00'},
+  {voice_id:'g1FVKFidZjHPxXdfA89c',name:'Vikram',desc:'Confident & Warm',gender:'Male',color:'#2E7D32'},
+  {voice_id:'2W8HrWcBFzCEf5cQQdIL',name:'Karan',desc:'Dark Documentary',gender:'Male',color:'#212121'},
+  {voice_id:'rHhok70RpCi5GgianXRA',name:'Rudra',desc:'Intense & Romantic',gender:'Male',color:'#880E4F'},
+  {voice_id:'34lPwSZ54D8fWbX1aHzk',name:'Suraj',desc:'Upbeat TV Announcer',gender:'Male',color:'#FFA000'},
+  {voice_id:'gU0LNdkMOQCOrPrwtbee',name:'Saurav',desc:'Sports Commentator',gender:'Male',color:'#B71C1C'},
+  {voice_id:'BtWabtumIemAotTjP5sk',name:'Prakash',desc:'Clear & Professional',gender:'Male',color:'#37474F'},
+].map(v=>(
+  <div key={v.name} style={{background:'#f8f8f8',borderRadius:12,padding:'14px 16px',border:'1.5px solid #e8e8ed',display:'flex',flexDirection:'column',gap:6}}>
+    <div style={{width:36,height:36,borderRadius:9,background:v.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:700,color:'#fff'}}>{v.name[0]}</div>
+    <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f'}}>{v.name}</div>
+    <div style={{fontSize:11,color:'#888'}}>{v.desc}</div>
+    <div style={{fontSize:10,fontWeight:700,color:v.gender==='Female'?'#E91E8C':'#1565C0',textTransform:'uppercase'}}>{v.gender}</div>
+    <button
+      onClick={() => {
+        const audio = new Audio(`/previews/${v.voice_id}.mp3`)
+        audio.play()
+      }}
+      style={{marginTop:4,padding:'5px 10px',borderRadius:8,border:'1.5px solid #e8e8ed',background:'#fff',fontSize:11,fontWeight:600,cursor:'pointer',color:'#555',display:'flex',alignItems:'center',gap:4,width:'fit-content'}}>
+      ▶ Preview
+    </button>
+  </div>
+))}
           </div>
           <div style={{textAlign:'center',marginTop:36}}>
             <Link href="/voiceover">
