@@ -239,7 +239,7 @@ export default function Voiceover() {
   const filteredVoices = VOICES.filter(v => genderFilter === 'all' || (genderFilter === 'female' ? v.gender === 'F' : v.gender === 'M'))
   const credits = session ? session.credits || 0 : null
   const isAnon = session === false
-  const hasNoCredits = session && session !== false && credits === 0
+  const hasNoCredits = session === false || (session && credits === 0)
 
   function formatDate(iso) {
     const d = new Date(iso)
