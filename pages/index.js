@@ -430,7 +430,7 @@ export default function Landing() {
               <Link href="/tool"><button style={{background:'#fff',color:'#6B3FBE',border:'none',padding:'8px 16px',borderRadius:8,fontSize:13,fontWeight:800,cursor:'pointer',flexShrink:0,whiteSpace:'nowrap'}}>Try Free Music →</button></Link>
             </div>
             <div className="fu fu4" style={{display:'flex',gap:12,flexWrap:'wrap',marginBottom:20}}>
-              <a href="#homepage-demo"><button className="btn-primary">Get free access</button></a>
+              <a href="#homepage-demo"><button className="btn-primary">Hear a Free Sample →</button></a>
               <Link href="/tool"><button className="btn-secondary">Try the tool first</button></Link>
             </div>
             <div style={{fontSize:13,color:'#DC143C',fontWeight:600}}>🔥 Only 20 beta spots — 7 already filled</div>
