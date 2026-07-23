@@ -48,10 +48,13 @@ function HomepageDemoBox({ isMobile }) {
       demoAudioRef.current = audio
       audio.play()
       setDemoPlaying(true)
-      audio.onended = () => setDemoPlaying(false)
       localStorage.setItem('swor_hp_demo_used', 'true')
       setUsed(true)
       setShowForm(false)
+      audio.onended = () => {
+        setDemoPlaying(false)
+        window.location.href = '/voiceover'
+      }
     } catch (err) { setDemoError(err.message) }
     setDemoLoading(false)
   }
@@ -61,7 +64,7 @@ function HomepageDemoBox({ isMobile }) {
       <div style={{background:'#f5f5f7',borderRadius:16,padding:24,textAlign:'center',border:'1.5px solid #e8e8ed'}}>
         <div style={{fontSize:16,fontWeight:700,marginBottom:8}}>🎉 You&apos;ve already tried the free demo!</div>
         <p style={{fontSize:14,color:'#6e6e73',marginBottom:16}}>Ready for full access? Get unlimited Nepali voiceovers.</p>
-        <Link href="/tool">
+        <Link href="/voiceover">
           <button style={{background:'#DC143C',color:'#fff',border:'none',padding:'12px 28px',borderRadius:10,fontSize:14,fontWeight:700,cursor:'pointer'}}>
             Get Full Access →
           </button>
@@ -72,8 +75,12 @@ function HomepageDemoBox({ isMobile }) {
 
   return (
     <div style={{background:'#f5f5f7',borderRadius:16,padding:isMobile?20:28,border:'1.5px solid #e8e8ed'}}>
-      {/* Voice selector */}
-      <div style={{display:'flex',gap:8,marginBottom:16,flexWrap:'wrap'}}>
+
+      {/* Unlocked voices */}
+      <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>
+        Choose a voice
+      </div>
+      <div style={{display:'flex',gap:8,marginBottom:8,flexWrap:'wrap'}}>
         {DEMO_VOICES_HP.map(v => (
           <button key={v.voice_id} onClick={() => setDemoVoice(v)}
             style={{
@@ -92,8 +99,35 @@ function HomepageDemoBox({ isMobile }) {
         ))}
       </div>
 
-      {/* Text input */}
-      <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',overflow:'hidden',marginBottom:12}}>
+      {/* Locked voices */}
+      <div style={{display:'flex',gap:8,marginBottom:16,flexWrap:'wrap'}}>
+        {[
+          {name:'Vanishree',desc:'Professional News',color:'#0077CC'},
+          {name:'Dhurundhar',desc:'Deep & Commanding',color:'#1A3A5C'},
+          {name:'Anika',desc:'Sweet & Lively',color:'#7B2FBE'},
+          {name:'Rudra',desc:'Intense & Romantic',color:'#880E4F'},
+        ].map(v => (
+          <div key={v.name}
+            style={{
+              display:'flex',alignItems:'center',gap:6,
+              padding:'7px 14px',borderRadius:10,border:'1.5px solid #e8e8ed',
+              background:'#f0f0f0',fontSize:12,fontWeight:600,
+              color:'#aaa',cursor:'not-allowed',opacity:0.7
+            }}>
+            <div style={{width:18,height:18,borderRadius:5,background:'#ccc',display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,fontWeight:700,color:'#fff'}}>
+              🔒
+            </div>
+            {v.name}
+          </div>
+        ))}
+        <div style={{display:'flex',alignItems:'center',gap:4,padding:'7px 12px',borderRadius:10,border:'1.5px dashed #DC143C',background:'rgba(220,20,60,.05)',fontSize:11,fontWeight:700,color:'#DC143C',cursor:'pointer'}}
+          onClick={() => window.location.href = '/voiceover'}>
+          +17 more →
+        </div>
+      </div>
+
+      {/* Text input with Devanagari example */}
+      <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',overflow:'hidden',marginBottom:8}}>
         <textarea
           value={demoText}
           onChange={e => setDemoText(e.target.value.slice(0, HP_DEMO_CHAR_LIMIT))}
@@ -106,11 +140,23 @@ function HomepageDemoBox({ isMobile }) {
             resize:'none',outline:'none'
           }}
         />
-        <div style={{padding:'6px 14px',borderTop:'1px solid #f0f0f0',background:'#fafafa',display:'flex',justifyContent:'space-between'}}>
+        <div style={{padding:'6px 14px',borderTop:'1px solid #f0f0f0',background:'#fafafa',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
           <span style={{fontSize:11,color:'#DC143C',fontWeight:600}}>⚠️ Devanagari only</span>
           <span style={{fontSize:11,fontWeight:600,color: demoText.length >= HP_DEMO_CHAR_LIMIT ? '#DC143C' : '#888'}}>
             {demoText.length}/{HP_DEMO_CHAR_LIMIT}
           </span>
+        </div>
+      </div>
+
+      {/* Devanagari example */}
+      <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:10,padding:'8px 12px',marginBottom:12,fontSize:12}}>
+        <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:4}}>
+          <span style={{color:'#34C759',fontWeight:700}}>✓</span>
+          <span style={{fontFamily:'Noto Sans Devanagari,sans-serif',color:'#34C759',fontWeight:600}}>नमस्ते! आज म तपाईंलाई Swor AI बारे बताउँछु।</span>
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:8}}>
+          <span style={{color:'#DC143C',fontWeight:700}}>✗</span>
+          <span style={{color:'#DC143C',fontWeight:600}}>Namaste! Aaja ma tapailai Swor AI bare bataunchhu.</span>
         </div>
       </div>
 
@@ -119,7 +165,7 @@ function HomepageDemoBox({ isMobile }) {
         <div style={{fontSize:12,color:'#CC3333',marginBottom:10}}>❌ {demoError}</div>
       )}
 
-      {/* Generate button — triggers form */}
+      {/* Generate button */}
       {!showForm && (
         <button
           onClick={() => { if (demoText.trim()) setShowForm(true) }}
@@ -136,7 +182,7 @@ function HomepageDemoBox({ isMobile }) {
         </button>
       )}
 
-      {/* Form — shown after clicking generate */}
+      {/* Form */}
       {showForm && (
         <form onSubmit={handleSubmit} style={{display:'flex',flexDirection:'column',gap:10}}>
           <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f',marginBottom:4}}>
