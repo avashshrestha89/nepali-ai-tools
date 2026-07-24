@@ -320,7 +320,17 @@ export default function Landing() {
     audio.onerror = () => setPlayingId(null)
   }
 
-  const filteredVoices = ALL_VOICES.filter(v => filter === 'all' || v.gender === filter)
+const filtered = ALL_VOICES.filter(v => {
+  if (filter === 'all') return true
+  if (filter === 'female') return v.gender === 'female'
+  if (filter === 'male') return v.gender === 'male'
+  if (filter === 'news') return ['Vanishree','Bishnu','Dhurundhar','Karan','Prakash'].includes(v.name)
+  if (filter === 'social') return ['Arjun','Anika','Rohan','Suraj','Saurav'].includes(v.name)
+  if (filter === 'romantic') return ['Priyanka','Rudra','Sunita','Monika'].includes(v.name)
+  if (filter === 'business') return ['Ridhi','Shraddha','Vikram','Anjali'].includes(v.name)
+  if (filter === 'conversational') return ['Asha','Mina'].includes(v.name)
+  return true
+})
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -566,11 +576,20 @@ export default function Landing() {
             <p style={{fontSize:16,color:'#6e6e73',marginBottom:32,lineHeight:1.65}}>
               Choose the perfect voice — click <strong style={{color:'#1d1d1f'}}>▶</strong> to preview any voice instantly
             </p>
-            <div style={{display:'flex',gap:8,justifyContent:'center'}}>
-              {[['all','All'],['female','Female'],['male','Male']].map(([f,l])=>(
-                <button key={f} className={`filter-btn${filter===f?' on':''}`} onClick={()=>setFilter(f)}>{l}</button>
-              ))}
-            </div>
+         <div style={{display:'flex',gap:8,justifyContent:'center',flexWrap:'wrap'}}>
+  {[
+    ['all','All'],
+    ['female','Female'],
+    ['male','Male'],
+    ['news','📺 News & Docs'],
+    ['social','📱 Social Media'],
+    ['romantic','💕 Romantic'],
+    ['business','🏢 Business'],
+    ['conversational','💬 Conversational'],
+  ].map(([f,l])=>(
+    <button key={f} className={`filter-btn${filter===f?' on':''}`} onClick={()=>setFilter(f)}>{l}</button>
+  ))}
+</div>
           </div>
 
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:12}}>
