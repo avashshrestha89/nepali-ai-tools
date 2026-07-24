@@ -846,7 +846,7 @@ export default function Landing() {
                   Founders' Lifetime Pack
                 </div>
              <div style={{fontSize:14,fontWeight:700,color:'rgba(255,255,255,.9)',lineHeight:1.6,maxWidth:480,marginBottom:0}}>
-                  Create fearlessly for a full year. 62,500 characters of voiceover + 50 soundtracks. No subscriptions. No limits.
+                  520 viral videos in your pocket. 50 original soundtracks. One payment. Forever.
                 </div>
               </div>
          <div style={{textAlign:'center',flexShrink:0,minWidth:240}}>
@@ -889,20 +889,29 @@ export default function Landing() {
                   <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1}}>NPR {p.npr.toLocaleString()}</div>
                 </div>
                 <div style={{fontSize:13,color:'#999',marginBottom:4}}>${p.usd} USD</div>
-                <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:20}}>
-                  <span>{p.credits.toLocaleString()} Swor Credits</span>
-                  {p.bonus&&<span style={{color:'#34C759'}}>{p.bonus}</span>}
-                </div>
+              <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:20}}>
+  <span>{p.key === 'starter' ? '20 videos' : '45 videos'} worth of voiceover</span>
+</div>
                 <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:20}}>
-             {[
-                    `🎙️ ${p.credits.toLocaleString()} Swor Credits`,
-                    '🎙️ 1 credit per character typed',
-                    '🎬 Unlimited subtitle generation',
-                    '✓ Credits never expire',
-                    '✓ Mix voiceover + music freely',
-                  ].map(f=>(
-                    <div key={f} style={{fontSize:13,color:'#555'}}>{f}</div>
-                  ))}
+       {(p.key === 'starter' ? [
+  '20 TikTok/Reels voiceovers (30-40s each)',
+  'OR 8 YouTube intros (60-90s each)',
+  'OR 5 full narration scripts (2+ min)',
+  '2,500 Swor Credits — never expire',
+  'Unlimited subtitles forever',
+  'All 20 voices included',
+] : [
+  '45 TikTok/Reels voiceovers (30-40s each)',
+  'OR 18 YouTube intros (60-90s each)',
+  'OR 11 full narration scripts (2+ min)',
+  '5,500 Swor Credits — never expire',
+  'Unlimited subtitles forever',
+  'All 20 voices included',
+]).map(f=>(
+  <div key={f} style={{fontSize:13,color:'#555',display:'flex',alignItems:'flex-start',gap:6}}>
+    <span style={{color:'#34C759',fontWeight:700,flexShrink:0}}>✓</span> {f}
+  </div>
+))}
                 </div>
                 <div style={{fontSize:13,fontWeight:600,color:'#DC143C',marginBottom:16,background:'rgba(220,20,60,.06)',padding:'8px 12px',borderRadius:8}}>
                   {p.hook}
