@@ -57,26 +57,75 @@ function DemoBox() {
   }
 
   return (
-    <div style={{background:'#f5f5f7',borderRadius:20,padding:32,border:'1.5px solid #e8e8ed'}}>
-      <div style={{display:'flex',gap:10,marginBottom:20,flexWrap:'wrap'}}>
-        {DEMO_VOICES.map(v => (
-          <button key={v.voice_id} onClick={() => setDemoVoice(v)}
-            style={{
-              display:'flex',alignItems:'center',gap:8,
-              padding:'8px 16px',borderRadius:10,border:'1.5px solid',
-              borderColor: demoVoice.voice_id === v.voice_id ? v.color : '#e8e8ed',
-              background: demoVoice.voice_id === v.voice_id ? `${v.color}15` : '#fff',
-              cursor:'pointer',fontSize:13,fontWeight:600,
-              color: demoVoice.voice_id === v.voice_id ? v.color : '#555',
-              transition:'all .15s'
-            }}>
-            <div style={{width:20,height:20,borderRadius:5,background:v.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,fontWeight:700,color:'#fff',flexShrink:0}}>
-              {v.name[0]}
-            </div>
-            {v.name} — {v.desc}
-          </button>
-        ))}
+<div style={{background:'#f5f5f7',borderRadius:20,padding:32,border:'1.5px solid #e8e8ed'}}>
+  <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:12}}>
+    Choose a voice
+  </div>
+  <div style={{display:'flex',gap:8,marginBottom:8,flexWrap:'wrap'}}>
+    {/* Unlocked voices */}
+    {DEMO_VOICES.map(v => (
+      <button key={v.voice_id} onClick={() => setDemoVoice(v)}
+        style={{
+          display:'flex',alignItems:'center',gap:8,
+          padding:'8px 16px',borderRadius:10,border:'1.5px solid',
+          borderColor: demoVoice.voice_id === v.voice_id ? v.color : '#e8e8ed',
+          background: demoVoice.voice_id === v.voice_id ? `${v.color}15` : '#fff',
+          cursor:'pointer',fontSize:13,fontWeight:600,
+          color: demoVoice.voice_id === v.voice_id ? v.color : '#555',
+          transition:'all .15s'
+        }}>
+        <div style={{width:20,height:20,borderRadius:5,background:v.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,fontWeight:700,color:'#fff',flexShrink:0}}>
+          {v.name[0]}
+        </div>
+        {v.name} — {v.desc}
+      </button>
+    ))}
+  </div>
+
+  {/* Locked voices */}
+  <div style={{display:'flex',gap:8,marginBottom:16,flexWrap:'wrap'}}>
+    {[
+      {name:'Vanishree',desc:'Professional News',color:'#0077CC'},
+      {name:'Dhurundhar',desc:'Deep & Commanding',color:'#1A3A5C'},
+      {name:'Anika',desc:'Sweet & Lively',color:'#7B2FBE'},
+      {name:'Rudra',desc:'Intense & Romantic',color:'#880E4F'},
+    ].map(v => (
+      <div key={v.name}
+        style={{
+          display:'flex',alignItems:'center',gap:8,
+          padding:'8px 16px',borderRadius:10,
+          border:`1.5px solid ${v.color}40`,
+          background:`${v.color}08`,
+          fontSize:13,fontWeight:600,
+          color:v.color,
+          opacity:0.6,
+          cursor:'not-allowed',
+          position:'relative',
+        }}>
+        <div style={{width:20,height:20,borderRadius:5,background:v.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,fontWeight:700,color:'#fff',flexShrink:0}}>
+          {v.name[0]}
+        </div>
+        {v.name} — {v.desc}
+        <span style={{fontSize:11,marginLeft:4}}>🔒</span>
       </div>
+    ))}
+
+    {/* +17 more badge */}
+    <a href="/voiceover"
+      style={{
+        display:'flex',alignItems:'center',gap:4,
+        padding:'8px 14px',borderRadius:10,
+        border:'1.5px dashed #DC143C',
+        background:'rgba(220,20,60,.05)',
+        fontSize:12,fontWeight:700,
+        color:'#DC143C',
+        cursor:'pointer',
+        textDecoration:'none',
+        whiteSpace:'nowrap',
+      }}>
+      +17 more voices →
+    </a>
+  </div>
 
       <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',overflow:'hidden',marginBottom:16}}>
         <textarea
