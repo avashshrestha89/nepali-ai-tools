@@ -576,19 +576,40 @@ const filtered = ALL_VOICES.filter(v => {
             <p style={{fontSize:16,color:'#6e6e73',marginBottom:32,lineHeight:1.65}}>
               Choose the perfect voice — click <strong style={{color:'#1d1d1f'}}>▶</strong> to preview any voice instantly
             </p>
-         <div style={{display:'flex',gap:8,justifyContent:'center',flexWrap:'wrap'}}>
-  {[
-    ['all','All'],
-    ['female','Female'],
-    ['male','Male'],
-    ['news','📺 News & Docs'],
-    ['social','📱 Social Media'],
-    ['romantic','💕 Romantic'],
-    ['business','🏢 Business'],
-    ['conversational','💬 Conversational'],
-  ].map(([f,l])=>(
-    <button key={f} className={`filter-btn${filter===f?' on':''}`} onClick={()=>setFilter(f)}>{l}</button>
-  ))}
+<div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:10}}>
+  {/* Row 1 — Gender filters */}
+  <div style={{display:'flex',gap:8,justifyContent:'center'}}>
+    {[['all','All'],['female','Female'],['male','Male']].map(([f,l])=>(
+      <button key={f} className={`filter-btn${filter===f?' on':''}`} onClick={()=>setFilter(f)}>{l}</button>
+    ))}
+  </div>
+  {/* Row 2 — Category filters */}
+  <div style={{display:'flex',gap:8,justifyContent:'center',flexWrap:'wrap'}}>
+    {[
+      ['news','📺 News & Docs'],
+      ['social','📱 Social Media'],
+      ['romantic','💕 Romantic'],
+      ['business','🏢 Business'],
+      ['conversational','💬 Conversational'],
+    ].map(([f,l])=>(
+      <button key={f}
+        onClick={()=>setFilter(f)}
+        style={{
+          padding:'6px 14px',
+          borderRadius:20,
+          border:'1.5px solid',
+          borderColor: filter===f ? '#DC143C' : '#e8e8ed',
+          background: filter===f ? 'rgba(220,20,60,.08)' : '#fff',
+          color: filter===f ? '#DC143C' : '#6e6e73',
+          fontSize:12,
+          fontWeight:600,
+          cursor:'pointer',
+          transition:'all .15s'
+        }}>
+        {l}
+      </button>
+    ))}
+  </div>
 </div>
           </div>
 
