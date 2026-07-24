@@ -186,7 +186,6 @@ export default function Voiceover() {
   const [text, setText] = useState('')
   const [selectedVoice, setSelectedVoice] = useState(VOICES[0])
   const [showVoicePanel, setShowVoicePanel] = useState(false)
-  const [genderFilter, setGenderFilter] = useState('all')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
@@ -263,7 +262,6 @@ export default function Voiceover() {
   }
 
   const canGenerate = text.trim().length > 0 && !loading && session !== null && session !== false && (session.credits || 0) >= text.length
-  const filteredVoices = VOICES.filter(v => genderFilter === 'all' || (genderFilter === 'female' ? v.gender === 'F' : v.gender === 'M'))
   const credits = session ? session.credits || 0 : null
   const isAnon = session === false
   const hasNoCredits = session === false || (session && credits === 0)
