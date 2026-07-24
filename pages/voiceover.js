@@ -2,28 +2,55 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
 
-const VOICES = [
-  { voice_id: '1zUSi8LeHs9M2mV8X6YS', name: 'Priyanka', desc: 'Romantic & Elegant', gender: 'F', color: '#FF6B8A' },
-  { voice_id: 'LK1Sn9bmEczSFI65RF0v', name: 'Sunita', desc: 'Soft Spoken Aunty', gender: 'F', color: '#E91E8C' },
-  { voice_id: 'duDBJHU6G1oq7ZdK4Kxf', name: 'Anjali', desc: 'Motivational', gender: 'F', color: '#FF8C42' },
-  { voice_id: 'TmPeb2hSxdVrThJLywkg', name: 'Vanishree', desc: 'Professional News', gender: 'F', color: '#0077CC' },
-  { voice_id: 'ecp3DWciuUyW7BYM7II1', name: 'Anika', desc: 'Sweet & Lively', gender: 'F', color: '#7B2FBE' },
-  { voice_id: 'f0JpDwzbGK384Dd1WH2s', name: 'Mina', desc: 'Friendly & Polished', gender: 'F', color: '#00897B' },
-  { voice_id: 'Pc57DSBXmCXyEAmow7lW', name: 'Shraddha', desc: 'Credible & Trustworthy', gender: 'F', color: '#5C6BC0' },
-  { voice_id: '6qL48o1LBmtR94hIYAQh', name: 'Monika', desc: 'Suspense & Drama', gender: 'F', color: '#1C1C2E' },
-  { voice_id: 'FszY75334ExxVmg7yl0U', name: 'Dhurundhar', desc: 'Deep & Commanding', gender: 'M', color: '#1A3A5C' },
-  { voice_id: 'WdZjiN0nNcik2LBjOHiv', name: 'Bishnu', desc: 'Wise Documentary', gender: 'M', color: '#4E342E' },
-  { voice_id: 'CwhRBWXzGAHq8TQ4Fs17', name: 'Rohan', desc: 'Casual & Laid-Back', gender: 'M', color: '#546E7A' },
-  { voice_id: 'TX3LPaxmHKxFdv7VOQHJ', name: 'Arjun', desc: 'Energetic Reels', gender: 'M', color: '#F57C00' },
-  { voice_id: 'g1FVKFidZjHPxXdfA89c', name: 'Vikram', desc: 'Confident & Warm', gender: 'M', color: '#2E7D32' },
-  { voice_id: '2W8HrWcBFzCEf5cQQdIL', name: 'Karan', desc: 'Dark Documentary', gender: 'M', color: '#212121' },
-  { voice_id: 'rHhok70RpCi5GgianXRA', name: 'Rudra', desc: 'Intense & Romantic', gender: 'M', color: '#880E4F' },
-  { voice_id: '34lPwSZ54D8fWbX1aHzk', name: 'Suraj', desc: 'Upbeat TV & Radio Announcer', gender: 'M', color: '#FFA000' },
-  { voice_id: 'gU0LNdkMOQCOrPrwtbee', name: 'Saurav', desc: 'Sports Commentator', gender: 'M', color: '#B71C1C' },
-  { voice_id: 'BtWabtumIemAotTjP5sk', name: 'Prakash', desc: 'Clear & Professional', gender: 'M', color: '#37474F' },
-  { voice_id: 'e6h2ged6ThVk1jTnIwnC', name: 'Ridhi', desc: 'Elegant Ad Narration', gender: 'F', color: '#00ACC1' },
-  { voice_id: 'm3yAHyFEFKtbCIM5n7GF', name: 'Asha', desc: 'Conversational & Bright', gender: 'F', color: '#D81B60' },
+const VOICE_CATEGORIES = [
+  {
+    category: '📺 News & Documentary',
+    voices: [
+      { voice_id: 'TmPeb2hSxdVrThJLywkg', name: 'Vanishree', desc: 'Professional News', gender: 'F', color: '#0077CC' },
+      { voice_id: 'WdZjiN0nNcik2LBjOHiv', name: 'Bishnu', desc: 'Wise Documentary', gender: 'M', color: '#4E342E' },
+      { voice_id: 'FszY75334ExxVmg7yl0U', name: 'Dhurundhar', desc: 'Deep & Commanding', gender: 'M', color: '#1A3A5C' },
+      { voice_id: '2W8HrWcBFzCEf5cQQdIL', name: 'Karan', desc: 'Dark Documentary', gender: 'M', color: '#212121' },
+      { voice_id: 'BtWabtumIemAotTjP5sk', name: 'Prakash', desc: 'Clear & Professional', gender: 'M', color: '#37474F' },
+    ]
+  },
+  {
+    category: '📱 Social Media & Reels',
+    voices: [
+      { voice_id: 'TX3LPaxmHKxFdv7VOQHJ', name: 'Arjun', desc: 'Energetic Reels', gender: 'M', color: '#F57C00' },
+      { voice_id: 'ecp3DWciuUyW7BYM7II1', name: 'Anika', desc: 'Sweet & Lively', gender: 'F', color: '#7B2FBE' },
+      { voice_id: 'CwhRBWXzGAHq8TQ4Fs17', name: 'Rohan', desc: 'Casual & Laid-Back', gender: 'M', color: '#546E7A' },
+      { voice_id: '34lPwSZ54D8fWbX1aHzk', name: 'Suraj', desc: 'Upbeat TV Announcer', gender: 'M', color: '#FFA000' },
+      { voice_id: 'gU0LNdkMOQCOrPrwtbee', name: 'Saurav', desc: 'Sports Commentator', gender: 'M', color: '#B71C1C' },
+    ]
+  },
+  {
+    category: '💕 Romantic & Storytelling',
+    voices: [
+      { voice_id: '1zUSi8LeHs9M2mV8X6YS', name: 'Priyanka', desc: 'Romantic & Elegant', gender: 'F', color: '#FF6B8A' },
+      { voice_id: 'rHhok70RpCi5GgianXRA', name: 'Rudra', desc: 'Intense & Romantic', gender: 'M', color: '#880E4F' },
+      { voice_id: 'LK1Sn9bmEczSFI65RF0v', name: 'Sunita', desc: 'Soft Spoken Aunty', gender: 'F', color: '#E91E8C' },
+      { voice_id: '6qL48o1LBmtR94hIYAQh', name: 'Monika', desc: 'Suspense & Drama', gender: 'F', color: '#1C1C2E' },
+    ]
+  },
+  {
+    category: '🏢 Business & Advertising',
+    voices: [
+      { voice_id: 'e6h2ged6ThVk1jTnIwnC', name: 'Ridhi', desc: 'Elegant Ad Narration', gender: 'F', color: '#00ACC1' },
+      { voice_id: 'Pc57DSBXmCXyEAmow7lW', name: 'Shraddha', desc: 'Credible & Trustworthy', gender: 'F', color: '#5C6BC0' },
+      { voice_id: 'g1FVKFidZjHPxXdfA89c', name: 'Vikram', desc: 'Confident & Warm', gender: 'M', color: '#2E7D32' },
+      { voice_id: 'duDBJHU6G1oq7ZdK4Kxf', name: 'Anjali', desc: 'Motivational', gender: 'F', color: '#FF8C42' },
+    ]
+  },
+  {
+    category: '💬 Conversational',
+    voices: [
+      { voice_id: 'm3yAHyFEFKtbCIM5n7GF', name: 'Asha', desc: 'Conversational & Bright', gender: 'F', color: '#D81B60' },
+      { voice_id: 'f0JpDwzbGK384Dd1WH2s', name: 'Mina', desc: 'Friendly & Polished', gender: 'F', color: '#00897B' },
+    ]
+  },
 ]
+
+const VOICES = VOICE_CATEGORIES.flatMap(c => c.voices)
 
 const DEMO_VOICES = [
   { voice_id: '1zUSi8LeHs9M2mV8X6YS', name: 'Priyanka', desc: 'Romantic & Elegant', color: '#FF6B8A' },
@@ -337,35 +364,34 @@ export default function Voiceover() {
             </div>
           </div>
 
-          {/* Voice selection panel */}
-          {showVoicePanel && (
-            <div className="fade-in" style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',padding:16,marginBottom:12}}>
-              <div style={{display:'flex',gap:8,marginBottom:12}}>
-                {['all','female','male'].map(f => (
-                  <button key={f} onClick={() => setGenderFilter(f)}
-                    style={{padding:'5px 14px',borderRadius:20,border:'1.5px solid',borderColor:genderFilter===f?'#1976D2':'#e8e8ed',background:genderFilter===f?'#E8F4FD':'#fff',color:genderFilter===f?'#1976D2':'#555',fontSize:12,fontWeight:600,cursor:'pointer',textTransform:'capitalize'}}>
-                    {f === 'all' ? 'All' : f === 'female' ? 'Female' : 'Male'}
-                  </button>
-                ))}
+{/* Voice selection panel */}
+{showVoicePanel && (
+  <div className="fade-in" style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',padding:16,marginBottom:12}}>
+    {VOICE_CATEGORIES.map(cat => (
+      <div key={cat.category} style={{marginBottom:16}}>
+        <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:8,paddingBottom:6,borderBottom:'1px solid #f0f0f0'}}>
+          {cat.category}
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6}}>
+          {cat.voices.map(v => (
+            <div key={v.voice_id} className={`voice-chip${selectedVoice.voice_id === v.voice_id ? ' active' : ''}`}
+              onClick={() => { setSelectedVoice(v); setShowVoicePanel(false) }}>
+              <div style={{width:28,height:28,borderRadius:7,background:v.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,color:'#fff',flexShrink:0}}>{v.name[0]}</div>
+              <div style={{minWidth:0}}>
+                <div style={{fontSize:12,fontWeight:700,color:'#1d1d1f'}}>{v.name}</div>
+                <div style={{fontSize:10,color:'#888',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{v.desc}</div>
               </div>
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6}}>
-                {filteredVoices.map(v => (
-                  <div key={v.voice_id} className={`voice-chip${selectedVoice.voice_id === v.voice_id ? ' active' : ''}`}
-                    onClick={() => { setSelectedVoice(v); setShowVoicePanel(false) }}>
-                    <div style={{width:28,height:28,borderRadius:7,background:v.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,color:'#fff',flexShrink:0}}>{v.name[0]}</div>
-                    <div style={{minWidth:0}}>
-                      <div style={{fontSize:12,fontWeight:700,color:'#1d1d1f'}}>{v.name}</div>
-                      <div style={{fontSize:10,color:'#888',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{v.desc}</div>
-                    </div>
-                    <button onClick={e => { e.stopPropagation(); playPreview(v.voice_id) }}
-                      style={{marginLeft:'auto',width:24,height:24,borderRadius:'50%',border:'none',background:playingPreview===v.voice_id?'#DC143C':'#f0f0f0',color:playingPreview===v.voice_id?'#fff':'#555',fontSize:9,cursor:'pointer',flexShrink:0}}>
-                      {playingPreview === v.voice_id ? '■' : '▶'}
-                    </button>
-                  </div>
-                ))}
-              </div>
+              <button onClick={e => { e.stopPropagation(); playPreview(v.voice_id) }}
+                style={{marginLeft:'auto',width:24,height:24,borderRadius:'50%',border:'none',background:playingPreview===v.voice_id?'#DC143C':'#f0f0f0',color:playingPreview===v.voice_id?'#fff':'#555',fontSize:9,cursor:'pointer',flexShrink:0}}>
+                {playingPreview === v.voice_id ? '■' : '▶'}
+              </button>
             </div>
-          )}
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+)}
 
           {/* Text area */}
           <div style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',overflow:'hidden',marginBottom:12}}>
