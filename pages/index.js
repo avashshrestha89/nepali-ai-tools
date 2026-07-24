@@ -99,27 +99,32 @@ function HomepageDemoBox({ isMobile }) {
         ))}
       </div>
 
-      {/* Locked voices */}
-      <div style={{display:'flex',gap:8,marginBottom:16,flexWrap:'wrap'}}>
-        {[
-          {name:'Vanishree',desc:'Professional News',color:'#0077CC'},
-          {name:'Dhurundhar',desc:'Deep & Commanding',color:'#1A3A5C'},
-          {name:'Anika',desc:'Sweet & Lively',color:'#7B2FBE'},
-          {name:'Rudra',desc:'Intense & Romantic',color:'#880E4F'},
-        ].map(v => (
-          <div key={v.name}
-            style={{
-              display:'flex',alignItems:'center',gap:6,
-              padding:'7px 14px',borderRadius:10,border:'1.5px solid #e8e8ed',
-              background:'#f0f0f0',fontSize:12,fontWeight:600,
-              color:'#aaa',cursor:'not-allowed',opacity:0.7
-            }}>
-            <div style={{width:18,height:18,borderRadius:5,background:'#ccc',display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,fontWeight:700,color:'#fff'}}>
-              🔒
-            </div>
-            {v.name}
-          </div>
-        ))}
+{/* Locked voices */}
+<div style={{display:'flex',gap:8,marginBottom:16,flexWrap:'wrap'}}>
+  {[
+    {name:'Vanishree',desc:'Professional News',color:'#0077CC'},
+    {name:'Dhurundhar',desc:'Deep & Commanding',color:'#1A3A5C'},
+    {name:'Anika',desc:'Sweet & Lively',color:'#7B2FBE'},
+    {name:'Rudra',desc:'Intense & Romantic',color:'#880E4F'},
+  ].map(v => (
+    <div key={v.name}
+      style={{
+        display:'flex',alignItems:'center',gap:8,
+        padding:'7px 14px',borderRadius:10,
+        border:`1.5px solid ${v.color}40`,
+        background:`${v.color}08`,
+        fontSize:12,fontWeight:600,
+        color:v.color,
+        opacity:0.6,
+        cursor:'not-allowed',
+      }}>
+      <div style={{width:18,height:18,borderRadius:5,background:v.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,fontWeight:700,color:'#fff',flexShrink:0}}>
+        {v.name[0]}
+      </div>
+      {v.name} — {v.desc}
+      <span style={{fontSize:11,marginLeft:4}}>🔒</span>
+    </div>
+  ))}
         <div style={{display:'flex',alignItems:'center',gap:4,padding:'7px 12px',borderRadius:10,border:'1.5px dashed #DC143C',background:'rgba(220,20,60,.05)',fontSize:11,fontWeight:700,color:'#DC143C',cursor:'pointer'}}
           onClick={() => window.location.href = '/voiceover'}>
           +17 more →
