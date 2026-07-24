@@ -593,7 +593,7 @@ const filtered = ALL_VOICES.filter(v => {
           </div>
 
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:12}}>
-            {filteredVoices.map(v=>(
+            {filtered.map(v=>(
               <div key={v.voice_id} className="voice-card" onClick={()=>playPreview(v.voice_id)}>
                 <div style={{width:46,height:46,borderRadius:12,background:`linear-gradient(135deg,${v.color},${v.color}88)`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:700,color:'#fff',flexShrink:0}}>
                   {v.initial}
