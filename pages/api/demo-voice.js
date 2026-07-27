@@ -6,7 +6,7 @@ const DEMO_VOICES = [
   { voice_id: 'TX3LPaxmHKxFdv7VOQHJ', name: 'Arjun', desc: 'Energetic Reels' },
 ]
 
-const DEMO_CHAR_LIMIT = 50
+const DEMO_CHAR_LIMIT = 100
 const DEMO_COOLDOWN_MS = 60000 // 1 minute per IP
 
 const ipCooldowns = new Map()
