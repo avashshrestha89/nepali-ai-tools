@@ -49,7 +49,7 @@ const email = rawEmail?.trim().toLowerCase()
         credits: creditsToAdd,
         musicFreeUsed: false,
         isFounder: isFounderPack,
-       founderMusicRemaining: isFounderPack ? 50 : 0,
+       founderMusicRemaining: isFounderPack ? 5 : 0,
       }
       await redis.set(`user:${email}`, JSON.stringify(newUser))
       return res.status(200).json({
@@ -67,7 +67,7 @@ const email = rawEmail?.trim().toLowerCase()
 
 if (isFounderPack) {
   user.isFounder = true
-  user.founderMusicRemaining = 50
+  user.founderMusicRemaining = 5
 }
 
     user.tier = 'paid'
