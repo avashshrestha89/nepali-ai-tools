@@ -896,7 +896,7 @@ const filtered = ALL_VOICES.filter(v => {
               </div>
          <div style={{textAlign:'center',flexShrink:0,minWidth:240}}>
                 <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:20,textAlign:'left'}}>
-                  {['62,500 Swor Credits (Lifetime Pool)','50 Total AI Music Tracks (Lifetime Balance)','Unlimited subtitles forever','Credits never expire','Founders status — forever'].map(f=>(
+                  {['25,000 Swor Credits (Lifetime Pool)','5 AI Background Music Tracks (30s each)','Unlimited subtitles forever','Credits NEVER expire','Exclusive Founders Status & Badge','Commercial usage rights'].map(f=>(
                     <div key={f} style={{display:'flex',alignItems:'center',gap:8,fontSize:13,fontWeight:700,color:'#fff'}}>
                       <span style={{color:'#34C759',fontWeight:800,fontSize:15}}>✓</span> {f}
                     </div>
