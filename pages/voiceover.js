@@ -59,16 +59,15 @@ const DEMO_VOICES = [
 ]
 
 const DEMO_CHAR_LIMIT = 50
-
 const PACKS = [
   {
     key: 'starter',
     name: 'Starter Pack',
     npr: 499,
     usd: 4.99,
-    credits: '2,500',
+    credits: '3,500',
     popular: false,
-    features: ['2,500 Swor Credits', '1 credit per character', 'All 20 voices', 'Credits never expire'],
+    features: ['3,500 Swor Credits', '~7 TikTok/Reels OR 3 YouTube Intros', 'All 20+ voices', 'Credits never expire'],
     color: '#1976D2',
   },
   {
@@ -76,9 +75,9 @@ const PACKS = [
     name: 'Creator Pack',
     npr: 999,
     usd: 12.99,
-    credits: '5,500',
+    credits: '7,500',
     popular: true,
-    features: ['5,500 Swor Credits', '1 credit per character', 'All 20 voices', 'Credits never expire'],
+    features: ['7,500 Swor Credits', '~15 TikTok/Reels OR 6 YouTube Intros', 'All 20+ voices', 'Credits never expire'],
     color: '#DC143C',
   },
   {
@@ -86,9 +85,9 @@ const PACKS = [
     name: 'Founders Lifetime',
     npr: 2500,
     usd: 19.99,
-    credits: '62,500',
+    credits: '25,000',
     popular: false,
-    features: ['62,500 Swor Credits', '50 free AI music tracks', 'All 20 voices', 'Credits never expire', 'Founders status forever'],
+    features: ['25,000 Swor Credits (Lifetime)', '5 AI Music Tracks', 'All 20+ voices', 'Credits never expire', 'Founders status forever'],
     color: '#C9940A',
   },
 ]
