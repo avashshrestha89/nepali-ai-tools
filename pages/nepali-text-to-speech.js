@@ -336,7 +336,7 @@ export default function NepaliTextToSpeech() {
               Hear a Nepali AI Voice Right Now
             </h2>
             <p style={{fontSize:15,color:'#6e6e73',lineHeight:1.65}}>
-              Type up to 50 Devanagari characters and hear the difference instantly
+              Type up to 100 Devanagari characters and hear the difference instantly
             </p>
           </div>
           <DemoBox />
