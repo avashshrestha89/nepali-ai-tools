@@ -26,6 +26,11 @@ export default function AdminBalance() {
   const [keyStatus, setKeyStatus] = useState('idle')
   const [keyResult, setKeyResult] = useState(null)
 
+  // Set Legacy Status
+  const [legacyEmail, setLegacyEmail] = useState('')
+  const [legacyStatus, setLegacyStatus] = useState('idle')
+  const [legacyMsg, setLegacyMsg] = useState('')
+
   async function handleSubmit(e) {
     e.preventDefault()
     setStatus('loading'); setResult(null)
@@ -71,7 +76,20 @@ export default function AdminBalance() {
     } catch (err) { setKeyResult({ success: false, error: err.message }) }
     setKeyStatus('idle')
   }
-
+async function handleSetLegacy(action) {
+    if (!legacyEmail || !password) return
+    setLegacyStatus('loading'); setLegacyMsg('')
+    try {
+      const res = await fetch('/api/set-legacy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: legacyEmail, adminPassword: password, action }),
+      })
+      const data = await res.json()
+      setLegacyMsg(data.message || data.error)
+    } catch (err) { setLegacyMsg('Error: ' + err.message) }
+    setLegacyStatus('idle')
+  }
   const inputStyle = {width:'100%',padding:'11px 14px',borderRadius:10,border:'1.5px solid #E0DDD7',fontSize:14,outline:'none',fontFamily:'inherit'}
   const labelStyle = {fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',display:'block',marginBottom:5}
 
@@ -226,6 +244,41 @@ export default function AdminBalance() {
             )}
           </div>
         )}
+      </div>
+          {/* ── SET LEGACY STATUS ── */}
+      <div style={{background:'#fff',borderRadius:20,padding:'36px 32px',width:'100%',maxWidth:440,boxShadow:'0 24px 60px rgba(0,0,0,.3)'}}>
+        <div style={{textAlign:'center',marginBottom:28}}>
+          <div style={{fontSize:22,fontWeight:800,background:'linear-gradient(135deg,#FF9500,#FFD60A)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',letterSpacing:'2px',marginBottom:4}}>SWOR AI</div>
+          <div style={{fontSize:13,color:'#999'}}>Admin — Set Legacy Status</div>
+        </div>
+        <div style={{background:'#FFF8EC',border:'1px solid rgba(255,149,0,.2)',borderRadius:10,padding:'10px 14px',fontSize:12,color:'#555',marginBottom:16}}>
+          <strong style={{color:'#FF9500'}}>Legacy users:</strong> Charged flat 25 credits per generation (500 char limit) until Aug 31, 2026. Use for all 10 existing customers.
+        </div>
+        <div style={{display:'flex',flexDirection:'column',gap:12}}>
+          <div>
+            <label style={labelStyle}>Customer Email</label>
+            <input type="email" placeholder="customer@email.com" value={legacyEmail} onChange={e=>setLegacyEmail(e.target.value)} style={inputStyle}/>
+          </div>
+          <div style={{display:'flex',gap:8}}>
+            <button
+              onClick={() => handleSetLegacy('set')}
+              disabled={legacyStatus==='loading'}
+              style={{flex:1,background:'#FF9500',color:'#fff',border:'none',padding:'12px',borderRadius:10,fontSize:14,fontWeight:700,cursor:'pointer'}}>
+              ✓ Enable Legacy
+            </button>
+            <button
+              onClick={() => handleSetLegacy('remove')}
+              disabled={legacyStatus==='loading'}
+              style={{flex:1,background:'#888',color:'#fff',border:'none',padding:'12px',borderRadius:10,fontSize:14,fontWeight:700,cursor:'pointer'}}>
+              ✗ Remove Legacy
+            </button>
+          </div>
+          {legacyMsg && (
+            <div style={{padding:'12px 14px',borderRadius:10,background:legacyMsg.includes('enabled')||legacyMsg.includes('success')?'#F0FAF5':'#FFF0F0',border:`1px solid ${legacyMsg.includes('enabled')||legacyMsg.includes('success')?'#1A9E6A':'#FFB8B8'}`,fontSize:13,fontWeight:600,color:legacyMsg.includes('enabled')||legacyMsg.includes('success')?'#1A9E6A':'#CC3333'}}>
+              {legacyMsg.includes('enabled') ? '✅ ' : '❌ '}{legacyMsg}
+            </div>
+          )}
+        </div>
       </div>
     </>
   )
