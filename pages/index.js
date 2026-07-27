@@ -937,21 +937,19 @@ const filtered = ALL_VOICES.filter(v => {
               <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:20}}>
   <span>{p.key === 'starter' ? 'First Week Experience' : '15 Videos • Daily Content Pack'}</span>
 </div>
-                <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:20}}>
+<div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:20}}>
        {(p.key === 'starter' ? [
-  '20 TikTok/Reels voiceovers (30-40s each)',
-  'OR 8 YouTube intros (60-90s each)',
-  'OR 5 full narration scripts (2+ min)',
-  '2,500 Swor Credits — never expire',
+  '3,500 Swor Credits — never expire',
+  '~7 TikTok/Reels OR 3 YouTube Intros',
   'Unlimited subtitles forever',
-  'All 20 voices included',
+  'All 20+ Nepali AI voices included',
+  'Commercial usage rights',
 ] : [
-  '45 TikTok/Reels voiceovers (30-40s each)',
-  'OR 18 YouTube intros (60-90s each)',
-  'OR 11 full narration scripts (2+ min)',
-  '5,500 Swor Credits — never expire',
+  '7,500 Swor Credits — never expire',
+  '~15 TikTok/Reels OR 6 YouTube Intros',
   'Unlimited subtitles forever',
-  'All 20 voices included',
+  'All 20+ Nepali AI voices included',
+  'Commercial usage rights',
 ]).map(f=>(
   <div key={f} style={{fontSize:13,color:'#555',display:'flex',alignItems:'flex-start',gap:6}}>
     <span style={{color:'#34C759',fontWeight:700,flexShrink:0}}>✓</span> {f}
