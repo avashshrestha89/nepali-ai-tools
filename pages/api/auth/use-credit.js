@@ -7,6 +7,8 @@ const redis = new Redis({
 
 // Credit costs
 const MUSIC_CREDIT_COST_PER_30S = 100
+const LEGACY_VOICEOVER_COST = 25
+const LEGACY_CHAR_LIMIT = 500
 
 function getMusicCreditCost(durationSeconds) {
   return Math.ceil(durationSeconds * MUSIC_CREDIT_COST_PER_30S / 30)
@@ -37,8 +39,45 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'No text provided.' })
       }
 
-      // 1 credit per character
       const credits = user.credits || 0
+
+      // ── LEGACY USERS (grandfathered until August 31, 2026) ──
+      if (user.isLegacy) {
+        // Check if legacy period has expired
+        const legacyExpiry = new Date('2026-08-31T23:59:59Z')
+        const now = new Date()
+
+        if (now > legacyExpiry) {
+          // Legacy expired — switch to new system automatically
+          user.isLegacy = false
+          await redis.set(`user:${email}`, JSON.stringify(user))
+        } else {
+          // Still in legacy period — use old flat rate
+          if (charsToCharge > LEGACY_CHAR_LIMIT) {
+            return res.status(400).json({
+              error: `Maximum ${LEGACY_CHAR_LIMIT} characters allowed.`
+            })
+          }
+          if (credits < LEGACY_VOICEOVER_COST) {
+            return res.status(403).json({
+              error: 'Not enough credits. Purchase a credit pack to continue.',
+              credits,
+              required: LEGACY_VOICEOVER_COST,
+            })
+          }
+          user.credits = credits - LEGACY_VOICEOVER_COST
+          await redis.set(`user:${email}`, JSON.stringify(user))
+          return res.status(200).json({
+            success: true,
+            source: 'credits',
+            credits: user.credits,
+            creditsUsed: LEGACY_VOICEOVER_COST,
+            isLegacy: true,
+          })
+        }
+      }
+
+      // ── NEW SYSTEM — 1 credit per character ──
       if (credits < charsToCharge) {
         return res.status(403).json({
           error: `Not enough credits. This generation costs ${charsToCharge} credits.`,
@@ -61,7 +100,7 @@ export default async function handler(req, res) {
     if (type === 'music') {
       const dur = parseInt(durationSeconds) || 30
 
-      // Founders lifetime music bonus (50 tracks total, never resets)
+      // Founders lifetime music bonus
       if (user.isFounder && user.founderMusicRemaining > 0) {
         user.founderMusicRemaining -= 1
         await redis.set(`user:${email}`, JSON.stringify(user))
