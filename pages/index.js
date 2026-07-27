@@ -891,7 +891,7 @@ const filtered = ALL_VOICES.filter(v => {
                   Founders' Lifetime Pack
                 </div>
              <div style={{fontSize:14,fontWeight:700,color:'rgba(255,255,255,.9)',lineHeight:1.6,maxWidth:480,marginBottom:0}}>
-                  520 viral videos in your pocket. 50 original soundtracks. One payment. Forever.
+                  125 viral videos in your pocket. 5 original soundtracks. One payment. Forever.
                 </div>
               </div>
          <div style={{textAlign:'center',flexShrink:0,minWidth:240}}>
