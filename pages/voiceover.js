@@ -461,7 +461,7 @@ export default function Voiceover() {
                 </div>
               </div>
               <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
-                <span style={{fontWeight:700,color:'#1976D2'}}>4. Credits —</span> You are charged 1 credit per character typed. Type more = more credits used. Check your balance before generating.
+                <span style={{fontWeight:700,color:'#1976D2'}}>4. Credits —</span> Credits are deducted each time you generate. Check your balance before generating to ensure you have enough.
               </div>
             </div>
           </div>
@@ -504,7 +504,7 @@ export default function Voiceover() {
               <div>
                 <div style={{fontSize:24,fontWeight:800,color:credits === 0 ? '#DC143C' : '#1976D2',fontFamily:'Sora,sans-serif'}}>{credits}</div>
                 <div style={{fontSize:12,color:'#888',marginTop:2}}>Swor Credits remaining</div>
-                <div style={{fontSize:12,color:'#888',marginTop:6}}>1 credit per character typed</div>
+                <div style={{fontSize:12,color:'#888',marginTop:6}}>Credits deducted per generation</div>
               </div>
             ) : isAnon ? (
               <div>
