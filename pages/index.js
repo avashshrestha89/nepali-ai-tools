@@ -922,10 +922,10 @@ const filtered = ALL_VOICES.filter(v => {
           {/* Credit Packs Grid */}
           <div style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'repeat(auto-fit,minmax(280px,1fr))',gap:16,marginBottom:20}}>
             {[
-              {key:'starter',name:'Starter Pack',credits:2500,bonus:'',npr:499,usd:4.99,popular:false,voice:20,music:5,
-               hook:'Your next 2 weeks of video content, sorted. Launch your new channel idea this weekend.'},
-              {key:'creator',name:'Creator Value Pack',credits:5500,bonus:'',npr:999,usd:12.99,popular:true,voice:44,music:11,
-               hook:'Go daily for a full month. Build your audience with consistent uploads without touching a microphone.'},
+          {key:'starter',name:'Starter Pack',credits:3500,bonus:'',npr:499,usd:4.99,popular:false,voice:20,music:5,
+ hook:'Test Swor AI risk-free. Perfect for your first batch of Nepali voiceovers.'},
+{key:'creator',name:'Creator Value Pack',credits:7500,bonus:'',npr:999,usd:12.99,popular:true,voice:44,music:11,
+ hook:'Two weeks of daily content sorted. Build your audience on autopilot.'},
             ].map(p=>(
               <div key={p.key} style={{background:'#fff',borderRadius:20,padding:'28px 24px',border:p.popular?'2px solid #DC143C':'1.5px solid #e8e8ed',position:'relative',boxShadow:p.popular?'0 8px 32px rgba(220,20,60,.1)':'none'}}>
                 {p.popular&&<div style={{position:'absolute',top:-14,left:'50%',transform:'translateX(-50%)',background:'#DC143C',color:'#fff',fontSize:11,fontWeight:700,padding:'5px 16px',borderRadius:20,whiteSpace:'nowrap',letterSpacing:'0.06em'}}>★ MOST POPULAR</div>}
@@ -935,7 +935,7 @@ const filtered = ALL_VOICES.filter(v => {
                 </div>
                 <div style={{fontSize:13,color:'#999',marginBottom:4}}>${p.usd} USD</div>
               <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:20}}>
-  <span>{p.key === 'starter' ? '20 videos' : '45 videos'} worth of voiceover</span>
+  <span>{p.key === 'starter' ? 'First Week Experience' : '15 Videos • Daily Content Pack'}</span>
 </div>
                 <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:20}}>
        {(p.key === 'starter' ? [
