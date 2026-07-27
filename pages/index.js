@@ -1233,7 +1233,7 @@ const filtered = ALL_VOICES.filter(v => {
               },
               {
                 q:'What are the pricing plans?',
-                a:'Starter Pack: NPR 499 (2,500 credits). Creator Pack: NPR 999 (5,500 credits). Founders Lifetime Pack: NPR 2,500 one-time (62,500 credits + 50 AI music tracks, no monthly fees ever). All plans charged at 1 credit per character. All plans include unlimited free Nepali subtitles.'
+                a:'Starter Pack: NPR 499 (3,500 credits — ~7 TikTok/Reels voiceovers). Creator Pack: NPR 999 (7,500 credits — ~15 TikTok/Reels voiceovers). Founders Lifetime Pack: NPR 2,500 one-time (25,000 credits + 5 AI music tracks, no monthly fees ever). All plans include unlimited free Nepali subtitles and commercial usage rights.'
               },
             ].map((faq,i)=>(
               <div key={i} style={{borderBottom:'1px solid #f0f0f0',padding:'20px 0'}}>
