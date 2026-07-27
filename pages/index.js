@@ -8,7 +8,7 @@ const DEMO_VOICES_HP = [
   { voice_id: 'TX3LPaxmHKxFdv7VOQHJ', name: 'Arjun', desc: 'Energetic Reels', color: '#F57C00' },
 ]
 
-const HP_DEMO_CHAR_LIMIT = 50
+const HP_DEMO_CHAR_LIMIT = 100
 
 function HomepageDemoBox({ isMobile }) {
   const [demoText, setDemoText] = useState('')
@@ -551,7 +551,7 @@ const filtered = ALL_VOICES.filter(v => {
               Hear a Nepali AI Voice Right Now
             </h2>
             <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.65}}>
-              Type up to 50 Devanagari characters, enter your details and get 1 free voiceover sample instantly
+              Type up to 100 Devanagari characters, enter your details and get 1 free voiceover sample instantly
             </p>
           </div>
           <HomepageDemoBox isMobile={isMobile} />
