@@ -38,7 +38,7 @@ export default async function handler(req, res) {
       }
     }
 
-    return res.status(200).json({
+return res.status(200).json({
       loggedIn: true,
       email: user.email,
       credits,
@@ -48,6 +48,7 @@ export default async function handler(req, res) {
       musicFreeUsed: user.musicFreeUsed || false,
       isFounder: user.isFounder || false,
       founderMusicRemaining,
+      isLegacy: user.isLegacy || false,
     })
   } catch (error) {
     console.error('Session error:', error)
