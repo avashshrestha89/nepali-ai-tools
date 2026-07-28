@@ -23,10 +23,12 @@ export default async function handler(req, res) {
   if (!sessionToken) return res.status(401).json({ error: 'Not logged in' })
 
   try {
-    const email = await redis.get(`session:${sessionToken}`)
-    if (!email) return res.status(401).json({ error: 'Invalid session' })
+    const rawEmail = await redis.get(`session:${sessionToken}`)
+if (!rawEmail) return res.status(401).json({ error: 'Invalid session' })
 
-    const raw = await redis.get(`user:${email}`)
+const email = typeof rawEmail === 'string' ? rawEmail.trim().toLowerCase() : rawEmail
+
+const raw = await redis.get(`user:${email}`)
     if (!raw) return res.status(401).json({ error: 'User not found' })
 
     const user = typeof raw === 'string' ? JSON.parse(raw) : raw
