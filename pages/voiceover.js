@@ -260,7 +260,11 @@ export default function Voiceover() {
     setLoading(false)
   }
 
-  const canGenerate = text.trim().length > 0 && !loading && session !== null && session !== false && (session.credits || 0) >= text.length
+const canGenerate = text.trim().length > 0 && !loading && session !== null && session !== false && (
+  session.isLegacy 
+    ? (session.credits || 0) >= 25 && text.length <= 500
+    : (session.credits || 0) >= text.length
+)
   const credits = session ? session.credits || 0 : null
   const isAnon = session === false
   const hasNoCredits = session === false || (session && credits === 0)
