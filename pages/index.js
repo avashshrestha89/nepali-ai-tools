@@ -882,101 +882,111 @@ const filtered = ALL_VOICES.filter(v => {
             </div>
           </div>
 
-          {/* Founders Deal */}
-          <div style={{background:'linear-gradient(135deg,#7A5C08 0%,#C9940A 40%,#92700A 100%)',borderRadius:20,padding:'36px 40px',marginBottom:20,position:'relative',overflow:'hidden',border:'1px solid rgba(255,215,0,.4)',boxShadow:'0 8px 40px rgba(201,148,10,.25)'}}>
-            <div style={{position:'absolute',top:'-30%',right:'5%',width:400,height:400,borderRadius:'50%',background:'radial-gradient(circle,rgba(220,20,60,.1) 0%,transparent 70%)',pointerEvents:'none'}} />
-            <div style={{display:'flex',alignItems:isMobile?'flex-start':'center',flexDirection:isMobile?'column':'row',justifyContent:'space-between',flexWrap:'wrap',gap:24,position:'relative',zIndex:1}}>
-              <div>
-                <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:12,flexWrap:'wrap'}}>
-                  <div style={{background:'#DC143C',color:'#fff',fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:20,letterSpacing:'0.06em'}}>⚡ FOUNDERS' DEAL</div>
-                  <div style={{background:'rgba(255,255,255,.1)',color:'rgba(0,0,0,.5)',fontSize:11,fontWeight:600,padding:'4px 12px',borderRadius:20}}>Limited to first 15 buyers</div>
-                </div>
-                <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(22px,3vw,34px)',fontWeight:800,color:'#fff',letterSpacing:'-0.5px',marginBottom:6}}>
-                  Founders' Lifetime Pack
-                </div>
-             <div style={{fontSize:14,fontWeight:700,color:'rgba(255,255,255,.9)',lineHeight:1.6,maxWidth:480,marginBottom:0}}>
-                  125 viral videos in your pocket. 5 original soundtracks. One payment. Forever.
-                </div>
-              </div>
-         <div style={{textAlign:'center',flexShrink:0,minWidth:240}}>
-                <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:20,textAlign:'left'}}>
-                  {['25,000 Swor Credits (Lifetime Pool)','5 AI Background Music Tracks (30s each)','Unlimited subtitles forever','Credits NEVER expire','Exclusive Founders Status & Badge','Commercial usage rights'].map(f=>(
-                    <div key={f} style={{display:'flex',alignItems:'center',gap:8,fontSize:13,fontWeight:700,color:'#fff'}}>
-                      <span style={{color:'#34C759',fontWeight:800,fontSize:15}}>✓</span> {f}
-                    </div>
-                  ))}
-                </div>
-                <div style={{fontSize:14,fontWeight:700,color:'rgba(0,0,0,.4)',marginBottom:4,textDecoration:'line-through'}}>NPR 5,000</div>
-                <div style={{fontFamily:'Sora,sans-serif',fontSize:44,fontWeight:800,color:'#fff',lineHeight:1}}>NPR 2,500</div>
-                <div style={{fontSize:15,fontWeight:700,color:'rgba(0,0,0,.55)',marginBottom:20}}>$19.99 USD</div>
-                <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                  <a href={`https://wa.me/19255379425?text=Hi! I want to buy the Swor AI Founders Lifetime Pack (NPR 2,500 / $19.99 USD). Nepal: eSewa/Khalti. International: PayPal @sworai, Venmo @TwentyfourAS, Zelle AVASHSHRESTHAUSA@GMAIL.COM. Please confirm.`} target="_blank" rel="noreferrer"
-                    style={{background:'#25D366',color:'#fff',padding:'12px 24px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center'}}>
-                    💬 Buy via WhatsApp (NPR)
-                  </a>
-                  <a href="https://paypal.me/sworai" target="_blank" rel="noreferrer"
-                    style={{background:'#003087',color:'#fff',padding:'12px 24px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center'}}>
-                    💳 Buy via PayPal ($19.99)
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+  {/* ── 3-COLUMN PRICING GRID ── */}
+<div style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'repeat(3,1fr)',gap:16,marginBottom:20,alignItems:'start'}}>
 
-          {/* Credit Packs Grid */}
-          <div style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'repeat(auto-fit,minmax(280px,1fr))',gap:16,marginBottom:20}}>
-            {[
-          {key:'starter',name:'Starter Pack',credits:3500,bonus:'',npr:499,usd:4.99,popular:false,voice:20,music:5,
- hook:'Test Swor AI risk-free. Perfect for your first batch of Nepali voiceovers.'},
-{key:'creator',name:'Creator Value Pack',credits:7500,bonus:'',npr:999,usd:12.99,popular:true,voice:44,music:11,
- hook:'Two weeks of daily content sorted. Build your audience on autopilot.'},
-            ].map(p=>(
-              <div key={p.key} style={{background:'#fff',borderRadius:20,padding:'28px 24px',border:p.popular?'2px solid #DC143C':'1.5px solid #e8e8ed',position:'relative',boxShadow:p.popular?'0 8px 32px rgba(220,20,60,.1)':'none'}}>
-                {p.popular&&<div style={{position:'absolute',top:-14,left:'50%',transform:'translateX(-50%)',background:'#DC143C',color:'#fff',fontSize:11,fontWeight:700,padding:'5px 16px',borderRadius:20,whiteSpace:'nowrap',letterSpacing:'0.06em'}}>★ MOST POPULAR</div>}
-                <div style={{fontSize:13,fontWeight:700,color:p.popular?'#DC143C':'#6e6e73',marginBottom:8}}>{p.name}</div>
-                <div style={{display:'flex',alignItems:'baseline',gap:8,marginBottom:4}}>
-                  <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1}}>NPR {p.npr.toLocaleString()}</div>
-                </div>
-                <div style={{fontSize:13,color:'#999',marginBottom:4}}>${p.usd} USD</div>
-              <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:20}}>
-  <span>{p.key === 'starter' ? 'First Week Experience' : '15 Videos • Daily Content Pack'}</span>
-</div>
-<div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:20}}>
-       {(p.key === 'starter' ? [
-  '3,500 Swor Credits — never expire',
-  '~7 TikTok/Reels OR 3 YouTube Intros',
-  'Unlimited subtitles forever',
-  'All 20+ Nepali AI voices included',
-  'Commercial usage rights',
-] : [
-  '7,500 Swor Credits — never expire',
-  '~15 TikTok/Reels OR 6 YouTube Intros',
-  'Unlimited subtitles forever',
-  'All 20+ Nepali AI voices included',
-  'Commercial usage rights',
-]).map(f=>(
-  <div key={f} style={{fontSize:13,color:'#555',display:'flex',alignItems:'flex-start',gap:6}}>
-    <span style={{color:'#34C759',fontWeight:700,flexShrink:0}}>✓</span> {f}
+  {/* STARTER */}
+  <div style={{background:'#fff',borderRadius:20,padding:'28px 24px',border:'1.5px solid #e8e8ed',position:'relative'}}>
+    <div style={{fontSize:13,fontWeight:700,color:'#6e6e73',marginBottom:8}}>Starter Pack</div>
+    <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 499</div>
+    <div style={{fontSize:13,color:'#999',marginBottom:12}}>$4.99 USD</div>
+    <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:16}}>
+      First Week Experience
+    </div>
+    <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
+      {['3,500 Swor Credits — never expire','~7 TikTok/Reels OR 3 YouTube Intros','Unlimited subtitles forever','All 20+ Nepali AI voices included','Commercial usage rights'].map(f=>(
+        <div key={f} style={{fontSize:13,color:'#555',display:'flex',alignItems:'flex-start',gap:6}}>
+          <span style={{color:'#34C759',fontWeight:700,flexShrink:0}}>✓</span> {f}
+        </div>
+      ))}
+    </div>
+    <div style={{fontSize:13,fontWeight:600,color:'#DC143C',marginBottom:16,background:'rgba(220,20,60,.06)',padding:'8px 12px',borderRadius:8}}>
+      Test Swor AI risk-free. Perfect for your first batch of Nepali voiceovers.
+    </div>
+    <div style={{display:'flex',flexDirection:'column',gap:8}}>
+      <a href="https://wa.me/19255379425?text=Hi! I want to buy the Swor AI Starter Pack (NPR 499). Nepal: eSewa/Khalti. Please confirm."
+        target="_blank" rel="noreferrer"
+        style={{background:'#1d1d1f',color:'#fff',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center'}}>
+        💬 Buy via WhatsApp
+      </a>
+      <a href="https://paypal.me/sworai/4.99" target="_blank" rel="noreferrer"
+        style={{background:'#f5f5f7',color:'#1d1d1f',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',border:'1px solid #e8e8ed'}}>
+        💳 PayPal ($4.99)
+      </a>
+    </div>
   </div>
-))}
-                </div>
-                <div style={{fontSize:13,fontWeight:600,color:'#DC143C',marginBottom:16,background:'rgba(220,20,60,.06)',padding:'8px 12px',borderRadius:8}}>
-                  {p.hook}
-                </div>
-                <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                  <a href={`https://wa.me/19255379425?text=Hi! I want to buy the Swor AI ${p.name} (NPR ${p.npr} / $${p.usd} USD). Nepal: eSewa/Khalti. International: PayPal @sworai, Venmo @TwentyfourAS, Zelle AVASHSHRESTHAUSA@GMAIL.COM. Please confirm.`}
-                    target="_blank" rel="noreferrer"
-                    style={{background:p.popular?'#DC143C':'#1d1d1f',color:'#fff',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',boxShadow:p.popular?'0 4px 16px rgba(220,20,60,.25)':'none'}}>
-                    💬 Buy via WhatsApp
-                  </a>
-                  <a href="https://paypal.me/sworai" target="_blank" rel="noreferrer"
-                    style={{background:'#f5f5f7',color:'#1d1d1f',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',border:'1px solid #e8e8ed'}}>
-                    💳 PayPal (${p.usd})
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
+
+  {/* FOUNDERS — MOST POPULAR (CENTER) */}
+  <div style={{background:'linear-gradient(135deg,#7A5C08 0%,#C9940A 40%,#92700A 100%)',borderRadius:20,padding:'28px 24px',border:'2px solid rgba(255,215,0,.5)',position:'relative',boxShadow:'0 8px 40px rgba(201,148,10,.3)',transform:isMobile?'none':'scale(1.03)'}}>
+    <div style={{position:'absolute',top:-14,left:'50%',transform:'translateX(-50%)',background:'#DC143C',color:'#fff',fontSize:11,fontWeight:700,padding:'5px 16px',borderRadius:20,whiteSpace:'nowrap',letterSpacing:'0.06em'}}>
+      ⭐ MOST POPULAR
+    </div>
+    <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8,flexWrap:'wrap'}}>
+      <div style={{background:'rgba(255,255,255,.15)',color:'#fff',fontSize:10,fontWeight:700,padding:'3px 10px',borderRadius:20}}>⚡ FOUNDERS' DEAL</div>
+      <div style={{background:'rgba(255,255,255,.1)',color:'rgba(255,255,255,.7)',fontSize:10,fontWeight:600,padding:'3px 10px',borderRadius:20}}>Limited spots</div>
+    </div>
+    <div style={{fontSize:13,fontWeight:700,color:'rgba(255,255,255,.7)',marginBottom:4}}>Founders' Lifetime Pack</div>
+    <div style={{fontSize:14,fontWeight:700,color:'rgba(255,255,255,.5)',marginBottom:4,textDecoration:'line-through'}}>NPR 5,000</div>
+    <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#fff',lineHeight:1,marginBottom:4}}>NPR 2,500</div>
+    <div style={{fontSize:13,color:'rgba(255,255,255,.6)',marginBottom:12}}>$19.99 USD — One time, forever</div>
+    <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,255,255,.15)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#fff',marginBottom:16}}>
+      125 Videos • Lifetime Access
+    </div>
+    <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
+      {['25,000 Swor Credits (Lifetime Pool)','5 AI Background Music Tracks (30s each)','Unlimited subtitles forever','Credits NEVER expire','Exclusive Founders Status & Badge','Commercial usage rights'].map(f=>(
+        <div key={f} style={{fontSize:13,color:'#fff',display:'flex',alignItems:'flex-start',gap:6,fontWeight:600}}>
+          <span style={{color:'#34C759',fontWeight:700,flexShrink:0}}>✓</span> {f}
+        </div>
+      ))}
+    </div>
+    <div style={{fontSize:13,fontWeight:700,color:'rgba(255,255,255,.8)',marginBottom:16,background:'rgba(255,255,255,.1)',padding:'8px 12px',borderRadius:8}}>
+      125 viral videos in your pocket. 5 original soundtracks. One payment. Forever.
+    </div>
+    <div style={{display:'flex',flexDirection:'column',gap:8}}>
+      <a href="https://wa.me/19255379425?text=Hi! I want to buy the Swor AI Founders Lifetime Pack (NPR 2,500 / $19.99 USD). Nepal: eSewa/Khalti. International: PayPal @sworai, Venmo @TwentyfourAS, Zelle AVASHSHRESTHAUSA@GMAIL.COM. Please confirm."
+        target="_blank" rel="noreferrer"
+        style={{background:'#25D366',color:'#fff',padding:'12px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center'}}>
+        💬 Buy via WhatsApp (NPR)
+      </a>
+      <a href="https://paypal.me/sworai" target="_blank" rel="noreferrer"
+        style={{background:'#003087',color:'#fff',padding:'12px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center'}}>
+        💳 Buy via PayPal ($19.99)
+      </a>
+    </div>
+  </div>
+
+  {/* CREATOR */}
+  <div style={{background:'#fff',borderRadius:20,padding:'28px 24px',border:'1.5px solid #e8e8ed',position:'relative'}}>
+    <div style={{fontSize:13,fontWeight:700,color:'#6e6e73',marginBottom:8}}>Creator Value Pack</div>
+    <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 999</div>
+    <div style={{fontSize:13,color:'#999',marginBottom:12}}>$12.99 USD</div>
+    <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:16}}>
+      15 Videos • Daily Content Pack
+    </div>
+    <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
+      {['7,500 Swor Credits — never expire','~15 TikTok/Reels OR 6 YouTube Intros','Unlimited subtitles forever','All 20+ Nepali AI voices included','Commercial usage rights'].map(f=>(
+        <div key={f} style={{fontSize:13,color:'#555',display:'flex',alignItems:'flex-start',gap:6}}>
+          <span style={{color:'#34C759',fontWeight:700,flexShrink:0}}>✓</span> {f}
+        </div>
+      ))}
+    </div>
+    <div style={{fontSize:13,fontWeight:600,color:'#DC143C',marginBottom:16,background:'rgba(220,20,60,.06)',padding:'8px 12px',borderRadius:8}}>
+      Two weeks of daily content sorted. Build your audience on autopilot.
+    </div>
+    <div style={{display:'flex',flexDirection:'column',gap:8}}>
+      <a href="https://wa.me/19255379425?text=Hi! I want to buy the Swor AI Creator Value Pack (NPR 999). Nepal: eSewa/Khalti. Please confirm."
+        target="_blank" rel="noreferrer"
+        style={{background:'#DC143C',color:'#fff',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',boxShadow:'0 4px 16px rgba(220,20,60,.25)'}}>
+        💬 Buy via WhatsApp
+      </a>
+      <a href="https://paypal.me/sworai/12.99" target="_blank" rel="noreferrer"
+        style={{background:'#f5f5f7',color:'#1d1d1f',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',border:'1px solid #e8e8ed'}}>
+        💳 PayPal ($12.99)
+      </a>
+    </div>
+  </div>
+
+</div>
 
           {/* Custom Plan */}
           <div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1a2d 100%)',borderRadius:20,padding:'36px 40px',marginBottom:20,border:'1px solid rgba(107,63,190,.3)',position:'relative',overflow:'hidden'}}>
