@@ -547,12 +547,14 @@ const filtered = ALL_VOICES.filter(v => {
             <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(220,20,60,.08)',border:'1px solid rgba(220,20,60,.15)',borderRadius:20,padding:'5px 14px',fontSize:12,fontWeight:700,color:'#DC143C',marginBottom:12}}>
               🎙️ TRY FREE — NO SIGNUP NEEDED
             </div>
-            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?'20px':'clamp(20px,3vw,30px)',fontWeight:800,letterSpacing:'-0.8px',marginBottom:8}}>
-              Hear a Nepali AI Voice Right Now
-            </h2>
-            <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.65}}>
-              Type up to 100 Devanagari characters, enter your details and get 1 free voiceover sample instantly
-            </p>
+         <h2 style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?'20px':'clamp(20px,3vw,30px)',fontWeight:800,letterSpacing:'-0.8px',marginBottom:8}}>
+  Try a Free Voice Sample
+</h2>
+<p style={{fontSize:14,color:'#6e6e73',lineHeight:1.65}}>
+  This is a quick 100-character preview — not the full tool. 
+  After hearing your sample, you can access all 20 voices, 
+  unlimited length, and full features with any credit pack.
+</p>
           </div>
           <HomepageDemoBox isMobile={isMobile} />
         </div>
