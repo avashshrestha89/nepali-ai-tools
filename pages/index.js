@@ -855,7 +855,7 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 999</div>
     <div style={{fontSize:13,color:'#999',marginBottom:12}}>$12.99 USD</div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:16}}>
-      15 Videos • Daily Content Pack
+      15 Videos • Two Weeks of Content
     </div>
     <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
       {['7,500 Swor Credits — never expire','~15 TikTok/Reels OR 6 YouTube Intros','Unlimited subtitles forever','All 20+ Nepali AI voices included','Commercial usage rights'].map(f=>(
