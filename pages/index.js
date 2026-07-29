@@ -559,17 +559,7 @@ const filtered = ALL_VOICES.filter(v => {
           <HomepageDemoBox isMobile={isMobile} />
         </div>
       </section>
-      {/* ══ MIDDLE STRIP ══ */}
-      <section style={{background:'#1d1d1f',padding:isMobile?'20px 16px':'28px 48px',textAlign:'center'}}>
-        <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(16px,2vw,24px)',fontWeight:700,color:'#fff',letterSpacing:'-0.3px',marginBottom:8}}>
-          Start saving <span style={{color:'#FF6B8A'}}>90%</span> of your time and budget today!
-        </div>
-        <div style={{fontSize:13,color:'rgba(255,255,255,.65)',fontWeight:500,letterSpacing:'0.02em'}}>
-          <span style={{color:'#FF9500',fontWeight:700}}>Swor AI</span>
-          {' '}—{' '}
-          <span style={{color:'rgba(255,255,255,.8)'}}>A Product of MeroAD.ai</span>
-        </div>
-      </section>
+
 
       {/* ══ VOICE LIBRARY ══ */}
       <section style={{padding:isMobile?'60px 16px':'100px 48px',background:'#fff'}}>
@@ -650,6 +640,20 @@ const filtered = ALL_VOICES.filter(v => {
           </div>
         </div>
       </section>
+
+      {/* ══ MIDDLE STRIP ══ */}
+      <section style={{background:'#1d1d1f',padding:isMobile?'20px 16px':'28px 48px',textAlign:'center'}}>
+        <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(16px,2vw,24px)',fontWeight:700,color:'#fff',letterSpacing:'-0.3px',marginBottom:8}}>
+          Start saving <span style={{color:'#FF6B8A'}}>90%</span> of your time and budget today!
+        </div>
+        <div style={{fontSize:13,color:'rgba(255,255,255,.65)',fontWeight:500,letterSpacing:'0.02em'}}>
+          <span style={{color:'#FF9500',fontWeight:700}}>Swor AI</span>
+          {' '}—{' '}
+          <span style={{color:'rgba(255,255,255,.8)'}}>A Product of MeroAD.ai</span>
+        </div>
+      </section>
+
+
 
       {/* ══ SWOR IS ULTIMATE ══ */}
       <section style={{padding:'100px 48px',background:'#f5f5f7'}}>
