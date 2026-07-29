@@ -870,7 +870,11 @@ const filtered = ALL_VOICES.filter(v => {
               Credits never expire. Use them however you want.
             </p>
             <div style={{display:'inline-flex',gap:16,background:'#fff',borderRadius:12,padding:'12px 20px',border:'1px solid #e8e8ed',fontSize:13,color:'#555',flexWrap:'wrap',justifyContent:'center'}}>
-              <span>🎙️ <strong style={{color:'#1d1d1f'}}>1 credit</strong> = 1 character</span>
+              <span>🎙️ <strong style={{color:'#1d1d1f'}}><div style={{display:'inline-flex',gap:8,background:'#fff',borderRadius:12,padding:'10px 20px',border:'1px solid #e8e8ed',fontSize:13,color:'#555'}}>
+  <span>✓ Credits never expire</span>
+  <span style={{color:'#e8e8ed'}}>|</span>
+  <span>✓ <strong style={{color:'#34C759'}}>Subtitles always free</strong></span>
+</div></strong> = 1 character</span>
               <span style={{color:'#e8e8ed'}}>|</span>
               <span>🎵 <strong style={{color:'#1d1d1f'}}>100 credits</strong> = 30s music</span>
               <span style={{color:'#e8e8ed'}}>|</span>
