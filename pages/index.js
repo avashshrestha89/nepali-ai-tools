@@ -761,26 +761,31 @@ const filtered = ALL_VOICES.filter(v => {
       <section id="pricing" style={{padding:isMobile?'60px 16px':'100px 48px',background:'#f5f5f7'}}>
         <div style={{maxWidth:1100,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:60}}>
-            <div style={{fontSize:12,fontWeight:700,color:'#DC143C',letterSpacing:'0.12em',textTransform:'uppercase',marginBottom:12}}>Simple pricing</div>
-            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(28px,3.5vw,46px)',fontWeight:800,letterSpacing:'-1px',marginBottom:14}}>
-              Choose your credit pack
-            </h2>
-            <p style={{fontSize:16,color:'#6e6e73',maxWidth:520,margin:'0 auto 16px',lineHeight:1.65}}>
-              One universal currency for everything — voiceovers, subtitles, and music.
-              Credits never expire. Use them however you want.
-            </p>
-            <div style={{display:'inline-flex',gap:16,background:'#fff',borderRadius:12,padding:'12px 20px',border:'1px solid #e8e8ed',fontSize:13,color:'#555',flexWrap:'wrap',justifyContent:'center'}}>
-              <span>🎙️ <strong style={{color:'#1d1d1f'}}><div style={{display:'inline-flex',gap:8,background:'#fff',borderRadius:12,padding:'10px 20px',border:'1px solid #e8e8ed',fontSize:13,color:'#555'}}>
-  <span>✓ Credits never expire</span>
-  <span style={{color:'#e8e8ed'}}>|</span>
-  <span>✓ <strong style={{color:'#34C759'}}>Subtitles always free</strong></span>
-</div></strong> = 1 character</span>
-              <span style={{color:'#e8e8ed'}}>|</span>
-              <span>🎵 <strong style={{color:'#1d1d1f'}}>100 credits</strong> = 30s music</span>
-              <span style={{color:'#e8e8ed'}}>|</span>
-              <span>🎬 <strong style={{color:'#34C759'}}>Subtitles FREE</strong> always</span>
-            </div>
-          </div>
+  <div style={{fontSize:12,fontWeight:700,color:'#DC143C',letterSpacing:'0.12em',textTransform:'uppercase',marginBottom:12}}>Simple pricing</div>
+  <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(28px,3.5vw,46px)',fontWeight:800,letterSpacing:'-1px',marginBottom:14}}>
+    Choose your credit pack
+  </h2>
+  <p style={{fontSize:16,color:'#6e6e73',maxWidth:520,margin:'0 auto 16px',lineHeight:1.65}}>
+    One universal currency for everything — voiceovers, subtitles, and music.
+    Credits never expire. Use them however you want.
+  </p>
+  <div style={{display:'inline-flex',gap:8,background:'#fff',borderRadius:12,padding:'10px 20px',border:'1px solid #e8e8ed',fontSize:13,color:'#555'}}>
+    <span>✓ Credits never expire</span>
+    <span style={{color:'#e8e8ed'}}>|</span>
+    <span>✓ <strong style={{color:'#34C759'}}>Subtitles always free</strong></span>
+  </div>
+</div>
+
+{/* SHORT FORM LABEL */}
+<div style={{textAlign:'center',marginBottom:24}}>
+  <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'linear-gradient(135deg,rgba(220,20,60,.08),rgba(255,107,138,.08))',border:'1.5px solid rgba(220,20,60,.2)',borderRadius:20,padding:'8px 20px'}}>
+    <span style={{fontSize:16}}>📱</span>
+    <div>
+      <div style={{fontSize:13,fontWeight:800,color:'#DC143C',letterSpacing:'0.04em'}}>FOR TIKTOK, INSTAGRAM & REELS CREATORS</div>
+      <div style={{fontSize:11,color:'#888',marginTop:1}}>Short-form content · 15 to 60 second videos</div>
+    </div>
+  </div>
+</div>
 
   {/* ── 3-COLUMN PRICING GRID ── */}
 <div style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'repeat(3,1fr)',gap:16,marginBottom:20,alignItems:'start'}}>
