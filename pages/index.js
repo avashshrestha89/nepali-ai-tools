@@ -830,17 +830,17 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#fff',lineHeight:1,marginBottom:4}}>NPR 2,500</div>
     <div style={{fontSize:13,color:'rgba(255,255,255,.6)',marginBottom:12}}>$19.99 USD — One time, forever</div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,255,255,.15)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#fff',marginBottom:16}}>
-      125 Videos • Lifetime Access
+      150 Videos • Lifetime Access
     </div>
     <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
-      {['25,000 Swor Credits (Lifetime Pool)','5 AI Background Music Tracks (30s each)','Unlimited subtitles forever','Credits NEVER expire','Exclusive Founders Status & Badge','Commercial usage rights'].map(f=>(
+      {['30,000 Swor Credits (Lifetime Pool)','5 AI Background Music Tracks (30s each)','Unlimited subtitles forever','Credits NEVER expire','Exclusive Founders Status & Badge','Commercial usage rights'].map(f=>(
         <div key={f} style={{fontSize:13,color:'#fff',display:'flex',alignItems:'flex-start',gap:6,fontWeight:600}}>
           <span style={{color:'#34C759',fontWeight:700,flexShrink:0}}>✓</span> {f}
         </div>
       ))}
     </div>
     <div style={{fontSize:13,fontWeight:700,color:'rgba(255,255,255,.8)',marginBottom:16,background:'rgba(255,255,255,.1)',padding:'8px 12px',borderRadius:8}}>
-      125 viral videos in your pocket. 5 original soundtracks. One payment. Forever.
+      150 viral videos in your pocket. 5 original soundtracks. One payment. Forever.
     </div>
     <div style={{display:'flex',flexDirection:'column',gap:8}}>
       <a href="https://wa.me/19255379425?text=Hi! I want to buy the Swor AI Founders Lifetime Pack (NPR 2,500 / $19.99 USD). Nepal: eSewa/Khalti. International: PayPal @sworai, Venmo @TwentyfourAS, Zelle AVASHSHRESTHAUSA@GMAIL.COM. Please confirm."
@@ -864,7 +864,8 @@ const filtered = ALL_VOICES.filter(v => {
       15 Videos • Two Weeks of Content
     </div>
     <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
-      {['7,500 Swor Credits — never expire','~15 TikTok/Reels OR 6 YouTube Intros','Unlimited subtitles forever','All 20+ Nepali AI voices included','Commercial usage rights'].map(f=>(
+      {['8,000 Swor Credits — never expire',
+'~16 TikTok/Reels OR 6 YouTube Intros','Unlimited subtitles forever','All 20+ Nepali AI voices included','Commercial usage rights'].map(f=>(
         <div key={f} style={{fontSize:13,color:'#555',display:'flex',alignItems:'flex-start',gap:6}}>
           <span style={{color:'#34C759',fontWeight:700,flexShrink:0}}>✓</span> {f}
         </div>
