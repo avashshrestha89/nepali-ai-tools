@@ -8,8 +8,8 @@ const redis = new Redis({
 // Credit packs
 const PACKS = {
   starter:   { credits: 3500,  label: 'Starter Pack (NPR 499)' },
-  creator:   { credits: 7500, label: 'Creator Pack (NPR 999)' },
-  founders:  { credits: 25000, label: "Founders' Lifetime Pack (NPR 2,500)", isFounder: true },
+  creator:   { credits: 8000, label: 'Creator Pack (NPR 999)' },
+  founders:  { credits: 30000, label: "Founders' Lifetime Pack (NPR 2,500)", isFounder: true },
   custom:    { credits: 0,    label: 'Custom amount' },
 }
 
