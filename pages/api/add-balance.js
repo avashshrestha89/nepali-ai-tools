@@ -7,10 +7,13 @@ const redis = new Redis({
 
 // Credit packs
 const PACKS = {
-  starter:   { credits: 3500,  label: 'Starter Pack (NPR 499)' },
-  creator:   { credits: 8000, label: 'Creator Pack (NPR 999)' },
-  founders:  { credits: 30000, label: "Founders' Lifetime Pack (NPR 2,500)", isFounder: true },
-  custom:    { credits: 0,    label: 'Custom amount' },
+  starter:        { credits: 3500,   label: 'Starter Pack (NPR 499)' },
+  creator:        { credits: 8000,   label: 'Creator Pack (NPR 999)' },
+  founders:       { credits: 30000,  label: "Founders' Lifetime Pack (NPR 2,500)", isFounder: true },
+  youtube_starter:{ credits: 35000,  label: 'YouTube Starter Pack (NPR 2,999)' },
+  youtube_pro:    { credits: 65000,  label: 'YouTube Pro Pack (NPR 4,999)' },
+  youtube_empire: { credits: 125000, label: 'YouTube Empire Pack (NPR 8,999)' },
+  custom:         { credits: 0,      label: 'Custom amount' },
 }
 
 export default async function handler(req, res) {
