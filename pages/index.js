@@ -894,6 +894,138 @@ const filtered = ALL_VOICES.filter(v => {
 
 </div>
 
+{/* YOUTUBE LONG-FORM LABEL */}
+<div style={{textAlign:'center',margin:'60px 0 24px'}}>
+  <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'linear-gradient(135deg,rgba(255,0,0,.06),rgba(255,100,0,.06))',border:'1.5px solid rgba(255,0,0,.2)',borderRadius:20,padding:'8px 20px'}}>
+    <span style={{fontSize:16}}>🎬</span>
+    <div>
+      <div style={{fontSize:13,fontWeight:800,color:'#FF0000',letterSpacing:'0.04em'}}>FOR YOUTUBE LONG-FORM CREATORS</div>
+      <div style={{fontSize:11,color:'#888',marginTop:1}}>Long-form content · 10 to 20+ minute videos</div>
+    </div>
+  </div>
+</div>
+
+{/* YOUTUBE PACKS GRID */}
+<div style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'repeat(3,1fr)',gap:16,marginBottom:20}}>
+
+  {/* YOUTUBE STARTER */}
+  <div style={{background:'#fff',borderRadius:20,padding:'28px 24px',border:'1.5px solid #e8e8ed',position:'relative'}}>
+    <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:8}}>YouTube Starter</div>
+    <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 2,999</div>
+    <div style={{fontSize:13,color:'#999',marginBottom:12}}>$22.50 USD</div>
+    <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,0,0,.06)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#FF0000',marginBottom:16}}>
+      ~2 Full 20-min Videos
+    </div>
+    <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
+      {[
+        '35,000 Swor Credits — never expire',
+        '~2 full 20-minute YouTube videos',
+        'OR ~5 YouTube Shorts (10 min each)',
+        'All 20+ Nepali AI voices included',
+        'Unlimited subtitles forever',
+        'Commercial usage rights',
+      ].map(f=>(
+        <div key={f} style={{fontSize:13,color:'#555',display:'flex',alignItems:'flex-start',gap:6}}>
+          <span style={{color:'#34C759',fontWeight:700,flexShrink:0}}>✓</span> {f}
+        </div>
+      ))}
+    </div>
+    <div style={{fontSize:13,fontWeight:600,color:'#FF0000',marginBottom:16,background:'rgba(255,0,0,.04)',padding:'8px 12px',borderRadius:8}}>
+      Perfect for casual YouTubers posting 1-2 videos per month.
+    </div>
+    <div style={{display:'flex',flexDirection:'column',gap:8}}>
+      <a href="https://wa.me/19255379425?text=Hi! I want to buy the Swor AI YouTube Starter Pack (NPR 2,999). Please confirm."
+        target="_blank" rel="noreferrer"
+        style={{background:'#1d1d1f',color:'#fff',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center'}}>
+        💬 Buy via WhatsApp
+      </a>
+      <a href="https://paypal.me/sworai/22.50" target="_blank" rel="noreferrer"
+        style={{background:'#f5f5f7',color:'#1d1d1f',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',border:'1px solid #e8e8ed'}}>
+        💳 PayPal ($22.50)
+      </a>
+    </div>
+  </div>
+
+  {/* YOUTUBE PRO — MOST POPULAR */}
+  <div style={{background:'linear-gradient(135deg,#1a1a2e 0%,#16213e 100%)',borderRadius:20,padding:'28px 24px',border:'2px solid rgba(255,0,0,.4)',position:'relative',boxShadow:'0 8px 40px rgba(255,0,0,.15)',transform:isMobile?'none':'scale(1.03)'}}>
+    <div style={{position:'absolute',top:-14,left:'50%',transform:'translateX(-50%)',background:'#FF0000',color:'#fff',fontSize:11,fontWeight:700,padding:'5px 16px',borderRadius:20,whiteSpace:'nowrap',letterSpacing:'0.06em'}}>
+      ⭐ MOST POPULAR
+    </div>
+    <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.5)',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:8}}>YouTube Pro</div>
+    <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#fff',lineHeight:1,marginBottom:4}}>NPR 4,999</div>
+    <div style={{fontSize:13,color:'rgba(255,255,255,.5)',marginBottom:12}}>$37.50 USD</div>
+    <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,0,0,.15)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#FF6B6B',marginBottom:16}}>
+      ~4 Full 20-min Videos / Month
+    </div>
+    <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
+      {[
+        '65,000 Swor Credits — never expire',
+        '~4 full 20-minute YouTube videos',
+        'OR ~10 YouTube Shorts (10 min each)',
+        'All 20+ Nepali AI voices included',
+        'Unlimited subtitles forever',
+        'Commercial usage rights',
+      ].map(f=>(
+        <div key={f} style={{fontSize:13,color:'rgba(255,255,255,.8)',display:'flex',alignItems:'flex-start',gap:6,fontWeight:500}}>
+          <span style={{color:'#34C759',fontWeight:700,flexShrink:0}}>✓</span> {f}
+        </div>
+      ))}
+    </div>
+    <div style={{fontSize:13,fontWeight:600,color:'rgba(255,255,255,.7)',marginBottom:16,background:'rgba(255,255,255,.06)',padding:'8px 12px',borderRadius:8}}>
+      Weekly uploads sorted. Build your channel without a microphone or studio.
+    </div>
+    <div style={{display:'flex',flexDirection:'column',gap:8}}>
+      <a href="https://wa.me/19255379425?text=Hi! I want to buy the Swor AI YouTube Pro Pack (NPR 4,999). Please confirm."
+        target="_blank" rel="noreferrer"
+        style={{background:'#FF0000',color:'#fff',padding:'12px',borderRadius:10,fontSize:14,fontWeight:700,textDecoration:'none',textAlign:'center',boxShadow:'0 4px 16px rgba(255,0,0,.3)'}}>
+        💬 Buy via WhatsApp
+      </a>
+      <a href="https://paypal.me/sworai/37.50" target="_blank" rel="noreferrer"
+        style={{background:'rgba(255,255,255,.08)',color:'rgba(255,255,255,.7)',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',border:'1px solid rgba(255,255,255,.1)'}}>
+        💳 PayPal ($37.50)
+      </a>
+    </div>
+  </div>
+
+  {/* YOUTUBE EMPIRE */}
+  <div style={{background:'#fff',borderRadius:20,padding:'28px 24px',border:'1.5px solid #e8e8ed',position:'relative'}}>
+    <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:8}}>YouTube Empire</div>
+    <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 8,999</div>
+    <div style={{fontSize:13,color:'#999',marginBottom:12}}>$67.50 USD</div>
+    <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,0,0,.06)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#FF0000',marginBottom:16}}>
+      ~7 Full 20-min Videos
+    </div>
+    <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
+      {[
+        '125,000 Swor Credits — never expire',
+        '~7 full 20-minute YouTube videos',
+        'OR ~20 YouTube Shorts (10 min each)',
+        'All 20+ Nepali AI voices included',
+        'Unlimited subtitles forever',
+        'Commercial usage rights',
+      ].map(f=>(
+        <div key={f} style={{fontSize:13,color:'#555',display:'flex',alignItems:'flex-start',gap:6}}>
+          <span style={{color:'#34C759',fontWeight:700,flexShrink:0}}>✓</span> {f}
+        </div>
+      ))}
+    </div>
+    <div style={{fontSize:13,fontWeight:600,color:'#FF0000',marginBottom:16,background:'rgba(255,0,0,.04)',padding:'8px 12px',borderRadius:8}}>
+      For multi-channel operators and daily creators who need bulk volume.
+    </div>
+    <div style={{display:'flex',flexDirection:'column',gap:8}}>
+      <a href="https://wa.me/19255379425?text=Hi! I want to buy the Swor AI YouTube Empire Pack (NPR 8,999). Please confirm."
+        target="_blank" rel="noreferrer"
+        style={{background:'#1d1d1f',color:'#fff',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center'}}>
+        💬 Buy via WhatsApp
+      </a>
+      <a href="https://paypal.me/sworai/67.50" target="_blank" rel="noreferrer"
+        style={{background:'#f5f5f7',color:'#1d1d1f',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',border:'1px solid #e8e8ed'}}>
+        💳 PayPal ($67.50)
+      </a>
+    </div>
+  </div>
+
+</div>
           {/* Custom Plan */}
           <div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1a2d 100%)',borderRadius:20,padding:'36px 40px',marginBottom:20,border:'1px solid rgba(107,63,190,.3)',position:'relative',overflow:'hidden'}}>
             <div style={{position:'absolute',top:'-30%',left:'5%',width:300,height:300,borderRadius:'50%',background:'radial-gradient(circle,rgba(107,63,190,.1) 0%,transparent 70%)',pointerEvents:'none'}} />
