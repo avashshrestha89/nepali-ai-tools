@@ -8,7 +8,7 @@ const DEMO_VOICES = [
   { voice_id: 'TX3LPaxmHKxFdv7VOQHJ', name: 'Arjun', desc: 'Energetic Reels', color: '#F57C00' },
 ]
 
-const DEMO_CHAR_LIMIT = 100
+const DEMO_CHAR_LIMIT = 200
 
 function DemoBox() {
   const [demoText, setDemoText] = useState('')
