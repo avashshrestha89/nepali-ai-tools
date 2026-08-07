@@ -551,7 +551,7 @@ const filtered = ALL_VOICES.filter(v => {
   Try a Free Voice Sample
 </h2>
 <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.65}}>
-  This is a quick 100-character preview — not the full tool. 
+  This is a quick 200-character preview — not the full tool. 
   After hearing your sample, you can access all 20 voices, 
   unlimited length, and full features with any credit pack.
 </p>
