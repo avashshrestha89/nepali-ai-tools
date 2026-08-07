@@ -66,14 +66,18 @@ function formatTime(secs) {
       const audio = new Audio(url)
       demoAudioRef.current = audio
       audio.play()
-      setDemoPlaying(true)
-      localStorage.setItem('swor_hp_demo_used', 'true')
-      setUsed(true)
-      setShowForm(false)
-    audio.onended = () => {
+setDemoPlaying(true)
+localStorage.setItem('swor_hp_demo_used', 'true')
+setUsed(true)
+setShowForm(false)
+audio.onended = () => {
   setDemoPlaying(false)
   setShowReward(true)
 }
+// Show reward after 3 seconds regardless
+setTimeout(() => {
+  setShowReward(true)
+}, 3000)
     } catch (err) { setDemoError(err.message) }
     setDemoLoading(false)
   }
