@@ -9,7 +9,7 @@ const DEMO_VOICES = [
   'TX3LPaxmHKxFdv7VOQHJ',
 ]
 
-const DEMO_CHAR_LIMIT = 100
+const DEMO_CHAR_LIMIT = 200
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
