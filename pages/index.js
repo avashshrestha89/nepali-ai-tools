@@ -366,7 +366,8 @@ const filtered = ALL_VOICES.filter(v => {
       </Head>
 
       <style>{`
-        *{box-sizing:border-box;margin:0;padding:0}
+  *{box-sizing:border-box;margin:0;padding:0}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
         html{scroll-behavior:smooth}
         body{font-family:'Manrope',sans-serif;background:#fff;color:#1d1d1f;-webkit-font-smoothing:antialiased}
         a{text-decoration:none;color:inherit}
@@ -778,6 +779,23 @@ const filtered = ALL_VOICES.filter(v => {
   </div>
 </div>
 
+{/* SCARCITY COUNTER */}
+<div style={{background:'linear-gradient(135deg,#1d1d1f,#2d1020)',borderRadius:16,padding:'14px 24px',marginBottom:24,display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,border:'1px solid rgba(220,20,60,.2)'}}>
+  <div style={{display:'flex',alignItems:'center',gap:10}}>
+    <div style={{width:10,height:10,borderRadius:'50%',background:'#DC143C',boxShadow:'0 0 8px rgba(220,20,60,.8)',animation:'pulse 1.5s infinite'}} />
+    <div style={{fontSize:13,fontWeight:700,color:'#fff'}}>
+      ⚡ Early Adopter Launch
+    </div>
+    <div style={{fontSize:13,color:'rgba(255,255,255,.6)'}}>
+      — Only <span style={{color:'#FF9500',fontWeight:800}}>7</span> of 50 Founders Lifetime seats remaining at NPR 2,500. Price increases after current cohort fills.
+    </div>
+  </div>
+  <div style={{display:'flex',alignItems:'center',gap:6,background:'rgba(255,149,0,.1)',border:'1px solid rgba(255,149,0,.3)',borderRadius:20,padding:'4px 12px'}}>
+    <span style={{fontSize:12,fontWeight:700,color:'#FF9500'}}>🔥 7 spots left</span>
+  </div>
+</div>
+
+{/* SHORT FORM LABEL */}
 {/* SHORT FORM LABEL */}
 <div style={{textAlign:'center',marginBottom:24}}>
   <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'linear-gradient(135deg,rgba(220,20,60,.08),rgba(255,107,138,.08))',border:'1.5px solid rgba(220,20,60,.2)',borderRadius:20,padding:'8px 20px'}}>
