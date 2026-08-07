@@ -21,7 +21,26 @@ function HomepageDemoBox({ isMobile }) {
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [used, setUsed] = useState(false)
+  const [showReward, setShowReward] = useState(false)
+const [timeLeft, setTimeLeft] = useState(900) // 15 minutes
   const demoAudioRef = useRef(null)
+  useEffect(() => {
+  if (!showReward) return
+  if (timeLeft <= 0) return
+  const timer = setInterval(() => {
+    setTimeLeft(t => {
+      if (t <= 1) { clearInterval(timer); return 0 }
+      return t - 1
+    })
+  }, 1000)
+  return () => clearInterval(timer)
+}, [showReward])
+
+function formatTime(secs) {
+  const m = Math.floor(secs / 60).toString().padStart(2, '0')
+  const s = (secs % 60).toString().padStart(2, '0')
+  return `${m}:${s}`
+}
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -51,10 +70,10 @@ function HomepageDemoBox({ isMobile }) {
       localStorage.setItem('swor_hp_demo_used', 'true')
       setUsed(true)
       setShowForm(false)
-      audio.onended = () => {
-        setDemoPlaying(false)
-        window.location.href = '/voiceover'
-      }
+    audio.onended = () => {
+  setDemoPlaying(false)
+  setShowReward(true)
+}
     } catch (err) { setDemoError(err.message) }
     setDemoLoading(false)
   }
@@ -224,6 +243,96 @@ function HomepageDemoBox({ isMobile }) {
           </button>
         </form>
       )}
+        {/* REWARD POPUP */}
+{showReward && (
+  <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.75)',zIndex:999,display:'flex',alignItems:'center',justifyContent:'center',padding:16,backdropFilter:'blur(6px)'}}>
+    <div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1020 100%)',borderRadius:24,padding:isMobile?24:36,maxWidth:480,width:'100%',border:'1.5px solid rgba(220,20,60,.3)',boxShadow:'0 24px 60px rgba(0,0,0,.5)',position:'relative'}}>
+      
+      {/* Close button */}
+      <button onClick={() => setShowReward(false)}
+        style={{position:'absolute',top:16,right:16,background:'rgba(255,255,255,.1)',border:'none',color:'#fff',width:32,height:32,borderRadius:'50%',cursor:'pointer',fontSize:16,display:'flex',alignItems:'center',justifyContent:'center'}}>
+        ✕
+      </button>
+
+      {/* Header */}
+      <div style={{textAlign:'center',marginBottom:20}}>
+        <div style={{fontSize:36,marginBottom:8}}>🎉</div>
+        <div style={{fontFamily:'Sora,sans-serif',fontSize:20,fontWeight:800,color:'#fff',marginBottom:4}}>
+          Voice Generated Successfully!
+        </div>
+        <div style={{fontFamily:'Noto Sans Devanagari,sans-serif',fontSize:14,color:'rgba(255,255,255,.6)'}}>
+          आवाज सफलतापूर्वक तयार भयो!
+        </div>
+      </div>
+
+      {/* Reward box */}
+      <div style={{background:'rgba(220,20,60,.1)',border:'1.5px solid rgba(220,20,60,.3)',borderRadius:16,padding:20,marginBottom:20,textAlign:'center'}}>
+        <div style={{fontSize:13,fontWeight:700,color:'rgba(255,255,255,.7)',marginBottom:8}}>
+          🎁 You unlocked an Exclusive Early Creator Reward!
+        </div>
+        <div style={{fontFamily:'Noto Sans Devanagari,sans-serif',fontSize:12,color:'rgba(255,255,255,.5)',marginBottom:16}}>
+          तपाईंले एउटा विशेष Early Creator Reward अनलक गर्नुभयो!
+        </div>
+        
+        {/* Code */}
+        <div style={{background:'#1d1d1f',borderRadius:12,padding:'12px 20px',marginBottom:16,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
+          <div>
+            <div style={{fontSize:11,color:'#888',marginBottom:4}}>Your exclusive code / तपाईंको विशेष कोड:</div>
+            <div style={{fontFamily:'monospace',fontSize:20,fontWeight:800,color:'#DC143C',letterSpacing:'0.1em'}}>SWOR-LAUNCH-10K</div>
+          </div>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText('SWOR-LAUNCH-10K')
+              alert('Code copied!')
+            }}
+            style={{background:'rgba(220,20,60,.2)',border:'1px solid rgba(220,20,60,.4)',color:'#DC143C',padding:'6px 12px',borderRadius:8,fontSize:11,fontWeight:700,cursor:'pointer',flexShrink:0}}>
+            Copy
+          </button>
+        </div>
+
+        {/* Offer details */}
+        <div style={{fontSize:13,color:'#fff',fontWeight:600,marginBottom:4}}>
+          🎁 Send this code on WhatsApp to get
+        </div>
+        <div style={{fontSize:18,fontWeight:800,color:'#34C759',marginBottom:4}}>
+          10,000 CREDITS
+        </div>
+        <div style={{fontSize:13,color:'rgba(255,255,255,.7)',marginBottom:4}}>
+          instead of 3,500 on Starter Pack (NPR 499)!
+        </div>
+        <div style={{fontFamily:'Noto Sans Devanagari,sans-serif',fontSize:12,color:'rgba(255,255,255,.5)'}}>
+          यो कोड WhatsApp मा पठाउनुस् र Starter Pack (NPR ४९९) मा ३,५०० को सट्टा १०,००० Credits पाउनुस्!
+        </div>
+      </div>
+
+      {/* Timer */}
+      <div style={{textAlign:'center',marginBottom:16}}>
+        <div style={{fontSize:12,color:'rgba(255,255,255,.5)',marginBottom:4}}>
+          ⏱️ Offer valid for / यो अफर मान्य छ:
+        </div>
+        <div style={{fontFamily:'Sora,sans-serif',fontSize:28,fontWeight:800,color:timeLeft < 60 ? '#DC143C' : '#FF9500'}}>
+          {formatTime(timeLeft)}
+        </div>
+        <div style={{fontSize:11,color:'rgba(255,255,255,.4)'}}>
+          {timeLeft < 60 ? '⚠️ Expiring soon!' : 'minutes remaining'}
+        </div>
+      </div>
+
+      {/* CTA Button */}
+      
+        href={`https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20generated%20a%20demo%20on%20Swor%20AI%20and%20unlocked%20code%20SWOR-LAUNCH-10K.%20I%20want%20to%20claim%20the%2010%2C000%20credits%20Starter%20Pack%20for%20NPR%20499!`}
+        target="_blank" rel="noreferrer"
+        style={{display:'block',background:'#25D366',color:'#fff',padding:'14px',borderRadius:12,fontSize:15,fontWeight:700,textAlign:'center',textDecoration:'none',boxShadow:'0 4px 20px rgba(37,211,102,.3)',marginBottom:10}}>
+        💬 Claim 10,000 Credits on WhatsApp Now
+      </a>
+      <div style={{textAlign:'center',fontSize:11,color:'rgba(255,255,255,.3)'}}>
+        या / or — <span style={{cursor:'pointer',textDecoration:'underline'}} onClick={() => { setShowReward(false); window.location.href='/voiceover' }}>
+          Continue to full tool →
+        </span>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   )
 }
