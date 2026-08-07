@@ -326,8 +326,8 @@ function formatTime(secs) {
         💬 Claim 10,000 Credits on WhatsApp Now
       </a>
       <div style={{textAlign:'center',fontSize:11,color:'rgba(255,255,255,.3)'}}>
-        या / or — <span style={{cursor:'pointer',textDecoration:'underline'}} onClick={() => { setShowReward(false); window.location.href='/voiceover' }}>
-          Continue to full tool →
+        या / or <span style={{cursor:'pointer',textDecoration:'underline'}} onClick={() => { setShowReward(false); window.location.href='/voiceover' }}>
+          Continue to full tool &rarr;
         </span>
       </div>
     </div>
