@@ -318,21 +318,13 @@ function formatTime(secs) {
         </div>
       </div>
 
-      {/* CTA Button */}
-      
-  href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20generated%20a%20demo%20on%20Swor%20AI%20and%20unlocked%20code%20SWOR-LAUNCH-10K.%20I%20want%20to%20claim%20the%2010%2C000%20credits%20Starter%20Pack%20for%20NPR%20499!"
-        target="_blank"
-        rel="noreferrer"
-        style={{display:'block',background:'#25D366',color:'#fff',padding:'14px',borderRadius:12,fontSize:15,fontWeight:700,textAlign:'center',textDecoration:'none',boxShadow:'0 4px 20px rgba(37,211,102,.3)',marginBottom:10}}
-      >
+     {/* CTA Button */}
+      <a href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20generated%20a%20demo%20on%20Swor%20AI%20and%20unlocked%20code%20SWOR-LAUNCH-10K.%20I%20want%20to%20claim%20the%2010%2C000%20credits%20Starter%20Pack%20for%20NPR%20499!" target="_blank" rel="noreferrer" style={{display:'block',background:'#25D366',color:'#fff',padding:'14px',borderRadius:12,fontSize:15,fontWeight:700,textAlign:'center',textDecoration:'none',boxShadow:'0 4px 20px rgba(37,211,102,.3)',marginBottom:10}}>
         {'💬 Claim 10,000 Credits on WhatsApp Now'}
       </a>
       <div style={{textAlign:'center',fontSize:11,color:'rgba(255,255,255,.3)'}}>
-        {'या / or'}{' '}
-        <span
-          style={{cursor:'pointer',textDecoration:'underline'}}
-          onClick={() => { setShowReward(false); window.location.href='/voiceover' }}
-        >
+        {'या / or '}
+        <span style={{cursor:'pointer',textDecoration:'underline'}} onClick={() => { setShowReward(false); window.location.href='/voiceover' }}>
           {'Continue to full tool'}
         </span>
       </div>
