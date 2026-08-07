@@ -8,7 +8,7 @@ const DEMO_VOICES_HP = [
   { voice_id: 'TX3LPaxmHKxFdv7VOQHJ', name: 'Arjun', desc: 'Energetic Reels', color: '#F57C00' },
 ]
 
-const HP_DEMO_CHAR_LIMIT = 100
+const HP_DEMO_CHAR_LIMIT = 200
 
 function HomepageDemoBox({ isMobile }) {
   const [demoText, setDemoText] = useState('')
