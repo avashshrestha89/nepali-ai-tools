@@ -314,18 +314,30 @@ export default function HomepageDemoBox({ isMobile }) {
                 </button>
               </div>
 
-              <div style={{fontSize:13,color:'#fff',fontWeight:600,marginBottom:4}}>
-                🎁 Send this code on WhatsApp to get
-              </div>
-              <div style={{fontSize:18,fontWeight:800,color:'#34C759',marginBottom:4}}>
-                10,000 CREDITS
-              </div>
-              <div style={{fontSize:13,color:'rgba(255,255,255,.7)',marginBottom:4}}>
-                instead of 3,500 on Starter Pack (NPR 499)!
-              </div>
-              <div style={{fontFamily:'Noto Sans Devanagari,sans-serif',fontSize:12,color:'rgba(255,255,255,.5)'}}>
-                यो कोड WhatsApp मा पठाउनुस् र Starter Pack (NPR ४९९) मा ३,५०० को सट्टा १०,००० Credits पाउनुस्!
-              </div>
+             <div style={{fontSize:13,color:'#fff',fontWeight:600,marginBottom:12}}>
+  🎁 Send this code on WhatsApp to unlock exclusive bonus credits on any pack:
+</div>
+<div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:12}}>
+  {[
+    {name:'Starter Pack',npr:'499',normal:'3,500',bonus:'10,000'},
+    {name:'Creator Pack',npr:'999',normal:'8,000',bonus:'20,000'},
+    {name:'Founders Lifetime',npr:'2,500',normal:'30,000',bonus:'50,000'},
+  ].map(p => (
+    <div key={p.name} style={{background:'rgba(255,255,255,.05)',borderRadius:10,padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:8}}>
+      <div>
+        <div style={{fontSize:12,fontWeight:700,color:'#fff'}}>{p.name} — NPR {p.npr}</div>
+        <div style={{fontSize:11,color:'rgba(255,255,255,.4)',textDecoration:'line-through'}}>{p.normal} credits</div>
+      </div>
+      <div style={{textAlign:'right'}}>
+        <div style={{fontSize:14,fontWeight:800,color:'#34C759'}}>{p.bonus} credits</div>
+        <div style={{fontSize:10,color:'rgba(255,255,255,.4)'}}>with code</div>
+      </div>
+    </div>
+  ))}
+</div>
+<div style={{fontFamily:'Noto Sans Devanagari,sans-serif',fontSize:12,color:'rgba(255,255,255,.5)'}}>
+  यो कोड WhatsApp मा पठाउनुस् र जुनसुकै Pack मा extra bonus credits पाउनुस्!
+</div>
             </div>
 
             {/* Timer */}
@@ -342,7 +354,7 @@ export default function HomepageDemoBox({ isMobile }) {
             </div>
 
             {/* CTA */}
-            <a href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20generated%20a%20demo%20on%20Swor%20AI%20and%20unlocked%20code%20SWOR-LAUNCH-10K.%20I%20want%20to%20claim%20the%2010%2C000%20credits%20Starter%20Pack%20for%20NPR%20499!" target="_blank" rel="noreferrer" style={{display:'block',background:'#25D366',color:'#fff',padding:'14px',borderRadius:12,fontSize:15,fontWeight:700,textAlign:'center',textDecoration:'none',boxShadow:'0 4px 20px rgba(37,211,102,.3)',marginBottom:10}}>
+            <a href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20generated%20a%20demo%20on%20Swor%20AI%20and%20unlocked%20code%20SWOR-LAUNCH-10K.%20I%20want%20to%20claim%20my%20bonus%20credits!" target="_blank" rel="noreferrer" style={{display:'block',background:'#25D366',color:'#fff',padding:'14px',borderRadius:12,fontSize:15,fontWeight:700,textAlign:'center',textDecoration:'none',boxShadow:'0 4px 20px rgba(37,211,102,.3)',marginBottom:10}}>
               {'💬 Claim 10,000 Credits on WhatsApp Now'}
             </a>
             <div style={{textAlign:'center',fontSize:11,color:'rgba(255,255,255,.3)'}}>
