@@ -550,11 +550,13 @@ const filtered = ALL_VOICES.filter(v => {
          <h2 style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?'20px':'clamp(20px,3vw,30px)',fontWeight:800,letterSpacing:'-0.8px',marginBottom:8}}>
   Try a Free Voice Sample
 </h2>
-<p style={{fontSize:14,color:'#6e6e73',lineHeight:1.65}}>
-  This is a quick 200-character preview — not the full tool. 
-  After hearing your sample, you can access all 20 voices, 
-  unlimited length, and full features with any credit pack.
-</p>
+<div style={{fontSize:14,color:'#6e6e73',lineHeight:1.65}}>
+  Test any voice with this quick preview! Upgrade to any pack to unlock all 20+ natural Nepali voices, full-length audio generation, and HD downloads.
+  <br /><br />
+  <span style={{fontFamily:'Noto Sans Devanagari, sans-serif'}}>
+    यो छोटो नमुनाबाट आवाजको गुणस्तर सुन्नुहोस्! जुनसुकै प्याक रोजेर २० भन्दा बढी प्राकृतिक नेपाली आवाजहरू र सम्पूर्ण फिचरहरू प्रयोग गर्नुहोस्।
+  </span>
+</div>
           </div>
           <HomepageDemoBox isMobile={isMobile} />
         </div>
