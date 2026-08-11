@@ -132,12 +132,13 @@ export default function HomepageDemoBox({ isMobile }) {
 
         {/* Locked voices */}
         <div style={{display:'flex',gap:8,marginBottom:16,flexWrap:'wrap'}}>
-          {[
-            {name:'Vanishree',desc:'Professional News',color:'#0077CC'},
-            {name:'Dhurundhar',desc:'Deep & Commanding',color:'#1A3A5C'},
-            {name:'Anika',desc:'Sweet & Lively',color:'#7B2FBE'},
-            {name:'Rudra',desc:'Intense & Romantic',color:'#880E4F'},
-          ].map(v => (
+      {[
+  {name:'Vanishree',desc:'Professional News Anchor',color:'#0077CC'},
+  {name:'Sanjay',desc:'Mature Deep & Intriguing',color:'#263238'},
+  {name:'Chameli',desc:'Gen Z & Modern Reels',color:'#E91E63'},
+  {name:'Chandramukhi',desc:'Mysterious & Powerful',color:'#4A148C'},
+  {name:'Sonia',desc:'Tranquil ASMR & Meditation',color:'#26A69A'},
+].map(v => (
             <div key={v.name}
               style={{
                 display:'flex',alignItems:'center',gap:8,
@@ -168,7 +169,7 @@ export default function HomepageDemoBox({ isMobile }) {
               textDecoration:'none',
               whiteSpace:'nowrap',
             }}>
-            +17 more voices →
+            +30 more voices →
           </a>
         </div>
 
