@@ -474,21 +474,28 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
                       [excited] साथीहरू, आज म तपाईंलाई एउटा कमालको कुरा बताउँछु! [whispers] यो कुरा धेरैलाई थाहा छैन। [laughs] तर अब तपाईंलाई थाहा हुन्छ!
                     </div>
                   </div>
-                  <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
-                    <div style={{fontSize:10,fontWeight:700,color:'#4E342E',marginBottom:4}}>🎙️ DOCUMENTARY</div>
-                    <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
-                      [calm] नेपालको इतिहास हजारौं वर्ष पुरानो छ। [sorrowful] तर यति सुन्दर देशका मान्छेहरूले धेरै कठिनाइ भोगेका छन्। [sighs] तैपनि, हामी सधैं उठ्छौं।
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
-                <span style={{fontWeight:700,color:'#1976D2'}}>4. Credits —</span> Credits are deducted each time you generate. Check your balance before generating to ensure you have enough.
-              </div>
-            </div>
-          </div>
-        </div>
+                 <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
+  <div style={{fontSize:10,fontWeight:700,color:'#4E342E',marginBottom:4}}>🎙️ DOCUMENTARY</div>
+  <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
+    [calm] नेपालको इतिहास हजारौं वर्ष पुरानो छ। [sorrowful] तर यति सुन्दर देशका मान्छेहरूले धेरै कठिनाइ भोगेका छन्। [sighs] तैपनि, हामी सधैं उठ्छौं।
+  </div>
+</div>
 
+{/* ASMR EXAMPLE */}
+<div style={{marginTop:12}}>
+  <div style={{fontSize:10,fontWeight:700,color:'#26A69A',marginBottom:4}}>🎧 ASMR & MEDITATION</div>
+  <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
+    [Breathy Whisper] बिस्तारै आँखा बन्द गर्नुहोस्...<br/>
+    [Pause - 0.4s]<br/>
+    [Pure ASMR Whisper] अब दिनभरिको थकान बिर्सिएर मीठो निद्रामा हराउने समय भयो।
+  </div>
+</div>
+
+</div>
+</div>
+<div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
+  <span style={{fontWeight:700,color:'#1976D2'}}>4. Credits —</span> Credits are deducted each time you generate. Check your balance before generating to ensure you have enough.
+</div>
         {/* RIGHT PANEL */}
         <div style={{display:'flex',flexDirection:'column',gap:12}}>
 
