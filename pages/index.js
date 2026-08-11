@@ -19,24 +19,34 @@ const FEATURED_VOICES = [
 const ALL_VOICES = [
   { voice_id: '1zUSi8LeHs9M2mV8X6YS', name: 'Priyanka', desc: 'Romantic & Elegant', color: '#FF6B8A', initial: 'P', gender: 'female' },
   { voice_id: 'LK1Sn9bmEczSFI65RF0v', name: 'Sunita', desc: 'Soft Spoken Aunty', color: '#E91E8C', initial: 'S', gender: 'female' },
-  { voice_id: 'duDBJHU6G1oq7ZdK4Kxf', name: 'Anjali', desc: 'Motivational & Uplifting', color: '#FF8C42', initial: 'A', gender: 'female' },
-  { voice_id: 'TmPeb2hSxdVrThJLywkg', name: 'Vanishree', desc: 'Professional & News', color: '#0077CC', initial: 'V', gender: 'female' },
-  { voice_id: 'ecp3DWciuUyW7BYM7II1', name: 'Anika', desc: 'Sweet & Lively Reels', color: '#7B2FBE', initial: 'A', gender: 'female' },
+  { voice_id: 'duDBJHU6G1oq7ZdK4Kxf', name: 'Anjali', desc: 'Motivational', color: '#FF8C42', initial: 'A', gender: 'female' },
+  { voice_id: 'TmPeb2hSxdVrThJLywkg', name: 'Vanishree', desc: 'Professional News Anchor', color: '#0077CC', initial: 'V', gender: 'female' },
+  { voice_id: 'ecp3DWciuUyW7BYM7II1', name: 'Anika', desc: 'Sweet & Lively', color: '#7B2FBE', initial: 'A', gender: 'female' },
   { voice_id: 'f0JpDwzbGK384Dd1WH2s', name: 'Mina', desc: 'Friendly & Polished', color: '#00897B', initial: 'M', gender: 'female' },
   { voice_id: 'Pc57DSBXmCXyEAmow7lW', name: 'Shraddha', desc: 'Credible & Trustworthy', color: '#5C6BC0', initial: 'S', gender: 'female' },
   { voice_id: '6qL48o1LBmtR94hIYAQh', name: 'Monika', desc: 'Suspense & Drama', color: '#1C1C2E', initial: 'M', gender: 'female' },
   { voice_id: 'FszY75334ExxVmg7yl0U', name: 'Dhurundhar', desc: 'Deep & Commanding', color: '#1A3A5C', initial: 'D', gender: 'male' },
-  { voice_id: 'WdZjiN0nNcik2LBjOHiv', name: 'Bishnu', desc: 'Wise Documentary', color: '#4E342E', initial: 'B', gender: 'male' },
+  { voice_id: 'WdZjiN0nNcik2LBjOHiv', name: 'Bishnu', desc: 'Wise Documentary Narrator', color: '#4E342E', initial: 'B', gender: 'male' },
   { voice_id: 'CwhRBWXzGAHq8TQ4Fs17', name: 'Rohan', desc: 'Casual & Laid-Back', color: '#546E7A', initial: 'R', gender: 'male' },
   { voice_id: 'TX3LPaxmHKxFdv7VOQHJ', name: 'Arjun', desc: 'Energetic Reels', color: '#F57C00', initial: 'A', gender: 'male' },
   { voice_id: 'g1FVKFidZjHPxXdfA89c', name: 'Vikram', desc: 'Confident & Warm', color: '#2E7D32', initial: 'V', gender: 'male' },
   { voice_id: '2W8HrWcBFzCEf5cQQdIL', name: 'Karan', desc: 'Dark Documentary', color: '#212121', initial: 'K', gender: 'male' },
-{ voice_id: 'rHhok70RpCi5GgianXRA', name: 'Rudra', desc: 'Intense & Romantic', color: '#880E4F', initial: 'R', gender: 'male' },
-{ voice_id: '34lPwSZ54D8fWbX1aHzk', name: 'Suraj', desc: 'Upbeat TV & Radio Announcer', color: '#FFA000', initial: 'S', gender: 'male' },
-{ voice_id: 'gU0LNdkMOQCOrPrwtbee', name: 'Saurav', desc: 'Sports Commentator', color: '#B71C1C', initial: 'S', gender: 'male' },
-{ voice_id: 'BtWabtumIemAotTjP5sk', name: 'Prakash', desc: 'Clear & Professional', color: '#37474F', initial: 'P', gender: 'male' },
-{ voice_id: 'e6h2ged6ThVk1jTnIwnC', name: 'Ridhi', desc: 'Elegant Ad Narration', color: '#00ACC1', initial: 'R', gender: 'female' },
-{ voice_id: 'm3yAHyFEFKtbCIM5n7GF', name: 'Asha', desc: 'Conversational & Bright', color: '#D81B60', initial: 'A', gender: 'female' },
+  { voice_id: 'rHhok70RpCi5GgianXRA', name: 'Rudra', desc: 'Intense & Romantic', color: '#880E4F', initial: 'R', gender: 'male' },
+  { voice_id: '34lPwSZ54D8fWbX1aHzk', name: 'Suraj', desc: 'Upbeat TV Announcer', color: '#FFA000', initial: 'S', gender: 'male' },
+  { voice_id: 'gU0LNdkMOQCOrPrwtbee', name: 'Saurav', desc: 'Sports Commentator', color: '#B71C1C', initial: 'S', gender: 'male' },
+  { voice_id: 'BtWabtumIemAotTjP5sk', name: 'Prakash', desc: 'Clear & Professional', color: '#37474F', initial: 'P', gender: 'male' },
+  { voice_id: 'e6h2ged6ThVk1jTnIwnC', name: 'Ridhi', desc: 'Elegant Ad Narration', color: '#00ACC1', initial: 'R', gender: 'female' },
+  { voice_id: 'm3yAHyFEFKtbCIM5n7GF', name: 'Asha', desc: 'Conversational & Bright', color: '#D81B60', initial: 'A', gender: 'female' },
+  { voice_id: '6fZce9LFNG3iEITDfqZZ', name: 'Chameli', desc: 'Gen Z & Modern Reels', color: '#E91E63', initial: 'C', gender: 'female' },
+  { voice_id: '7PoJrtDD6yvTa56HTDt1', name: 'Kritika', desc: 'UGC & Influencer Content', color: '#FF4081', initial: 'K', gender: 'female' },
+  { voice_id: 'A6TsrDqI2qlO9AWAfZHY', name: 'Shreya', desc: 'Sultry Adult Narration', color: '#AD1457', initial: 'S', gender: 'female' },
+  { voice_id: 'YDCfZMLWcUmsGvqHq0rS', name: 'Reshma', desc: 'Femme Fatale', color: '#6A1B9A', initial: 'R', gender: 'female' },
+  { voice_id: 'nz8zH5px6I7CAT1IHAwU', name: 'Aryan', desc: 'Luxury Ads & Commercials', color: '#1B5E20', initial: 'A', gender: 'male' },
+  { voice_id: 'CXoGcuszI2UkuF6sqV8W', name: 'Nisha', desc: 'Premium Female Commercial', color: '#F06292', initial: 'N', gender: 'female' },
+  { voice_id: 'wAGzRVkxKEs8La0lmdrE', name: 'Sanjay', desc: 'Mature Deep & Intriguing', color: '#263238', initial: 'S', gender: 'male' },
+  { voice_id: 'Df0A8fHl2LOO7kDNIlpg', name: 'Chandramukhi', desc: 'Mysterious & Powerful', color: '#4A148C', initial: 'C', gender: 'female' },
+  { voice_id: 'zA6D7RyKdc2EClouEMkP', name: 'Sonia', desc: 'Tranquil ASMR & Meditation', color: '#26A69A', initial: 'S', gender: 'female' },
+  { voice_id: 'GL7nHO5mDrxcHlJPJK5T', name: 'Veronika', desc: 'Serene ASMR Whispering', color: '#80CBC4', initial: 'V', gender: 'female' },
 ]
 
 export default function Landing() {
@@ -102,18 +112,19 @@ export default function Landing() {
     audio.onerror = () => setPlayingId(null)
   }
 
-const filtered = ALL_VOICES.filter(v => {
+const filteredVoices = ALL_VOICES.filter(v => {
   if (filter === 'all') return true
   if (filter === 'female') return v.gender === 'female'
   if (filter === 'male') return v.gender === 'male'
   if (filter === 'news') return ['Vanishree','Bishnu','Dhurundhar','Karan','Prakash'].includes(v.name)
-  if (filter === 'social') return ['Arjun','Anika','Rohan','Suraj','Saurav'].includes(v.name)
-  if (filter === 'romantic') return ['Priyanka','Rudra','Sunita','Monika'].includes(v.name)
-  if (filter === 'business') return ['Ridhi','Shraddha','Vikram','Anjali'].includes(v.name)
+  if (filter === 'social') return ['Arjun','Anika','Rohan','Suraj','Saurav','Chameli','Kritika'].includes(v.name)
+  if (filter === 'romantic') return ['Priyanka','Rudra','Sunita','Monika','Shreya','Reshma'].includes(v.name)
+  if (filter === 'business') return ['Ridhi','Shraddha','Vikram','Anjali','Aryan','Nisha'].includes(v.name)
   if (filter === 'conversational') return ['Asha','Mina'].includes(v.name)
+  if (filter === 'dark') return ['Sanjay','Chandramukhi'].includes(v.name)
+  if (filter === 'asmr') return ['Sonia','Veronika'].includes(v.name)
   return true
 })
-
   async function handleSubmit(e) {
     e.preventDefault()
     setStatus('loading')
@@ -363,11 +374,13 @@ const filtered = ALL_VOICES.filter(v => {
   {/* Row 2 — Category filters */}
   <div style={{display:'flex',gap:8,justifyContent:'center',flexWrap:'wrap'}}>
     {[
-      ['news','📺 News & Docs'],
-      ['social','📱 Social Media'],
-      ['romantic','💕 Romantic'],
-      ['business','🏢 Business'],
-      ['conversational','💬 Conversational'],
+     ['news','📺 News & Docs'],
+['social','📱 Social Media'],
+['romantic','💕 Romantic'],
+['business','🏢 Business'],
+['conversational','💬 Conversational'],
+['dark','🎭 Dark & Cinematic'],
+['asmr','🎧 ASMR & Meditation'],
     ].map(([f,l])=>(
       <button key={f}
         onClick={()=>setFilter(f)}
