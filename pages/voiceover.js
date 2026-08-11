@@ -492,10 +492,13 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
 </div>
 
 </div>
-</div>
-<div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
-  <span style={{fontWeight:700,color:'#1976D2'}}>4. Credits —</span> Credits are deducted each time you generate. Check your balance before generating to ensure you have enough.
-</div>
+              </div>
+              <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
+                <span style={{fontWeight:700,color:'#1976D2'}}>4. Credits —</span> Credits are deducted each time you generate. Check your balance before generating to ensure you have enough.
+              </div>
+            </div>
+          </div>
+        </div>
         {/* RIGHT PANEL */}
         <div style={{display:'flex',flexDirection:'column',gap:12}}>
 
