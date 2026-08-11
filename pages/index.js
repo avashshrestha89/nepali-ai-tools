@@ -112,7 +112,7 @@ export default function Landing() {
     audio.onerror = () => setPlayingId(null)
   }
 
-const filteredVoices = ALL_VOICES.filter(v => {
+const filtered = ALL_VOICES.filter(v => {
   if (filter === 'all') return true
   if (filter === 'female') return v.gender === 'female'
   if (filter === 'male') return v.gender === 'male'
