@@ -378,18 +378,26 @@ export default function NepaliTextToSpeech() {
           </p>
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:12}}>
     {[
-  {voice_id:'1zUSi8LeHs9M2mV8X6YS',name:'Priyanka',desc:'Romantic & Elegant',gender:'Female',color:'#FF6B8A'},
+{voice_id:'1zUSi8LeHs9M2mV8X6YS',name:'Priyanka',desc:'Romantic & Elegant',gender:'Female',color:'#FF6B8A'},
   {voice_id:'LK1Sn9bmEczSFI65RF0v',name:'Sunita',desc:'Soft Spoken Aunty',gender:'Female',color:'#E91E8C'},
   {voice_id:'duDBJHU6G1oq7ZdK4Kxf',name:'Anjali',desc:'Motivational',gender:'Female',color:'#FF8C42'},
-  {voice_id:'TmPeb2hSxdVrThJLywkg',name:'Vanishree',desc:'Professional News',gender:'Female',color:'#0077CC'},
+  {voice_id:'TmPeb2hSxdVrThJLywkg',name:'Vanishree',desc:'Professional News Anchor',gender:'Female',color:'#0077CC'},
   {voice_id:'ecp3DWciuUyW7BYM7II1',name:'Anika',desc:'Sweet & Lively',gender:'Female',color:'#7B2FBE'},
   {voice_id:'f0JpDwzbGK384Dd1WH2s',name:'Mina',desc:'Friendly & Polished',gender:'Female',color:'#00897B'},
   {voice_id:'Pc57DSBXmCXyEAmow7lW',name:'Shraddha',desc:'Credible & Trustworthy',gender:'Female',color:'#5C6BC0'},
   {voice_id:'6qL48o1LBmtR94hIYAQh',name:'Monika',desc:'Suspense & Drama',gender:'Female',color:'#1C1C2E'},
   {voice_id:'e6h2ged6ThVk1jTnIwnC',name:'Ridhi',desc:'Elegant Ad Narration',gender:'Female',color:'#00ACC1'},
   {voice_id:'m3yAHyFEFKtbCIM5n7GF',name:'Asha',desc:'Conversational & Bright',gender:'Female',color:'#D81B60'},
+  {voice_id:'6fZce9LFNG3iEITDfqZZ',name:'Chameli',desc:'Gen Z & Modern Reels',gender:'Female',color:'#E91E63'},
+  {voice_id:'7PoJrtDD6yvTa56HTDt1',name:'Kritika',desc:'UGC & Influencer Content',gender:'Female',color:'#FF4081'},
+  {voice_id:'A6TsrDqI2qlO9AWAfZHY',name:'Shreya',desc:'Sultry Adult Narration',gender:'Female',color:'#AD1457'},
+  {voice_id:'YDCfZMLWcUmsGvqHq0rS',name:'Reshma',desc:'Femme Fatale',gender:'Female',color:'#6A1B9A'},
+  {voice_id:'CXoGcuszI2UkuF6sqV8W',name:'Nisha',desc:'Premium Female Commercial',gender:'Female',color:'#F06292'},
+  {voice_id:'Df0A8fHl2LOO7kDNIlpg',name:'Chandramukhi',desc:'Mysterious & Powerful',gender:'Female',color:'#4A148C'},
+  {voice_id:'zA6D7RyKdc2EClouEMkP',name:'Sonia',desc:'Tranquil ASMR & Meditation',gender:'Female',color:'#26A69A'},
+  {voice_id:'GL7nHO5mDrxcHlJPJK5T',name:'Veronika',desc:'Serene ASMR Whispering',gender:'Female',color:'#80CBC4'},
   {voice_id:'FszY75334ExxVmg7yl0U',name:'Dhurundhar',desc:'Deep & Commanding',gender:'Male',color:'#1A3A5C'},
-  {voice_id:'WdZjiN0nNcik2LBjOHiv',name:'Bishnu',desc:'Wise Documentary',gender:'Male',color:'#4E342E'},
+  {voice_id:'WdZjiN0nNcik2LBjOHiv',name:'Bishnu',desc:'Wise Documentary Narrator',gender:'Male',color:'#4E342E'},
   {voice_id:'CwhRBWXzGAHq8TQ4Fs17',name:'Rohan',desc:'Casual & Laid-Back',gender:'Male',color:'#546E7A'},
   {voice_id:'TX3LPaxmHKxFdv7VOQHJ',name:'Arjun',desc:'Energetic Reels',gender:'Male',color:'#F57C00'},
   {voice_id:'g1FVKFidZjHPxXdfA89c',name:'Vikram',desc:'Confident & Warm',gender:'Male',color:'#2E7D32'},
@@ -398,6 +406,8 @@ export default function NepaliTextToSpeech() {
   {voice_id:'34lPwSZ54D8fWbX1aHzk',name:'Suraj',desc:'Upbeat TV Announcer',gender:'Male',color:'#FFA000'},
   {voice_id:'gU0LNdkMOQCOrPrwtbee',name:'Saurav',desc:'Sports Commentator',gender:'Male',color:'#B71C1C'},
   {voice_id:'BtWabtumIemAotTjP5sk',name:'Prakash',desc:'Clear & Professional',gender:'Male',color:'#37474F'},
+  {voice_id:'nz8zH5px6I7CAT1IHAwU',name:'Aryan',desc:'Luxury Ads & Commercials',gender:'Male',color:'#1B5E20'},
+  {voice_id:'wAGzRVkxKEs8La0lmdrE',name:'Sanjay',desc:'Mature Deep & Intriguing',gender:'Male',color:'#263238'},
 ].map(v=>(
   <div key={v.name} style={{background:'#f8f8f8',borderRadius:12,padding:'14px 16px',border:'1.5px solid #e8e8ed',display:'flex',flexDirection:'column',gap:6}}>
     <div style={{width:36,height:36,borderRadius:9,background:v.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:700,color:'#fff'}}>{v.name[0]}</div>
