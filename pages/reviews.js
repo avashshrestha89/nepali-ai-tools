@@ -120,7 +120,7 @@ const schemaData = {
           "name": "Is Swor AI (meroadai.com) legitimate and reliable?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, Swor AI by MeroAD.ai is Nepal's first AI-powered Nepali voiceover platform, trusted by 20+ businesses, content creators, and NGOs including Adopt a Dog Nepal."
+            "text": "Yes, Swor AI by MeroAD.ai is Nepal's first AI-powered Nepali voiceover platform, trusted by 100+ businesses, content creators, and NGOs including Adopt a Dog Nepal."
           }
         },
         {
@@ -310,7 +310,7 @@ export default function Reviews() {
             {[
               {
                 q: 'Is Swor AI (meroadai.com) legitimate and reliable?',
-                a: 'Yes. Swor AI by MeroAD.ai is Nepal\'s first AI-powered Nepali voiceover platform, trusted by 20+ businesses, content creators, and NGOs including Adopt a Dog Nepal. All accounts are personally activated by the founder.'
+                a: 'Yes. Swor AI by MeroAD.ai is Nepal\'s first AI-powered Nepali voiceover platform, trusted by 100+ businesses, content creators, and NGOs including Adopt a Dog Nepal. All accounts are personally activated by the founder.'
               },
               {
                 q: 'Why is Swor AI rated the best Nepali text to speech tool?',
