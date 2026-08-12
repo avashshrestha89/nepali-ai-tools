@@ -519,15 +519,14 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
           )}
 
           {/* Generate button */}
-          <button onClick={handleGenerate} disabled={!canGenerate}
-            style={{width:'100%',padding:'14px',borderRadius:12,border:'none',
-              background:canGenerate?'#1976D2':'#ccc',
-              color:'#fff',fontSize:15,fontWeight:700,cursor:canGenerate?'pointer':'not-allowed',
-              fontFamily:'Sora,sans-serif',transition:'all .15s',
-              boxShadow:canGenerate?'0 4px 20px rgba(25,118,210,.3)':'none'}}>
-            {loading ? '⏳ Generating...' : '🎙️ Generate Voiceover'}
-          </button>
-
+<button onClick={handleGenerate} disabled={!canGenerate}
+  style={{width:'100%',padding:'14px',borderRadius:12,border:'none',
+    background:canGenerate?'#DC143C':'#ccc',
+    color:'#fff',fontSize:15,fontWeight:700,cursor:canGenerate?'pointer':'not-allowed',
+    fontFamily:'Sora,sans-serif',transition:'all .15s',
+    boxShadow:canGenerate?'0 4px 20px rgba(220,20,60,.35)':'none'}}>
+  {loading ? '⏳ Generating...' : '🎙️ Generate Voiceover'}
+</button>
           {/* Credits info */}
           <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
             <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>Balance</div>
