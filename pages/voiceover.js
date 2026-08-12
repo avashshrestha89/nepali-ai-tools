@@ -422,9 +422,9 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
             />
             <div style={{padding:'8px 16px',borderTop:'1px solid #f0f0f0',display:'flex',justifyContent:'space-between',alignItems:'center',background:'#fafafa'}}>
               <span style={{fontSize:12,color:'#DC143C',fontWeight:600}}>⚠️ Devanagari script only — type in नेपाली not Roman</span>
-              <span style={{fontSize:12,fontWeight:600,color:(session && (session.credits || 0) < text.length) ? '#DC143C' : '#888'}}>
-                {text.length} chars = {text.length} credits
-              </span>
+             <span style={{fontSize:12,fontWeight:600,color:text.length > 4800 ? '#DC143C' : text.length > 4000 ? '#FF9500' : '#888'}}>
+  {text.length} / 5,000 chars max
+</span>
             </div>
           </div>
 
