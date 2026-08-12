@@ -46,10 +46,26 @@ export default async function handler(req, res) {
       }
     )
 
-    if (!response.ok) {
-      const errText = await response.text()
-      return res.status(500).json({ error: 'ElevenLabs error: ' + errText })
-    }
+  if (!response.ok) {
+  const errData = await response.json().catch(() => ({}))
+  const code = errData?.detail?.code || ''
+
+  if (code === 'max_character_limit_exceeded') {
+    return res.status(400).json({
+      error: 'Your script is too long for a single generation. Please split it into smaller parts of 5,000 characters or less and generate each part separately.'
+    })
+  }
+
+  if (code === 'invalid_api_key' || code === 'invalid_api_key_prefix') {
+    return res.status(500).json({
+      error: 'Voice generation is temporarily unavailable. Please try again in a few minutes.'
+    })
+  }
+
+  return res.status(500).json({
+    error: 'Voice generation failed. Please try again. If the issue persists, contact support.'
+  })
+}
 
     const audioBuffer = await response.arrayBuffer()
     const audioBytes = Buffer.from(audioBuffer)
