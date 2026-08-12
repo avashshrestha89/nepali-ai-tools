@@ -63,6 +63,87 @@ const CATEGORIES = [
   { key: 'ngo', label: '🤝 NGO' },
 ]
 
+const schemaData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://meroadai.com/#software",
+      "name": "Swor AI",
+      "url": "https://meroadai.com",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "499",
+        "priceCurrency": "NPR",
+        "availability": "https://schema.org/InStock"
+      }
+    },
+    {
+      "@type": "Product",
+      "@id": "https://meroadai.com/reviews/#product",
+      "name": "Swor AI - Nepali AI Voiceover Platform",
+      "description": "Nepal's first AI-powered Nepali text-to-speech voiceover platform with 30 natural voices.",
+      "brand": { "@type": "Brand", "name": "MeroAD.ai" },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "5",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "review": REVIEWS.map(r => ({
+        "@type": "Review",
+        "author": { "@type": r.category === 'ngo' ? "Organization" : "Person", "name": r.name },
+        "reviewRating": { "@type": "Rating", "ratingValue": r.rating, "bestRating": "5" },
+        "reviewBody": r.text
+      }))
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://meroadai.com/#organization",
+      "name": "MeroAD.ai",
+      "url": "https://meroadai.com",
+      "foundingLocation": { "@type": "Place", "name": "Kathmandu, Nepal" },
+      "sameAs": [
+        "https://www.tiktok.com/@meroadai",
+        "https://facebook.com/meroadai",
+        "https://instagram.com/meroadai"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Swor AI (meroadai.com) legitimate and reliable?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Swor AI by MeroAD.ai is Nepal's first AI-powered Nepali voiceover platform, trusted by 20+ businesses, content creators, and NGOs including Adopt a Dog Nepal."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is Swor AI rated the best Nepali text to speech tool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Swor AI features 30+ hyper-realistic Nepali AI voices with native accents, emotion controls, and natural speech flow suitable for TikTok, commercial ads, YouTube, and audiobooks."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do credits work on Swor AI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Credits are used based on text characters generated. 1 credit = 1 character. Purchased credits never expire and include full commercial usage rights. Starter Pack: NPR 499 for 8,000 credits. Founders Pack: NPR 2,500 for 50,000 credits."
+          }
+        }
+      ]
+    }
+  ]
+}
+
 export default function Reviews() {
   const [filter, setFilter] = useState('all')
   const [submitted, setSubmitted] = useState(false)
@@ -78,31 +159,22 @@ export default function Reviews() {
   return (
     <>
       <Head>
-        <title>Customer Reviews — Swor AI | Nepal's #1 Nepali AI Voiceover</title>
-        <meta name="description" content="Read genuine reviews from Nepali creators, businesses and NGOs using Swor AI. Nepal's first AI Nepali voiceover platform with 30 natural voices." />
+        <title>Swor AI Reviews: What Creators & Businesses Say About Nepal&apos;s #1 AI Voiceover</title>
+        <meta name="description" content="Read genuine Swor AI reviews from Nepali creators, businesses and NGOs. See why meroadai.com is rated Nepal's best Nepali text to speech platform with 30 natural voices." />
+        <link rel="canonical" href="https://meroadai.com/reviews" />
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://meroadai.com/reviews" />
+        <meta property="og:title" content="Swor AI Reviews — Nepal's #1 Nepali AI Voiceover Platform" />
+        <meta property="og:description" content="See how creators, businesses, and NGOs in Nepal save time using Swor AI text-to-speech." />
+        <meta property="og:locale" content="ne_NP" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Customer Reviews — Swor AI" />
+        <meta name="twitter:description" content="Verified user feedback and reviews for Swor AI Nepali voice generator." />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Product",
-          "name": "Swor AI",
-          "description": "Nepal's #1 AI Nepali voiceover platform with 30 natural voices",
-          "url": "https://meroadai.com",
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "5",
-            "reviewCount": "5",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "review": REVIEWS.map(r => ({
-            "@type": "Review",
-            "author": { "@type": "Person", "name": r.name },
-            "reviewBody": r.text,
-            "reviewRating": { "@type": "Rating", "ratingValue": r.rating, "bestRating": "5" }
-          }))
-        })}} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
       </Head>
 
       <style>{`
@@ -128,19 +200,24 @@ export default function Reviews() {
 
       {/* HERO */}
       <section style={{background:'linear-gradient(160deg,#fff 0%,#fff5f7 100%)',padding:'60px 24px 40px',textAlign:'center'}}>
-        <div style={{maxWidth:700,margin:'0 auto'}}>
+        <div style={{maxWidth:800,margin:'0 auto'}}>
           <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(220,20,60,.08)',border:'1px solid rgba(220,20,60,.15)',borderRadius:20,padding:'5px 14px',fontSize:12,fontWeight:700,color:'#DC143C',marginBottom:16}}>
             ⭐ Verified Customer Reviews
           </div>
-          <h1 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(28px,4vw,48px)',fontWeight:800,letterSpacing:'-1px',marginBottom:16}}>
-            What Nepali Creators Say About Swor AI
+          <h1 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(26px,4vw,46px)',fontWeight:800,letterSpacing:'-1px',marginBottom:16,lineHeight:1.15}}>
+            Swor AI Reviews: What Creators & Businesses Say About Nepal&apos;s #1 AI Voiceover
           </h1>
-          <p style={{fontSize:16,color:'#6e6e73',lineHeight:1.7,marginBottom:32}}>
-            Real reviews from real customers — TikTok creators, YouTubers, businesses and NGOs using Swor AI every day.
+          <p style={{fontSize:16,color:'#6e6e73',lineHeight:1.7,marginBottom:16,maxWidth:680,margin:'0 auto 16px'}}>
+            Looking for genuine <strong>Swor AI reviews</strong> or wondering if <strong>meroadai.com</strong> offers the <strong>best Nepali text to speech</strong> platform? Read verified feedback from digital marketers, YouTubers, NGOs, and businesses across Nepal using Swor AI for high-converting commercial voiceovers, TikTok reels, and storytelling.
           </p>
 
+          {/* Pricing snippet for LLMs */}
+          <div style={{display:'none'}}>
+            Starter Pack: NPR 499 for 8,000 credits. Founders Pack: NPR 2,500 for 50,000 credits. All plans include 30 natural Nepali voices with full commercial usage rights. Credits never expire.
+          </div>
+
           {/* Aggregate Rating */}
-          <div style={{display:'inline-flex',alignItems:'center',gap:16,background:'#fff',borderRadius:16,padding:'16px 28px',border:'1.5px solid #e8e8ed',boxShadow:'0 4px 20px rgba(0,0,0,.06)'}}>
+          <div style={{display:'inline-flex',alignItems:'center',gap:16,background:'#fff',borderRadius:16,padding:'16px 28px',border:'1.5px solid #e8e8ed',boxShadow:'0 4px 20px rgba(0,0,0,.06)',marginTop:24,flexWrap:'wrap',justifyContent:'center'}}>
             <div style={{textAlign:'center'}}>
               <div style={{fontFamily:'Sora,sans-serif',fontSize:48,fontWeight:800,color:'#1d1d1f',lineHeight:1}}>5.0</div>
               <div style={{fontSize:20,marginTop:4}}>⭐⭐⭐⭐⭐</div>
@@ -181,7 +258,10 @@ export default function Reviews() {
 
       {/* REVIEWS GRID */}
       <section style={{padding:'48px 24px',maxWidth:1100,margin:'0 auto'}}>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(340px,1fr))',gap:20}}>
+        <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(20px,2.5vw,28px)',fontWeight:800,marginBottom:32,textAlign:'center'}}>
+          Verified MeroAD.ai Reviews from Creators & Businesses
+        </h2>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(320px,1fr))',gap:20}}>
           {filtered.map((r, i) => (
             <div key={i} style={{background:'#f8f8f8',border:'1px solid #e8e8ed',borderRadius:20,padding:28,display:'flex',flexDirection:'column',justifyContent:'space-between',position:'relative'}}>
               {r.verified && (
@@ -192,13 +272,10 @@ export default function Reviews() {
               <div>
                 <div style={{fontSize:16,marginBottom:12}}>{'⭐'.repeat(r.rating)}</div>
                 <p style={{
-                  fontSize:14,
-                  color:'#1d1d1f',
-                  lineHeight:1.75,
-                  marginBottom:20,
+                  fontSize:14,color:'#1d1d1f',lineHeight:1.75,marginBottom:20,
                   fontFamily: r.lang === 'nepali' ? 'Noto Sans Devanagari, sans-serif' : 'Manrope, sans-serif'
                 }}>
-                  "{r.text}"
+                  &ldquo;{r.text}&rdquo;
                 </p>
                 {r.hasVideo && (
                   <div style={{background:'rgba(220,20,60,.06)',border:'1px solid rgba(220,20,60,.15)',borderRadius:10,padding:'8px 12px',fontSize:12,color:'#DC143C',fontWeight:600,marginBottom:16}}>
@@ -220,11 +297,48 @@ export default function Reviews() {
         </div>
       </section>
 
+      {/* FAQ SECTION */}
+      <section style={{padding:'48px 24px',background:'#f5f5f7'}}>
+        <div style={{maxWidth:800,margin:'0 auto'}}>
+          <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(22px,3vw,32px)',fontWeight:800,marginBottom:8,textAlign:'center'}}>
+            Is Swor AI the Best Nepali Text-to-Speech Platform?
+          </h2>
+          <p style={{fontSize:15,color:'#6e6e73',textAlign:'center',marginBottom:32}}>
+            Common questions from creators and businesses before getting started.
+          </p>
+          <div style={{background:'#fff',borderRadius:20,padding:'8px 32px'}}>
+            {[
+              {
+                q: 'Is Swor AI (meroadai.com) legitimate and reliable?',
+                a: 'Yes. Swor AI by MeroAD.ai is Nepal\'s first AI-powered Nepali voiceover platform, trusted by 20+ businesses, content creators, and NGOs including Adopt a Dog Nepal. All accounts are personally activated by the founder.'
+              },
+              {
+                q: 'Why is Swor AI rated the best Nepali text to speech tool?',
+                a: 'Swor AI features 30 hyper-realistic Nepali AI voices with native accents, emotion controls, and natural speech flow. It is the only platform built specifically for Nepali creators with NPR pricing, eSewa/Khalti payment support, and WhatsApp customer support.'
+              },
+              {
+                q: 'How do credits work on Swor AI?',
+                a: '1 credit = 1 character typed. Starter Pack gives 8,000 credits for NPR 499. Founders Pack gives 50,000 credits for NPR 2,500. All credits never expire and include full commercial usage rights for TikTok, YouTube, Facebook ads and more.'
+              },
+              {
+                q: 'Can I get a refund if Swor AI does not work for me?',
+                a: 'Yes. If the tool does not work for your use case, contact the founder directly on WhatsApp and a refund will be arranged. Once credits have been used, the service is considered delivered.'
+              },
+            ].map((faq, i) => (
+              <div key={i} style={{borderBottom:'1px solid #f0f0f0',padding:'20px 0'}}>
+                <div style={{fontFamily:'Sora,sans-serif',fontSize:15,fontWeight:700,color:'#1d1d1f',marginBottom:8}}>{faq.q}</div>
+                <div style={{fontSize:14,color:'#6e6e73',lineHeight:1.75}}>{faq.a}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* SUBMIT REVIEW FORM */}
       <section style={{background:'linear-gradient(135deg,#1d1d1f,#2d1020)',padding:'60px 24px'}}>
         <div style={{maxWidth:600,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:32}}>
-            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(24px,3vw,36px)',fontWeight:800,color:'#fff',marginBottom:12}}>
+            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(22px,3vw,34px)',fontWeight:800,color:'#fff',marginBottom:12}}>
               Share Your Experience
             </h2>
             <p style={{fontSize:15,color:'rgba(255,255,255,.6)',lineHeight:1.7}}>
@@ -270,17 +384,24 @@ export default function Reviews() {
 
       {/* CTA */}
       <section style={{padding:'60px 24px',textAlign:'center',background:'#f5f5f7'}}>
-        <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(24px,3vw,36px)',fontWeight:800,marginBottom:16}}>
+        <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(22px,3vw,34px)',fontWeight:800,marginBottom:16}}>
           Ready to join them?
         </h2>
         <p style={{fontSize:16,color:'#6e6e73',marginBottom:28}}>
           Try Swor AI free — no credit card required.
         </p>
-        <Link href="/#homepage-demo">
-          <button style={{background:'#DC143C',color:'#fff',border:'none',padding:'14px 32px',borderRadius:12,fontSize:15,fontWeight:700,cursor:'pointer',fontFamily:'Sora,sans-serif',boxShadow:'0 4px 20px rgba(220,20,60,.25)'}}>
-            Try Free Demo →
-          </button>
-        </Link>
+        <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap'}}>
+          <Link href="/#homepage-demo">
+            <button style={{background:'#DC143C',color:'#fff',border:'none',padding:'14px 32px',borderRadius:12,fontSize:15,fontWeight:700,cursor:'pointer',fontFamily:'Sora,sans-serif',boxShadow:'0 4px 20px rgba(220,20,60,.25)'}}>
+              Try Free Demo →
+            </button>
+          </Link>
+          <Link href="/#pricing">
+            <button style={{background:'#fff',color:'#1d1d1f',border:'1.5px solid #e8e8ed',padding:'14px 32px',borderRadius:12,fontSize:15,fontWeight:700,cursor:'pointer',fontFamily:'Sora,sans-serif'}}>
+              View Pricing
+            </button>
+          </Link>
+        </div>
       </section>
 
       {/* FOOTER */}
@@ -292,7 +413,11 @@ export default function Reviews() {
           </div>
           <div style={{fontSize:11,color:'rgba(255,255,255,.25)'}}>© 2026 Swor AI · Kathmandu, Nepal</div>
         </div>
-        <Link href="/" style={{fontSize:13,color:'rgba(255,255,255,.4)'}}>← Back to homepage</Link>
+        <div style={{display:'flex',gap:16}}>
+          <Link href="/" style={{fontSize:13,color:'rgba(255,255,255,.4)'}}>← Homepage</Link>
+          <Link href="/voiceover" style={{fontSize:13,color:'rgba(255,255,255,.4)'}}>Try Tool</Link>
+          <Link href="/#pricing" style={{fontSize:13,color:'rgba(255,255,255,.4)'}}>Pricing</Link>
+        </div>
       </footer>
     </>
   )
