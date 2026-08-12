@@ -333,9 +333,9 @@ const filtered = ALL_VOICES.filter(v => {
 {/* ══ SCROLLING REVIEWS ══ */}
 <section style={{padding:'20px 0',background:'#fff',borderTop:'1px solid #f0f0f0',overflow:'hidden'}}>
   <div style={{textAlign:'center',marginBottom:16}}>
-    <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.08)',border:'1px solid rgba(52,199,89,.2)',borderRadius:20,padding:'5px 14px',fontSize:12,fontWeight:700,color:'#34C759'}}>
-      ✓ Verified Customer Reviews
-    </div>
+   <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.08)',border:'1px solid rgba(52,199,89,.2)',borderRadius:20,padding:'8px 20px',fontSize:16,fontWeight:700,color:'#34C759'}}>
+  ✓ Verified Customer Reviews
+</div>
   </div>
   <style>{`
     @keyframes scroll {
