@@ -1,10 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#DC143C"/>
-      <stop offset="100%" style="stop-color:#FF9500"/>
-    </linearGradient>
-  </defs>
-  <rect width="100" height="100" rx="22" fill="url(#g)"/>
-  <text x="50" y="72" font-family="Arial Black, sans-serif" font-size="62" font-weight="900" fill="white" text-anchor="middle">S</text>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <rect width="32" height="32" rx="16" fill="#DC143C"/>
+  <rect x="11" y="5" width="10" height="14" rx="5" fill="white"/>
+  <path d="M6 15 Q6 22 16 22 Q26 22 26 15" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="16" y1="22" x2="16" y2="26" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="11" y1="26" x2="21" y2="26" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
 </svg>
