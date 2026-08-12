@@ -230,6 +230,7 @@ const filtered = ALL_VOICES.filter(v => {
           <button onClick={toggleLanguage} className={`lang-btn${scrolled?' lang-btn-scroll':''}${isNepali?' on':''}`}>
             {isNepali?'English':'नेपाली'}
           </button>
+            <Link href="/reviews"><button style={{background:'transparent',color:'#555',border:'1.5px solid #e8e8ed',padding:'9px 20px',borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer',marginRight:4}}>Reviews</button></Link>
           <Link href="/for-business"><button style={{background:'#7B2FBE',color:'#fff',border:'none',padding:'9px 20px',borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer',marginRight:4}}>For Business</button></Link>
 <Link href="/tool"><button className="btn-primary" style={{padding:'9px 20px',fontSize:13}}>Try Tool →</button></Link>
         </div>
