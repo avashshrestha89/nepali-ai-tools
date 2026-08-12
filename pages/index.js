@@ -330,6 +330,72 @@ const filtered = ALL_VOICES.filter(v => {
           </div>
         </div>
       </section>
+{/* ══ SCROLLING REVIEWS ══ */}
+<section style={{padding:'20px 0',background:'#fff',borderTop:'1px solid #f0f0f0',overflow:'hidden'}}>
+  <style>{`
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .review-track {
+      display: flex;
+      gap: 24px;
+      animation: scroll 30s linear infinite;
+      width: max-content;
+    }
+    .review-track:hover {
+      animation-play-state: paused;
+    }
+  `}</style>
+  <div style={{overflow:'hidden'}}>
+    <div className="review-track">
+      {[
+        { name:'Sujan Karmacharya', text:'I love this Swor AI platform so much. It makes our work easier and convenient. I have also suggested this to my friends!', color:'#DC143C' },
+        { name:'Birendra Chaudhary', text:'Voiceover garna ko lagi yo AI Swor dherai ramro chha. Ajasamma maile dekheko euta matra yesto app ho, jasko voice tone dherai ramro ra gunasthariya chha.', color:'#2E7D32' },
+        { name:'Adopt a Dog Nepal', text:'नेपाली भाषामा यति स्वाभाविक, स्पष्ट र भावना व्यक्त गर्न सक्ने AI आवाज मैले पहिले कहिल्यै प्रयोग गरेको थिएन। स्वर AI एउटा हुनै पर्ने टुल हो!', color:'#FF6B8A' },
+        { name:'Nabin • Digital Marketer', text:'Swor AI prayog garna thalepachi mero ad ko conversion rate hwattai badheko chha. Nepal ka pratyek marketers ka lagi euta anibarya tool ho!', color:'#FF9500' },
+        { name:'Sonam • Content Creator', text:'Swor AI le mero kaam dherai sahaj banaidiyeko chha. 30 bhanda badhi Nepali AI aawajharu yati natural suninchhan ki audience le pharak nai chhutyauna sakdainan!', color:'#7B2FBE' },
+        // Duplicate for seamless loop
+        { name:'Sujan Karmacharya', text:'I love this Swor AI platform so much. It makes our work easier and convenient. I have also suggested this to my friends!', color:'#DC143C' },
+        { name:'Birendra Chaudhary', text:'Voiceover garna ko lagi yo AI Swor dherai ramro chha. Ajasamma maile dekheko euta matra yesto app ho, jasko voice tone dherai ramro ra gunasthariya chha.', color:'#2E7D32' },
+        { name:'Adopt a Dog Nepal', text:'नेपाली भाषामा यति स्वाभाविक, स्पष्ट र भावना व्यक्त गर्न सक्ने AI आवाज मैले पहिले कहिल्यै प्रयोग गरेको थिएन। स्वर AI एउटा हुनै पर्ने टुल हो!', color:'#FF6B8A' },
+        { name:'Nabin • Digital Marketer', text:'Swor AI prayog garna thalepachi mero ad ko conversion rate hwattai badheko chha. Nepal ka pratyek marketers ka lagi euta anibarya tool ho!', color:'#FF9500' },
+        { name:'Sonam • Content Creator', text:'Swor AI le mero kaam dherai sahaj banaidiyeko chha. 30 bhanda badhi Nepali AI aawajharu yati natural suninchhan ki audience le pharak nai chhutyauna sakdainan!', color:'#7B2FBE' },
+      ].map((r, i) => (
+        <div key={i} style={{
+          flexShrink:0,
+          background:'#f8f8f8',
+          border:'1px solid #e8e8ed',
+          borderRadius:16,
+          padding:'16px 20px',
+          maxWidth:340,
+          minWidth:300,
+        }}>
+          <div style={{fontSize:13,marginBottom:8}}>⭐⭐⭐⭐⭐</div>
+          <p style={{
+            fontSize:13,
+            color:'#1d1d1f',
+            lineHeight:1.7,
+            marginBottom:12,
+            fontFamily:'Noto Sans Devanagari, Manrope, sans-serif',
+            display:'-webkit-box',
+            WebkitLineClamp:3,
+            WebkitBoxOrient:'vertical',
+            overflow:'hidden',
+          }}>
+            "{r.text}"
+          </p>
+          <div style={{display:'flex',alignItems:'center',gap:8}}>
+            <div style={{width:28,height:28,borderRadius:'50%',background:r.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,color:'#fff',flexShrink:0}}>
+              {r.name[0]}
+            </div>
+            <div style={{fontSize:12,fontWeight:700,color:'#1d1d1f'}}>{r.name}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 {/* ══ HOMEPAGE DEMO BOX ══ */}
 <section id="homepage-demo" style={{padding:isMobile?'40px 16px':'60px 48px',background:'#fff',borderTop:'1px solid #f0f0f0'}}>
         <div style={{maxWidth:640,margin:'0 auto'}}>
