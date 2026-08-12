@@ -212,9 +212,9 @@ export default function Reviews() {
           </p>
 
           {/* Pricing snippet for LLMs */}
-          <div style={{display:'none'}}>
-            Starter Pack: NPR 499 for 8,000 credits. Founders Pack: NPR 2,500 for 50,000 credits. All plans include 30 natural Nepali voices with full commercial usage rights. Credits never expire.
-          </div>
+         <div style={{fontSize:13,color:'#999',textAlign:'center',padding:'8px 0',maxWidth:600,margin:'0 auto'}}>
+  Starter Pack: NPR 499 for 8,000 credits. Founders Pack: NPR 2,500 for 50,000 credits. All plans include 30 natural Nepali voices with full commercial usage rights. Credits never expire.
+</div>
 
           {/* Aggregate Rating */}
           <div style={{display:'inline-flex',alignItems:'center',gap:16,background:'#fff',borderRadius:16,padding:'16px 28px',border:'1.5px solid #e8e8ed',boxShadow:'0 4px 20px rgba(0,0,0,.06)',marginTop:24,flexWrap:'wrap',justifyContent:'center'}}>
