@@ -116,9 +116,11 @@ console.log('voiceover env check:', {
       }
     }
 
-    res.setHeader('Content-Type', 'audio/mpeg')
-    res.setHeader('Content-Disposition', 'attachment; filename="nepali_voiceover.mp3"')
-    return res.send(audioBytes)
+if (blobUrl) {
+  return res.status(200).json({ url: blobUrl })
+} else {
+  return res.status(500).json({ error: 'Failed to store audio. Please try again.' })
+}
 
   } catch (error) {
     return res.status(500).json({ error: error.message })
