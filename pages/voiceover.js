@@ -269,7 +269,7 @@ const data = await res.json()
 console.log('voiceover response data:', data)
 const url = data.url
 if (!url) throw new Error('No audio URL returned. Please try again.')
-if (session) {
+if (session && url) {
   const cr = await fetch('/api/auth/use-credit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'voiceover', charCount: text.length }) })
   const cd = await cr.json()
   if (cr.ok) setSession(prev => ({ ...prev, credits: cd.credits }))
