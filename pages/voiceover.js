@@ -263,10 +263,10 @@ export default function Voiceover() {
     if (isAnon) { setShowSignup(true); return }
     setLoading(true); setResult(null); setError(null)
     try {
-     const res = await fetch('/api/voiceover', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voiceId: selectedVoice.voice_id, voiceName: selectedVoice.name }) })
+ const res = await fetch('/api/voiceover', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voiceId: selectedVoice.voice_id, voiceName: selectedVoice.name }) })
 if (!res.ok) { const e = await res.json(); throw new Error(e.error) }
-const blob = await res.blob()
-const url = URL.createObjectURL(blob)
+const data = await res.json()
+const url = data.url
 if (session) {
   const cr = await fetch('/api/auth/use-credit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'voiceover', charCount: text.length }) })
   const cd = await cr.json()
