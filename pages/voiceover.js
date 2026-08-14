@@ -266,7 +266,9 @@ export default function Voiceover() {
  const res = await fetch('/api/voiceover', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voiceId: selectedVoice.voice_id, voiceName: selectedVoice.name }) })
 if (!res.ok) { const e = await res.json(); throw new Error(e.error) }
 const data = await res.json()
+console.log('voiceover response data:', data)
 const url = data.url
+if (!url) throw new Error('No audio URL returned. Please try again.')
 if (session) {
   const cr = await fetch('/api/auth/use-credit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'voiceover', charCount: text.length }) })
   const cd = await cr.json()
