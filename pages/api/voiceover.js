@@ -10,9 +10,16 @@ const redis = new Redis({
 const MAX_HISTORY = 5
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' })
-  }
+if (req.method !== 'POST') {
+  return res.status(405).json({ error: 'Method not allowed' })
+}
+console.log('voiceover request body:', JSON.stringify(req.body))
+console.log('voiceover env check:', {
+  hasElevenLabs: !!process.env.ELEVENLABS_API_KEY,
+  hasRedisUrl: !!process.env.UPSTASH_REDIS_REST_URL,
+  hasRedisToken: !!process.env.UPSTASH_REDIS_REST_TOKEN,
+})
+  
 
   const { text, voiceId, voiceName } = req.body
 
