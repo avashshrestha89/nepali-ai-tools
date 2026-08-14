@@ -442,10 +442,26 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
             <div className="fade-in" style={{background:'#E8F4FD',border:'1.5px solid #90CAF9',borderRadius:14,padding:16,marginBottom:12}}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
                 <div style={{fontSize:13,fontWeight:700,color:'#1976D2'}}>✓ Voiceover ready!</div>
-                <a href={result.url} download={result.filename}
-                  style={{background:'#1976D2',color:'#fff',padding:'7px 16px',borderRadius:8,fontSize:12,fontWeight:700,textDecoration:'none'}}>
-                  ⬇ Download MP3
-                </a>
+             <button
+  onClick={async () => {
+    try {
+      const response = await fetch(result.url)
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = result.filename
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      window.open(result.url, '_blank')
+    }
+  }}
+  style={{background:'#1976D2',color:'#fff',padding:'7px 16px',borderRadius:8,fontSize:12,fontWeight:700,border:'none',cursor:'pointer'}}>
+  ⬇ Download MP3
+</button>
               </div>
               <audio controls src={result.url} style={{width:'100%',borderRadius:8}} />
             </div>
@@ -633,10 +649,26 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
                       <div style={{fontSize:11,color:'#555',marginBottom:6,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',fontFamily:'Noto Sans Devanagari,sans-serif'}}>
                         {item.text}
                       </div>
-                      <a href={item.url} download={`swor_${item.voiceName}_${item.id}.mp3`}
-                        style={{display:'inline-flex',alignItems:'center',gap:4,background:'#1976D2',color:'#fff',padding:'4px 10px',borderRadius:6,fontSize:11,fontWeight:700,textDecoration:'none'}}>
-                        ⬇ Download
-                      </a>
+                     <button
+  onClick={async () => {
+    try {
+      const response = await fetch(item.url)
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `swor_${item.voiceName}_${item.id}.mp3`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      window.open(item.url, '_blank')
+    }
+  }}
+  style={{display:'inline-flex',alignItems:'center',gap:4,background:'#1976D2',color:'#fff',padding:'4px 10px',borderRadius:6,fontSize:11,fontWeight:700,border:'none',cursor:'pointer'}}>
+  ⬇ Download
+</button>
                     </div>
                   ))}
                 </div>
