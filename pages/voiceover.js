@@ -447,7 +447,45 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
     ))}
   </div>
 )}
+{/* Style Presets */}
+<div style={{marginBottom:12}}>
+  <div style={{fontSize:12,fontWeight:700,color:'#555',marginBottom:8}}>
+    🎨 Style Presets — click to auto-add emotion tags
+  </div>
+  <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+    {[
+      {label:'📺 News Anchor',tags:'[calm] ',suffix:' [serious]'},
+      {label:'🎯 Aggressive Ad',tags:'[aggressive] ',suffix:' [urgent]'},
+      {label:'😌 Calm & Meditative',tags:'[calm] ',suffix:' [slowly]'},
+      {label:'⚡ Energetic Reels',tags:'[excited] ',suffix:' [energetic]'},
+      {label:'🎭 Dramatic Story',tags:'[sorrowful] ',suffix:' [whispers]'},
+      {label:'💼 Corporate Pro',tags:'[confident] ',suffix:''},
+    ].map(p => (
+      <button key={p.label}
+        onClick={() => {
+          if (text.trim()) {
+            setText(p.tags + text.trim() + p.suffix)
+          }
+        }}
+        style={{
+          padding:'6px 14px',borderRadius:20,border:'1.5px solid #e8e8ed',
+          background:'#f5f5f7',color:'#1d1d1f',
+          fontSize:12,fontWeight:600,cursor:'pointer',
+          transition:'all .15s',
+        }}
+        onMouseEnter={e => e.target.style.borderColor='#DC143C'}
+        onMouseLeave={e => e.target.style.borderColor='#e8e8ed'}
+      >
+        {p.label}
+      </button>
+    ))}
+  </div>
+  <div style={{fontSize:11,color:'#888',marginTop:6}}>
+    💡 Type your script first, then click a preset to wrap it with emotion tags
+  </div>
+</div>
 
+{/* Text area */}
           {/* Text area */}
           <div style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',overflow:'hidden',marginBottom:12}}>
             <textarea
