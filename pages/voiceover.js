@@ -269,11 +269,10 @@ async function handlePreview() {
     const res = await fetch('/api/voiceover-preview', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        text: text.slice(0, 200),
-        voiceId: selectedVoice.voice_id,
-        speed
-      })
+    body: JSON.stringify({
+  text: text.slice(0, 200),
+  voiceId: selectedVoice.voice_id
+})
     })
     if (!res.ok) {
       const e = await res.json()
