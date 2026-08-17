@@ -261,7 +261,37 @@ const previewAudioRef = useRef(null)
       const d = await res.json(); setSignupStatus(d.success ? 'sent' : 'error')
     } catch { setSignupStatus('error') }
   }
-
+async function handlePreview() {
+  if (!text.trim() || !selectedVoice) return
+  setPreviewing(true)
+  setPreviewError(null)
+  setPreviewUrl(null)
+  try {
+    const res = await fetch('/api/voiceover-preview', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: text.slice(0, 200),
+        voiceId: selectedVoice.voice_id,
+        speed
+      })
+    })
+    if (!res.ok) {
+      const e = await res.json()
+      throw new Error(e.error)
+    }
+    const blob = await res.blob()
+    const url = URL.createObjectURL(blob)
+    setPreviewUrl(url)
+    if (previewAudioRef.current) {
+      previewAudioRef.current.src = url
+      previewAudioRef.current.play()
+    }
+  } catch (e) {
+    setPreviewError(e.message)
+  }
+  setPreviewing(false)
+}
   async function handleGenerate() {
     if (!text.trim()) return
     const isAnon = session === false
