@@ -566,8 +566,6 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
 
 {/* Generate button */}
 <button onClick={handleGenerate} disabled={!canGenerate}
-          {/* Generate button */}
-<button onClick={handleGenerate} disabled={!canGenerate}
   style={{width:'100%',padding:'14px',borderRadius:12,border:'none',
     background:canGenerate?'#DC143C':'#ccc',
     color:'#fff',fontSize:15,fontWeight:700,cursor:canGenerate?'pointer':'not-allowed',
