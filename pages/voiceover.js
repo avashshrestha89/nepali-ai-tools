@@ -205,7 +205,6 @@ export default function Voiceover() {
   const [selectedVoice, setSelectedVoice] = useState(VOICES[0])
   const [showVoicePanel, setShowVoicePanel] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [speed, setSpeed] = useState('1.0')
   const [previewing, setPreviewing] = useState(false)
 const [previewUrl, setPreviewUrl] = useState(null)
 const [previewError, setPreviewError] = useState(null)
@@ -298,7 +297,7 @@ async function handlePreview() {
     if (isAnon) { setShowSignup(true); return }
     setLoading(true); setResult(null); setError(null)
     try {
- const res = await fetch('/api/voiceover', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voiceId: selectedVoice.voice_id, voiceName: selectedVoice.name, speed }) })
+ const res = await fetch('/api/voiceover', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voiceId: selectedVoice.voice_id, voiceName: selectedVoice.name }) })
 if (!res.ok) { const e = await res.json(); throw new Error(e.error) }
 const data = await res.json()
 console.log('voiceover response data:', data)
@@ -570,33 +569,7 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
               </div>
             </div>
           )}
-{/* Speed Control */}
-<div style={{marginBottom:12}}>
-  <div style={{fontSize:12,fontWeight:700,color:'#555',marginBottom:8}}>
-    🎚️ Voice Speed
-  </div>
-  <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-    {[
-      {label:'0.7x Slow',value:'0.7'},
-      {label:'0.85x Normal-Slow',value:'0.85'},
-      {label:'1.0x Normal',value:'1.0'},
-      {label:'1.15x Fast',value:'1.15'},
-      {label:'1.3x Very Fast',value:'1.3'},
-    ].map(s => (
-      <button key={s.value}
-        onClick={() => setSpeed(s.value)}
-        style={{
-          padding:'6px 12px',borderRadius:8,border:'1.5px solid',
-          borderColor: speed === s.value ? '#DC143C' : '#e8e8ed',
-          background: speed === s.value ? 'rgba(220,20,60,.08)' : '#fff',
-          color: speed === s.value ? '#DC143C' : '#555',
-          fontSize:11,fontWeight:600,cursor:'pointer',
-        }}>
-        {s.label}
-      </button>
-    ))}
-  </div>
-</div>
+
 {/* Preview button */}
 {text.trim().length > 0 && (
   <div style={{marginBottom:10}}>
