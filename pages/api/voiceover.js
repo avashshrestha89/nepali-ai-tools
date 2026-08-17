@@ -49,7 +49,7 @@ body: JSON.stringify({
     similarity_boost: 0.75,
     style: 0.4,
     use_speaker_boost: true,
-    speed: parseFloat(req.body.speed) || 1.0,
+
   },
 }),
       }
