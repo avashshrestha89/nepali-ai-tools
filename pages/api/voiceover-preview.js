@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { text, voiceId, speed } = req.body
+  const { text, voiceId } = req.body
 
   if (!text || !voiceId) {
     return res.status(400).json({ error: 'Missing text or voice' })
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
             similarity_boost: 0.75,
             style: 0.4,
             use_speaker_boost: true,
-            speed: parseFloat(speed) || 1.0,
+          
           },
         }),
       }
