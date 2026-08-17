@@ -597,7 +597,42 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
     ))}
   </div>
 </div>
-
+{/* Preview button */}
+{text.trim().length > 0 && (
+  <div style={{marginBottom:10}}>
+    <button
+      onClick={handlePreview}
+      disabled={previewing || !selectedVoice}
+      style={{
+        width:'100%',padding:'11px',borderRadius:12,border:'1.5px solid #e8e8ed',
+        background: previewing ? '#f5f5f7' : '#fff',
+        color: previewing ? '#888' : '#1d1d1f',
+        fontSize:14,fontWeight:700,cursor: previewing ? 'not-allowed' : 'pointer',
+        fontFamily:'Sora,sans-serif',
+        display:'flex',alignItems:'center',justifyContent:'center',gap:8
+      }}>
+      {previewing ? '⏳ Generating preview...' : '🔊 Preview Voice — Free (First 200 chars)'}
+    </button>
+    {previewError && (
+      <div style={{fontSize:12,color:'#DC143C',marginTop:6,textAlign:'center'}}>
+        {previewError}
+      </div>
+    )}
+    {previewUrl && (
+      <div style={{marginTop:8,background:'#f0f7ff',border:'1px solid #90CAF9',borderRadius:10,padding:'8px 12px'}}>
+        <div style={{fontSize:11,color:'#1976D2',fontWeight:700,marginBottom:6}}>
+          🔊 Preview (first 200 chars) — No credits used
+        </div>
+        <audio
+          ref={previewAudioRef}
+          controls
+          src={previewUrl}
+          style={{width:'100%',height:36,borderRadius:6}}
+        />
+      </div>
+    )}
+  </div>
+)}
 {/* Generate button */}
 <button onClick={handleGenerate} disabled={!canGenerate}
   style={{width:'100%',padding:'14px',borderRadius:12,border:'none',
