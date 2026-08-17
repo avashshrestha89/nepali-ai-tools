@@ -40,7 +40,7 @@ console.log('voiceover env check:', {
           'Content-Type': 'application/json',
           Accept: 'audio/mpeg',
         },
- body: JSON.stringify({
+body: JSON.stringify({
   text: text.trim(),
   model_id: 'eleven_v3',
   output_format: 'mp3_44100_64',
@@ -49,6 +49,7 @@ console.log('voiceover env check:', {
     similarity_boost: 0.75,
     style: 0.4,
     use_speaker_boost: true,
+    speed: parseFloat(req.body.speed) || 1.0,
   },
 }),
       }
