@@ -463,7 +463,7 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
   <button key={p.label}
     onClick={() => {
       if (text.trim()) {
-        const cleaned = text.trim().replace(/^\[.*?\]\s*/g, '')
+        const cleaned = text.trim().replace(/^(?:\[[^\]]+\]\s*)+/, '')
         setText(p.tags + cleaned)
       }
     }}
