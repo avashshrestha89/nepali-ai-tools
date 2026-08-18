@@ -20,7 +20,10 @@ Rules:
 - Do NOT include any explanation, just the script itself`
 
   const userPrompt = `Write a Nepali voiceover script for: ${prompt}`
-
+console.log('Gemini API key exists:', !!process.env.SWORAIAPIKEY)
+console.log('Prompt received:', prompt)
+try {
+  const response = await fetch(
   try {
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.SWORAIAPIKEY}`,
@@ -41,10 +44,11 @@ Rules:
       }
     )
 
-    if (!response.ok) {
-      const err = await response.json()
-      return res.status(500).json({ error: 'Script generation failed. Please try again.' })
-    }
+   if (!response.ok) {
+  const err = await response.json()
+  console.log('Gemini API error:', JSON.stringify(err))
+  return res.status(500).json({ error: 'Script generation failed. Please try again.' })
+}
 
     const data = await response.json()
     const script = data.candidates?.[0]?.content?.parts?.[0]?.text || ''
