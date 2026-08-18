@@ -206,6 +206,10 @@ export default function Voiceover() {
   const [showVoicePanel, setShowVoicePanel] = useState(false)
   const [loading, setLoading] = useState(false)
   const [previewing, setPreviewing] = useState(false)
+  const [scriptPrompt, setScriptPrompt] = useState('')
+const [scriptDuration, setScriptDuration] = useState('30')
+const [generatingScript, setGeneratingScript] = useState(false)
+const [scriptError, setScriptError] = useState(null)
 const [previewUrl, setPreviewUrl] = useState(null)
 const [previewError, setPreviewError] = useState(null)
 const previewAudioRef = useRef(null)
@@ -260,6 +264,32 @@ const previewAudioRef = useRef(null)
       const d = await res.json(); setSignupStatus(d.success ? 'sent' : 'error')
     } catch { setSignupStatus('error') }
   }
+  async function handleGenerateScript() {
+  if (!scriptPrompt.trim()) return
+  setGeneratingScript(true)
+  setScriptError(null)
+  try {
+    const res = await fetch('/api/generate-script', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt: scriptPrompt,
+        duration: scriptDuration,
+        style: 'professional voiceover'
+      })
+    })
+    if (!res.ok) {
+      const e = await res.json()
+      throw new Error(e.error)
+    }
+    const data = await res.json()
+    setText(data.script)
+    setScriptPrompt('')
+  } catch (e) {
+    setScriptError(e.message)
+  }
+  setGeneratingScript(false)
+}
 async function handlePreview() {
   if (!text.trim() || !selectedVoice) return
   setPreviewing(true)
@@ -446,6 +476,53 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
     ))}
   </div>
 )}
+{/* AI Script Generator */}
+<div style={{background:'linear-gradient(135deg,#fff5f7,#fff)',border:'1.5px solid rgba(220,20,60,.15)',borderRadius:14,padding:16,marginBottom:12}}>
+  <div style={{fontSize:13,fontWeight:700,color:'#DC143C',marginBottom:8}}>
+    ✨ AI Script Generator — Describe your content in English or Nepali
+  </div>
+  <div style={{display:'flex',gap:8,marginBottom:8,flexWrap:'wrap'}}>
+    <input
+      type="text"
+      value={scriptPrompt}
+      onChange={e => setScriptPrompt(e.target.value)}
+      placeholder="e.g. 30 second aggressive ad for a computer institute in Kathmandu"
+      style={{
+        flex:1,minWidth:200,padding:'10px 14px',borderRadius:10,
+        border:'1.5px solid #e8e8ed',fontSize:13,outline:'none',
+        fontFamily:'inherit'
+      }}
+    />
+    <select
+      value={scriptDuration}
+      onChange={e => setScriptDuration(e.target.value)}
+      style={{padding:'10px 12px',borderRadius:10,border:'1.5px solid #e8e8ed',fontSize:13,outline:'none',background:'#fff'}}>
+      <option value="15">15 sec</option>
+      <option value="30">30 sec</option>
+      <option value="45">45 sec</option>
+      <option value="60">60 sec</option>
+      <option value="120">2 min</option>
+    </select>
+    <button
+      onClick={handleGenerateScript}
+      disabled={generatingScript || !scriptPrompt.trim()}
+      style={{
+        padding:'10px 18px',borderRadius:10,border:'none',
+        background: generatingScript || !scriptPrompt.trim() ? '#ccc' : '#DC143C',
+        color:'#fff',fontSize:13,fontWeight:700,
+        cursor: generatingScript || !scriptPrompt.trim() ? 'not-allowed' : 'pointer',
+        whiteSpace:'nowrap'
+      }}>
+      {generatingScript ? '⏳ Generating...' : '✨ Generate Script'}
+    </button>
+  </div>
+  {scriptError && (
+    <div style={{fontSize:12,color:'#DC143C',marginTop:4}}>{scriptError}</div>
+  )}
+  <div style={{fontSize:11,color:'#888'}}>
+    💡 AI will write a Nepali Devanagari script based on your description — then you can generate the voiceover
+  </div>
+</div>
 {/* Style Presets */}
 <div style={{marginBottom:12}}>
   <div style={{fontSize:12,fontWeight:700,color:'#555',marginBottom:8}}>
