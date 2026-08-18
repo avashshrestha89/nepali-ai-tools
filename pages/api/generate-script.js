@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   }
 
   const durationSecs = parseInt(duration) || 30
-  const estimatedChars = durationSecs * 12
+  const estimatedChars = durationSecs * 18
 
   const systemPrompt = `You are a professional Nepali voiceover script writer for radio and video ads.
 
@@ -17,7 +17,9 @@ STRICT RULES — follow exactly:
 2. Use ONLY pure Devanagari Nepali script — zero English words, zero Roman text
 3. Add emotion tags in square brackets like [excited] [calm] [aggressive] [urgent] [whispers] [confident] [energetic] naturally within the script
 4. The script must be ready to read aloud immediately — no asterisks, no dashes, no formatting
-5. Generate approximately ${estimatedChars} characters to fill ${durationSecs} seconds of audio
+5. Generate approximately ${estimatedChars} characters — this is MANDATORY to fill the full ${durationSecs} seconds
+5b. If ${durationSecs} seconds is 120 seconds, you MUST write at least 2,000 characters
+5c. Do NOT stop writing until you reach the required length
 6. Style: ${style || 'professional and engaging'}
 7. End the script completely — never cut off mid-sentence
 8. For ${durationSecs} seconds, write a FULL and COMPLETE script — do not stop early
