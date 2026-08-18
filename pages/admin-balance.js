@@ -15,11 +15,32 @@ export default function AdminBalance() {
   const [custom, setCustom] = useState('')
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState(null)
+  async function fetchCustomers() {
+  setCustomersLoading(true)
+  setCustomersError(null)
+  try {
+    const res = await fetch('/api/admin-customers', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adminPassword: password })
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.error)
+    setCustomers(data.customers)
+  } catch (e) {
+    setCustomersError(e.message)
+  }
+  setCustomersLoading(false)
+}
 
   // Check user balance
   const [checkEmail, setCheckEmail] = useState('')
   const [checkStatus, setCheckStatus] = useState('idle')
   const [checkResult, setCheckResult] = useState(null)
+  const [customers, setCustomers] = useState([])
+const [customersLoading, setCustomersLoading] = useState(false)
+const [customersError, setCustomersError] = useState(null)
+const [customerFilter, setCustomerFilter] = useState('all')
 
   // Generate API key
   const [keyEmail, setKeyEmail] = useState('')
