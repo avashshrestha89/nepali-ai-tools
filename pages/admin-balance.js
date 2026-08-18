@@ -347,14 +347,17 @@ async function handleSetLegacy(action) {
       </div>
 
       {/* Filter */}
-      <div style={{display:'flex',gap:8,marginBottom:12,flexWrap:'wrap'}}>
-        {[
-          {key:'all',label:'All'},
-          {key:'paid',label:'Paid'},
-          {key:'low',label:'Low Credits (<1000)'},
-          {key:'founders',label:'Founders'},
-          {key:'legacy',label:'Legacy'},
-        ].map(f => (
+<div style={{display:'flex',gap:8,marginBottom:12,flexWrap:'wrap'}}>
+  {[
+    {key:'all',label:'All'},
+    {key:'paid',label:'💳 Paid'},
+    {key:'low',label:'⚠️ Low Credits'},
+    {key:'founders',label:'👑 Founders'},
+    {key:'legacy',label:'🕰️ Legacy'},
+    {key:'recent',label:'🆕 Joined This Month'},
+    {key:'oldest',label:'📅 Oldest First'},
+    {key:'mostcredits',label:'💰 Most Credits'},
+  ].map(f => (
           <button key={f.key}
             onClick={() => setCustomerFilter(f.key)}
             style={{
@@ -385,12 +388,22 @@ async function handleSetLegacy(action) {
           <tbody>
             {customers
               .filter(c => {
-                if (customerFilter === 'paid') return c.tier === 'paid'
-                if (customerFilter === 'low') return c.credits < 1000
-                if (customerFilter === 'founders') return c.isFounder
-                if (customerFilter === 'legacy') return c.isLegacy
-                return true
-              })
+  if (customerFilter === 'paid') return c.tier === 'paid'
+  if (customerFilter === 'low') return c.credits < 1000
+  if (customerFilter === 'founders') return c.isFounder
+  if (customerFilter === 'legacy') return c.isLegacy
+  if (customerFilter === 'recent') {
+    const thisMonth = new Date()
+    thisMonth.setDate(1)
+    return c.createdAt && new Date(c.createdAt) >= thisMonth
+  }
+  return true
+})
+.sort((a, b) => {
+  if (customerFilter === 'oldest') return new Date(a.createdAt) - new Date(b.createdAt)
+  if (customerFilter === 'mostcredits') return b.credits - a.credits
+  return 0
+})
               .map((c, i) => (
                 <tr key={c.email} style={{borderBottom:'1px solid #f0f0f0',background: i % 2 === 0 ? '#fff' : '#fafafa'}}>
                   <td style={{padding:'10px 12px',color:'#1d1d1f',fontWeight:500}}>{c.email}</td>
