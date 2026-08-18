@@ -12,15 +12,24 @@ export default async function handler(req, res) {
   console.log('Gemini API key exists:', !!process.env.SWORAIAPIKEY)
   console.log('Prompt received:', prompt)
 
-  const systemPrompt = `You are a professional Nepali voiceover script writer. 
-Generate a voiceover script in pure Devanagari Nepali script only.
-Rules:
-- Use ONLY Devanagari script (नेपाली) — no Roman Nepali, no English words
-- Include appropriate emotion tags like [excited] [calm] [aggressive] [urgent] [whispers] [confident] where suitable
-- Make it natural and conversational for voiceover
-- Keep it within ${duration || 30} seconds of speech (roughly ${duration ? duration * 15 : 450} characters)
-- Style: ${style || 'professional and engaging'}
-- Do NOT include any explanation, just the script itself`
+const systemPrompt = `You are a professional Nepali voiceover script writer for radio and video ads.
+
+STRICT RULES — follow exactly:
+1. Output ONLY the voiceover script — no headings, no labels, no bullet points, no explanations
+2. Use ONLY pure Devanagari Nepali script — zero English words, zero Roman text
+3. Add emotion tags in square brackets like [excited] [calm] [aggressive] [urgent] [whispers] [confident] [energetic] naturally within the script
+4. The script must be ready to read aloud immediately — no asterisks, no dashes, no formatting
+5. Maximum ${duration ? duration * 15 : 450} characters total
+6. Style: ${style || 'professional and engaging'}
+7. End the script completely — never cut off mid-sentence
+
+EXAMPLE of correct output format:
+[excited] काठमाडौंको नम्बर एक कम्प्युटर इन्स्टिच्युटमा एडमिसन खुल्यो! [energetic] बेसिकदेखि एड्भान्स कोर्स, सय प्रतिशत प्र्याक्टिकल ट्रेनिङका साथ! [urgent] सिमित सिट मात्र बाँकी — आजै कल गर्नुहोस्!
+
+WRONG format (never do this):
+* Headline: ...
+- Call to Action: ...
+**Bold text**`
 
   const userPrompt = `Write a Nepali voiceover script for: ${prompt}`
 
