@@ -32,9 +32,13 @@ WRONG format (never do this):
 
   const userPrompt = `Write a complete ${durationSecs}-second Nepali voiceover script for: ${prompt}`
 
-  try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${process.env.SWORAIAPIKEY}`,
+let response
+let attempts = 0
+const maxAttempts = 3
+
+while (attempts < maxAttempts) {
+  response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${process.env.SWORAIAPIKEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -52,11 +56,18 @@ WRONG format (never do this):
       }
     )
 
-    if (!response.ok) {
+  if (!response.ok) {
       const err = await response.json()
       console.log('Gemini API error:', JSON.stringify(err))
+      attempts++
+      if (attempts < maxAttempts && err?.error?.code === 503) {
+        await new Promise(resolve => setTimeout(resolve, 2000))
+        continue
+      }
       return res.status(500).json({ error: 'Script generation failed. Please try again.' })
     }
+    break
+  }
 
     const data = await response.json()
     const script = data.candidates?.[0]?.content?.parts?.[0]?.text || ''
