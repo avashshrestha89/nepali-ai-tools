@@ -318,16 +318,50 @@ async function handleSetLegacy(action) {
       <div style={{fontSize:16,fontWeight:700,color:'#1d1d1f'}}>👥 Customer Dashboard</div>
       <div style={{fontSize:12,color:'#888',marginTop:2}}>All customers — credits assigned vs remaining</div>
     </div>
+  <div style={{display:'flex',gap:8}}>
+  <button
+    onClick={fetchCustomers}
+    disabled={customersLoading || !password}
+    style={{
+      background: customersLoading || !password ? '#ccc' : '#1976D2',
+      color:'#fff',border:'none',padding:'10px 20px',
+      borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer'
+    }}>
+    {customersLoading ? '⏳ Loading...' : '🔄 Load Customers'}
+  </button>
+  {customers.length > 0 && (
     <button
-      onClick={fetchCustomers}
-      disabled={customersLoading || !password}
+      onClick={() => {
+        const headers = ['Email','Tier','Credits Left','Generations Used','Is Founder','Is Legacy','Joined']
+        const rows = customers.map(c => [
+          c.email,
+          c.tier || 'free',
+          c.credits || 0,
+          c.generationsUsed || 0,
+          c.isFounder ? 'Yes' : 'No',
+          c.isLegacy ? 'Yes' : 'No',
+          c.createdAt ? new Date(c.createdAt).toLocaleDateString('en-GB') : 'Unknown'
+        ])
+        const csv = [headers, ...rows].map(r => r.join(',')).join('\n')
+        const blob = new Blob([csv], { type: 'text/csv' })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = `swor-ai-customers-${new Date().toISOString().slice(0,10)}.csv`
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
+      }}
       style={{
-        background: customersLoading || !password ? '#ccc' : '#1976D2',
-        color:'#fff',border:'none',padding:'10px 20px',
-        borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer'
+        background:'#34C759',color:'#fff',border:'none',
+        padding:'10px 20px',borderRadius:10,fontSize:13,
+        fontWeight:700,cursor:'pointer'
       }}>
-      {customersLoading ? '⏳ Loading...' : '🔄 Load Customers'}
+      ⬇ Export CSV
     </button>
+  )}
+</div>
   </div>
 
   {customersError && (
