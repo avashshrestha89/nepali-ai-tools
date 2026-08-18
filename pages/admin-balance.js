@@ -15,6 +15,14 @@ export default function AdminBalance() {
   const [custom, setCustom] = useState('')
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState(null)
+  function handleSort(column) {
+  if (sortColumn === column) {
+    setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+  } else {
+    setSortColumn(column)
+    setSortDirection('desc')
+  }
+}
   async function fetchCustomers() {
   setCustomersLoading(true)
   setCustomersError(null)
@@ -41,6 +49,8 @@ export default function AdminBalance() {
 const [customersLoading, setCustomersLoading] = useState(false)
 const [customersError, setCustomersError] = useState(null)
 const [customerFilter, setCustomerFilter] = useState('all')
+  const [sortColumn, setSortColumn] = useState('credits')
+const [sortDirection, setSortDirection] = useState('desc')
 
   // Generate API key
   const [keyEmail, setKeyEmail] = useState('')
@@ -375,19 +385,37 @@ async function handleSetLegacy(action) {
       {/* Customer table */}
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',fontSize:13}}>
-          <thead>
-            <tr style={{background:'#f5f5f7'}}>
-              <th style={{padding:'10px 12px',textAlign:'left',fontWeight:700,color:'#555',borderRadius:'8px 0 0 8px'}}>Email</th>
-              <th style={{padding:'10px 12px',textAlign:'center',fontWeight:700,color:'#555'}}>Tier</th>
-              <th style={{padding:'10px 12px',textAlign:'center',fontWeight:700,color:'#555'}}>Credits Left</th>
-              <th style={{padding:'10px 12px',textAlign:'center',fontWeight:700,color:'#555'}}>Generations</th>
-              <th style={{padding:'10px 12px',textAlign:'center',fontWeight:700,color:'#555'}}>Status</th>
-              <th style={{padding:'10px 12px',textAlign:'center',fontWeight:700,color:'#555',borderRadius:'0 8px 8px 0'}}>Joined</th>
-            </tr>
-          </thead>
+     <thead>
+  <tr style={{background:'#f5f5f7'}}>
+    {[
+      {key:'email',label:'Email',align:'left'},
+      {key:'tier',label:'Tier',align:'center'},
+      {key:'credits',label:'Credits Left',align:'center'},
+      {key:'generations',label:'Generations',align:'center'},
+      {key:'status',label:'Status',align:'center'},
+      {key:'joined',label:'Joined',align:'center'},
+    ].map((col, i) => (
+      <th key={col.key}
+        onClick={() => handleSort(col.key)}
+        style={{
+          padding:'10px 12px',
+          textAlign:col.align,
+          fontWeight:700,
+          color: sortColumn === col.key ? '#1976D2' : '#555',
+          cursor:'pointer',
+          userSelect:'none',
+          borderRadius: i === 0 ? '8px 0 0 8px' : i === 5 ? '0 8px 8px 0' : 0,
+          whiteSpace:'nowrap'
+        }}>
+        {col.label} {sortColumn === col.key ? (sortDirection === 'asc' ? '↑' : '↓') : '↕'}
+      </th>
+    ))}
+  </tr>
+</thead>
           <tbody>
             {customers
               .filter(c => {
+                
   if (customerFilter === 'paid') return c.tier === 'paid'
   if (customerFilter === 'low') return c.credits < 1000
   if (customerFilter === 'founders') return c.isFounder
@@ -402,6 +430,15 @@ async function handleSetLegacy(action) {
 .sort((a, b) => {
   if (customerFilter === 'oldest') return new Date(a.createdAt) - new Date(b.createdAt)
   if (customerFilter === 'mostcredits') return b.credits - a.credits
+  return 0
+})
+          .sort((a, b) => {
+  const dir = sortDirection === 'asc' ? 1 : -1
+  if (sortColumn === 'email') return dir * a.email.localeCompare(b.email)
+  if (sortColumn === 'tier') return dir * (a.tier || '').localeCompare(b.tier || '')
+  if (sortColumn === 'credits') return dir * ((a.credits || 0) - (b.credits || 0))
+  if (sortColumn === 'generations') return dir * ((a.generationsUsed || 0) - (b.generationsUsed || 0))
+  if (sortColumn === 'joined') return dir * (new Date(a.createdAt) - new Date(b.createdAt))
   return 0
 })
               .map((c, i) => (
