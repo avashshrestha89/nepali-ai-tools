@@ -35,7 +35,7 @@ EXAMPLE FORMAT:
 [१:३० - २:००]
 [aggressive] आजै कल गर्नुहोस् र आफ्नो भविष्य सुरक्षित गर्नुहोस्!`
 
-  const userPrompt = `Generate a complete ${durationSecs}-second voiceover script for: "${prompt}". Must be approximately ${targetWords} Nepali words. Do NOT stop until the script is complete.`
+  const userPrompt = `Generate a complete ${durationSecs}-second voiceover script for: "${prompt}". Must be approximately ${targetWords} Nepali words. You MUST complete ALL timed blocks [०:०० - ०:३०], [०:३० - १:००], [१:०० - १:३०], [१:३० - २:००]. Do NOT stop until the very last block is complete with a strong Call to Action.`
 
   const maxAttempts = 3
 
@@ -52,10 +52,11 @@ EXAMPLE FORMAT:
                 text: `${systemPrompt}\n\n${userPrompt}`
               }]
             }],
-            generationConfig: {
-              temperature: 0.7,
-              maxOutputTokens: 8192,
-            }
+          generationConfig: {
+  temperature: 0.8,
+  maxOutputTokens: 8192,
+  stopSequences: [],
+}
           })
         }
       )
