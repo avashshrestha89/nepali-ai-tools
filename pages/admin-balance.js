@@ -301,6 +301,143 @@ async function handleSetLegacy(action) {
           )}
         </div>
       </div>
+          {/* CUSTOMER DASHBOARD */}
+<div style={{marginTop:32,background:'#fff',borderRadius:16,border:'1.5px solid #e8e8ed',padding:24}}>
+  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16,flexWrap:'wrap',gap:12}}>
+    <div>
+      <div style={{fontSize:16,fontWeight:700,color:'#1d1d1f'}}>👥 Customer Dashboard</div>
+      <div style={{fontSize:12,color:'#888',marginTop:2}}>All customers — credits assigned vs remaining</div>
+    </div>
+    <button
+      onClick={fetchCustomers}
+      disabled={customersLoading || !password}
+      style={{
+        background: customersLoading || !password ? '#ccc' : '#1976D2',
+        color:'#fff',border:'none',padding:'10px 20px',
+        borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer'
+      }}>
+      {customersLoading ? '⏳ Loading...' : '🔄 Load Customers'}
+    </button>
+  </div>
+
+  {customersError && (
+    <div style={{color:'#DC143C',fontSize:13,marginBottom:12}}>❌ {customersError}</div>
+  )}
+
+  {customers.length > 0 && (
+    <>
+      {/* Stats summary */}
+      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(150px,1fr))',gap:12,marginBottom:16}}>
+        <div style={{background:'#f5f5f7',borderRadius:10,padding:12,textAlign:'center'}}>
+          <div style={{fontSize:24,fontWeight:800,color:'#1d1d1f'}}>{customers.length}</div>
+          <div style={{fontSize:11,color:'#888'}}>Total Customers</div>
+        </div>
+        <div style={{background:'#f5f5f7',borderRadius:10,padding:12,textAlign:'center'}}>
+          <div style={{fontSize:24,fontWeight:800,color:'#34C759'}}>{customers.filter(c => c.tier === 'paid').length}</div>
+          <div style={{fontSize:11,color:'#888'}}>Paid Customers</div>
+        </div>
+        <div style={{background:'#f5f5f7',borderRadius:10,padding:12,textAlign:'center'}}>
+          <div style={{fontSize:24,fontWeight:800,color:'#DC143C'}}>{customers.filter(c => c.credits < 1000).length}</div>
+          <div style={{fontSize:11,color:'#888'}}>Low Credits</div>
+        </div>
+        <div style={{background:'#f5f5f7',borderRadius:10,padding:12,textAlign:'center'}}>
+          <div style={{fontSize:24,fontWeight:800,color:'#FF9500'}}>{customers.reduce((sum, c) => sum + (c.credits || 0), 0).toLocaleString()}</div>
+          <div style={{fontSize:11,color:'#888'}}>Total Credits Remaining</div>
+        </div>
+      </div>
+
+      {/* Filter */}
+      <div style={{display:'flex',gap:8,marginBottom:12,flexWrap:'wrap'}}>
+        {[
+          {key:'all',label:'All'},
+          {key:'paid',label:'Paid'},
+          {key:'low',label:'Low Credits (<1000)'},
+          {key:'founders',label:'Founders'},
+          {key:'legacy',label:'Legacy'},
+        ].map(f => (
+          <button key={f.key}
+            onClick={() => setCustomerFilter(f.key)}
+            style={{
+              padding:'6px 14px',borderRadius:20,border:'1.5px solid',
+              borderColor: customerFilter === f.key ? '#1976D2' : '#e8e8ed',
+              background: customerFilter === f.key ? 'rgba(25,118,210,.08)' : '#fff',
+              color: customerFilter === f.key ? '#1976D2' : '#555',
+              fontSize:12,fontWeight:600,cursor:'pointer'
+            }}>
+            {f.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Customer table */}
+      <div style={{overflowX:'auto'}}>
+        <table style={{width:'100%',borderCollapse:'collapse',fontSize:13}}>
+          <thead>
+            <tr style={{background:'#f5f5f7'}}>
+              <th style={{padding:'10px 12px',textAlign:'left',fontWeight:700,color:'#555',borderRadius:'8px 0 0 8px'}}>Email</th>
+              <th style={{padding:'10px 12px',textAlign:'center',fontWeight:700,color:'#555'}}>Tier</th>
+              <th style={{padding:'10px 12px',textAlign:'center',fontWeight:700,color:'#555'}}>Credits Left</th>
+              <th style={{padding:'10px 12px',textAlign:'center',fontWeight:700,color:'#555'}}>Generations</th>
+              <th style={{padding:'10px 12px',textAlign:'center',fontWeight:700,color:'#555'}}>Status</th>
+              <th style={{padding:'10px 12px',textAlign:'center',fontWeight:700,color:'#555',borderRadius:'0 8px 8px 0'}}>Joined</th>
+            </tr>
+          </thead>
+          <tbody>
+            {customers
+              .filter(c => {
+                if (customerFilter === 'paid') return c.tier === 'paid'
+                if (customerFilter === 'low') return c.credits < 1000
+                if (customerFilter === 'founders') return c.isFounder
+                if (customerFilter === 'legacy') return c.isLegacy
+                return true
+              })
+              .map((c, i) => (
+                <tr key={c.email} style={{borderBottom:'1px solid #f0f0f0',background: i % 2 === 0 ? '#fff' : '#fafafa'}}>
+                  <td style={{padding:'10px 12px',color:'#1d1d1f',fontWeight:500}}>{c.email}</td>
+                  <td style={{padding:'10px 12px',textAlign:'center'}}>
+                    <span style={{
+                      background: c.tier === 'paid' ? 'rgba(52,199,89,.1)' : '#f5f5f7',
+                      color: c.tier === 'paid' ? '#34C759' : '#888',
+                      padding:'3px 10px',borderRadius:20,fontSize:11,fontWeight:700
+                    }}>
+                      {c.tier}
+                    </span>
+                  </td>
+                  <td style={{padding:'10px 12px',textAlign:'center'}}>
+                    <span style={{
+                      fontWeight:700,
+                      color: c.credits < 1000 ? '#DC143C' : c.credits < 5000 ? '#FF9500' : '#34C759'
+                    }}>
+                      {c.credits?.toLocaleString() || 0}
+                    </span>
+                  </td>
+                  <td style={{padding:'10px 12px',textAlign:'center',color:'#555'}}>
+                    {c.generationsUsed || 0}
+                  </td>
+                  <td style={{padding:'10px 12px',textAlign:'center'}}>
+                    <div style={{display:'flex',gap:4,justifyContent:'center',flexWrap:'wrap'}}>
+                      {c.isFounder && <span style={{background:'rgba(201,148,10,.1)',color:'#C9940A',padding:'2px 8px',borderRadius:20,fontSize:10,fontWeight:700}}>👑 Founder</span>}
+                      {c.isLegacy && <span style={{background:'rgba(92,107,192,.1)',color:'#5C6BC0',padding:'2px 8px',borderRadius:20,fontSize:10,fontWeight:700}}>Legacy</span>}
+                      {!c.isFounder && !c.isLegacy && <span style={{color:'#888',fontSize:11}}>—</span>}
+                    </div>
+                  </td>
+                  <td style={{padding:'10px 12px',textAlign:'center',color:'#888',fontSize:12}}>
+                    {c.createdAt ? new Date(c.createdAt).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'2-digit'}) : '—'}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  )}
+
+  {customers.length === 0 && !customersLoading && (
+    <div style={{textAlign:'center',color:'#888',fontSize:13,padding:'20px 0'}}>
+      Enter your admin password above and click "Load Customers" to view all customers.
+    </div>
+  )}
+</div>
     </>
   )
 }
