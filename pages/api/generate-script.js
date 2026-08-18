@@ -32,54 +32,58 @@ WRONG format (never do this):
 
   const userPrompt = `Write a complete ${durationSecs}-second Nepali voiceover script for: ${prompt}`
 
-let response
-let attempts = 0
-const maxAttempts = 3
+  const maxAttempts = 3
+  let lastError = null
 
-while (attempts < maxAttempts) {
-  response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${process.env.SWORAIAPIKEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: `${systemPrompt}\n\n${userPrompt}`
-            }]
-          }],
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 2048,
-          }
-        })
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${process.env.SWORAIAPIKEY}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{
+                text: `${systemPrompt}\n\n${userPrompt}`
+              }]
+            }],
+            generationConfig: {
+              temperature: 0.7,
+              maxOutputTokens: 2048,
+            }
+          })
+        }
+      )
+
+      if (!response.ok) {
+        const err = await response.json()
+        console.log('Gemini API error:', JSON.stringify(err))
+        lastError = err
+        if (err?.error?.code === 503 && attempt < maxAttempts - 1) {
+          await new Promise(resolve => setTimeout(resolve, 2000))
+          continue
+        }
+        return res.status(500).json({ error: 'Script generation failed. Please try again.' })
       }
-    )
 
-  if (!response.ok) {
-      const err = await response.json()
-      console.log('Gemini API error:', JSON.stringify(err))
-      attempts++
-      if (attempts < maxAttempts && err?.error?.code === 503) {
+      const data = await response.json()
+      const script = data.candidates?.[0]?.content?.parts?.[0]?.text || ''
+
+      if (!script) {
+        return res.status(500).json({ error: 'No script generated. Please try again.' })
+      }
+
+      return res.status(200).json({ script: script.trim() })
+
+    } catch (error) {
+      console.log('Generate script error:', error.message)
+      lastError = error
+      if (attempt < maxAttempts - 1) {
         await new Promise(resolve => setTimeout(resolve, 2000))
-        continue
       }
-      return res.status(500).json({ error: 'Script generation failed. Please try again.' })
     }
-    break
   }
 
-    const data = await response.json()
-    const script = data.candidates?.[0]?.content?.parts?.[0]?.text || ''
-
-    if (!script) {
-      return res.status(500).json({ error: 'No script generated. Please try again.' })
-    }
-
-    return res.status(200).json({ script: script.trim() })
-
-  } catch (error) {
-    console.log('Generate script error:', error.message)
-    return res.status(500).json({ error: 'Script generation failed. Please try again.' })
-  }
+  return res.status(500).json({ error: 'Script generation failed after multiple attempts. Please try again.' })
 }
