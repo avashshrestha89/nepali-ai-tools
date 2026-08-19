@@ -127,7 +127,7 @@ audio.onended = () => {
         textDecoration:'none',
         whiteSpace:'nowrap',
       }}>
-      +17 more voices →
+      +27 more voices →
     </a>
   </div>
 
@@ -193,7 +193,7 @@ audio.onended = () => {
         
       <div style={{textAlign:'center',padding:'16px',background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed'}}>
         <div style={{fontSize:13,color:'#1d1d1f',fontWeight:600,marginBottom:6}}>
-          Like what you hear? Get 17 more voices + full scripts
+          Like what you hear? Get 27 more voices + full scripts
         </div>
         <Link href="/tool">
           <button style={{background:'#1d1d1f',color:'#fff',border:'none',padding:'10px 24px',borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer'}}>
@@ -224,7 +224,7 @@ const FAQS = [
   },
   {
     q: 'What Nepali voices are available?',
-    a: 'Swor AI has 20 premium Nepali AI voices including Priyanka (Romantic & Elegant), Vanishree (Professional News Style), Dhurundhar (Deep & Commanding), Anika (Sweet & Lively for Reels), Rudra (Intense & Romantic), Suraj (Upbeat TV & Radio Announcer), Saurav (Sports Commentator), Ridhi (Elegant Ad Narration), Asha (Conversational & Bright), Prakash (Clear & Professional) and 10 more. Both male and female voices available. You can also use emotion tags like [excited], [calm], [whispers] for dynamic delivery.',
+    a: 'Swor AI has 30 Premium Nepali AI Voices including Priyanka (Romantic & Elegant), Vanishree (Professional News Style), Dhurundhar (Deep & Commanding), Anika (Sweet & Lively for Reels), Rudra (Intense & Romantic), Suraj (Upbeat TV & Radio Announcer), Saurav (Sports Commentator), Ridhi (Elegant Ad Narration), Asha (Conversational & Bright), Prakash (Clear & Professional) and 10 more. Both male and female voices available. You can also use emotion tags like [excited], [calm], [whispers] for dynamic delivery.',
   },
   {
     q: 'Is Swor AI free to use?',
@@ -336,14 +336,14 @@ export default function NepaliTextToSpeech() {
             Free Nepali Text to Speech<br />AI Voice Generator
           </h1>
           <p style={{fontSize:18,color:'#6e6e73',lineHeight:1.7,marginBottom:32,maxWidth:560,margin:'0 auto 32px'}}>
-            Convert Nepali Devanagari text to professional AI voiceover in seconds. 20 natural voices for TikTok, YouTube, documentary, news, ads and more.
+            Convert Nepali Devanagari text to professional AI voiceover in seconds. 30 natural voices for TikTok, YouTube, documentary, news, ads and more.
           </p>
           <Link href="/voiceover">
             <button style={{background:'#DC143C',color:'#fff',border:'none',padding:'16px 40px',borderRadius:14,fontSize:17,fontWeight:700,cursor:'pointer',fontFamily:'Sora,sans-serif',boxShadow:'0 8px 32px rgba(220,20,60,.25)'}}>
               Generate Nepali Voiceover Free →
             </button>
           </Link>
-          <div style={{fontSize:13,color:'#999',marginTop:12}}>Nepal&apos;s only AI Nepali voice generator with 20 voices, emotion control and voice cloning</div>
+          <div style={{fontSize:13,color:'#999',marginTop:12}}>Nepal&apos;s only AI Nepali voice generator with 30 voices, emotion control and voice cloning</div>
         </div>
       </section>
 
@@ -374,7 +374,7 @@ export default function NepaliTextToSpeech() {
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:16}}>
             {[
               {step:'01',icon:'✍️',title:'Type Nepali text',desc:'Type or paste your Nepali script in Devanagari. Add emotion tags like [excited] or [whispers] for dynamic delivery.'},
-              {step:'02',icon:'🎙️',title:'Choose your voice',desc:'Pick from 20 premium Nepali AI voices — male and female, covering every content style from documentary to energetic reels.'},
+              {step:'02',icon:'🎙️',title:'Choose your voice',desc:'Pick from 30 premium Nepali AI voices — male and female, covering every content style from documentary to energetic reels.'},
               {step:'03',icon:'⚡',title:'Generate in seconds',desc:'Click Generate and your professional Nepali voiceover is ready in under 8 seconds. Download as MP3.'},
               {step:'04',icon:'🎬',title:'Use anywhere',desc:'Import your MP3 into CapCut, Premiere Pro, DaVinci Resolve or upload directly to TikTok, YouTube or Instagram.'},
             ].map(s=>(
@@ -393,7 +393,7 @@ export default function NepaliTextToSpeech() {
       <section style={{padding:'80px 24px',background:'#fff'}}>
         <div style={{maxWidth:900,margin:'0 auto'}}>
           <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(22px,3.5vw,36px)',fontWeight:800,textAlign:'center',letterSpacing:'-0.8px',marginBottom:12}}>
-            20 Premium Nepali AI Voices
+            30 Premium Nepali AI Voices
           </h2>
           <p style={{textAlign:'center',color:'#6e6e73',fontSize:16,marginBottom:48,lineHeight:1.65}}>
             Every voice is trained specifically for natural Nepali speech — not a generic multilingual model
