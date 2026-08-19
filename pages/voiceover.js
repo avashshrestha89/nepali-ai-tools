@@ -598,8 +598,13 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
             />
             <div style={{padding:'8px 16px',borderTop:'1px solid #f0f0f0',display:'flex',justifyContent:'space-between',alignItems:'center',background:'#fafafa'}}>
               <span style={{fontSize:12,color:'#DC143C',fontWeight:600}}>⚠️ Devanagari script only — type in नेपाली not Roman</span>
-             <span style={{fontSize:12,fontWeight:600,color:text.length > 4800 ? '#DC143C' : text.length > 4000 ? '#FF9500' : '#888'}}>
+     <span style={{fontSize:12,fontWeight:600,color:text.length > 4800 ? '#DC143C' : text.length > 3000 ? '#FF9500' : '#888'}}>
   {text.length} / 5,000 chars max
+  {text.length > 3000 && text.length <= 5000 && (
+    <span style={{display:'block',fontSize:11,color:'#FF9500',marginTop:2}}>
+      ⚠️ Long script — may load slowly on mobile. Consider splitting into parts.
+    </span>
+  )}
 </span>
             </div>
           </div>
