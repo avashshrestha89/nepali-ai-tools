@@ -642,10 +642,12 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
   ⬇ Download MP3
 </button>
               </div>
-            <audio 
-  controls 
+<audio 
+  controls
+  playsInline
+  preload="metadata"
+  crossOrigin="anonymous"
   src={result.url}
-  preload="none"
   style={{width:'100%',borderRadius:8}}
   onError={() => window.open(result.url, '_blank')}
 />
