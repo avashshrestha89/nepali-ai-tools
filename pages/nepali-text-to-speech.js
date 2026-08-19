@@ -16,6 +16,7 @@ function DemoBox() {
   const [demoLoading, setDemoLoading] = useState(false)
   const [demoError, setDemoError] = useState(null)
   const [demoPlaying, setDemoPlaying] = useState(false)
+  const [showInlineCTA, setShowInlineCTA] = useState(false)
   const demoAudioRef = useRef(null)
 
   async function handleDemo() {
@@ -45,9 +46,12 @@ function DemoBox() {
 
       const audio = new Audio(url)
       demoAudioRef.current = audio
-      audio.play()
-      setDemoPlaying(true)
-      audio.onended = () => setDemoPlaying(false)
+     audio.play()
+setDemoPlaying(true)
+audio.onended = () => {
+  setDemoPlaying(false)
+  setShowInlineCTA(true)
+}
 
     } catch (e) {
       setDemoError(e.message)
