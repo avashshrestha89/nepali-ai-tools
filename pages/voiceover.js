@@ -642,7 +642,13 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
   ⬇ Download MP3
 </button>
               </div>
-              <audio controls src={result.url} style={{width:'100%',borderRadius:8}} />
+            <audio 
+  controls 
+  src={result.url}
+  preload="none"
+  style={{width:'100%',borderRadius:8}}
+  onError={() => window.open(result.url, '_blank')}
+/>
             </div>
           )}
 
