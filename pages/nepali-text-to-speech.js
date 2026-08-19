@@ -172,7 +172,28 @@ audio.onended = () => {
         }}>
         {demoLoading ? '⏳ Generating...' : demoPlaying ? '🔊 Playing...' : '🎙️ Hear This Voice Free'}
       </button>
+   {/* Inline CTA — appears after audio plays */}
+      {showInlineCTA && (
+        <div style={{marginTop:16,background:'linear-gradient(135deg,rgba(220,20,60,.08),rgba(255,107,138,.08))',border:'1.5px solid rgba(220,20,60,.2)',borderRadius:14,padding:16,textAlign:'center'}}>
+          <div style={{fontSize:16,marginBottom:6}}>🎉</div>
+          <div style={{fontFamily:'Sora,sans-serif',fontSize:14,fontWeight:700,color:'#1d1d1f',marginBottom:4}}>
+            Loved the voice?
+          </div>
+          <div style={{fontSize:12,color:'#6e6e73',marginBottom:10}}>
+            Use code <strong style={{color:'#DC143C'}}>SWOR-LAUNCH-10K</strong> on WhatsApp to get 8,000 credits instead of 3,500 for just NPR 499!
+          </div>
+          
+            href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20tried%20the%20free%20demo%20on%20Swor%20AI%20and%20loved%20it!%20I%20want%20to%20claim%20my%20bonus%20credits%20with%20code%20SWOR-LAUNCH-10K."
+            target="_blank"
+            rel="noreferrer"
+            style={{display:'inline-block',background:'#25D366',color:'#fff',padding:'10px 20px',borderRadius:10,fontSize:13,fontWeight:700,textDecoration:'none'}}>
+            💬 Claim 8,000 Credits on WhatsApp
+          </a>
+        </div>
+      )}
 
+
+        
       <div style={{textAlign:'center',padding:'16px',background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed'}}>
         <div style={{fontSize:13,color:'#1d1d1f',fontWeight:600,marginBottom:6}}>
           Like what you hear? Get 17 more voices + full scripts
