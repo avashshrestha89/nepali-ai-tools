@@ -183,12 +183,9 @@ audio.onended = () => {
             Use code <strong style={{color:'#DC143C'}}>SWOR-LAUNCH-10K</strong> on WhatsApp to get 8,000 credits instead of 3,500 for just NPR 499!
           </div>
           
-            href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20tried%20the%20free%20demo%20on%20Swor%20AI%20and%20loved%20it!%20I%20want%20to%20claim%20my%20bonus%20credits%20with%20code%20SWOR-LAUNCH-10K."
-            target="_blank"
-            rel="noreferrer"
-            style={{display:'inline-block',background:'#25D366',color:'#fff',padding:'10px 20px',borderRadius:10,fontSize:13,fontWeight:700,textDecoration:'none'}}>
-            💬 Claim 8,000 Credits on WhatsApp
-          </a>
+       <a href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20tried%20the%20free%20demo%20on%20Swor%20AI%20and%20loved%20it!%20I%20want%20to%20claim%20my%20bonus%20credits%20with%20code%20SWOR-LAUNCH-10K." target="_blank" rel="noreferrer" style={{display:'inline-block',background:'#25D366',color:'#fff',padding:'10px 20px',borderRadius:10,fontSize:13,fontWeight:700,textDecoration:'none'}}>
+  {'💬 Claim 8,000 Credits on WhatsApp'}
+</a>
         </div>
       )}
 
