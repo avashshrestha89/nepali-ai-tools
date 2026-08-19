@@ -206,6 +206,8 @@ export default function Voiceover() {
   const [showVoicePanel, setShowVoicePanel] = useState(false)
   const [loading, setLoading] = useState(false)
   const [previewing, setPreviewing] = useState(false)
+  const [showRewardPopup, setShowRewardPopup] = useState(false)
+const [rewardTimeLeft, setRewardTimeLeft] = useState(900)
   const [scriptPrompt, setScriptPrompt] = useState('')
 const [scriptDuration, setScriptDuration] = useState('30')
 const [generatingScript, setGeneratingScript] = useState(false)
@@ -290,6 +292,23 @@ const previewAudioRef = useRef(null)
   }
   setGeneratingScript(false)
 }
+  useEffect(() => {
+  if (!showRewardPopup) return
+  if (rewardTimeLeft <= 0) return
+  const timer = setInterval(() => {
+    setRewardTimeLeft(t => {
+      if (t <= 1) { clearInterval(timer); return 0 }
+      return t - 1
+    })
+  }, 1000)
+  return () => clearInterval(timer)
+}, [showRewardPopup])
+
+function formatRewardTime(secs) {
+  const m = Math.floor(secs / 60).toString().padStart(2, '0')
+  const s = (secs % 60).toString().padStart(2, '0')
+  return `${m}:${s}`
+}
 async function handlePreview() {
   if (!text.trim() || !selectedVoice) return
   setPreviewing(true)
@@ -311,10 +330,16 @@ async function handlePreview() {
     const blob = await res.blob()
     const url = URL.createObjectURL(blob)
     setPreviewUrl(url)
-    if (previewAudioRef.current) {
-      previewAudioRef.current.src = url
-      previewAudioRef.current.play()
-    }
+  if (previewAudioRef.current) {
+  previewAudioRef.current.src = url
+  previewAudioRef.current.play()
+  previewAudioRef.current.onended = () => {
+    if (!session) setShowRewardPopup(true)
+  }
+}
+setTimeout(() => {
+  if (!session) setShowRewardPopup(true)
+}, 3000)
   } catch (e) {
     setPreviewError(e.message)
   }
@@ -909,6 +934,96 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
           </div>
         </div>
       )}
+        {/* REWARD POPUP — for free/logged out users only */}
+{showRewardPopup && !session && (
+  <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.75)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',padding:16,backdropFilter:'blur(6px)'}}>
+    <div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1020 100%)',borderRadius:24,padding:isMobile?24:36,maxWidth:480,width:'100%',border:'1.5px solid rgba(220,20,60,.3)',boxShadow:'0 24px 60px rgba(0,0,0,.5)',position:'relative'}}>
+
+      <button onClick={() => setShowRewardPopup(false)}
+        style={{position:'absolute',top:16,right:16,background:'rgba(255,255,255,.1)',border:'none',color:'#fff',width:32,height:32,borderRadius:'50%',cursor:'pointer',fontSize:16}}>
+        ✕
+      </button>
+
+      <div style={{textAlign:'center',marginBottom:20}}>
+        <div style={{fontSize:36,marginBottom:8}}>🎉</div>
+        <div style={{fontFamily:'Sora,sans-serif',fontSize:20,fontWeight:800,color:'#fff',marginBottom:4}}>
+          Voice Generated Successfully!
+        </div>
+        <div style={{fontFamily:'Noto Sans Devanagari,sans-serif',fontSize:14,color:'rgba(255,255,255,.6)'}}>
+          आवाज सफलतापूर्वक तयार भयो!
+        </div>
+      </div>
+
+      <div style={{background:'rgba(220,20,60,.1)',border:'1.5px solid rgba(220,20,60,.3)',borderRadius:16,padding:20,marginBottom:20,textAlign:'center'}}>
+        <div style={{fontSize:13,fontWeight:700,color:'rgba(255,255,255,.7)',marginBottom:8}}>
+          🎁 You unlocked an Exclusive Early Creator Reward!
+        </div>
+        <div style={{fontFamily:'Noto Sans Devanagari,sans-serif',fontSize:12,color:'rgba(255,255,255,.5)',marginBottom:16}}>
+          तपाईंले एउटा विशेष Early Creator Reward अनलक गर्नुभयो!
+        </div>
+
+        <div style={{background:'#1d1d1f',borderRadius:12,padding:'12px 20px',marginBottom:16,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
+          <div>
+            <div style={{fontSize:11,color:'#888',marginBottom:4}}>Your exclusive code / तपाईंको विशेष कोड:</div>
+            <div style={{fontFamily:'monospace',fontSize:20,fontWeight:800,color:'#DC143C',letterSpacing:'0.1em'}}>SWOR-LAUNCH-10K</div>
+          </div>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText('SWOR-LAUNCH-10K')
+              alert('Code copied!')
+            }}
+            style={{background:'rgba(220,20,60,.2)',border:'1px solid rgba(220,20,60,.4)',color:'#DC143C',padding:'6px 12px',borderRadius:8,fontSize:11,fontWeight:700,cursor:'pointer',flexShrink:0}}>
+            Copy
+          </button>
+        </div>
+
+        <div style={{fontSize:13,color:'#fff',fontWeight:600,marginBottom:12}}>
+          🎁 Send this code on WhatsApp to unlock:
+        </div>
+        <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:12}}>
+          {[
+            {name:'Starter Pack',npr:'499',normal:'3,500',bonus:'8,000'},
+            {name:'Creator Pack',npr:'999',normal:'8,000',bonus:'20,000'},
+            {name:'Founders Lifetime',npr:'2,500',normal:'30,000',bonus:'50,000'},
+          ].map(p => (
+            <div key={p.name} style={{background:'rgba(255,255,255,.05)',borderRadius:10,padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:8}}>
+              <div>
+                <div style={{fontSize:12,fontWeight:700,color:'#fff'}}>{p.name} — NPR {p.npr}</div>
+                <div style={{fontSize:11,color:'rgba(255,255,255,.4)',textDecoration:'line-through'}}>{p.normal} credits</div>
+              </div>
+              <div style={{textAlign:'right'}}>
+                <div style={{fontSize:14,fontWeight:800,color:'#34C759'}}>{p.bonus} credits</div>
+                <div style={{fontSize:10,color:'rgba(255,255,255,.4)'}}>with code</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{textAlign:'center',marginBottom:16}}>
+        <div style={{fontSize:12,color:'rgba(255,255,255,.5)',marginBottom:4}}>
+          ⏱️ Offer valid for / यो अफर मान्य छ:
+        </div>
+        <div style={{fontFamily:'Sora,sans-serif',fontSize:28,fontWeight:800,color:rewardTimeLeft < 60 ? '#DC143C' : '#FF9500'}}>
+          {formatRewardTime(rewardTimeLeft)}
+        </div>
+        <div style={{fontSize:11,color:'rgba(255,255,255,.4)'}}>
+          {rewardTimeLeft < 60 ? '⚠️ Expiring soon!' : 'minutes remaining'}
+        </div>
+      </div>
+
+      <a href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20tried%20the%20free%20preview%20on%20Swor%20AI%20and%20unlocked%20code%20SWOR-LAUNCH-10K.%20I%20want%20to%20claim%20my%20bonus%20credits!" target="_blank" rel="noreferrer" style={{display:'block',background:'#25D366',color:'#fff',padding:'14px',borderRadius:12,fontSize:15,fontWeight:700,textAlign:'center',textDecoration:'none',boxShadow:'0 4px 20px rgba(37,211,102,.3)',marginBottom:10}}>
+        {'💬 Claim Bonus Credits on WhatsApp'}
+      </a>
+      <div style={{textAlign:'center',fontSize:11,color:'rgba(255,255,255,.3)'}}>
+        {'या / or '}
+        <span style={{cursor:'pointer',textDecoration:'underline'}} onClick={() => setShowRewardPopup(false)}>
+          {'Continue exploring →'}
+        </span>
+      </div>
+    </div>
+  </div>
+)}
     </>
   )
 }
