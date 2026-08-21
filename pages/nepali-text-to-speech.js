@@ -585,7 +585,8 @@ export default function NepaliTextToSpeech() {
           <Link href="/nepali-voice-generator" style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>Voice Generator</Link>
           <Link href="/nepali-tiktok-voiceover" style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>TikTok Voiceover</Link>
           <Link href="/nepali-youtube-voiceover" style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>YouTube Voiceover</Link>
-          <a href="mailto:meroadaiofficial@gmail.com" style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>Contact</a>
+       <Link href="/reviews" style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>Reviews</Link>
+<a href="mailto:meroadaiofficial@gmail.com" style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>Contact</a>
         </div>
       </footer>
     </>
