@@ -256,7 +256,7 @@ export default function NepaliTextToSpeech() {
       <Head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>Free Nepali Text to Speech — Nepal&apos;s #1 AI Voice Generator | Swor AI</title>
-        <meta name="description" content="Free Nepali text to speech online. Nepal&apos;s #1 AI Nepali voice generator — 20 natural voices for TikTok, YouTube, documentary, news and ads. Generate professional Nepali voiceover in seconds. Try free at meroadai.com" />
+        <meta name="description" content="Free Nepali text to speech online. Nepal&apos;s #1 AI Nepali voice generator — 30 natural voices for TikTok, YouTube, documentary, news and ads. Generate professional Nepali voiceover in seconds. Try free at meroadai.com" />
         <meta name="keywords" content="nepali text to speech, nepali ai voice generator, nepali voiceover generator, nepali tts free, ai nepali voice, devanagari text to speech, nepali voice generator online, faceless nepali youtube voice, nepali documentary voice, nepali news voiceover ai, nepali reels voiceover, nepali tiktok voiceover, nepali voice without microphone, nepali voice cloning, नेपाली text to speech, नेपाली voiceover, nepali ai music generator, nepali youtube voiceover, nepali ad voiceover" />
         <link rel="canonical" href="https://meroadai.com/nepali-text-to-speech" />
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet" />
@@ -303,6 +303,55 @@ export default function NepaliTextToSpeech() {
             ]
           })}}
         />
+          <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{__html: JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How to convert Nepali text to speech using AI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Paste your Nepali Devanagari text into Swor AI, select your preferred Nepali AI voice, add emotion tags like [excited] or [calm] for dynamic delivery, and click Generate to download an instant MP3 voiceover."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use Swor AI voices for YouTube and TikTok?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, all generated voiceovers come with full commercial rights for use across YouTube, TikTok, Facebook Ads, Instagram Reels and all social media platforms."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Nepali text to speech free on Swor AI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, Swor AI offers a free demo where you can generate up to 200 characters of Nepali AI voiceover without signing up. For unlimited generations, credit packs start at NPR 499."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How many Nepali AI voices are available?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Swor AI has 30 premium Nepali AI voices across 7 categories including News & Documentary, Social Media & Reels, Romantic & Storytelling, Business & Advertising, Dark & Cinematic, ASMR & Meditation, and Conversational voices."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the best Nepali AI voice generator for TikTok?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Swor AI is Nepal's first and best Nepali AI voice generator for TikTok, with energetic voices like Arjun, Chameli and Kritika specifically designed for short-form content and social media reels."
+        }
+      }
+    ]
+  })}}
+/>
       </Head>
 
       <style>{`
