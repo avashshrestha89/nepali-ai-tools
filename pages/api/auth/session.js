@@ -49,6 +49,7 @@ return res.status(200).json({
       isFounder: user.isFounder || false,
       founderMusicRemaining,
       isLegacy: user.isLegacy || false,
+      isPendingPayment: user.isPendingPayment || false,
     })
   } catch (error) {
     console.error('Session error:', error)
