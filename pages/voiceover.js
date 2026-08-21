@@ -368,7 +368,7 @@ setTimeout(() => fetchHistory(), 2000)
     setLoading(false)
   }
 
-const canGenerate = text.trim().length > 0 && !loading && session !== null && session !== false && (
+const canGenerate = text.trim().length > 0 && !loading && session !== null && session !== false && !session.isPendingPayment && (
   session.isLegacy 
     ? (session.credits || 0) >= 25 && text.length <= 500
     : (session.credits || 0) >= text.length
@@ -791,6 +791,22 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
           </div>
 
           {/* ZERO CREDITS — Show Demo + Pricing */}
+{session && session.isPendingPayment && (
+  <div style={{background:'rgba(255,149,0,.08)',border:'1.5px solid rgba(255,149,0,.3)',borderRadius:14,padding:20,marginBottom:16,textAlign:'center'}}>
+    <div style={{fontSize:16,marginBottom:8}}>⏳</div>
+    <div style={{fontFamily:'Sora,sans-serif',fontSize:14,fontWeight:700,color:'#FF9500',marginBottom:6}}>
+      Payment Verification Pending
+    </div>
+    <div style={{fontSize:13,color:'#6e6e73',lineHeight:1.6}}>
+      Your account is ready! Please complete your payment via eSewa or Khalti and send the confirmation to our WhatsApp. Your credits will be activated within 5 minutes.
+    </div>
+    <a href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20have%20completed%20my%20payment%20for%20Swor%20AI.%20Please%20activate%20my%20account."
+      target="_blank" rel="noreferrer"
+      style={{display:'inline-block',marginTop:12,background:'#25D366',color:'#fff',padding:'10px 20px',borderRadius:10,fontSize:13,fontWeight:700,textDecoration:'none'}}>
+      💬 Confirm Payment on WhatsApp
+    </a>
+  </div>
+)}
           {hasNoCredits && (
             <>
               {/* Demo Box */}
