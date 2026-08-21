@@ -67,6 +67,7 @@ const email = rawEmail?.trim().toLowerCase()
     const user = typeof raw === 'string' ? JSON.parse(raw) : raw
     const oldCredits = user.credits || 0
     user.credits = oldCredits + creditsToAdd
+user.isPendingPayment = false
 
 if (isFounderPack) {
   user.isFounder = true
