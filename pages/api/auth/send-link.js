@@ -25,7 +25,7 @@ if (!email || !email.includes('@')) return res.status(400).json({ error: 'Valid 
     // Create user if doesn't exist
     const existing = await redis.get(`user:${email}`)
     if (!existing) {
-   await redis.set(`user:${email}`, JSON.stringify({
+await redis.set(`user:${email}`, JSON.stringify({
   email,
   createdAt: new Date().toISOString(),
   tier: 'registered',
@@ -35,6 +35,7 @@ if (!email || !email.includes('@')) return res.status(400).json({ error: 'Valid 
   betaActive: false,
   betaEndNotified: false,
   credits: 0,
+  isPendingPayment: true,
 }))
     }
 
