@@ -332,12 +332,12 @@ export default function NepaliTextToSpeech() {
           <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(220,20,60,.08)',border:'1px solid rgba(220,20,60,.15)',borderRadius:20,padding:'5px 14px',fontSize:12,fontWeight:700,color:'#DC143C',marginBottom:24}}>
             🇳🇵 NEPAL&apos;S #1 NEPALI TEXT TO SPEECH
           </div>
-          <h1 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(28px,5vw,52px)',fontWeight:800,letterSpacing:'-1.5px',lineHeight:1.1,marginBottom:20}}>
-            Free Nepali Text to Speech<br />AI Voice Generator
-          </h1>
-          <p style={{fontSize:18,color:'#6e6e73',lineHeight:1.7,marginBottom:32,maxWidth:560,margin:'0 auto 32px'}}>
-            Convert Nepali Devanagari text to professional AI voiceover in seconds. 30 natural voices for TikTok, YouTube, documentary, news, ads and more.
-          </p>
+        <h1 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(28px,5vw,52px)',fontWeight:800,letterSpacing:'-1.5px',lineHeight:1.1,marginBottom:20}}>
+  Nepali AI Voice Generator &amp; Text to Speech<br /><span style={{color:'#DC143C'}}>Free Demo — No Signup Needed</span>
+</h1>
+         <p style={{fontSize:18,color:'#6e6e73',lineHeight:1.7,marginBottom:32,maxWidth:560,margin:'0 auto 32px'}}>
+  Convert Nepali Devanagari text to professional AI voiceover in seconds. 30 natural Nepali male &amp; female voices for TikTok, YouTube, documentary, news, ads and more. 100% free to try.
+</p>
           <Link href="/voiceover">
             <button style={{background:'#DC143C',color:'#fff',border:'none',padding:'16px 40px',borderRadius:14,fontSize:17,fontWeight:700,cursor:'pointer',fontFamily:'Sora,sans-serif',boxShadow:'0 8px 32px rgba(220,20,60,.25)'}}>
               Generate Nepali Voiceover Free →
@@ -366,6 +366,37 @@ export default function NepaliTextToSpeech() {
       </section>
 
       {/* HOW IT WORKS */}
+{/* SEO H2 Sections */}
+<section style={{padding:'40px 24px 0',background:'#fff'}}>
+  <div style={{maxWidth:900,margin:'0 auto',display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:24}}>
+    <div style={{background:'#f5f5f7',borderRadius:16,padding:24}}>
+      <h2 style={{fontFamily:'Sora,sans-serif',fontSize:18,fontWeight:800,color:'#1d1d1f',marginBottom:10}}>
+        Natural Nepali Male &amp; Female AI Voices
+      </h2>
+      <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.7}}>
+        Choose from 30 premium Nepali AI voices — male and female — covering news anchors, romantic storytelling, energetic reels, ASMR meditation and more.
+      </p>
+    </div>
+    <div style={{background:'#f5f5f7',borderRadius:16,padding:24}}>
+      <h2 style={{fontFamily:'Sora,sans-serif',fontSize:18,fontWeight:800,color:'#1d1d1f',marginBottom:10}}>
+        Free Nepali Text to Speech for Reels, Shorts &amp; TikTok
+      </h2>
+      <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.7}}>
+        Generate professional Nepali voiceovers for TikTok, Instagram Reels and YouTube Shorts instantly. No recording equipment needed — just type and download.
+      </p>
+    </div>
+    <div style={{background:'#f5f5f7',borderRadius:16,padding:24}}>
+      <h2 style={{fontFamily:'Sora,sans-serif',fontSize:18,fontWeight:800,color:'#1d1d1f',marginBottom:10}}>
+        How to Generate Studio Quality Nepali Voiceovers Online
+      </h2>
+      <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.7}}>
+        Type your Nepali Devanagari script, add emotion tags like [excited] or [calm], select your voice and generate a professional MP3 in seconds.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section style={{padding:'80px 24px',background:'#f5f5f7'}}>
       <section style={{padding:'80px 24px',background:'#f5f5f7'}}>
         <div style={{maxWidth:900,margin:'0 auto'}}>
           <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(22px,3.5vw,36px)',fontWeight:800,textAlign:'center',letterSpacing:'-0.8px',marginBottom:48}}>
