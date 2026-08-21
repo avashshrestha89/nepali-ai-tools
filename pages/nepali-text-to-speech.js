@@ -397,7 +397,6 @@ export default function NepaliTextToSpeech() {
 </section>
 
 <section style={{padding:'80px 24px',background:'#f5f5f7'}}>
-      <section style={{padding:'80px 24px',background:'#f5f5f7'}}>
         <div style={{maxWidth:900,margin:'0 auto'}}>
           <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(22px,3.5vw,36px)',fontWeight:800,textAlign:'center',letterSpacing:'-0.8px',marginBottom:48}}>
             How Nepali Text to Speech Works
