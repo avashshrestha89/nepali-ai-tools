@@ -34,7 +34,26 @@ export default async function handler(req, res) {
   if (!DEMO_VOICES.includes(voiceId)) {
     return res.status(400).json({ error: 'Invalid voice selected.' })
   }
-
+// Store demo lead in Redis
+try {
+  const { Redis } = await import('@upstash/redis')
+  const redis = new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+  })
+  const leadKey = `demo_lead:${Date.now()}`
+  await redis.set(leadKey, JSON.stringify({
+    name,
+    phone,
+    email,
+    text,
+    createdAt: new Date().toISOString()
+  }))
+  // Keep list of all lead keys
+  await redis.lpush('demo_leads', leadKey)
+} catch (redisError) {
+  console.error('Redis lead save error:', redisError)
+}
   try {
     // Send lead notification email to Avash
     await resend.emails.send({
