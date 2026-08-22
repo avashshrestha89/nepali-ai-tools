@@ -26,22 +26,32 @@ export default async function handler(req, res) {
 
     // Fetch all users
     const customers = []
-    for (const key of keys) {
-      const raw = await redis.get(key)
-      if (raw) {
-        const user = typeof raw === 'string' ? JSON.parse(raw) : raw
-        customers.push({
-          email: user.email,
-          credits: user.credits || 0,
-          tier: user.tier || 'free',
-          isLegacy: user.isLegacy || false,
-          isFounder: user.isFounder || false,
-          createdAt: user.createdAt || null,
-          totalCreditsAssigned: user.totalCreditsAssigned || null,
-          generationsUsed: user.generationsUsed || 0,
-        })
-      }
-    }
+for (const key of keys) {
+  const raw = await redis.get(key)
+  if (raw) {
+    const user = typeof raw === 'string' ? JSON.parse(raw) : raw
+    
+    // Fetch admin notes
+    const adminRaw = await redis.get(`admin:user:${user.email}`)
+    const adminData = adminRaw ? (typeof adminRaw === 'string' ? JSON.parse(adminRaw) : adminRaw) : {}
+
+    customers.push({
+      email: user.email,
+      credits: user.credits || 0,
+      tier: user.tier || 'free',
+      isLegacy: user.isLegacy || false,
+      isFounder: user.isFounder || false,
+      createdAt: user.createdAt || null,
+      totalCreditsAssigned: user.totalCreditsAssigned || null,
+      generationsUsed: user.generationsUsed || 0,
+      // Admin notes
+      adminName: adminData.name || '',
+      adminPhone: adminData.phone || '',
+      adminNotes: adminData.notes || '',
+      adminTags: adminData.tags || [],
+    })
+  }
+}
 
     // Sort by credits descending
     customers.sort((a, b) => b.credits - a.credits)
