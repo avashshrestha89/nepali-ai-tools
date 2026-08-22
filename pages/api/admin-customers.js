@@ -30,10 +30,6 @@ for (const key of keys) {
   const raw = await redis.get(key)
   if (raw) {
     const user = typeof raw === 'string' ? JSON.parse(raw) : raw
-    
-    // Fetch admin notes
-    const adminRaw = await redis.get(`admin:user:${user.email}`)
-    const adminData = adminRaw ? (typeof adminRaw === 'string' ? JSON.parse(adminRaw) : adminRaw) : {}
 
     customers.push({
       email: user.email,
@@ -45,10 +41,10 @@ for (const key of keys) {
       totalCreditsAssigned: user.totalCreditsAssigned || null,
       generationsUsed: user.generationsUsed || 0,
       // Admin notes
-      adminName: adminData.name || '',
-      adminPhone: adminData.phone || '',
-      adminNotes: adminData.notes || '',
-      adminTags: adminData.tags || [],
+           adminName: '',
+      adminPhone: '',
+      adminNotes: '',
+      adminTags: [],
     })
   }
 }
