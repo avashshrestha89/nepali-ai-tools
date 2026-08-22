@@ -39,6 +39,40 @@ export default function AdminBalance() {
   }
   setLeadsLoading(false)
 }
+  async function saveCustomerNotes() {
+  setEditSaving(true)
+  setEditMessage(null)
+  try {
+    const res = await fetch('/api/admin-update-customer', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        adminPassword: password,
+        email: editingCustomer.email,
+        name: editForm.name,
+        phone: editForm.phone,
+        notes: editForm.notes,
+        tags: editForm.tags ? editForm.tags.split(',').map(t => t.trim()) : []
+      })
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.error)
+    setEditMessage('✅ Saved successfully!')
+    // Update local state
+    setCustomers(prev => prev.map(c => 
+      c.email === editingCustomer.email 
+        ? { ...c, adminName: editForm.name, adminPhone: editForm.phone, adminNotes: editForm.notes }
+        : c
+    ))
+    setTimeout(() => {
+      setEditingCustomer(null)
+      setEditMessage(null)
+    }, 1500)
+  } catch (e) {
+    setEditMessage('❌ ' + e.message)
+  }
+  setEditSaving(false)
+}
   async function fetchCustomers() {
   setCustomersLoading(true)
   setCustomersError(null)
@@ -67,6 +101,10 @@ const [leadsLoading, setLeadsLoading] = useState(false)
 const [customersLoading, setCustomersLoading] = useState(false)
 const [customersError, setCustomersError] = useState(null)
 const [customerFilter, setCustomerFilter] = useState('all')
+  const [editingCustomer, setEditingCustomer] = useState(null)
+const [editForm, setEditForm] = useState({ name: '', phone: '', notes: '', tags: '' })
+const [editSaving, setEditSaving] = useState(false)
+const [editMessage, setEditMessage] = useState(null)
   const [sortColumn, setSortColumn] = useState('credits')
 const [sortDirection, setSortDirection] = useState('desc')
 
@@ -495,7 +533,18 @@ async function handleSetLegacy(action) {
 })
               .map((c, i) => (
                 <tr key={c.email} style={{borderBottom:'1px solid #f0f0f0',background: i % 2 === 0 ? '#fff' : '#fafafa'}}>
-                  <td style={{padding:'10px 12px',color:'#1d1d1f',fontWeight:500}}>{c.email}</td>
+                 <td style={{padding:'10px 12px',color:'#1d1d1f',fontWeight:500}}>
+  <div>{c.email}</div>
+  {c.adminName && <div style={{fontSize:11,color:'#DC143C',fontWeight:700}}>{c.adminName}</div>}
+  {c.adminPhone && (
+    <a href={`https://wa.me/${c.adminPhone.replace(/\D/g,'')}`}
+      target="_blank" rel="noreferrer"
+      style={{fontSize:11,color:'#25D366',fontWeight:700,textDecoration:'none'}}>
+      💬 {c.adminPhone}
+    </a>
+  )}
+  {c.adminNotes && <div style={{fontSize:10,color:'#888',marginTop:2}}>{c.adminNotes}</div>}
+</td>
                   <td style={{padding:'10px 12px',textAlign:'center'}}>
                     <span style={{
                       background: c.tier === 'paid' ? 'rgba(52,199,89,.1)' : '#f5f5f7',
