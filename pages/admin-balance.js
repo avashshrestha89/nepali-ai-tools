@@ -484,17 +484,18 @@ async function handleSetLegacy(action) {
       {key:'generations',label:'Generations',align:'center'},
       {key:'status',label:'Status',align:'center'},
       {key:'joined',label:'Joined',align:'center'},
+      {key:'edit',label:'Edit',align:'center'},
     ].map((col, i) => (
       <th key={col.key}
-        onClick={() => handleSort(col.key)}
+        onClick={() => col.key !== 'edit' ? handleSort(col.key) : null}
         style={{
           padding:'10px 12px',
           textAlign:col.align,
           fontWeight:700,
           color: sortColumn === col.key ? '#1976D2' : '#555',
-          cursor:'pointer',
+          cursor: col.key !== 'edit' ? 'pointer' : 'default',
           userSelect:'none',
-          borderRadius: i === 0 ? '8px 0 0 8px' : i === 5 ? '0 8px 8px 0' : 0,
+          borderRadius: i === 0 ? '8px 0 0 8px' : i === 6 ? '0 8px 8px 0' : 0,
           whiteSpace:'nowrap'
         }}>
         {col.label} {sortColumn === col.key ? (sortDirection === 'asc' ? '↑' : '↓') : '↕'}
@@ -572,9 +573,24 @@ async function handleSetLegacy(action) {
                       {!c.isFounder && !c.isLegacy && <span style={{color:'#888',fontSize:11}}>—</span>}
                     </div>
                   </td>
-                  <td style={{padding:'10px 12px',textAlign:'center',color:'#888',fontSize:12}}>
-                    {c.createdAt ? new Date(c.createdAt).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'2-digit'}) : '—'}
-                  </td>
+              <td style={{padding:'10px 12px',textAlign:'center',color:'#888',fontSize:12}}>
+  {c.createdAt ? new Date(c.createdAt).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'2-digit'}) : '—'}
+</td>
+<td style={{padding:'10px 12px',textAlign:'center'}}>
+  <button
+    onClick={() => {
+      setEditingCustomer(c)
+      setEditForm({
+        name: c.adminName || '',
+        phone: c.adminPhone || '',
+        notes: c.adminNotes || '',
+        tags: c.adminTags?.join(', ') || ''
+      })
+    }}
+    style={{background:'#f5f5f7',border:'1px solid #e8e8ed',borderRadius:6,padding:'4px 10px',fontSize:11,fontWeight:600,cursor:'pointer',color:'#555'}}>
+    ✏️ Edit
+  </button>
+</td>
                 </tr>
               ))}
           </tbody>
@@ -683,6 +699,81 @@ async function handleSetLegacy(action) {
     </div>
   )}
 </div>
+
+    {/* EDIT CUSTOMER MODAL */}
+{editingCustomer && (
+  <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.5)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',padding:16}}>
+    <div style={{background:'#fff',borderRadius:20,padding:28,maxWidth:480,width:'100%',boxShadow:'0 20px 60px rgba(0,0,0,.2)'}}>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:20}}>
+        <div style={{fontSize:16,fontWeight:700,color:'#1d1d1f'}}>✏️ Edit Customer Notes</div>
+        <button onClick={() => setEditingCustomer(null)}
+          style={{background:'#f5f5f7',border:'none',borderRadius:'50%',width:32,height:32,cursor:'pointer',fontSize:16}}>
+          ✕
+        </button>
+      </div>
+      <div style={{fontSize:12,color:'#888',marginBottom:16}}>{editingCustomer.email}</div>
+      <div style={{display:'flex',flexDirection:'column',gap:12}}>
+        <div>
+          <label style={{fontSize:12,fontWeight:700,color:'#555',display:'block',marginBottom:4}}>Name</label>
+          <input
+            type="text"
+            placeholder="Customer name"
+            value={editForm.name}
+            onChange={e => setEditForm({...editForm, name: e.target.value})}
+            style={{width:'100%',padding:'10px 12px',borderRadius:8,border:'1.5px solid #e8e8ed',fontSize:13,outline:'none'}}
+          />
+        </div>
+        <div>
+          <label style={{fontSize:12,fontWeight:700,color:'#555',display:'block',marginBottom:4}}>Phone / WhatsApp</label>
+          <input
+            type="text"
+            placeholder="e.g. 9812345678"
+            value={editForm.phone}
+            onChange={e => setEditForm({...editForm, phone: e.target.value})}
+            style={{width:'100%',padding:'10px 12px',borderRadius:8,border:'1.5px solid #e8e8ed',fontSize:13,outline:'none'}}
+          />
+        </div>
+        <div>
+          <label style={{fontSize:12,fontWeight:700,color:'#555',display:'block',marginBottom:4}}>Notes</label>
+          <textarea
+            placeholder="e.g. YouTube creator, bought Founders Pack, follow up in October"
+            value={editForm.notes}
+            onChange={e => setEditForm({...editForm, notes: e.target.value})}
+            style={{width:'100%',padding:'10px 12px',borderRadius:8,border:'1.5px solid #e8e8ed',fontSize:13,outline:'none',resize:'vertical',minHeight:80}}
+          />
+        </div>
+        <div>
+          <label style={{fontSize:12,fontWeight:700,color:'#555',display:'block',marginBottom:4}}>Tags (comma separated)</label>
+          <input
+            type="text"
+            placeholder="e.g. VIP, YouTube Creator, Enterprise"
+            value={editForm.tags}
+            onChange={e => setEditForm({...editForm, tags: e.target.value})}
+            style={{width:'100%',padding:'10px 12px',borderRadius:8,border:'1.5px solid #e8e8ed',fontSize:13,outline:'none'}}
+          />
+        </div>
+        {editMessage && (
+          <div style={{fontSize:13,fontWeight:600,color: editMessage.includes('✅') ? '#34C759' : '#DC143C'}}>
+            {editMessage}
+          </div>
+        )}
+        <div style={{display:'flex',gap:8,marginTop:4}}>
+          <button
+            onClick={saveCustomerNotes}
+            disabled={editSaving}
+            style={{flex:1,background: editSaving ? '#ccc' : '#DC143C',color:'#fff',border:'none',padding:'12px',borderRadius:10,fontSize:14,fontWeight:700,cursor: editSaving ? 'not-allowed' : 'pointer'}}>
+            {editSaving ? '⏳ Saving...' : '💾 Save Notes'}
+          </button>
+          <button
+            onClick={() => setEditingCustomer(null)}
+            style={{background:'#f5f5f7',color:'#555',border:'none',padding:'12px 20px',borderRadius:10,fontSize:14,fontWeight:600,cursor:'pointer'}}>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
     </>
   )
 }
