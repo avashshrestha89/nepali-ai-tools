@@ -23,6 +23,22 @@ export default function AdminBalance() {
     setSortDirection('desc')
   }
 }
+  async function fetchLeads() {
+  setLeadsLoading(true)
+  try {
+    const res = await fetch('/api/admin-demo-leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adminPassword: password })
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.error)
+    setLeads(data.leads)
+  } catch (e) {
+    console.error(e)
+  }
+  setLeadsLoading(false)
+}
   async function fetchCustomers() {
   setCustomersLoading(true)
   setCustomersError(null)
@@ -46,6 +62,8 @@ export default function AdminBalance() {
   const [checkStatus, setCheckStatus] = useState('idle')
   const [checkResult, setCheckResult] = useState(null)
   const [customers, setCustomers] = useState([])
+  const [leads, setLeads] = useState([])
+const [leadsLoading, setLeadsLoading] = useState(false)
 const [customersLoading, setCustomersLoading] = useState(false)
 const [customersError, setCustomersError] = useState(null)
 const [customerFilter, setCustomerFilter] = useState('all')
@@ -519,6 +537,100 @@ async function handleSetLegacy(action) {
   {customers.length === 0 && !customersLoading && (
     <div style={{textAlign:'center',color:'#888',fontSize:13,padding:'20px 0'}}>
       Enter your admin password above and click "Load Customers" to view all customers.
+    </div>
+  )}
+</div>
+          {/* DEMO LEADS */}
+<div style={{marginTop:32,background:'#fff',borderRadius:16,border:'1.5px solid #e8e8ed',padding:24}}>
+  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16,flexWrap:'wrap',gap:12}}>
+    <div>
+      <div style={{fontSize:16,fontWeight:700,color:'#1d1d1f'}}>📱 Demo Leads</div>
+      <div style={{fontSize:12,color:'#888',marginTop:2}}>People who tried the free demo — potential customers</div>
+    </div>
+    <div style={{display:'flex',gap:8}}>
+      <button
+        onClick={fetchLeads}
+        disabled={leadsLoading || !password}
+        style={{
+          background: leadsLoading || !password ? '#ccc' : '#DC143C',
+          color:'#fff',border:'none',padding:'10px 20px',
+          borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer'
+        }}>
+        {leadsLoading ? '⏳ Loading...' : '🔄 Load Leads'}
+      </button>
+      {leads.length > 0 && (
+        <button
+          onClick={() => {
+            const headers = ['Name','Phone','Email','Script','Date']
+            const rows = leads.map(l => [
+              l.name,
+              l.phone,
+              l.email,
+              l.text?.slice(0,50),
+              l.createdAt ? new Date(l.createdAt).toLocaleDateString('en-GB') : ''
+            ])
+            const csv = [headers, ...rows].map(r => r.join(',')).join('\n')
+            const blob = new Blob([csv], { type: 'text/csv' })
+            const url = URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.href = url
+            link.download = `swor-ai-demo-leads-${new Date().toISOString().slice(0,10)}.csv`
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            URL.revokeObjectURL(url)
+          }}
+          style={{
+            background:'#34C759',color:'#fff',border:'none',
+            padding:'10px 20px',borderRadius:10,fontSize:13,
+            fontWeight:700,cursor:'pointer'
+          }}>
+          ⬇ Export CSV
+        </button>
+      )}
+    </div>
+  </div>
+
+  {leads.length > 0 && (
+    <div style={{overflowX:'auto'}}>
+      <table style={{width:'100%',borderCollapse:'collapse',fontSize:13}}>
+        <thead>
+          <tr style={{background:'#f5f5f7'}}>
+            <th style={{padding:'10px 12px',textAlign:'left',fontWeight:700,color:'#555',borderRadius:'8px 0 0 8px'}}>Name</th>
+            <th style={{padding:'10px 12px',textAlign:'left',fontWeight:700,color:'#555'}}>Phone</th>
+            <th style={{padding:'10px 12px',textAlign:'left',fontWeight:700,color:'#555'}}>Email</th>
+            <th style={{padding:'10px 12px',textAlign:'left',fontWeight:700,color:'#555'}}>Script</th>
+            <th style={{padding:'10px 12px',textAlign:'center',fontWeight:700,color:'#555',borderRadius:'0 8px 8px 0'}}>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {leads.map((l, i) => (
+            <tr key={i} style={{borderBottom:'1px solid #f0f0f0',background: i % 2 === 0 ? '#fff' : '#fafafa'}}>
+              <td style={{padding:'10px 12px',fontWeight:600}}>{l.name}</td>
+              <td style={{padding:'10px 12px'}}>
+                <a href={`https://wa.me/${l.phone?.replace(/\D/g,'')}`}
+                  target="_blank" rel="noreferrer"
+                  style={{color:'#25D366',fontWeight:700,textDecoration:'none'}}>
+                  💬 {l.phone}
+                </a>
+              </td>
+              <td style={{padding:'10px 12px',color:'#555'}}>{l.email}</td>
+              <td style={{padding:'10px 12px',color:'#888',fontSize:11,maxWidth:200,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',fontFamily:'Noto Sans Devanagari,sans-serif'}}>
+                {l.text?.slice(0,60)}...
+              </td>
+              <td style={{padding:'10px 12px',textAlign:'center',color:'#888',fontSize:12}}>
+                {l.createdAt ? new Date(l.createdAt).toLocaleDateString('en-GB', {day:'numeric',month:'short'}) : '—'}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+
+  {leads.length === 0 && !leadsLoading && (
+    <div style={{textAlign:'center',color:'#888',fontSize:13,padding:'20px 0'}}>
+      Enter your admin password and click "Load Leads" to see demo users.
     </div>
   )}
 </div>
