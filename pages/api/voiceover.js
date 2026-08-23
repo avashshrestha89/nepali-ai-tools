@@ -29,6 +29,11 @@ console.log('voiceover env check:', {
   if (!voiceId) {
     return res.status(400).json({ error: 'No voice selected' })
   }
+  if (text.trim().length > 3500) {
+  return res.status(400).json({
+    error: 'Your script exceeds the 3,500 character limit. Please split it into smaller parts and generate each part separately.'
+  })
+}
 
   try {
     const response = await fetch(
