@@ -60,10 +60,10 @@ body: JSON.stringify({
   const code = errData?.detail?.code || ''
 
   if (code === 'max_character_limit_exceeded') {
-    return res.status(400).json({
-      error: 'Your script is too long for a single generation. Please split it into smaller parts of 5,000 characters or less and generate each part separately.'
-    })
-  }
+  return res.status(400).json({
+    error: 'Your script is too long for a single generation. Please split it into smaller parts of 3,500 characters or less and generate each part separately.'
+  })
+}
 
   if (code === 'invalid_api_key' || code === 'invalid_api_key_prefix') {
     return res.status(500).json({
