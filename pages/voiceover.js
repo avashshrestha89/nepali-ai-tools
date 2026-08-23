@@ -196,7 +196,7 @@ function DemoBoxInline() {
   )
 }
 
-const CHAR_LIMIT = 5000
+const CHAR_LIMIT = 3500
 
 export default function Voiceover() {
   const [isMobile, setIsMobile] = useState(false)
