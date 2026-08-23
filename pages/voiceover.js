@@ -592,7 +592,7 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
           <div style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',overflow:'hidden',marginBottom:12}}>
             <textarea
               value={text}
-              onChange={e => setText(e.target.value)}
+              onChange={e => setText(e.target.value.slice(0, 3500))}
               placeholder="नमस्ते! यहाँ आफ्नो नेपाली पाठ टाइप गर्नुस्... (Devanagari script only — देवनागरी मा लेख्नुस्)"
               style={{width:'100%',minHeight:isMobile?160:220,padding:'16px',fontSize:15,lineHeight:1.8,border:'none',background:'transparent',color:'#1d1d1f'}}
             />
