@@ -46,7 +46,7 @@ const raw = await redis.get(`user:${email}`)
       // ── LEGACY USERS (grandfathered until August 31, 2026) ──
       if (user.isLegacy) {
         // Check if legacy period has expired
-        const legacyExpiry = new Date('2026-08-31T23:59:59Z')
+        const legacyExpiry = new Date('2099-12-31T23:59:59Z')
         const now = new Date()
 
         if (now > legacyExpiry) {
