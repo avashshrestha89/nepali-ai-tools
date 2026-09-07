@@ -236,7 +236,44 @@ export default function Reviews() {
           </div>
         </div>
       </section>
+      </section>
 
+{/* VIDEO REVIEW */}
+<section style={{padding:'40px 24px',background:'#fff',textAlign:'center'}}>
+  <div style={{maxWidth:900,margin:'0 auto'}}>
+    <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(220,20,60,.08)',border:'1px solid rgba(220,20,60,.15)',borderRadius:20,padding:'5px 14px',fontSize:12,fontWeight:700,color:'#DC143C',marginBottom:16}}>
+      🎥 Video Review
+    </div>
+    <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(18px,2.5vw,28px)',fontWeight:800,letterSpacing:'-0.5px',marginBottom:24}}>
+      Watch a Real Customer Review
+    </h2>
+    <div style={{display:'flex',justifyContent:'center'}}>
+      <div style={{
+        position:'relative',
+        width:'100%',
+        maxWidth:315,
+        borderRadius:16,
+        overflow:'hidden',
+        boxShadow:'0 20px 60px rgba(0,0,0,.15)'
+      }}>
+        <iframe
+          src="https://www.youtube.com/embed/YMDYghSAT_4"
+          title="Swor AI Customer Review"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          style={{
+            width:'100%',
+            aspectRatio:'9/16',
+            border:'none',
+            display:'block'
+          }}
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+      {/* FILTER TABS */}
       {/* FILTER TABS */}
       <section style={{padding:'24px',textAlign:'center',borderBottom:'1px solid #f0f0f0'}}>
         <div style={{display:'flex',gap:8,justifyContent:'center',flexWrap:'wrap'}}>
