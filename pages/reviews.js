@@ -236,7 +236,6 @@ export default function Reviews() {
           </div>
         </div>
       </section>
-      </section>
 
 {/* VIDEO REVIEW */}
 <section style={{padding:'40px 24px',background:'#fff',textAlign:'center'}}>
