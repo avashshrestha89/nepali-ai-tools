@@ -330,6 +330,48 @@ const filtered = ALL_VOICES.filter(v => {
           </div>
         </div>
       </section>
+{/* ══ VIDEO REVIEW ══ */}
+<section style={{padding:'60px 24px',background:'#fff'}}>
+  <div style={{maxWidth:900,margin:'0 auto',textAlign:'center'}}>
+    <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(220,20,60,.08)',border:'1px solid rgba(220,20,60,.15)',borderRadius:20,padding:'5px 14px',fontSize:12,fontWeight:700,color:'#DC143C',marginBottom:16}}>
+      🎥 Real Customer Review
+    </div>
+    <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(20px,3vw,32px)',fontWeight:800,letterSpacing:'-0.8px',marginBottom:8}}>
+      What Our Customers Say
+    </h2>
+    <p style={{fontSize:15,color:'#6e6e73',marginBottom:32}}>
+      Real Nepali creators sharing their experience with Swor AI
+    </p>
+    <div style={{display:'flex',justifyContent:'center'}}>
+      <div style={{
+        position:'relative',
+        width:'100%',
+        maxWidth:315,
+        borderRadius:16,
+        overflow:'hidden',
+        boxShadow:'0 20px 60px rgba(0,0,0,.15)'
+      }}>
+        <iframe
+          src="https://www.youtube.com/embed/YMDYghSAT_4"
+          title="Swor AI Customer Review"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          style={{
+            width:'100%',
+            aspectRatio:'9/16',
+            border:'none',
+            display:'block'
+          }}
+        />
+      </div>
+    </div>
+    <div style={{marginTop:24}}>
+      <a href="/reviews" style={{fontSize:14,fontWeight:700,color:'#DC143C',textDecoration:'none'}}>
+        Read all customer reviews →
+      </a>
+    </div>
+  </div>
+</section>
 {/* ══ SCROLLING REVIEWS ══ */}
 <section style={{padding:'20px 0',background:'#fff',borderTop:'1px solid #f0f0f0',overflow:'hidden'}}>
   <div style={{textAlign:'center',marginBottom:16}}>
