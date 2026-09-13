@@ -403,7 +403,7 @@ const filtered = ALL_VOICES.filter(v => {
             { name:'Adopt a Dog Nepal', text:'नेपाली भाषामा यति स्वाभाविक, स्पष्ट र भावना व्यक्त गर्न सक्ने AI आवाज मैले पहिले कहिल्यै प्रयोग गरेको थिएन। स्वर AI एउटा हुनै पर्ने टुल हो!', color:'#FF6B8A' },
             { name:'Nabin • Digital Marketer', text:'Swor AI prayog garna thalepachi mero ad ko conversion rate hwattai badheko chha. Nepal ka pratyek marketers ka lagi euta anibarya tool ho!', color:'#FF9500' },
                  { name:'Sonam • Content Creator', text:'Swor AI le mero kaam dherai sahaj banaidiyeko chha. 30 bhanda badhi Nepali AI aawajharu yati natural suninchhan ki audience le pharak nai chhutyauna sakdainan!', color:'#7B2FBE' },
-        // Third copy for seamless loop
+
                {/* Track 1 */}
         <div className="review-track-v">
           {[
