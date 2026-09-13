@@ -330,119 +330,7 @@ const filtered = ALL_VOICES.filter(v => {
           </div>
         </div>
       </section>
-{/* ══ VIDEO REVIEW ══ */}
-<section style={{padding:'60px 24px',background:'#fff'}}>
-  <div style={{maxWidth:900,margin:'0 auto',textAlign:'center'}}>
-    <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(220,20,60,.08)',border:'1px solid rgba(220,20,60,.15)',borderRadius:20,padding:'5px 14px',fontSize:12,fontWeight:700,color:'#DC143C',marginBottom:16}}>
-      🎥 Real Customer Review
-    </div>
-    <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(20px,3vw,32px)',fontWeight:800,letterSpacing:'-0.8px',marginBottom:8}}>
-      What Our Customers Say
-    </h2>
-    <p style={{fontSize:15,color:'#6e6e73',marginBottom:32}}>
-      Real Nepali creators sharing their experience with Swor AI
-    </p>
-    <div style={{display:'flex',justifyContent:'center'}}>
-      <div style={{
-        position:'relative',
-        width:'100%',
-        maxWidth:315,
-        borderRadius:16,
-        overflow:'hidden',
-        boxShadow:'0 20px 60px rgba(0,0,0,.15)'
-      }}>
-        <iframe
-          src="https://www.youtube.com/embed/YMDYghSAT_4"
-          title="Swor AI Customer Review"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          style={{
-            width:'100%',
-            aspectRatio:'9/16',
-            border:'none',
-            display:'block'
-          }}
-        />
-      </div>
-    </div>
-    <div style={{marginTop:24}}>
-      <a href="/reviews" style={{fontSize:14,fontWeight:700,color:'#DC143C',textDecoration:'none'}}>
-        Read all customer reviews →
-      </a>
-    </div>
-  </div>
-</section>
-{/* ══ SCROLLING REVIEWS ══ */}
-<section style={{padding:'20px 0',background:'#fff',borderTop:'1px solid #f0f0f0',overflow:'hidden'}}>
-  <div style={{textAlign:'center',marginBottom:16}}>
-   <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.08)',border:'1px solid rgba(52,199,89,.2)',borderRadius:20,padding:'8px 20px',fontSize:16,fontWeight:700,color:'#34C759'}}>
-  ✓ Verified Customer Reviews
-</div>
-  </div>
-  <style>{`
-    @keyframes scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    .review-track {
-      display: flex;
-      gap: 24px;
-      animation: scroll 30s linear infinite;
-      width: max-content;
-    }
-    .review-track:hover {
-      animation-play-state: paused;
-    }
-  `}</style>
-  <div style={{overflow:'hidden'}}>
-    <div className="review-track">
-      {[
-        { name:'Sujan Karmacharya', text:'I love this Swor AI platform so much. It makes our work easier and convenient. I have also suggested this to my friends!', color:'#DC143C' },
-        { name:'Birendra Chaudhary', text:'Voiceover garna ko lagi yo AI Swor dherai ramro chha. Ajasamma maile dekheko euta matra yesto app ho, jasko voice tone dherai ramro ra gunasthariya chha.', color:'#2E7D32' },
-        { name:'Adopt a Dog Nepal', text:'नेपाली भाषामा यति स्वाभाविक, स्पष्ट र भावना व्यक्त गर्न सक्ने AI आवाज मैले पहिले कहिल्यै प्रयोग गरेको थिएन। स्वर AI एउटा हुनै पर्ने टुल हो!', color:'#FF6B8A' },
-        { name:'Nabin • Digital Marketer', text:'Swor AI prayog garna thalepachi mero ad ko conversion rate hwattai badheko chha. Nepal ka pratyek marketers ka lagi euta anibarya tool ho!', color:'#FF9500' },
-        { name:'Sonam • Content Creator', text:'Swor AI le mero kaam dherai sahaj banaidiyeko chha. 30 bhanda badhi Nepali AI aawajharu yati natural suninchhan ki audience le pharak nai chhutyauna sakdainan!', color:'#7B2FBE' },
-        // Duplicate for seamless loop
-        { name:'Sujan Karmacharya', text:'I love this Swor AI platform so much. It makes our work easier and convenient. I have also suggested this to my friends!', color:'#DC143C' },
-        { name:'Birendra Chaudhary', text:'Voiceover garna ko lagi yo AI Swor dherai ramro chha. Ajasamma maile dekheko euta matra yesto app ho, jasko voice tone dherai ramro ra gunasthariya chha.', color:'#2E7D32' },
-        { name:'Adopt a Dog Nepal', text:'नेपाली भाषामा यति स्वाभाविक, स्पष्ट र भावना व्यक्त गर्न सक्ने AI आवाज मैले पहिले कहिल्यै प्रयोग गरेको थिएन। स्वर AI एउटा हुनै पर्ने टुल हो!', color:'#FF6B8A' },
-        { name:'Nabin • Digital Marketer', text:'Swor AI prayog garna thalepachi mero ad ko conversion rate hwattai badheko chha. Nepal ka pratyek marketers ka lagi euta anibarya tool ho!', color:'#FF9500' },
-        { name:'Sonam • Content Creator', text:'Swor AI le mero kaam dherai sahaj banaidiyeko chha. 30 bhanda badhi Nepali AI aawajharu yati natural suninchhan ki audience le pharak nai chhutyauna sakdainan!', color:'#7B2FBE' },
-      ].map((r, i) => (
-        <div key={i} style={{
-          flexShrink:0,
-          background:'#f8f8f8',
-          border:'1px solid #e8e8ed',
-          borderRadius:16,
-          padding:'16px 20px',
-          maxWidth:340,
-          minWidth:300,
-        }}>
-          <div style={{fontSize:13,marginBottom:8}}>⭐⭐⭐⭐⭐</div>
-          <p style={{
-            fontSize:13,
-            color:'#1d1d1f',
-            lineHeight:1.7,
-            marginBottom:12,
-            fontFamily:'Noto Sans Devanagari, Manrope, sans-serif',
-            display:'-webkit-box',
-            WebkitLineClamp:3,
-            WebkitBoxOrient:'vertical',
-            overflow:'hidden',
-          }}>
-            "{r.text}"
-          </p>
-          <div style={{display:'flex',alignItems:'center',gap:8}}>
-            <div style={{width:28,height:28,borderRadius:'50%',background:r.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,color:'#fff',flexShrink:0}}>
-              {r.name[0]}
-            </div>
-            <div style={{fontSize:12,fontWeight:700,color:'#1d1d1f'}}>{r.name}</div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
+
 {/* ══ HOMEPAGE DEMO BOX ══ */}
 <section id="homepage-demo" style={{padding:isMobile?'40px 16px':'60px 48px',background:'#fff',borderTop:'1px solid #f0f0f0'}}>
         <div style={{maxWidth:640,margin:'0 auto'}}>
@@ -464,8 +352,117 @@ const filtered = ALL_VOICES.filter(v => {
           <HomepageDemoBox isMobile={isMobile} />
         </div>
       </section>
+        </div>
+      </section>
 
+{/* ══ REVIEWS — COMBINED ══ */}
+<section style={{padding:isMobile?'40px 16px':'60px 48px',background:'#fff',borderTop:'1px solid #f0f0f0'}}>
+  <div style={{maxWidth:1100,margin:'0 auto'}}>
+    <div style={{textAlign:'center',marginBottom:32}}>
+      <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.08)',border:'1px solid rgba(52,199,89,.2)',borderRadius:20,padding:'6px 16px',fontSize:12,fontWeight:700,color:'#34C759',marginBottom:12}}>
+        ✓ Verified Customer Reviews
+      </div>
+      <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(20px,3vw,32px)',fontWeight:800,letterSpacing:'-0.8px',marginBottom:8}}>
+        What Our Customers Say
+      </h2>
+      <p style={{fontSize:14,color:'#6e6e73'}}>
+        Real Nepali creators sharing their experience with Swor AI
+      </p>
+    </div>
 
+    <div style={{display:'flex',flexDirection:isMobile?'column':'row',gap:24,alignItems:'stretch'}}>
+
+      {/* LEFT — Vertical scrolling reviews */}
+      <div style={{flex:1,height:500,overflow:'hidden',position:'relative'}}>
+        <style>{`
+          @keyframes scrollVertical {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+          }
+          .review-track-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            animation: scrollVertical 20s linear infinite;
+          }
+          .review-track-vertical:hover {
+            animation-play-state: paused;
+          }
+        `}</style>
+        <div className="review-track-vertical">
+          {[
+            { name:'Sujan Karmacharya', text:'I love this Swor AI platform so much. It makes our work easier and convenient. I have also suggested this to my friends!', color:'#DC143C' },
+            { name:'Birendra Chaudhary', text:'Voiceover garna ko lagi yo AI Swor dherai ramro chha. Ajasamma maile dekheko euta matra yesto app ho, jasko voice tone dherai ramro ra gunasthariya chha.', color:'#2E7D32' },
+            { name:'Adopt a Dog Nepal', text:'नेपाली भाषामा यति स्वाभाविक, स्पष्ट र भावना व्यक्त गर्न सक्ने AI आवाज मैले पहिले कहिल्यै प्रयोग गरेको थिएन। स्वर AI एउटा हुनै पर्ने टुल हो!', color:'#FF6B8A' },
+            { name:'Nabin • Digital Marketer', text:'Swor AI prayog garna thalepachi mero ad ko conversion rate hwattai badheko chha. Nepal ka pratyek marketers ka lagi euta anibarya tool ho!', color:'#FF9500' },
+            { name:'Sonam • Content Creator', text:'Swor AI le mero kaam dherai sahaj banaidiyeko chha. 30 bhanda badhi Nepali AI aawajharu yati natural suninchhan ki audience le pharak nai chhutyauna sakdainan!', color:'#7B2FBE' },
+            // Duplicate for seamless loop
+            { name:'Sujan Karmacharya', text:'I love this Swor AI platform so much. It makes our work easier and convenient. I have also suggested this to my friends!', color:'#DC143C' },
+            { name:'Birendra Chaudhary', text:'Voiceover garna ko lagi yo AI Swor dherai ramro chha. Ajasamma maile dekheko euta matra yesto app ho, jasko voice tone dherai ramro ra gunasthariya chha.', color:'#2E7D32' },
+            { name:'Adopt a Dog Nepal', text:'नेपाली भाषामा यति स्वाभाविक, स्पष्ट र भावना व्यक्त गर्न सक्ने AI आवाज मैले पहिले कहिल्यै प्रयोग गरेको थिएन। स्वर AI एउटा हुनै पर्ने टुल हो!', color:'#FF6B8A' },
+            { name:'Nabin • Digital Marketer', text:'Swor AI prayog garna thalepachi mero ad ko conversion rate hwattai badheko chha. Nepal ka pratyek marketers ka lagi euta anibarya tool ho!', color:'#FF9500' },
+            { name:'Sonam • Content Creator', text:'Swor AI le mero kaam dherai sahaj banaidiyeko chha. 30 bhanda badhi Nepali AI aawajharu yati natural suninchhan ki audience le pharak nai chhutyauna sakdainan!', color:'#7B2FBE' },
+          ].map((r, i) => (
+            <div key={i} style={{
+              background:'#f8f8f8',
+              border:'1px solid #e8e8ed',
+              borderRadius:16,
+              padding:'16px 20px',
+              flexShrink:0,
+            }}>
+              <div style={{fontSize:13,marginBottom:8}}>⭐⭐⭐⭐⭐</div>
+              <p style={{
+                fontSize:13,
+                color:'#1d1d1f',
+                lineHeight:1.7,
+                marginBottom:12,
+                fontFamily:'Noto Sans Devanagari, Manrope, sans-serif',
+              }}>
+                "{r.text}"
+              </p>
+              <div style={{display:'flex',alignItems:'center',gap:8}}>
+                <div style={{width:28,height:28,borderRadius:'50%',background:r.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,color:'#fff',flexShrink:0}}>
+                  {r.name[0]}
+                </div>
+                <div style={{fontSize:12,fontWeight:700,color:'#1d1d1f'}}>{r.name}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* RIGHT — Video review */}
+      <div style={{
+        flexShrink:0,
+        width:isMobile?'100%':280,
+        height:500,
+        borderRadius:16,
+        overflow:'hidden',
+        boxShadow:'0 20px 60px rgba(0,0,0,.15)'
+      }}>
+        <iframe
+          src="https://www.youtube.com/embed/YMDYghSAT_4"
+          title="Swor AI Customer Review"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          style={{
+            width:'100%',
+            height:'100%',
+            border:'none',
+            display:'block'
+          }}
+        />
+      </div>
+
+    </div>
+
+    <div style={{textAlign:'center',marginTop:24}}>
+      <a href="/reviews" style={{fontSize:14,fontWeight:700,color:'#DC143C',textDecoration:'none'}}>
+        Read all customer reviews →
+      </a>
+    </div>
+  </div>
+</section>
       {/* ══ VOICE LIBRARY ══ */}
       <section style={{padding:isMobile?'60px 16px':'100px 48px',background:'#fff'}}>
         <div style={{maxWidth:1100,margin:'0 auto'}}>
