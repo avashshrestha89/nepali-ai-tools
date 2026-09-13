@@ -383,9 +383,11 @@ const filtered = ALL_VOICES.filter(v => {
             gap: 16px;
             animation: scrollVertical 40s linear infinite;
           }
-          .review-track-vertical:hover {
-            animation-play-state: paused;
-          }
+         @media (hover: hover) {
+  .review-track-vertical:hover {
+    animation-play-state: paused;
+  }
+}
         `}</style>
         <div className="review-track-vertical">
           {[
