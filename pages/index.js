@@ -352,8 +352,6 @@ const filtered = ALL_VOICES.filter(v => {
           <HomepageDemoBox isMobile={isMobile} />
         </div>
       </section>
-        </div>
-      </section>
 
 {/* ══ REVIEWS — COMBINED ══ */}
 <section style={{padding:isMobile?'40px 16px':'60px 48px',background:'#fff',borderTop:'1px solid #f0f0f0'}}>
