@@ -391,19 +391,7 @@ const filtered = ALL_VOICES.filter(v => {
             }
           }
         `}</style>
-          {[
-            { name:'Sujan Karmacharya', text:'I love this Swor AI platform so much. It makes our work easier and convenient. I have also suggested this to my friends!', color:'#DC143C' },
-            { name:'Birendra Chaudhary', text:'Voiceover garna ko lagi yo AI Swor dherai ramro chha. Ajasamma maile dekheko euta matra yesto app ho, jasko voice tone dherai ramro ra gunasthariya chha.', color:'#2E7D32' },
-            { name:'Adopt a Dog Nepal', text:'नेपाली भाषामा यति स्वाभाविक, स्पष्ट र भावना व्यक्त गर्न सक्ने AI आवाज मैले पहिले कहिल्यै प्रयोग गरेको थिएन। स्वर AI एउटा हुनै पर्ने टुल हो!', color:'#FF6B8A' },
-            { name:'Nabin • Digital Marketer', text:'Swor AI prayog garna thalepachi mero ad ko conversion rate hwattai badheko chha. Nepal ka pratyek marketers ka lagi euta anibarya tool ho!', color:'#FF9500' },
-            { name:'Sonam • Content Creator', text:'Swor AI le mero kaam dherai sahaj banaidiyeko chha. 30 bhanda badhi Nepali AI aawajharu yati natural suninchhan ki audience le pharak nai chhutyauna sakdainan!', color:'#7B2FBE' },
-            // Duplicate for seamless loop
-            { name:'Sujan Karmacharya', text:'I love this Swor AI platform so much. It makes our work easier and convenient. I have also suggested this to my friends!', color:'#DC143C' },
-            { name:'Birendra Chaudhary', text:'Voiceover garna ko lagi yo AI Swor dherai ramro chha. Ajasamma maile dekheko euta matra yesto app ho, jasko voice tone dherai ramro ra gunasthariya chha.', color:'#2E7D32' },
-            { name:'Adopt a Dog Nepal', text:'नेपाली भाषामा यति स्वाभाविक, स्पष्ट र भावना व्यक्त गर्न सक्ने AI आवाज मैले पहिले कहिल्यै प्रयोग गरेको थिएन। स्वर AI एउटा हुनै पर्ने टुल हो!', color:'#FF6B8A' },
-            { name:'Nabin • Digital Marketer', text:'Swor AI prayog garna thalepachi mero ad ko conversion rate hwattai badheko chha. Nepal ka pratyek marketers ka lagi euta anibarya tool ho!', color:'#FF9500' },
-                 { name:'Sonam • Content Creator', text:'Swor AI le mero kaam dherai sahaj banaidiyeko chha. 30 bhanda badhi Nepali AI aawajharu yati natural suninchhan ki audience le pharak nai chhutyauna sakdainan!', color:'#7B2FBE' },
-
+         
                {/* Track 1 */}
         <div className="review-track-v">
           {[
