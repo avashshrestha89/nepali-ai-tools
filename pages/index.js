@@ -371,7 +371,7 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{display:'flex',flexDirection:isMobile?'column':'row',gap:24,alignItems:'stretch'}}>
 
       {/* LEFT — Vertical scrolling reviews */}
-      <div style={{flex:1,height:500,overflow:'hidden',position:'relative'}}>
+      <div style={{flex:1,height:500,overflow:'hidden',position:'relative',maskImage:'linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)',WebkitMaskImage:'linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)'}}>
         <style>{`
           @keyframes scrollVertical {
             0% { transform: translateY(0); }
@@ -381,7 +381,7 @@ const filtered = ALL_VOICES.filter(v => {
             display: flex;
             flex-direction: column;
             gap: 16px;
-            animation: scrollVertical 20s linear infinite;
+            animation: scrollVertical 40s linear infinite;
           }
           .review-track-vertical:hover {
             animation-play-state: paused;
