@@ -391,8 +391,6 @@ const filtered = ALL_VOICES.filter(v => {
             }
           }
         `}</style>
-        `}</style>
-        <div className="review-track-vertical" style={{willChange:'transform'}}>
           {[
             { name:'Sujan Karmacharya', text:'I love this Swor AI platform so much. It makes our work easier and convenient. I have also suggested this to my friends!', color:'#DC143C' },
             { name:'Birendra Chaudhary', text:'Voiceover garna ko lagi yo AI Swor dherai ramro chha. Ajasamma maile dekheko euta matra yesto app ho, jasko voice tone dherai ramro ra gunasthariya chha.', color:'#2E7D32' },
