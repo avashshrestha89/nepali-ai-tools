@@ -541,27 +541,50 @@ export default function NepaliTextToSpeech() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section style={{padding:'80px 24px',background:'#f5f5f7'}}>
-        <div style={{maxWidth:760,margin:'0 auto'}}>
-          <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(22px,3.5vw,36px)',fontWeight:800,textAlign:'center',letterSpacing:'-0.8px',marginBottom:48}}>
-            Frequently Asked Questions
-          </h2>
-          <div style={{background:'#fff',borderRadius:20,padding:'8px 32px'}}>
-            {FAQS.map((faq,i)=>(
-              <div key={i} className="faq-item" onClick={()=>setOpenFaq(openFaq===i?null:i)}>
-                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:16}}>
-                  <div style={{fontFamily:'Sora,sans-serif',fontSize:15,fontWeight:700,color:'#1d1d1f'}}>{faq.q}</div>
-                  <div style={{fontSize:18,color:'#DC143C',flexShrink:0,transition:'transform .2s',transform:openFaq===i?'rotate(45deg)':'rotate(0deg)'}}>+</div>
-                </div>
-                {openFaq===i && (
-                  <div style={{fontSize:14,color:'#6e6e73',lineHeight:1.75,marginTop:12}}>{faq.a}</div>
-                )}
-              </div>
-            ))}
+  {/* FAQ */}
+<section
+  id="faq"
+  itemScope
+  itemType="https://schema.org/FAQPage"
+  style={{padding:'80px 24px',background:'#f5f5f7'}}>
+  <div style={{maxWidth:760,margin:'0 auto'}}>
+    <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(22px,3.5vw,36px)',fontWeight:800,textAlign:'center',letterSpacing:'-0.8px',marginBottom:48}}>
+      Frequently Asked Questions
+    </h2>
+    <div style={{background:'#fff',borderRadius:20,padding:'8px 32px'}}>
+      {FAQS.map((faq,i) => (
+        <article
+          key={i}
+          itemScope
+          itemProp="mainEntity"
+          itemType="https://schema.org/Question"
+          className="faq-item"
+          onClick={() => setOpenFaq(openFaq===i?null:i)}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:16}}>
+            <h3
+              itemProp="name"
+              style={{fontFamily:'Sora,sans-serif',fontSize:15,fontWeight:700,color:'#1d1d1f',margin:0}}>
+              {faq.q}
+            </h3>
+            <div style={{fontSize:18,color:'#DC143C',flexShrink:0,transition:'transform .2s',transform:openFaq===i?'rotate(45deg)':'rotate(0deg)'}}>+</div>
           </div>
-        </div>
-      </section>
+          {openFaq===i && (
+            <div
+              itemScope
+              itemProp="acceptedAnswer"
+              itemType="https://schema.org/Answer">
+              <p
+                itemProp="text"
+                style={{fontSize:14,color:'#6e6e73',lineHeight:1.75,marginTop:12,marginBottom:0}}>
+                {faq.a}
+              </p>
+            </div>
+          )}
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* CTA */}
       <section style={{padding:'80px 24px',background:'linear-gradient(160deg,#1d1d1f 0%,#2d1020 100%)',textAlign:'center'}}>
