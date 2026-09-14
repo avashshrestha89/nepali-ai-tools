@@ -992,62 +992,141 @@ const filtered = ALL_VOICES.filter(v => {
 
  
 
+{/* ══ JSON-LD FAQ SCHEMA FOR SEO / AEO ══ */}
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{__html: JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Swor AI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Swor AI is Nepal's premier Nepali text-to-speech (TTS) and AI voiceover platform. It allows creators and businesses to generate studio-quality Nepali voiceovers in under 10 seconds without microphones or recording studios."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does Nepali text to speech work on Swor AI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Simply paste your Nepali text in Devanagari script, select from 30+ realistic Nepali male and female voices, and click Generate. Your voiceover is exported as an MP3 file ready for YouTube, TikTok, and commercial ads."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I monetize YouTube videos and TikToks using Swor AI voiceovers?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, Swor AI voiceovers are 100% royalty-free and copyright-safe for YouTube monetization, TikTok, Instagram Reels, and commercial broadcast ads."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How many Nepali AI voices are available on Swor AI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Swor AI offers 30+ natural Nepali AI voices covering documentary narration, high-energy reels, romantic storytelling, news broadcast, corporate promos, and casual conversation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the pricing plans for Swor AI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Swor AI offers a Starter Pack (NPR 499 for 8,000 credits), a Creator Pack (NPR 999 for 20,000 credits), and a Founders Lifetime Pack (NPR 2,500 one-time for 50,000 credits). Local payments via eSewa, Khalti and international PayPal accepted."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I pay with eSewa or Khalti for Swor AI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, Swor AI supports seamless local digital payments via eSewa, Khalti, and mobile banking, eliminating the need for international USD cards."
+        }
+      }
+    ]
+  })}}
+/>
+
 {/* ══ FAQ SECTION ══ */}
-      <section style={{padding:isMobile?'60px 16px':'100px 48px',background:'#f5f5f7'}}>
-        <div style={{maxWidth:900,margin:'0 auto'}}>
-          <div style={{textAlign:'center',marginBottom:48}}>
-            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(24px,3.5vw,40px)',fontWeight:800,letterSpacing:'-1px',marginBottom:14}}>
-              Frequently Asked Questions
-            </h2>
-            <p style={{fontSize:16,color:'#6e6e73',lineHeight:1.65}}>
-              Everything you need to know about Nepali AI voiceover and text to speech.
+<section
+  id="faq"
+  itemScope
+  itemType="https://schema.org/FAQPage"
+  style={{padding:isMobile?'60px 16px':'100px 48px',background:'#f5f5f7'}}>
+  <div style={{maxWidth:900,margin:'0 auto'}}>
+    <header style={{textAlign:'center',marginBottom:48}}>
+      <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(24px,3.5vw,40px)',fontWeight:800,letterSpacing:'-1px',marginBottom:14}}>
+        Frequently Asked Questions
+      </h2>
+      <p style={{fontSize:16,color:'#6e6e73',lineHeight:1.65}}>
+        Everything you need to know about Nepali text-to-speech, AI voiceovers, and pricing.
+      </p>
+    </header>
+    <div style={{background:'#fff',borderRadius:20,padding:isMobile?'12px 20px':'16px 36px'}}>
+      {[
+        {
+          q:'What is Swor AI?',
+          a:'Swor AI is Nepal\'s #1 Nepali AI voice generator and text-to-speech platform. Designed for Nepali creators, agencies, and businesses, it generates ultra-realistic Nepali voiceovers in under 10 seconds — eliminating the need for studio rentals, expensive microphones, or voice artists.'
+        },
+        {
+          q:'How does Nepali text to speech work?',
+          a:'Simply paste or type your Nepali text in Devanagari script, select from 30+ natural Nepali male and female voices, and click Generate. Your studio-grade Nepali voiceover is produced instantly as an MP3 ready for download.'
+        },
+        {
+          q:'Can I monetize YouTube videos and TikToks made with Swor AI?',
+          a:'Yes. All audio generated on Swor AI includes full commercial usage rights. The voices are 100% royalty-free and copyright-safe for YouTube monetization, TikTok, Facebook Reels, and corporate advertisements.'
+        },
+        {
+          q:'How many Nepali AI voices are available?',
+          a:'Swor AI offers 30+ natural Nepali AI voices covering diverse vocal styles: documentary narration, high-energy reels, romantic storytelling, news broadcast, corporate promos, and casual conversation.'
+        },
+        {
+          q:'Can I control emotions and pacing in the voiceover?',
+          a:'Yes. Swor AI supports custom emotion tags like [excited], [whispers], [calm], [serious], and [dramatic] directly inside your script to fine-tune cadence, tone, and inflection.'
+        },
+        {
+          q:'What are the pricing plans and payment options?',
+          a:'Swor AI offers a Starter Pack (NPR 499 for 8,000 credits), a Creator Pack (NPR 999 for 20,000 credits), and a Founders Lifetime Pack (NPR 2,500 one-time for 50,000 credits). We accept eSewa, Khalti, and PayPal for international customers.'
+        },
+        {
+          q:'Can I pay with eSewa or Khalti?',
+          a:'Yes. Swor AI supports seamless local digital payments via eSewa, Khalti, and Nepali bank transfers — no international USD card needed.'
+        },
+        {
+          q:'Can I create a faceless Nepali YouTube channel with Swor AI?',
+          a:'Absolutely. Swor AI is the go-to tool for faceless Nepali YouTube channels. Generate professional narration for documentary, educational, and entertainment channels without showing your face or recording your voice.'
+        },
+      ].map((faq,i) => (
+        <article
+          key={i}
+          itemScope
+          itemProp="mainEntity"
+          itemType="https://schema.org/Question"
+          style={{borderBottom:'1px solid #f0f0f0',padding:'24px 0'}}>
+          <h3
+            itemProp="name"
+            style={{fontFamily:'Sora,sans-serif',fontSize:17,fontWeight:700,color:'#1d1d1f',margin:'0 0 10px 0'}}>
+            {faq.q}
+          </h3>
+          <div
+            itemScope
+            itemProp="acceptedAnswer"
+            itemType="https://schema.org/Answer">
+            <p
+              itemProp="text"
+              style={{fontSize:15,color:'#6e6e73',lineHeight:1.75,margin:0}}>
+              {faq.a}
             </p>
           </div>
-          <div style={{background:'#fff',borderRadius:20,padding:'8px 32px'}}>
-            {[
-              {
-                q:'What is Swor AI?',
-                a:'Swor AI is Nepal\'s #1 Nepali AI voice generator and text to speech platform. Built specifically for Nepali creators and businesses, it lets you generate professional Nepali voiceovers, AI music, and subtitles in seconds — no microphone, no studio, no voice artist needed.'
-              },
-              {
-                q:'How does Nepali text to speech work?',
-                a:'Simply type your Nepali text in Devanagari script, choose from 30 natural-sounding Nepali voices, and click Generate. Your professional Nepali voiceover is ready in seconds as an MP3 file you can download and use anywhere.'
-              },
-              {
-                q:'Can I use Swor AI for TikTok and YouTube voiceover?',
-                a:'Yes — Swor AI is specifically designed for TikTok, YouTube, and Instagram Reels creators. Generate professional Nepali narration for your videos without recording your own voice. All audio is 100% royalty-free and copyright-free on any platform.'
-              },
-              {
-                q:'Can I create a faceless Nepali YouTube channel with Swor AI?',
-                a:'Absolutely. Swor AI is the go-to tool for faceless Nepali YouTube channels. Generate professional narration for documentary, educational, and entertainment channels without showing your face or recording your voice.'
-              },
-              {
-                q:'How many Nepali voices are available?',
-                a:'Swor AI has 30 premium Nepali AI voices — male and female, covering every content style including romantic, professional news, deep documentary, energetic reels, sports commentary, elegant ad narration, and conversational styles.'
-              },
-              {
-                q:'Does Swor AI support emotion and tone control?',
-                a:'Yes — use emotion tags like [excited], [whispers], [calm], [laughs], [sad], [angry] directly in your script to control how the voice sounds. This makes Swor AI far more powerful than standard text to speech tools.'
-              },
-              {
-                q:'Does Swor AI generate Nepali music too?',
-                a:'Yes — Swor AI also generates original royalty-free Nepali AI music. Type a prompt like "upbeat Nepali folk with madal drums" and get a custom music track in seconds. Perfect for video backgrounds, intros, and ads.'
-              },
-              {
-                
-  q: 'What are the pricing plans?',
-  a: 'Starter Pack: NPR 499 (5,000 credits — ~10 TikTok/Reels voiceovers). Creator Pack: NPR 999 (20,000 credits — ~40 TikTok/Reels voiceovers). Founders Lifetime Pack: NPR 2,500 one-time (50,000 credits + 5 AI music tracks, no monthly fees ever). All plans include unlimited free Nepali subtitles, commercial usage rights, and easy local payment via eSewa, Khalti, or bank transfer.'
-
-              },
-            ].map((faq,i)=>(
-              <div key={i} style={{borderBottom:'1px solid #f0f0f0',padding:'20px 0'}}>
-                <div style={{fontFamily:'Sora,sans-serif',fontSize:16,fontWeight:700,color:'#1d1d1f',marginBottom:8}}>{faq.q}</div>
-                <div style={{fontSize:15,color:'#6e6e73',lineHeight:1.75}}>{faq.a}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* ══ FOOTER ══ */}
       <footer style={{padding:'40px 48px',background:'#111',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:20}}>
