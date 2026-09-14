@@ -1011,7 +1011,7 @@ const filtered = ALL_VOICES.filter(v => {
               },
               {
                 q:'How does Nepali text to speech work?',
-                a:'Simply type your Nepali text in Devanagari script, choose from 20 natural-sounding Nepali voices, and click Generate. Your professional Nepali voiceover is ready in seconds as an MP3 file you can download and use anywhere.'
+                a:'Simply type your Nepali text in Devanagari script, choose from 30 natural-sounding Nepali voices, and click Generate. Your professional Nepali voiceover is ready in seconds as an MP3 file you can download and use anywhere.'
               },
               {
                 q:'Can I use Swor AI for TikTok and YouTube voiceover?',
@@ -1023,7 +1023,7 @@ const filtered = ALL_VOICES.filter(v => {
               },
               {
                 q:'How many Nepali voices are available?',
-                a:'Swor AI has 20 premium Nepali AI voices — male and female, covering every content style including romantic, professional news, deep documentary, energetic reels, sports commentary, elegant ad narration, and conversational styles.'
+                a:'Swor AI has 30 premium Nepali AI voices — male and female, covering every content style including romantic, professional news, deep documentary, energetic reels, sports commentary, elegant ad narration, and conversational styles.'
               },
               {
                 q:'Does Swor AI support emotion and tone control?',
@@ -1034,8 +1034,10 @@ const filtered = ALL_VOICES.filter(v => {
                 a:'Yes — Swor AI also generates original royalty-free Nepali AI music. Type a prompt like "upbeat Nepali folk with madal drums" and get a custom music track in seconds. Perfect for video backgrounds, intros, and ads.'
               },
               {
-                q:'What are the pricing plans?',
-                a:'Starter Pack: NPR 499 (3,500 credits — ~7 TikTok/Reels voiceovers). Creator Pack: NPR 999 (7,500 credits — ~15 TikTok/Reels voiceovers). Founders Lifetime Pack: NPR 2,500 one-time (25,000 credits + 5 AI music tracks, no monthly fees ever). All plans include unlimited free Nepali subtitles and commercial usage rights.'
+                
+  q: 'What are the pricing plans?',
+  a: 'Starter Pack: NPR 499 (5,000 credits — ~10 TikTok/Reels voiceovers). Creator Pack: NPR 999 (20,000 credits — ~40 TikTok/Reels voiceovers). Founders Lifetime Pack: NPR 2,500 one-time (50,000 credits + 5 AI music tracks, no monthly fees ever). All plans include unlimited free Nepali subtitles, commercial usage rights, and easy local payment via eSewa, Khalti, or bank transfer.'
+
               },
             ].map((faq,i)=>(
               <div key={i} style={{borderBottom:'1px solid #f0f0f0',padding:'20px 0'}}>
