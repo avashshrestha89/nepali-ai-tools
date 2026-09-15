@@ -99,12 +99,13 @@ export default function Subtitles() {
 
   return (
     <>
-      <Head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <title>Nepali Subtitle Generator — Swor AI</title>
-        <meta name="description" content="Generate accurate Nepali subtitles from any video or audio. Free forever. Devanagari and Romanized." />
-        <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-      </Head>
+<Head>
+  <link rel="canonical" href="https://meroadai.com/subtitles" />
+  <meta name="description" content="Generate accurate Nepali subtitles for your videos automatically. Upload audio or video and get Nepali Devanagari subtitle file in seconds. Free and unlimited. No signup needed." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <title>Nepali Subtitle Generator — Swor AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</Head>
 
       <style>{`
         *{box-sizing:border-box;margin:0;padding:0}
