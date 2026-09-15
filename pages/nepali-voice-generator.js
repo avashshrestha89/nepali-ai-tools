@@ -7,8 +7,7 @@ export default function NepaliVoiceGenerator() {
       <Head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>Nepali Voice Generator — Free AI Nepali Voice Online | Swor AI</title>
-        <meta name="description" content="Free Nepali voice generator online. Generate natural AI Nepali voices for TikTok, YouTube, ads and documentary. 20 premium Nepali voices. Try free at meroadai.com" />
-        <meta name="keywords" content="nepali voice generator, nepali ai voice generator, nepali voice generator online, free nepali voice generator, ai nepali voice, nepali voice maker, nepali voice creator" />
+<meta name="description" content="Free Nepali AI voice generator online. Convert Nepali Devanagari text to natural speech using 30 premium AI voices. Perfect for TikTok, YouTube, ads and social media. Try free at meroadai.com" />        <meta name="keywords" content="nepali voice generator, nepali ai voice generator, nepali voice generator online, free nepali voice generator, ai nepali voice, nepali voice maker, nepali voice creator" />
         <link rel="canonical" href="https://meroadai.com/nepali-voice-generator" />
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
