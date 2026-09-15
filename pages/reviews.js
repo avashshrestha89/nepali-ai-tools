@@ -159,6 +159,7 @@ export default function Reviews() {
   return (
     <>
       <Head>
+    <link rel="canonical" href="https://meroadai.com/reviews" />
         <title>Swor AI Reviews: What Creators & Businesses Say About Nepal&apos;s #1 AI Voiceover</title>
         <meta name="description" content="Read genuine Swor AI reviews from Nepali creators, businesses and NGOs. See why meroadai.com is rated Nepal's best Nepali text to speech platform with 30 natural voices." />
         <link rel="canonical" href="https://meroadai.com/reviews" />
