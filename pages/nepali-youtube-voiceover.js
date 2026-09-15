@@ -7,8 +7,7 @@ export default function NepaliYoutubeVoiceover() {
       <Head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>Nepali YouTube Voiceover Generator — Free AI Nepali Voice | Swor AI</title>
-        <meta name="description" content="Free Nepali YouTube voiceover generator. Create professional AI Nepali narration for your YouTube channel without a microphone. 20 natural voices. Try free at meroadai.com" />
-        <meta name="keywords" content="nepali youtube voiceover, nepali voice for youtube, faceless nepali youtube channel, nepali youtube narration, nepali documentary voice youtube, nepali ai voice youtube, nepali youtube voice generator, nepali voice without microphone" />
+<meta name="description" content="Best Nepali AI voiceover for YouTube. Create faceless Nepali YouTube channels using 30 natural AI voices. Generate studio-quality narration in seconds. 100% royalty-free for YouTube monetization." />        <meta name="keywords" content="nepali youtube voiceover, nepali voice for youtube, faceless nepali youtube channel, nepali youtube narration, nepali documentary voice youtube, nepali ai voice youtube, nepali youtube voice generator, nepali voice without microphone" />
         <link rel="canonical" href="https://meroadai.com/nepali-youtube-voiceover" />
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
