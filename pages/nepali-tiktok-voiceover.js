@@ -7,8 +7,7 @@ export default function NepaliTiktokVoiceover() {
       <Head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>Nepali TikTok Voiceover Generator — Free AI Nepali Voice | Swor AI</title>
-        <meta name="description" content="Free Nepali TikTok voiceover generator. Add professional AI Nepali narration to your TikTok and Reels without recording your own voice. 20 natural voices. Try free at meroadai.com" />
-        <meta name="keywords" content="nepali tiktok voiceover, nepali reels voiceover, nepali voice for tiktok, tiktok nepali voice generator, nepali ai voice tiktok, nepali voiceover for reels, nepali content creator voice, tiktok voice nepali" />
+<meta name="description" content="Best Nepali AI voiceover for TikTok. Generate professional Nepali narration for TikTok videos in seconds using 30 natural AI voices. No microphone needed. Try free at meroadai.com" />        <meta name="keywords" content="nepali tiktok voiceover, nepali reels voiceover, nepali voice for tiktok, tiktok nepali voice generator, nepali ai voice tiktok, nepali voiceover for reels, nepali content creator voice, tiktok voice nepali" />
         <link rel="canonical" href="https://meroadai.com/nepali-tiktok-voiceover" />
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
