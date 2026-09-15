@@ -144,6 +144,7 @@ const filtered = ALL_VOICES.filter(v => {
   return (
     <>
       <Head>
+    <link rel="canonical" href="https://meroadai.com" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>Swor AI — Nepal's #1 Nepali AI Voice Generator & Text to Speech</title>
 <meta name="description" content="Nepal's #1 Nepali AI voice generator. Nepali text to speech, AI voiceover, music and subtitles for TikTok, YouTube and ads. 30 natural Nepali voices. Try free at meroadai.com" />
