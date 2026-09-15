@@ -94,12 +94,13 @@ export default function Music() {
 
   return (
     <>
-      <Head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <title>Nepali AI Music Generator — Swor AI</title>
-        <meta name="description" content="Generate original royalty-free Nepali music in seconds. Type a prompt and get a custom Nepali song." />
-        <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-      </Head>
+<Head>
+  <link rel="canonical" href="https://meroadai.com/music" />
+  <meta name="description" content="Generate original royalty-free Nepali AI music in seconds. Type a prompt describing your mood and style — folk, pop, devotional, cinematic — and get a custom Nepali music track instantly." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <title>Nepali AI Music Generator — Swor AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</Head>
 
       <style>{`
         *{box-sizing:border-box;margin:0;padding:0}
