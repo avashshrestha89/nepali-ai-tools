@@ -56,6 +56,7 @@ export default function Tool() {
   return (
     <>
       <Head>
+    <link rel="canonical" href="https://meroadai.com/voiceover" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>Nepali AI Audio Tools — Swor AI</title>
         <meta name="description" content="Nepal's first AI audio studio. Generate Nepali voiceover, AI music and subtitles in seconds. 20 premium Nepali voices." />
