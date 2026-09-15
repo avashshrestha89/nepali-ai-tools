@@ -46,6 +46,7 @@ const benefits = [
   return (
     <>
       <Head>
+    <link rel="canonical" href="https://meroadai.com/for-business" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>Nepal Business को लागि AI Nepali Voiceover — Swor AI</title>
         <meta name="description" content="Voice narration vs music only — why Nepal businesses need professional Nepali voiceover for their content. Try Swor AI free." />
