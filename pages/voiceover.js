@@ -388,7 +388,7 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
     <link rel="canonical" href="https://meroadai.com/voiceover" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>Nepali AI Voiceover Generator — Swor AI</title>
-        <meta name="description" content="Generate realistic Nepali AI voiceovers in seconds. 20 premium voices. Type text, download MP3." />
+        <meta name="description" content="Generate professional Nepali AI voiceovers in seconds using 30 natural voices. Add emotion tags like [excited] or [calm], use AI script generator, and download MP3 instantly. Credits never expire. Pay with eSewa or Khalti." />
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet" />
       </Head>
 
