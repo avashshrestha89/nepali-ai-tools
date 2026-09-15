@@ -49,7 +49,7 @@ const benefits = [
     <link rel="canonical" href="https://meroadai.com/for-business" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>Nepal Business को लागि AI Nepali Voiceover — Swor AI</title>
-        <meta name="description" content="Voice narration vs music only — why Nepal businesses need professional Nepali voiceover for their content. Try Swor AI free." />
+        <meta name="description" content="Swor AI for Business — generate professional Nepali voiceovers for ads, corporate videos, news bulletins and social media content. 30 natural Nepali AI voices, NPR pricing, eSewa and Khalti payment. Enterprise plans available." />
         <link rel="canonical" href="https://meroadai.com/for-business" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
