@@ -828,11 +828,11 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 2,999</div>
     <div style={{fontSize:13,color:'#999',marginBottom:12}}>$22.50 USD</div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,0,0,.06)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#FF0000',marginBottom:16}}>
-      35,000 Credits — ~58 mins audio
+      75,000 Credits — ~125 mins audio
     </div>
     <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
       {[
-        '35,000 Swor Credits — never expire',
+        '75,000 Swor Credits — never expire',
         'All 30+ Nepali AI voices included',
         'Unlimited subtitles forever',
         'Commercial usage rights',
@@ -867,11 +867,11 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#fff',lineHeight:1,marginBottom:4}}>NPR 4,999</div>
     <div style={{fontSize:13,color:'rgba(255,255,255,.5)',marginBottom:12}}>$37.50 USD</div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,0,0,.15)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#FF6B6B',marginBottom:16}}>
-      65,000 Credits — ~108 mins audio
+      130,000 Credits — ~216 mins audio
     </div>
     <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
       {[
-        '65,000 Swor Credits — never expire',
+        '130,000 Swor Credits — never expire',
         'All 30+ Nepali AI voices included',
         'Unlimited subtitles forever',
         'Commercial usage rights',
@@ -903,11 +903,11 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 8,999</div>
     <div style={{fontSize:13,color:'#999',marginBottom:12}}>$67.50 USD</div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,0,0,.06)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#FF0000',marginBottom:16}}>
-      125,000 Credits — ~208 mins audio
+      250,000 Credits — ~416 mins audio
     </div>
     <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
       {[
-        '125,000 Swor Credits — never expire',
+        '250,000 Swor Credits — never expire',
         'All 30+ Nepali AI voices included',
         'Unlimited subtitles forever',
         'Commercial usage rights',
