@@ -828,14 +828,12 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 2,999</div>
     <div style={{fontSize:13,color:'#999',marginBottom:12}}>$22.50 USD</div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,0,0,.06)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#FF0000',marginBottom:16}}>
-      ~2 Full 20-min Videos
+      35,000 Credits — ~58 mins audio
     </div>
     <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
       {[
         '35,000 Swor Credits — never expire',
-        '~2 full 20-minute YouTube videos',
-        'OR ~5 YouTube Shorts (10 min each)',
-        'All 20+ Nepali AI voices included',
+        'All 30+ Nepali AI voices included',
         'Unlimited subtitles forever',
         'Commercial usage rights',
       ].map(f=>(
@@ -869,14 +867,12 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#fff',lineHeight:1,marginBottom:4}}>NPR 4,999</div>
     <div style={{fontSize:13,color:'rgba(255,255,255,.5)',marginBottom:12}}>$37.50 USD</div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,0,0,.15)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#FF6B6B',marginBottom:16}}>
-      ~4 Full 20-min Videos / Month
+      65,000 Credits — ~108 mins audio
     </div>
     <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
       {[
         '65,000 Swor Credits — never expire',
-        '~4 full 20-minute YouTube videos',
-        'OR ~10 YouTube Shorts (10 min each)',
-        'All 20+ Nepali AI voices included',
+        'All 30+ Nepali AI voices included',
         'Unlimited subtitles forever',
         'Commercial usage rights',
       ].map(f=>(
@@ -907,14 +903,12 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 8,999</div>
     <div style={{fontSize:13,color:'#999',marginBottom:12}}>$67.50 USD</div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,0,0,.06)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#FF0000',marginBottom:16}}>
-      ~7 Full 20-min Videos
+      125,000 Credits — ~208 mins audio
     </div>
     <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
       {[
         '125,000 Swor Credits — never expire',
-        '~7 full 20-minute YouTube videos',
-        'OR ~20 YouTube Shorts (10 min each)',
-        'All 20+ Nepali AI voices included',
+        'All 30+ Nepali AI voices included',
         'Unlimited subtitles forever',
         'Commercial usage rights',
       ].map(f=>(
