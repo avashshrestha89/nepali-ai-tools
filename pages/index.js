@@ -689,8 +689,9 @@ const filtered = ALL_VOICES.filter(v => {
   {/* STARTER */}
   <div style={{background:'#fff',borderRadius:20,padding:'28px 24px',border:'1.5px solid #e8e8ed',position:'relative'}}>
     <div style={{fontSize:13,fontWeight:700,color:'#6e6e73',marginBottom:8}}>Starter Pack</div>
-    <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 499</div>
-    <div style={{fontSize:13,color:'#999',marginBottom:12}}>$4.99 USD</div>
+   <div style={{fontSize:14,fontWeight:700,color:'#999',marginBottom:4,textDecoration:'line-through'}}>NPR 1,000</div>
+<div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 499</div>
+<div style={{fontSize:13,color:'#999',marginBottom:12}}>$4.99 USD</div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:16}}>
       First Week Experience
     </div>
@@ -771,8 +772,9 @@ const filtered = ALL_VOICES.filter(v => {
   {/* CREATOR */}
   <div style={{background:'#fff',borderRadius:20,padding:'28px 24px',border:'1.5px solid #e8e8ed',position:'relative'}}>
     <div style={{fontSize:13,fontWeight:700,color:'#6e6e73',marginBottom:8}}>Creator Value Pack</div>
-    <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 999</div>
-    <div style={{fontSize:13,color:'#999',marginBottom:12}}>$12.99 USD</div>
+  <div style={{fontSize:14,fontWeight:700,color:'#999',marginBottom:4,textDecoration:'line-through'}}>NPR 1,899</div>
+<div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 999</div>
+<div style={{fontSize:13,color:'#999',marginBottom:12}}>$12.99 USD</div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:16}}>
       Two Weeks of Content
     </div>
