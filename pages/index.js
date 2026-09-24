@@ -774,7 +774,7 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{fontSize:13,fontWeight:700,color:'#6e6e73',marginBottom:8}}>Creator Value Pack</div>
   <div style={{fontSize:14,fontWeight:700,color:'#999',marginBottom:4,textDecoration:'line-through'}}>NPR 1,899</div>
 <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 999</div>
-<div style={{fontSize:13,color:'#999',marginBottom:12}}>$12.99 USD</div>
+<div style={{fontSize:13,color:'#999',marginBottom:12}}>$8.99 USD</div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:16}}>
       🚀 Launch Pricing — Save 47%
     </div>
@@ -799,7 +799,7 @@ const filtered = ALL_VOICES.filter(v => {
         style={{background:'#DC143C',color:'#fff',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',boxShadow:'0 4px 16px rgba(220,20,60,.25)'}}>
         💬 Buy via WhatsApp
       </a>
-      <a href="https://paypal.me/sworai/12.99" target="_blank" rel="noreferrer"
+      <a href="https://paypal.me/sworai/8.99" target="_blank" rel="noreferrer"
         style={{background:'#f5f5f7',color:'#1d1d1f',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',border:'1px solid #e8e8ed'}}>
         💳 PayPal ($12.99)
       </a>
@@ -990,8 +990,7 @@ const filtered = ALL_VOICES.filter(v => {
               International users pay via PayPal (<a href="https://paypal.me/sworai" style={{color:'#DC143C'}}>@sworai</a>), Venmo (@TwentyfourAS), or Zelle (AVASHSHRESTHAUSA@GMAIL.COM).
             </div>
             <div style={{background:'rgba(255,149,0,.1)',border:'1px solid rgba(255,149,0,.3)',borderRadius:10,padding:'10px 16px',display:'inline-flex',alignItems:'center',gap:8,fontSize:13,color:'#B45309',fontWeight:600,marginBottom:16}}>
-              ⏰ Credits activated daily at <strong>8AM and 6PM Nepal time</strong>. WhatsApp for urgent activation.
-            </div>
+⚡ Send payment screenshot to WhatsApp — credits activated within 10 minutes.            </div>
             <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap'}}>
               {[{n:'eSewa',c:'#60B843'},{n:'Khalti',c:'#7B3FC4'},{n:'IME Pay',c:'#E8392A'},{n:'Bank Transfer',c:'#1d1d1f'},{n:'PayPal',c:'#003087'},{n:'Venmo',c:'#008CFF'},{n:'Zelle',c:'#6D1ED4'}].map(p=>(
                 <span key={p.n} style={{background:'rgba(255,255,255,.8)',border:`1.5px solid ${p.c}`,borderRadius:8,padding:'7px 14px',fontSize:12,fontWeight:700,color:p.c}}>{p.n}</span>
