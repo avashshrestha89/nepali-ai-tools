@@ -231,9 +231,14 @@ const filtered = ALL_VOICES.filter(v => {
           <button onClick={toggleLanguage} className={`lang-btn${scrolled?' lang-btn-scroll':''}${isNepali?' on':''}`}>
             {isNepali?'English':'नेपाली'}
           </button>
-   {!isMobile && <Link href="/for-business"><button style={{background:'#7B2FBE',color:'#fff',border:'none',padding:'9px 20px',borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer',marginRight:4}}>For Business</button></Link>}
+{!isMobile && <>
+  <a href="#voices" style={{fontSize:13,fontWeight:600,color:'#555',textDecoration:'none',marginRight:4}}>Voices</a>
+  <a href="#pricing" style={{fontSize:13,fontWeight:600,color:'#555',textDecoration:'none',marginRight:4}}>Pricing</a>
+  <a href="#faq" style={{fontSize:13,fontWeight:600,color:'#555',textDecoration:'none',marginRight:4}}>FAQ</a>
+  <Link href="/for-business"><button style={{background:'#7B2FBE',color:'#fff',border:'none',padding:'9px 20px',borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer',marginRight:4}}>For Business</button></Link>
+</>}
 <Link href="/reviews"><button style={{background:'transparent',color:'#555',border:'1.5px solid #e8e8ed',padding:isMobile?'7px 12px':'9px 20px',borderRadius:10,fontSize:isMobile?11:13,fontWeight:700,cursor:'pointer',marginRight:4}}>Reviews</button></Link>
-<Link href="/tool"><button className="btn-primary" style={{padding:isMobile?'7px 12px':'9px 20px',fontSize:isMobile?11:13}}>Try Tool →</button></Link>
+<Link href="/voiceover"><button className="btn-primary" style={{padding:isMobile?'7px 12px':'9px 20px',fontSize:isMobile?11:13}}>🎙️ Try Free →</button></Link>
         </div>
       </nav>
 
@@ -440,8 +445,7 @@ const filtered = ALL_VOICES.filter(v => {
   </div>
 </section>
       {/* ══ VOICE LIBRARY ══ */}
-      <section style={{padding:isMobile?'60px 16px':'100px 48px',background:'#fff'}}>
-        <div style={{maxWidth:1100,margin:'0 auto'}}>
+      <section id="voices" style={{padding:isMobile?'60px 16px':'100px 48px',background:'#fff'}}>        <div style={{maxWidth:1100,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:48}}>
             <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(26px,3.5vw,44px)',fontWeight:800,letterSpacing:'-1px',marginBottom:14}}>
               The most natural{' '}
