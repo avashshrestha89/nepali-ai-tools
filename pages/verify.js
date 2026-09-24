@@ -18,7 +18,7 @@ export default function Verify() {
 
         if (data.success) {
           setStatus('success')
-          setTimeout(() => router.push('/tool'), 2000)
+          setTimeout(() => router.push('/voiceover'), 2000)
         } else {
           setStatus('error')
         }
@@ -69,7 +69,7 @@ export default function Verify() {
             <div style={{fontSize:15,color:'rgba(255,255,255,.5)',marginBottom:8}}>Redirecting to the tool...</div>
             <div style={{fontSize:13,color:'rgba(255,255,255,.3)'}}>
               If you're not redirected automatically,{' '}
-              <Link href="/tool" style={{color:'#DC143C'}}>click here</Link>
+              <Link href="/voiceover" style={{color:'#DC143C'}}>click here</Link>
             </div>
           </div>
         )}
@@ -82,7 +82,7 @@ export default function Verify() {
               Magic links expire after 24 hours.<br/>
               Request a new one below.
             </div>
-            <Link href="/tool">
+            <Link href="/voiceover">
               <button style={{background:'#DC143C',color:'#fff',border:'none',padding:'14px 32px',borderRadius:12,fontSize:15,fontWeight:700,cursor:'pointer'}}>
                 Request new link →
               </button>
