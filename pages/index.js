@@ -235,6 +235,7 @@ const filtered = ALL_VOICES.filter(v => {
   <a href="#voices" style={{fontSize:13,fontWeight:600,color:'#555',textDecoration:'none',marginRight:4}}>Voices</a>
   <a href="#pricing" style={{fontSize:13,fontWeight:600,color:'#555',textDecoration:'none',marginRight:4}}>Pricing</a>
   <a href="#faq" style={{fontSize:13,fontWeight:600,color:'#555',textDecoration:'none',marginRight:4}}>FAQ</a>
+  <Link href="/elevenlabs-alternative-nepal" style={{fontSize:13,fontWeight:600,color:'#555',textDecoration:'none',marginRight:4}}>Compare</Link>
   <Link href="/for-business"><button style={{background:'#7B2FBE',color:'#fff',border:'none',padding:'9px 20px',borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer',marginRight:4}}>For Business</button></Link>
 </>}
 <Link href="/reviews"><button style={{background:'transparent',color:'#555',border:'1.5px solid #e8e8ed',padding:isMobile?'7px 12px':'9px 20px',borderRadius:10,fontSize:isMobile?11:13,fontWeight:700,cursor:'pointer',marginRight:4}}>Reviews</button></Link>
