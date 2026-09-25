@@ -1182,37 +1182,103 @@ const filtered = ALL_VOICES.filter(v => {
   </div>
 </section>
 
-      {/* ══ FOOTER ══ */}
-      <footer style={{padding:'40px 48px',background:'#111',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:20}}>
-        <div>
-          <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:5}}>
-            <div style={{width:26,height:26,borderRadius:7,background:'linear-gradient(135deg,#DC143C,#FF6B8A)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,color:'#fff',fontWeight:800}}>M</div>
-            <span style={{fontFamily:'Sora,sans-serif',fontSize:14,fontWeight:700,color:'#fff'}}>MeroAD.ai</span>
-          </div>
-          <div style={{fontSize:11,color:'rgba(255,255,255,.25)'}}>© 2026 Swor AI · Kathmandu, Nepal</div>
+  {/* ══ FOOTER ══ */}
+<footer style={{padding:isMobile?'48px 24px':'64px 48px',background:'#111'}}>
+  <div style={{maxWidth:1100,margin:'0 auto'}}>
+    
+    {/* TOP ROW — 4 COLUMNS */}
+    <div style={{display:'grid',gridTemplateColumns:isMobile?'1fr 1fr':'1fr 1fr 1fr 1fr',gap:isMobile?32:40,marginBottom:48}}>
+      
+      {/* COLUMN 1 — Brand */}
+      <div>
+        <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:12}}>
+          <div style={{width:26,height:26,borderRadius:7,background:'linear-gradient(135deg,#DC143C,#FF6B8A)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,color:'#fff',fontWeight:800}}>M</div>
+          <span style={{fontFamily:'Sora,sans-serif',fontSize:14,fontWeight:700,color:'#fff'}}>Swor AI</span>
         </div>
-      <div style={{display:'flex',flexDirection:'column',gap:12,alignItems:'flex-end'}}>
-          <div style={{display:'flex',gap:8,flexWrap:'wrap',justifyContent:'flex-end'}}>
-            {[{l:'Instagram',h:'https://instagram.com/meroadai'},{l:'Facebook',h:'https://facebook.com/meroadai'},{l:'TikTok',h:'https://tiktok.com/@meroadai'},{l:'Contact',h:'mailto:meroadaiofficial@gmail.com'}].map(s=>(
-              <a key={s.l} href={s.h} target="_blank" rel="noreferrer" style={{background:'rgba(255,255,255,.06)',border:'1px solid rgba(255,255,255,.08)',borderRadius:8,padding:'7px 14px',fontSize:12,fontWeight:600,color:'rgba(255,255,255,.5)'}}>
-                {s.l}
-              </a>
-            ))}
-          </div>
-          <div style={{display:'flex',gap:8,flexWrap:'wrap',justifyContent:'flex-end'}}>
-            {[
-              {l:'Nepali Text to Speech',h:'/nepali-text-to-speech'},
-              {l:'Nepali Voice Generator',h:'/nepali-voice-generator'},
-              {l:'TikTok Voiceover',h:'/nepali-tiktok-voiceover'},
-              {l:'YouTube Voiceover',h:'/nepali-youtube-voiceover'},
-            ].map(s=>(
-              <a key={s.l} href={s.h} style={{background:'rgba(255,255,255,.03)',border:'1px solid rgba(255,255,255,.06)',borderRadius:8,padding:'7px 14px',fontSize:11,fontWeight:600,color:'rgba(255,255,255,.35)'}}>
-                {s.l}
-              </a>
-            ))}
-          </div>
+        <p style={{fontSize:12,color:'rgba(255,255,255,.35)',lineHeight:1.7,marginBottom:16}}>
+          Nepal's #1 Nepali AI voice generator. 30+ natural voices. NPR pricing. Credits never expire.
+        </p>
+        <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+          {[
+            {l:'Instagram',h:'https://instagram.com/meroadai'},
+            {l:'Facebook',h:'https://facebook.com/meroadai'},
+            {l:'TikTok',h:'https://tiktok.com/@meroadai'},
+          ].map(s=>(
+            <a key={s.l} href={s.h} target="_blank" rel="noreferrer" style={{background:'rgba(255,255,255,.06)',border:'1px solid rgba(255,255,255,.08)',borderRadius:8,padding:'6px 12px',fontSize:11,fontWeight:600,color:'rgba(255,255,255,.5)',textDecoration:'none'}}>
+              {s.l}
+            </a>
+          ))}
         </div>
-      </footer>
+      </div>
+
+      {/* COLUMN 2 — Product */}
+      <div>
+        <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.3)',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:16}}>Product</div>
+        {[
+          {l:'Voiceover Tool',h:'/voiceover'},
+          {l:'AI Music Generator',h:'/music'},
+          {l:'Nepali Subtitles',h:'/subtitles'},
+          {l:'For Business',h:'/for-business'},
+          {l:'Reviews',h:'/reviews'},
+        ].map(s=>(
+          <a key={s.l} href={s.h} style={{display:'block',fontSize:13,color:'rgba(255,255,255,.45)',textDecoration:'none',marginBottom:10,fontWeight:500}}>
+            {s.l}
+          </a>
+        ))}
+      </div>
+
+      {/* COLUMN 3 — Compare & SEO */}
+      <div>
+        <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.3)',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:16}}>Compare & Learn</div>
+        {[
+          {l:'ElevenLabs Alternative Nepal',h:'/elevenlabs-alternative-nepal'},
+          {l:'Nepali Text to Speech',h:'/nepali-text-to-speech'},
+          {l:'Nepali Voice Generator',h:'/nepali-voice-generator'},
+          {l:'TikTok Voiceover',h:'/nepali-tiktok-voiceover'},
+          {l:'YouTube Voiceover',h:'/nepali-youtube-voiceover'},
+        ].map(s=>(
+          <a key={s.l} href={s.h} style={{display:'block',fontSize:13,color:'rgba(255,255,255,.45)',textDecoration:'none',marginBottom:10,fontWeight:500}}>
+            {s.l}
+          </a>
+        ))}
+      </div>
+
+      {/* COLUMN 4 — Contact & Payment */}
+      <div>
+        <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.3)',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:16}}>Contact & Payment</div>
+        <a href="https://wa.me/19255379425" target="_blank" rel="noreferrer" style={{display:'flex',alignItems:'center',gap:8,background:'rgba(37,211,102,.1)',border:'1px solid rgba(37,211,102,.2)',borderRadius:10,padding:'10px 14px',marginBottom:10,textDecoration:'none'}}>
+          <span style={{fontSize:16}}>💬</span>
+          <div>
+            <div style={{fontSize:12,fontWeight:700,color:'#25D366'}}>WhatsApp Support</div>
+            <div style={{fontSize:11,color:'rgba(255,255,255,.3)'}}>+1 925 537 9425</div>
+          </div>
+        </a>
+        <a href="mailto:meroadaiofficial@gmail.com" style={{display:'flex',alignItems:'center',gap:8,background:'rgba(255,255,255,.04)',border:'1px solid rgba(255,255,255,.08)',borderRadius:10,padding:'10px 14px',marginBottom:10,textDecoration:'none'}}>
+          <span style={{fontSize:16}}>✉️</span>
+          <div style={{fontSize:12,fontWeight:600,color:'rgba(255,255,255,.45)'}}>meroadaiofficial@gmail.com</div>
+        </a>
+        <div style={{fontSize:11,color:'rgba(255,255,255,.25)',marginTop:12}}>
+          Payment: eSewa · Khalti · PayPal
+        </div>
+        <div style={{fontSize:11,color:'rgba(255,255,255,.25)',marginTop:6}}>
+          <a href="https://paypal.me/sworai" target="_blank" rel="noreferrer" style={{color:'rgba(255,255,255,.35)',textDecoration:'none'}}>paypal.me/sworai</a>
+        </div>
+      </div>
+
+    </div>
+
+    {/* DIVIDER */}
+    <div style={{borderTop:'1px solid rgba(255,255,255,.08)',paddingTop:24,display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12}}>
+      <div style={{fontSize:11,color:'rgba(255,255,255,.2)'}}>© 2026 Swor AI · MeroAD.ai · Kathmandu, Nepal</div>
+      <div style={{display:'flex',gap:16}}>
+        <a href="/privacy-policy" style={{fontSize:11,color:'rgba(255,255,255,.2)',textDecoration:'none'}}>Privacy Policy</a>
+        <a href="/terms" style={{fontSize:11,color:'rgba(255,255,255,.2)',textDecoration:'none'}}>Terms of Service</a>
+        <a href="/nepali-text-to-speech" style={{fontSize:11,color:'rgba(255,255,255,.2)',textDecoration:'none'}}>Sitemap</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
     </>
   )
 }
