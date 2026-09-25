@@ -602,43 +602,58 @@ const filtered = ALL_VOICES.filter(v => {
       </section>
 
 
-      {/* ══ SEEMA & GEETA PROOF ══ */}
-      <section style={{padding:'100px 48px',background:'#fff'}}>
-        <div style={{maxWidth:1100,margin:'0 auto',display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:isMobile?32:64,alignItems:'center'}}>
-          <div>
-            <div style={{fontSize:12,fontWeight:700,color:'#DC143C',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:16}}>Built by creators, for creators</div>
-            <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(24px,3vw,40px)',fontWeight:800,letterSpacing:'-0.8px',marginBottom:20,lineHeight:1.15}}>
-              Built by the team behind<br />
-              <span style={{color:'#DC143C'}}>@seemaandgeetatwins</span> —<br />
-              Nepal's first virtual influencer
-            </h2>
-            <p style={{fontSize:15,color:'#6e6e73',lineHeight:1.75,marginBottom:40,maxWidth:440}}>
-              We didn't build Swor for someone else's problem. We built it because we needed it ourselves, and now we're sharing it with every Nepali creator.
-            </p>
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:36}}>
-              {[['54M+','Video views'],['91K+','Followers'],['1.6M+','Total likes'],['80K+','Shares']].map(([n,l])=>(
-                <div key={n} style={{background:'#f5f5f7',borderRadius:14,padding:'18px 16px'}}>
-                  <div style={{fontFamily:'Sora,sans-serif',fontSize:26,fontWeight:800,color:'#1d1d1f',marginBottom:4}}>{n}</div>
-                  <div style={{fontSize:12,color:'#999',fontWeight:500}}>{l}</div>
-                </div>
-              ))}
-            </div>
-            <a href="#access"><button className="btn-primary">Get free beta access →</button></a>
+      {/* ══ ADAN PROOF ══ */}
+<section style={{padding:isMobile?'60px 16px':'100px 48px',background:'#fff'}}>
+  <div style={{maxWidth:1100,margin:'0 auto',display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:isMobile?32:64,alignItems:'center'}}>
+    <div>
+      <div style={{fontSize:12,fontWeight:700,color:'#DC143C',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:16}}>Real world case study</div>
+      <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(24px,3vw,40px)',fontWeight:800,letterSpacing:'-0.8px',marginBottom:20,lineHeight:1.15}}>
+        1,000+ Dogs Adopted.<br/>
+        <span style={{color:'#DC143C'}}>Every appeal voiced by Swor AI.</span>
+      </h2>
+      <p style={{fontSize:15,color:'#6e6e73',lineHeight:1.75,marginBottom:40,maxWidth:440}}>
+        Adopt a Dog Nepal uses Swor AI voices — primarily Priyanka and Dhurundhar — to narrate every dog adoption appeal video. Over 500 videos produced. Zero studio. Zero voice artist. Just Swor AI and a mission to save lives.
+      </p>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:36}}>
+        {[
+          ['500+','Adoption videos made with Swor AI'],
+          ['1,000+','Dogs successfully adopted'],
+          ['90K+','Weekly views across social media'],
+          ['0','Studio costs — fully AI powered'],
+        ].map(([n,l])=>(
+          <div key={n} style={{background:'#f5f5f7',borderRadius:14,padding:'18px 16px'}}>
+            <div style={{fontFamily:'Sora,sans-serif',fontSize:26,fontWeight:800,color:'#DC143C',marginBottom:4}}>{n}</div>
+            <div style={{fontSize:12,color:'#999',fontWeight:500}}>{l}</div>
           </div>
-          <div style={{position:'relative'}}>
-            <div style={{borderRadius:24,overflow:'hidden',boxShadow:'0 24px 60px rgba(0,0,0,.12)',aspectRatio:'9/16',maxWidth:360,margin:'0 auto'}}>
-              <iframe src="https://www.tiktok.com/embed/v2/7625496104615890206" style={{width:'100%',height:'100%',border:'none'}} allowFullScreen allow="encrypted-media" loading="lazy" />
-            </div>
-            <div style={{marginTop:12,background:'#f5f5f7',borderRadius:12,padding:'12px 16px',display:'flex',alignItems:'center',gap:10}}>
-              <div style={{width:9,height:9,borderRadius:'50%',background:'#34C759',flexShrink:0}} />
-              <div>
-                <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f'}}>@seemaandgeetatwins</div>
-                <div style={{fontSize:11,color:'#999'}}>Nepal's first virtual influencer · 54M+ views</div>
-              </div>
-            </div>
-          </div>
+        ))}
+      </div>
+      <div style={{background:'rgba(220,20,60,.04)',border:'1px solid rgba(220,20,60,.12)',borderRadius:14,padding:'16px 20px',marginBottom:32}}>
+        <p style={{fontSize:13,color:'#555',lineHeight:1.75,margin:0,fontStyle:'italic'}}>
+          "We produce adoption appeal videos daily for stray and rescued dogs across Nepal. Swor AI lets us create emotional, studio-quality Nepali narration in minutes — helping us reach more adopters and save more lives."
+        </p>
+        <div style={{fontSize:12,fontWeight:700,color:'#DC143C',marginTop:8}}>— Adopt a Dog Nepal · adoptadognepal.com</div>
+      </div>
+      <a href="/voiceover"><button className="btn-primary">Start creating for free →</button></a>
+    </div>
+    <div style={{position:'relative'}}>
+      <div style={{borderRadius:24,overflow:'hidden',boxShadow:'0 24px 60px rgba(0,0,0,.12)',aspectRatio:'9/16',maxWidth:360,margin:'0 auto'}}>
+        <iframe
+          src="https://www.instagram.com/p/DZppPXfz4zt/embed"
+          style={{width:'100%',height:'100%',border:'none'}}
+          allowFullScreen
+          loading="lazy"
+        />
+      </div>
+      <div style={{marginTop:12,background:'#f5f5f7',borderRadius:12,padding:'12px 16px',display:'flex',alignItems:'center',gap:10}}>
+        <div style={{width:9,height:9,borderRadius:'50%',background:'#34C759',flexShrink:0}} />
+        <div>
+          <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f'}}>@adoptadognepal</div>
+          <div style={{fontSize:11,color:'#999'}}>1,000+ dogs adopted · Powered by Swor AI voices</div>
         </div>
-      </section>
+      </div>
+    </div>
+  </div>
+</section>
 
 
       {/* ══ PRICING SECTION ══ */}
