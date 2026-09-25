@@ -260,23 +260,23 @@ const filtered = ALL_VOICES.filter(v => {
 
           {/* LEFT */}
           <div>
-            <div className="fu fu1" style={{fontSize:12,fontWeight:700,color:'#888',letterSpacing:'0.04em',marginBottom:18,lineHeight:1.6}}>
-             Nepal's #1 Nepali Text to Speech &{' '}
-              <span style={{color:'#DC143C',fontFamily:'Noto Sans Devanagari, sans-serif'}}>नेपाली</span>{' '}
-              AI Voiceover Generator
-            </div>
-            <h1 className="fu fu2" style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?'20px':'clamp(28px,3.8vw,50px)',fontWeight:800,lineHeight:1.15,letterSpacing:'-1.2px',marginBottom:20,color:'#1d1d1f'}}>
-              Hyper realistic Nepali AI<br />
-              voice generator that{' '}
-              <span style={{color:'#DC143C',fontStyle:'italic'}}>captivates</span><br />
-              your audience
-            </h1>
-            <p className="fu fu3" style={{fontSize:16,color:'#6e6e73',lineHeight:1.75,marginBottom:32,maxWidth:440}}>
-              Right now, adding{' '}
-              <strong style={{color:'#1d1d1f',fontFamily:'Noto Sans Devanagari, sans-serif'}}>नेपाली</strong>{' '}
-              subtitles and voiceovers to your videos takes hours.
-              Swor AI does it in seconds.
-            </p>
+          <div className="fu fu1" style={{fontSize:12,fontWeight:700,color:'#888',letterSpacing:'0.04em',marginBottom:18,lineHeight:1.6}}>
+  Nepal's #1 Nepali AI Voice Generator &amp; Text to Speech Platform
+</div>
+<h1 className="fu fu2" style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?'20px':'clamp(28px,3.8vw,50px)',fontWeight:800,lineHeight:1.15,letterSpacing:'-1.2px',marginBottom:20,color:'#1d1d1f'}}>
+  Build your audience in Nepali.<br/>
+  <span style={{color:'#DC143C',fontStyle:'italic'}}>No mic. No studio.</span><br/>
+  No retakes.
+</h1>
+<p className="fu fu3" style={{fontSize:16,color:'#6e6e73',lineHeight:1.75,marginBottom:32,maxWidth:440}}>
+  Swor AI is Nepal's fastest{' '}
+  <strong style={{color:'#1d1d1f'}}>Nepali AI voice generator</strong>{' '}
+  and{' '}
+  <strong style={{color:'#1d1d1f'}}>Nepali text to speech</strong>{' '}
+  platform. Turn raw{' '}
+  <span style={{fontFamily:'Noto Sans Devanagari, sans-serif',color:'#1d1d1f'}}>देवनागरी</span>{' '}
+  text into studio-grade Nepali voiceovers in under 10 seconds — for faceless YouTube channels, TikTok reels, and high-converting Nepali ads.
+</p>
             {/* Music announcement */}
           <div style={{display:'flex',alignItems:'center',gap:12,background:'linear-gradient(135deg,#5B2D9E,#7B3FBE)',border:'1px solid rgba(107,63,190,.4)',borderRadius:14,padding:'14px 20px',marginBottom:20,flexWrap:'wrap',boxShadow:'0 4px 20px rgba(107,63,190,.25)'}}>
               <span style={{fontSize:22,flexShrink:0}}>🎵</span>
