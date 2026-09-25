@@ -1076,6 +1076,22 @@ const filtered = ALL_VOICES.filter(v => {
           "@type": "Answer",
           "text": "Yes, Swor AI supports seamless local digital payments via eSewa, Khalti, and mobile banking, eliminating the need for international USD cards."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use Swor AI to make money from a faceless YouTube or TikTok channel in Nepal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. All audio generated on Swor AI includes a 100% commercial usage license. Creators can monetize Nepali voiceovers across YouTube AdSense, Facebook in-stream ads, TikTok Creator Rewards, and brand sponsorships without copyright strikes or voice talent royalties."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why should I use AI voiceover instead of recording my own voice?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Swor AI eliminates the high equipment costs of condenser microphones, room acoustic treatments, and hours spent cutting out background noise and retakes. Creators can generate clean, studio-grade Nepali narration in under 10 seconds, allowing daily content publishing with zero voice fatigue."
+        }
       }
     ]
   })}}
@@ -1126,9 +1142,17 @@ const filtered = ALL_VOICES.filter(v => {
           q:'Can I pay with eSewa or Khalti?',
           a:'Yes. Swor AI supports seamless local digital payments via eSewa, Khalti, and Nepali bank transfers — no international USD card needed.'
         },
-        {
+               {
           q:'Can I create a faceless Nepali YouTube channel with Swor AI?',
           a:'Absolutely. Swor AI is the go-to tool for faceless Nepali YouTube channels. Generate professional narration for documentary, educational, and entertainment channels without showing your face or recording your voice.'
+        },
+        {
+          q:'Can I use Swor AI to make money from a faceless YouTube or TikTok channel in Nepal?',
+          a:'Yes. All audio generated on Swor AI includes a 100% commercial usage license. Creators can monetize Nepali voiceovers across YouTube AdSense, Facebook in-stream ads, TikTok Creator Rewards, and brand sponsorships without copyright strikes or voice talent royalties.'
+        },
+        {
+          q:'Why should I use AI voiceover instead of recording my own voice?',
+          a:'Swor AI eliminates the high equipment costs of condenser microphones, room acoustic treatments, and hours spent cutting out background noise and retakes. Creators can generate clean, studio-grade Nepali narration in under 10 seconds, allowing daily content publishing with zero voice fatigue.'
         },
       ].map((faq,i) => (
         <article
