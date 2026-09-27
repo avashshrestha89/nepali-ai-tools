@@ -1,8 +1,14 @@
 import fetch from 'node-fetch'
+import { Redis } from '@upstash/redis'
+
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN,
+})
 
 const PREVIEW_CHAR_LIMIT = 200
-const previewTimestamps = new Map()
-const PREVIEW_COOLDOWN_MS = 30000
+const PREVIEW_COOLDOWN_SECONDS = 86400 // 24 hours
+const MAX_PREVIEWS_PER_DAY = 3
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -10,18 +16,29 @@ export default async function handler(req, res) {
   }
 
   const { text, voiceId } = req.body
-
   if (!text || !voiceId) {
     return res.status(400).json({ error: 'Missing text or voice' })
   }
 
-  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
-  const lastPreview = previewTimestamps.get(ip)
-  if (lastPreview && Date.now() - lastPreview < PREVIEW_COOLDOWN_MS) {
-    const waitSeconds = Math.ceil((PREVIEW_COOLDOWN_MS - (Date.now() - lastPreview)) / 1000)
-    return res.status(429).json({ error: `Please wait ${waitSeconds} seconds before previewing again.` })
+  const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket.remoteAddress
+  const redisKey = `preview:${ip}`
+
+  // Check how many previews this IP has done today
+  const count = await redis.get(redisKey)
+  const currentCount = count ? parseInt(count) : 0
+
+  if (currentCount >= MAX_PREVIEWS_PER_DAY) {
+    return res.status(429).json({ 
+      error: 'Daily free preview limit reached. Sign up for a pack to continue generating voiceovers.' 
+    })
   }
-  previewTimestamps.set(ip, Date.now())
+
+  // Increment counter — expires in 24 hours
+  if (currentCount === 0) {
+    await redis.setex(redisKey, PREVIEW_COOLDOWN_SECONDS, 1)
+  } else {
+    await redis.incr(redisKey)
+  }
 
   const previewText = text.trim().slice(0, PREVIEW_CHAR_LIMIT)
 
@@ -44,7 +61,6 @@ export default async function handler(req, res) {
             similarity_boost: 0.75,
             style: 0.4,
             use_speaker_boost: true,
-          
           },
         }),
       }
@@ -61,6 +77,6 @@ export default async function handler(req, res) {
     return res.send(audioBytes)
 
   } catch (error) {
-    return res.status(500).json({ error: 'Preview failed. Please try again.' })
+    return res.status(500).json({ error: 'Preview generation failed. Please try again.' })
   }
 }
