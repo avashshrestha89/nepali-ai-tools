@@ -8,7 +8,7 @@ const redis = new Redis({
 
 const PREVIEW_CHAR_LIMIT = 200
 const PREVIEW_COOLDOWN_SECONDS = 86400 // 24 hours
-const MAX_PREVIEWS_PER_DAY = 3
+const MAX_PREVIEWS_PER_DAY = 1
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
