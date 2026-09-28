@@ -38,6 +38,30 @@ export default async function handler(req, res) {
   if (!DEMO_VOICES.includes(voiceId)) {
     return res.status(400).json({ error: 'Invalid voice selected.' })
   }
+    // Normalize email (strip dots and + for Gmail)
+  function normalizeEmail(email) {
+    const [local, domain] = email.toLowerCase().trim().split('@')
+    if (!domain) return email
+    if (domain === 'gmail.com' || domain === 'googlemail.com') {
+      const cleanLocal = local.replace(/\./g, '').split('+')[0]
+      return `${cleanLocal}@gmail.com`
+    }
+    return `${local}@${domain}`
+  }
+
+  const normalizedEmail = normalizeEmail(email)
+
+  // Check Redis blocklist
+  const isBlocked = await redis.sismember('blocked_emails', normalizedEmail)
+  if (isBlocked) {
+    return res.status(403).json({ error: 'Access denied.' })
+  }
+
+  // Check if this email already used demo today
+  const alreadyUsed = await redis.get(`demo:email:${normalizedEmail}`)
+  if (alreadyUsed) {
+    return res.status(429).json({ error: 'Free demo already claimed for this email. Please purchase a pack to continue.' })
+  }
 
   // Run Redis save + Resend email + ElevenLabs ALL in parallel
   const [_, __, audioResponse] = await Promise.all([
@@ -132,6 +156,9 @@ export default async function handler(req, res) {
   }
 
   const audioBuffer = await audioResponse.arrayBuffer()
+   // Mark email as used (24 hours)
+  await redis.setex(`demo:email:${normalizedEmail}`, 86400, '1')
+
   res.setHeader('Content-Type', 'audio/mpeg')
   res.setHeader('Cache-Control', 'no-store')
   return res.send(Buffer.from(audioBuffer))
