@@ -757,7 +757,7 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#fff',lineHeight:1,marginBottom:4}}>NPR 2,500</div>
     <div style={{fontSize:13,color:'rgba(255,255,255,.6)',marginBottom:12}}>$19.99 USD — One time, forever</div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,255,255,.15)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#fff',marginBottom:16}}>
-      Lifetime Access
+      50,000 Credits — One Time Payment
     </div>
     <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
       {[
@@ -774,7 +774,7 @@ const filtered = ALL_VOICES.filter(v => {
       ))}
     </div>
     <div style={{fontSize:13,fontWeight:700,color:'rgba(255,255,255,.8)',marginBottom:16,background:'rgba(255,255,255,.1)',padding:'8px 12px',borderRadius:8}}>
-      One payment. Lifetime access. Never pay again.
+   Credits are only deducted when you use them. They never expire automatically — no monthly resets, no pressure.
     </div>
     <div style={{display:'flex',flexDirection:'column',gap:8}}>
       <a href="https://wa.me/19255379425?text=Hi! I want to buy the Swor AI Founders Lifetime Pack (NPR 2,500 / $19.99 USD). Nepal: eSewa/Khalti. International: PayPal @sworai. Please confirm."
