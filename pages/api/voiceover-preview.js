@@ -20,9 +20,37 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing text or voice' })
   }
 
-  const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket.remoteAddress
-  const redisKey = `preview:${ip}`
+ const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket.remoteAddress
+const ja4 = req.headers['x-vercel-ja4-digest'] || 'unknown'
 
+// Get or create device cookie
+let deviceId = req.cookies?.['_swor_device_id']
+if (!deviceId) {
+  deviceId = Math.random().toString(36).substr(2) + Date.now().toString(36)
+}
+
+// Check ALL identifiers
+const [ipCount, deviceCount, ja4Count] = await Promise.all([
+  redis.get(`preview:ip:${ip}`),
+  redis.get(`preview:device:${deviceId}`),
+  redis.get(`preview:ja4:${ja4}`),
+])
+
+if (ipCount >= 1 || deviceCount >= 1 || ja4Count >= 1) {
+  return res.status(429).json({ 
+    error: 'Free preview limit reached. Purchase a pack to continue.' 
+  })
+}
+
+// Set all limits
+await Promise.all([
+  redis.setex(`preview:ip:${ip}`, 86400, 1),
+  redis.setex(`preview:device:${deviceId}`, 2592000, 1), // 30 days
+  redis.setex(`preview:ja4:${ja4}`, 86400, 1),
+])
+
+// Set device cookie on response
+res.setHeader('Set-Cookie', `_swor_device_id=${deviceId}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=31536000`)
   // Check how many previews this IP has done today
   const count = await redis.get(redisKey)
   const currentCount = count ? parseInt(count) : 0
