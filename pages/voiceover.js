@@ -657,15 +657,15 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
             </div>
           )}
 
-  {/* Emotion tags */}
-<div style={{background:'#F8F9FF',border:'1.5px solid #E8EEFF',borderRadius:12,padding:'14px 16px',marginBottom:12}}>
-<div
-  style={{display:'flex',alignItems:'center',justifyContent:'space-between',cursor:'pointer',marginBottom:proTipsOpen?10:0}}
-  onClick={()=>setProTipsOpen(!proTipsOpen)}
->
-  <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase'}}>💡 Pro Tips — v4 Powered</div>
-  <div style={{fontSize:14,color:'#1976D2',fontWeight:700,transition:'transform .2s',transform:proTipsOpen?'rotate(180deg)':'rotate(0deg)'}}>▾</div>
-</div>  {proTipsOpen && <div style={{display:'flex',flexDirection:'column',gap:10}}>
+{/* Emotion tags & Pro Tips */}
+<div style={{background:'#F8F9FF',border:'1.5px solid #90CAF9',borderRadius:12,padding:'16px',marginBottom:12}}>
+  <div style={{marginBottom:14,borderBottom:'1px solid #E8EEFF',paddingBottom:8}}>
+    <div style={{fontSize:12,fontWeight:800,color:'#1976D2',letterSpacing:'0.05em',textTransform:'uppercase'}}>
+      💡 Pro Tips — v4 Powered
+    </div>
+  </div>  
+  
+  <div style={{display:'flex',flexDirection:'column',gap:12}}>
 
     {/* Rule 1 */}
     <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
@@ -834,11 +834,11 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
       • एउटै sentence मा बढीमा <span style={{fontWeight:700}}>2 tags</span> मात्र राख्नुहोस्
     </div>
 
-    {/* Credits note */}
-    <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
-      <span style={{fontWeight:700,color:'#1976D2'}}>4. Credits —</span> Generate गर्दा Credits घट्छन्। Generate गर्नु अघि आफ्नो balance check गर्नुहोस्।
-</div>
-    </div>}
+   {/* Credits note */}
+      <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
+        <span style={{fontWeight:700,color:'#1976D2'}}>4. Credits —</span> Generate गर्दा Credits घट्छन्। Generate गर्नु अघि आफ्नो balance check गर्नुहोस्।
+      </div>
+    </div>
         </div>
       </div>
 
