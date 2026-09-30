@@ -655,54 +655,155 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
             </div>
           )}
 
-          {/* Pro Tips */}
-          <div style={{background:'#F8F9FF',border:'1.5px solid #E8EEFF',borderRadius:12,padding:'14px 16px',marginBottom:12}}>
-            <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>💡 Pro Tips</div>
-            <div style={{display:'flex',flexDirection:'column',gap:8}}>
-              <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
-                <span style={{fontWeight:700,color:'#1976D2'}}>1. Devanagari only —</span> Always type in नेपाली script, not Roman. Example: <span style={{fontFamily:'Noto Sans Devanagari,sans-serif',color:'#34C759',fontWeight:600}}>नमस्ते</span> not "Namaste"
-              </div>
-              <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
-                <span style={{fontWeight:700,color:'#1976D2'}}>2. Emotion tags —</span> Add emotion tags in <span style={{fontWeight:700}}>[brackets]</span> to control how the voice sounds:
-                <div style={{display:'flex',flexWrap:'wrap',gap:5,marginTop:6}}>
-                  {['[excited]','[whispers]','[laughs]','[sad]','[calm]','[sighs]','[nervous]','[angry]','[frustrated]','[sorrowful]','[happy]','[crying]','[gasps]','[gulps]','[hesitates]','[stammers]','[pauses]','[cheerfully]','[flatly]','[deadpan]','[playfully]','[shouts]','[sarcastic]','[curious]','[tired]','[resigned tone]','[regretful]','[serious]','[quietly]','[slowly]'].map(tag => (
-                    <span key={tag} style={{background:'#E8EEFF',color:'#1976D2',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600}}>{tag}</span>
-                  ))}
-                </div>
-              </div>
-              <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
-                <span style={{fontWeight:700,color:'#1976D2'}}>3. Examples —</span>
-                <div style={{display:'flex',flexDirection:'column',gap:6,marginTop:6}}>
-                  <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
-                    <div style={{fontSize:10,fontWeight:700,color:'#DC143C',marginBottom:4}}>🎬 REELS / TIKTOK</div>
-                    <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
-                      [excited] साथीहरू, आज म तपाईंलाई एउटा कमालको कुरा बताउँछु! [whispers] यो कुरा धेरैलाई थाहा छैन। [laughs] तर अब तपाईंलाई थाहा हुन्छ!
-                    </div>
-                  </div>
-                 <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
-  <div style={{fontSize:10,fontWeight:700,color:'#4E342E',marginBottom:4}}>🎙️ DOCUMENTARY</div>
-  <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
-    [calm] नेपालको इतिहास हजारौं वर्ष पुरानो छ। [sorrowful] तर यति सुन्दर देशका मान्छेहरूले धेरै कठिनाइ भोगेका छन्। [sighs] तैपनि, हामी सधैं उठ्छौं।
-  </div>
-</div>
+  {/* Emotion tags */}
+<div style={{background:'#F8F9FF',border:'1.5px solid #E8EEFF',borderRadius:12,padding:'14px 16px',marginBottom:12}}>
+  <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>💡 Pro Tips — v4 Powered</div>
+  <div style={{display:'flex',flexDirection:'column',gap:10}}>
 
-{/* ASMR EXAMPLE */}
-<div style={{marginTop:12}}>
-  <div style={{fontSize:10,fontWeight:700,color:'#26A69A',marginBottom:4}}>🎧 ASMR & MEDITATION</div>
-  <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
-    [Breathy Whisper] बिस्तारै आँखा बन्द गर्नुहोस्...<br/>
-    [Pause - 0.4s]<br/>
-    [Pure ASMR Whisper] अब दिनभरिको थकान बिर्सिएर मीठो निद्रामा हराउने समय भयो।
-  </div>
-</div>
+    {/* Rule 1 */}
+    <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
+      <span style={{fontWeight:700,color:'#1976D2'}}>1. Devanagari only —</span> सधैं नेपाली फन्टमा टाइप गर्नुहोस्।{' '}
+      <span style={{fontFamily:'Noto Sans Devanagari,sans-serif',color:'#34C759',fontWeight:600}}>नमस्ते</span>{' '}✅{' '}
+      <span style={{color:'#DC143C',fontWeight:600}}>"Namaste"</span> ❌
+    </div>
 
-</div>
-              </div>
-              <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
-                <span style={{fontWeight:700,color:'#1976D2'}}>4. Credits —</span> Credits are deducted each time you generate. Check your balance before generating to ensure you have enough.
-              </div>
-            </div>
+    {/* Rule 2 */}
+    <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
+      <span style={{fontWeight:700,color:'#1976D2'}}>2. Emotion tags —</span> शब्दको अगाडि <span style={{fontWeight:700}}>[bracket]</span> मा ट्याग राख्नुहोस्। जस्तै: <span style={{background:'#E8EEFF',color:'#1976D2',padding:'1px 7px',borderRadius:20,fontSize:11,fontWeight:600}}>[excited]</span> नमस्ते साथीहरू!
+    </div>
+
+    {/* Tag Categories */}
+    <div style={{display:'flex',flexDirection:'column',gap:8}}>
+
+      {/* Emotions */}
+      <div>
+        <div style={{fontSize:10,fontWeight:700,color:'#DC143C',marginBottom:5}}>🔥 भाव (Emotions)</div>
+        <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
+          {['[excited]','[calm]','[serious]','[sad]','[angry]','[nervous]','[curious]','[sarcastic]','[mischievously]','[happy]','[tired]','[frustrated]','[sorrowful]','[deadpan]','[whispers]','[shouts]','[slowly]','[quietly]'].map(tag => (
+            <span key={tag} onClick={() => {
+              const ta = document.querySelector('textarea')
+              if (ta) {
+                const start = ta.selectionStart
+                const val = ta.value
+                const newVal = val.slice(0, start) + tag + ' ' + val.slice(start)
+                ta.value = newVal
+                ta.focus()
+                ta.setSelectionRange(start + tag.length + 1, start + tag.length + 1)
+              }
+            }} style={{background:'#E8EEFF',color:'#1976D2',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600,cursor:'pointer'}}>{tag}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* Reactions */}
+      <div>
+        <div style={{fontSize:10,fontWeight:700,color:'#FF9500',marginBottom:5}}>😂 हाँसो / प्रतिक्रिया (Reactions)</div>
+        <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
+          {['[laughs]','[starts laughing]','[laughs harder]','[wheezing]','[snorts]','[sighs]','[exhales]','[gasps]','[crying]','[hesitates]','[stammers]','[gulps]','[swallows]'].map(tag => (
+            <span key={tag} onClick={() => {
+              const ta = document.querySelector('textarea')
+              if (ta) {
+                const start = ta.selectionStart
+                const val = ta.value
+                const newVal = val.slice(0, start) + tag + ' ' + val.slice(start)
+                ta.value = newVal
+                ta.focus()
+                ta.setSelectionRange(start + tag.length + 1, start + tag.length + 1)
+              }
+            }} style={{background:'#FFF3E0',color:'#E65100',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600,cursor:'pointer'}}>{tag}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* Sound Effects */}
+      <div>
+        <div style={{fontSize:10,fontWeight:700,color:'#7B2FBE',marginBottom:5}}>💥 Sound Effects (नयाँ!)</div>
+        <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
+          {['[applause]','[clapping]','[explosion]','[gunshot]','[woo]'].map(tag => (
+            <span key={tag} onClick={() => {
+              const ta = document.querySelector('textarea')
+              if (ta) {
+                const start = ta.selectionStart
+                const val = ta.value
+                const newVal = val.slice(0, start) + tag + ' ' + val.slice(start)
+                ta.value = newVal
+                ta.focus()
+                ta.setSelectionRange(start + tag.length + 1, start + tag.length + 1)
+              }
+            }} style={{background:'#F3E5F5',color:'#7B2FBE',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600,cursor:'pointer'}}>{tag}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* Accents */}
+      <div>
+        <div style={{fontSize:10,fontWeight:700,color:'#2E7D32',marginBottom:5}}>🎭 Accent (लवज)</div>
+        <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
+          {['[strong Nepali accent]','[strong Indian accent]','[strong British accent]','[sings]'].map(tag => (
+            <span key={tag} onClick={() => {
+              const ta = document.querySelector('textarea')
+              if (ta) {
+                const start = ta.selectionStart
+                const val = ta.value
+                const newVal = val.slice(0, start) + tag + ' ' + val.slice(start)
+                ta.value = newVal
+                ta.focus()
+                ta.setSelectionRange(start + tag.length + 1, start + tag.length + 1)
+              }
+            }} style={{background:'#E8F5E9',color:'#2E7D32',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600,cursor:'pointer'}}>{tag}</span>
+          ))}
+        </div>
+      </div>
+
+    </div>
+
+    {/* Examples */}
+    <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
+      <span style={{fontWeight:700,color:'#1976D2'}}>3. Examples — Copy गरेर try गर्नुहोस्!</span>
+      <div style={{display:'flex',flexDirection:'column',gap:6,marginTop:6}}>
+        <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
+          <div style={{fontSize:10,fontWeight:700,color:'#DC143C',marginBottom:4}}>🎬 REELS / TIKTOK</div>
+          <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
+            [applause] बधाई छ साथीहरू! [excited] नेपालमै पहिलो पटक यस्तो कमालको AI टुल आएको छ। [laughs] अब भिडियो बनाउन माइक किन्नै पर्दैन! [mischievously] अरूले थाहै पाउँदैनन् कि यो असली मान्छे हो कि AI।
           </div>
+        </div>
+        <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
+          <div style={{fontSize:10,fontWeight:700,color:'#4E342E',marginBottom:4}}>🎙️ DOCUMENTARY / SUSPENSE</div>
+          <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
+            [whispers] मध्यरातको ठीक दुई बजे, त्यो पुरानो ढोका बिस्तारै खुल्यो। [gulps] कोठाभित्र कसैको पाइलाको आवाज आयो। [explosion] अनि अचानक एउटा ठूलो आवाजले पूरै सन्नाटा तोडिदियो! [serious] के त्यो कुनै षड्यन्त्र थियो, या केवल संयोग?
+          </div>
+        </div>
+        <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
+          <div style={{fontSize:10,fontWeight:700,color:'#26A69A',marginBottom:4}}>🛒 BUSINESS / AD</div>
+          <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
+            [curious] के तपाईँ पनि आफ्नो व्यापार बढाउन नयाँ तरिका खोज्दै हुनुहुन्छ? [excited] Swor AI ले तपाईँको विज्ञापनलाई दिन्छ एकदमै प्रोफेसनल स्टुडियो आवाज। [clapping] आजै साइन अप गर्नुहोस् र आफ्नो पहिलो अफर क्लेम गर्नुहोस्!
+          </div>
+        </div>
+        <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
+          <div style={{fontSize:10,fontWeight:700,color:'#7B2FBE',marginBottom:4}}>🎧 ASMR & MEDITATION</div>
+          <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
+            [whispers] बिस्तारै आँखा बन्द गर्नुहोस्... [sighs] अब दिनभरिको थकान बिर्सिएर मीठो निद्रामा हराउने समय भयो।
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Quick notes */}
+    <div style={{background:'#FFFDE7',border:'1px solid rgba(255,193,7,.3)',borderRadius:8,padding:'8px 12px',fontSize:11,color:'#555',lineHeight:1.7}}>
+      <span style={{fontWeight:700,color:'#F57F17'}}>⚡ Quick Notes:</span><br/>
+      • Tags भित्रका अक्षरहरूले पनि Credits प्रयोग गर्छन् (१ अक्षर = १ Credit)<br/>
+      • धेरै emotion निकाल्न Stability <span style={{fontWeight:700}}>45–50%</span> मा राख्नुहोस्<br/>
+      • एउटै sentence मा बढीमा <span style={{fontWeight:700}}>2 tags</span> मात्र राख्नुहोस्
+    </div>
+
+    {/* Credits note */}
+    <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
+      <span style={{fontWeight:700,color:'#1976D2'}}>4. Credits —</span> Generate गर्दा Credits घट्छन्। Generate गर्नु अघि आफ्नो balance check गर्नुहोस्।
+    </div>
+
+  </div>
+</div>
+
         </div>
         {/* RIGHT PANEL */}
         <div style={{display:'flex',flexDirection:'column',gap:12}}>
