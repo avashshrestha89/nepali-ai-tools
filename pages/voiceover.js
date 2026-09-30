@@ -826,11 +826,10 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
       </div>
     </div>
 
-    {/* Quick notes */}
+{/* Quick notes */}
     <div style={{background:'#FFFDE7',border:'1px solid rgba(255,193,7,.3)',borderRadius:8,padding:'8px 12px',fontSize:11,color:'#555',lineHeight:1.7}}>
       <span style={{fontWeight:700,color:'#F57F17'}}>⚡ Quick Notes:</span><br/>
       • Tags भित्रका अक्षरहरूले पनि Credits प्रयोग गर्छन् (१ अक्षर = १ Credit)<br/>
-      • धेरै emotion निकाल्न Stability <span style={{fontWeight:700}}>45–50%</span> मा राख्नुहोस्<br/>
       • एउटै sentence मा बढीमा <span style={{fontWeight:700}}>2 tags</span> मात्र राख्नुहोस्
     </div>
 
