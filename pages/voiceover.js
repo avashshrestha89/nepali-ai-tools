@@ -955,7 +955,7 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
                 <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:12}}>
                   Get Full Access
                 </div>
-                {proTipsOpen && <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                             <div style={{display:'flex',flexDirection:'column',gap:10}}>
                   {PACKS.map(p => (
                     <div key={p.key} style={{
                       borderRadius:10,padding:'12px 14px',border:'1.5px solid',
