@@ -837,29 +837,30 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
     {/* Credits note */}
     <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
       <span style={{fontWeight:700,color:'#1976D2'}}>4. Credits —</span> Generate गर्दा Credits घट्छन्। Generate गर्नु अघि आफ्नो balance check गर्नुहोस्।
-    </div>
-  </div>}
+</div>
+    </div>}
         </div>
+      </div>
 
-        {/* RIGHT PANEL */}
-        <div style={{display:'flex',flexDirection:'column',gap:12}}>
+      {/* RIGHT PANEL */}
+      <div style={{display:'flex',flexDirection:'column',gap:12}}>
 
-          {/* Roman text warning */}
-          {text.length > 0 && /^[a-zA-Z\s.,!?]+$/.test(text) && (
-            <div style={{background:'#FFF8F0',border:'1px solid rgba(255,149,0,.3)',borderRadius:10,padding:'10px 14px',marginBottom:10,fontSize:13,color:'#B45309',fontWeight:500}}>
-              ⚠️ Devanagari script मा लेख्नुस् — "namaste" होइन "नमस्ते"
-              <div style={{display:'flex',flexDirection:'column',gap:5,marginTop:8}}>
-                <div style={{display:'flex',alignItems:'center',gap:8,fontSize:12}}>
-                  <span style={{color:'#34C759',fontWeight:700,fontSize:14}}>✓</span>
-                  <span style={{fontFamily:'Noto Sans Devanagari,sans-serif',color:'#34C759',fontWeight:600}}>नमस्ते! आज हामी एउटा नयाँ उत्पादन लिएर आएका छौं।</span>
-                </div>
-                <div style={{display:'flex',alignItems:'center',gap:8,fontSize:12}}>
-                  <span style={{color:'#DC143C',fontWeight:700,fontSize:14}}>✗</span>
-                  <span style={{color:'#DC143C',fontWeight:600}}>Namaste! Aaja hami euta naya utpadan liera aayeka chhau.</span>
-                </div>
+        {/* Roman text warning */}
+        {text.length > 0 && /^[a-zA-Z\s.,!?]+$/.test(text) && (
+          <div style={{background:'#FFF8F0',border:'1px solid rgba(255,149,0,.3)',borderRadius:10,padding:'10px 14px',marginBottom:10,fontSize:13,color:'#B45309',fontWeight:500}}>
+            ⚠️ Devanagari script मा लेख्नुस् — "namaste" होइन "नमस्ते"
+            <div style={{display:'flex',flexDirection:'column',gap:5,marginTop:8}}>
+              <div style={{display:'flex',alignItems:'center',gap:8,fontSize:12}}>
+                <span style={{color:'#34C759',fontWeight:700,fontSize:14}}>✓</span>
+                <span style={{fontFamily:'Noto Sans Devanagari,sans-serif',color:'#34C759',fontWeight:600}}>नमस्ते! आज हामी एउटा नयाँ उत्पादन लिएर आएका छौं।</span>
+              </div>
+              <div style={{display:'flex',alignItems:'center',gap:8,fontSize:12}}>
+                <span style={{color:'#DC143C',fontWeight:700,fontSize:14}}>✗</span>
+                <span style={{color:'#DC143C',fontWeight:600}}>Namaste! Aaja hami euta naya utpadan liera aayeka chhau.</span>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
 {/* Preview button */}
 {text.trim().length > 0 && (
