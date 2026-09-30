@@ -47,7 +47,7 @@ console.log('voiceover env check:', {
         },
 body: JSON.stringify({
   text: text.trim(),
-  model_id: 'eleven_v3',
+  model_id: 'eleven_v4',
   output_format: 'mp3_44100_64',
   voice_settings: {
     stability: 0.5,
