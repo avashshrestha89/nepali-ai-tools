@@ -841,8 +841,6 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
 
   </div>
 </div>
-
-        </div>
         {/* RIGHT PANEL */}
         <div style={{display:'flex',flexDirection:'column',gap:12}}>
 
