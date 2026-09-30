@@ -727,11 +727,11 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
               }
             }} style={{background:'#E8EEFF',color:'#1976D2',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600,cursor:'pointer'}}>{tag}</span>
           ))}
-        </div>
-      </div>
+             </div>
+      </div>}
 
       {/* Reactions */}
-      <div>
+      {(activeTagTab==='all'||activeTagTab==='reactions') && <div>
         <div style={{fontSize:10,fontWeight:700,color:'#FF9500',marginBottom:5}}>😂 हाँसो / प्रतिक्रिया (Reactions)</div>
         <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
           {['[laughs]','[starts laughing]','[laughs harder]','[wheezing]','[snorts]','[sighs]','[exhales]','[gasps]','[crying]','[hesitates]','[stammers]','[gulps]','[swallows]'].map(tag => (
@@ -747,11 +747,11 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
               }
             }} style={{background:'#FFF3E0',color:'#E65100',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600,cursor:'pointer'}}>{tag}</span>
           ))}
-        </div>
-      </div>
+         </div>
+      </div>}
 
       {/* Sound Effects */}
-      <div>
+      {(activeTagTab==='all'||activeTagTab==='sfx') && <div>
         <div style={{fontSize:10,fontWeight:700,color:'#7B2FBE',marginBottom:5}}>💥 Sound Effects (नयाँ!)</div>
         <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
           {['[applause]','[clapping]','[explosion]','[gunshot]','[woo]'].map(tag => (
@@ -767,11 +767,11 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
               }
             }} style={{background:'#F3E5F5',color:'#7B2FBE',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600,cursor:'pointer'}}>{tag}</span>
           ))}
-        </div>
-      </div>
+         </div>
+      </div>}
 
       {/* Accents */}
-      <div>
+      {(activeTagTab==='all'||activeTagTab==='accents') && <div>
         <div style={{fontSize:10,fontWeight:700,color:'#2E7D32',marginBottom:5}}>🎭 Accent (लवज)</div>
         <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
           {['[strong Nepali accent]','[strong Indian accent]','[strong British accent]','[sings]'].map(tag => (
@@ -788,7 +788,7 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
             }} style={{background:'#E8F5E9',color:'#2E7D32',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600,cursor:'pointer'}}>{tag}</span>
           ))}
         </div>
-      </div>
+      </div>}
 
     </div>
 
