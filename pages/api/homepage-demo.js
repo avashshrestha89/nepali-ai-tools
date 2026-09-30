@@ -139,7 +139,7 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           text: text.trim(),
-          model_id: 'eleven_v3',
+          model_id: 'eleven_v4',
           voice_settings: {
             stability: 0.5,
             similarity_boost: 0.75,
