@@ -552,9 +552,9 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
   </div>
 </div>
 {/* Style Presets */}
-<div style={{marginBottom:12}}>
-  <div style={{fontSize:12,fontWeight:700,color:'#555',marginBottom:8}}>
-    🎨 Style Presets — click to auto-add emotion tags
+<div style={{background:'#fff',border:'1.5px solid #e8e8ed',borderRadius:14,padding:'16px',marginBottom:12}}>
+  <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f',marginBottom:10}}>
+    🎨 Style Presets <span style={{fontSize:11,fontWeight:500,color:'#888'}}>— click to auto-add emotion tags</span>
   </div>
   <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
 {[
@@ -572,20 +572,20 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
         setText(p.tags + cleaned)
       }
     }}
-        style={{
-          padding:'6px 14px',borderRadius:20,border:'1.5px solid #e8e8ed',
-          background:'#f5f5f7',color:'#1d1d1f',
-          fontSize:12,fontWeight:600,cursor:'pointer',
-          transition:'all .15s',
-        }}
-        onMouseEnter={e => e.target.style.borderColor='#DC143C'}
-        onMouseLeave={e => e.target.style.borderColor='#e8e8ed'}
-      >
-        {p.label}
-      </button>
-    ))}
+    style={{
+      padding:'6px 14px',borderRadius:20,border:'1.5px solid #e8e8ed',
+      background:'#f5f5f7',color:'#1d1d1f',
+      fontSize:12,fontWeight:600,cursor:'pointer',
+      transition:'all .15s',
+    }}
+    onMouseEnter={e => e.target.style.borderColor='#DC143C'}
+    onMouseLeave={e => e.target.style.borderColor='#e8e8ed'}
+  >
+    {p.label}
+  </button>
+))}
   </div>
-  <div style={{fontSize:11,color:'#888',marginTop:6}}>
+  <div style={{fontSize:11,color:'#888',marginTop:12,borderTop:'1px solid #f0f0f0',paddingTop:10}}>
     💡 Type your script first, then click a preset to wrap it with emotion tags
   </div>
 </div>
