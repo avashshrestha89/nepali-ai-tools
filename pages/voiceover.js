@@ -202,6 +202,8 @@ export default function Voiceover() {
   const [isMobile, setIsMobile] = useState(false)
   const [session, setSession] = useState(null)
   const [text, setText] = useState('')
+  const [proTipsOpen, setProTipsOpen] = useState(false)
+const [activeTagTab, setActiveTagTab] = useState('all')
   const [selectedVoice, setSelectedVoice] = useState(VOICES[0])
   const [showVoicePanel, setShowVoicePanel] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -657,8 +659,13 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
 
   {/* Emotion tags */}
 <div style={{background:'#F8F9FF',border:'1.5px solid #E8EEFF',borderRadius:12,padding:'14px 16px',marginBottom:12}}>
-  <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>💡 Pro Tips — v4 Powered</div>
-  <div style={{display:'flex',flexDirection:'column',gap:10}}>
+<div
+  style={{display:'flex',alignItems:'center',justifyContent:'space-between',cursor:'pointer',marginBottom:proTipsOpen?10:0}}
+  onClick={()=>setProTipsOpen(!proTipsOpen)}
+>
+  <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase'}}>💡 Pro Tips — v4 Powered</div>
+  <div style={{fontSize:14,color:'#1976D2',fontWeight:700,transition:'transform .2s',transform:proTipsOpen?'rotate(180deg)':'rotate(0deg)'}}>▾</div>
+</div>  {proTipsOpen && <div style={{display:'flex',flexDirection:'column',gap:10}}>
 
     {/* Rule 1 */}
     <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
@@ -672,11 +679,39 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
       <span style={{fontWeight:700,color:'#1976D2'}}>2. Emotion tags —</span> शब्दको अगाडि <span style={{fontWeight:700}}>[bracket]</span> मा ट्याग राख्नुहोस्। जस्तै: <span style={{background:'#E8EEFF',color:'#1976D2',padding:'1px 7px',borderRadius:20,fontSize:11,fontWeight:600}}>[excited]</span> नमस्ते साथीहरू!
     </div>
 
-    {/* Tag Categories */}
-    <div style={{display:'flex',flexDirection:'column',gap:8}}>
+{/* Tab switcher */}
+<div style={{display:'flex',gap:6,flexWrap:'wrap',marginBottom:4}}>
+  {[
+    {id:'all',label:'All'},
+    {id:'emotions',label:'🔥 Emotions'},
+    {id:'reactions',label:'😂 Reactions'},
+    {id:'sfx',label:'💥 SFX'},
+    {id:'accents',label:'🎭 Accents'},
+  ].map(tab => (
+    <button
+      key={tab.id}
+      onClick={()=>setActiveTagTab(tab.id)}
+      style={{
+        background:activeTagTab===tab.id?'#1976D2':'#E8EEFF',
+        color:activeTagTab===tab.id?'#fff':'#1976D2',
+        border:'none',
+        padding:'4px 10px',
+        borderRadius:20,
+        fontSize:11,
+        fontWeight:700,
+        cursor:'pointer',
+      }}
+    >
+      {tab.label}
+    </button>
+  ))}
+</div>
 
-      {/* Emotions */}
-      <div>
+{/* Tag Categories */}
+<div style={{display:'flex',flexDirection:'column',gap:8}}>
+
+{/* Emotions */}
+{(activeTagTab==='all'||activeTagTab==='emotions') && <div>
         <div style={{fontSize:10,fontWeight:700,color:'#DC143C',marginBottom:5}}>🔥 भाव (Emotions)</div>
         <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
           {['[excited]','[calm]','[serious]','[sad]','[angry]','[nervous]','[curious]','[sarcastic]','[mischievously]','[happy]','[tired]','[frustrated]','[sorrowful]','[deadpan]','[whispers]','[shouts]','[slowly]','[quietly]'].map(tag => (
@@ -761,12 +796,15 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
     <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
       <span style={{fontWeight:700,color:'#1976D2'}}>3. Examples — Copy गरेर try गर्नुहोस्!</span>
       <div style={{display:'flex',flexDirection:'column',gap:6,marginTop:6}}>
-        <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
-          <div style={{fontSize:10,fontWeight:700,color:'#DC143C',marginBottom:4}}>🎬 REELS / TIKTOK</div>
-          <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
-            [applause] बधाई छ साथीहरू! [excited] नेपालमै पहिलो पटक यस्तो कमालको AI टुल आएको छ। [laughs] अब भिडियो बनाउन माइक किन्नै पर्दैन! [mischievously] अरूले थाहै पाउँदैनन् कि यो असली मान्छे हो कि AI।
-          </div>
-        </div>
+     <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
+  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:4}}>
+    <div style={{fontSize:10,fontWeight:700,color:'#DC143C'}}>🎬 REELS / TIKTOK</div>
+    <button onClick={()=>setText('[applause] बधाई छ साथीहरू! [excited] नेपालमै पहिलो पटक यस्तो कमालको AI टुल आएको छ। [laughs] अब भिडियो बनाउन माइक किन्नै पर्दैन! [mischievously] अरूले थाहै पाउँदैनन् कि यो असली मान्छे हो कि AI।')} style={{background:'#DC143C',color:'#fff',border:'none',padding:'3px 10px',borderRadius:20,fontSize:10,fontWeight:700,cursor:'pointer'}}>Use →</button>
+  </div>
+  <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
+    [applause] बधाई छ साथीहरू! [excited] नेपालमै पहिलो पटक यस्तो कमालको AI टुल आएको छ। [laughs] अब भिडियो बनाउन माइक किन्नै पर्दैन! [mischievously] अरूले थाहै पाउँदैनन् कि यो असली मान्छे हो कि AI।
+  </div>
+</div>
         <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
           <div style={{fontSize:10,fontWeight:700,color:'#4E342E',marginBottom:4}}>🎙️ DOCUMENTARY / SUSPENSE</div>
           <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
@@ -919,7 +957,7 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
                 <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:12}}>
                   Get Full Access
                 </div>
-                <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                {proTipsOpen && <div style={{display:'flex',flexDirection:'column',gap:10}}>
                   {PACKS.map(p => (
                     <div key={p.key} style={{
                       borderRadius:10,padding:'12px 14px',border:'1.5px solid',
