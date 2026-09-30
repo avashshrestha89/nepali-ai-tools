@@ -982,7 +982,8 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
                   ))}
                 </div>
               </div>
-            </>
+                  </>
+          )}
 
           {/* Voice info card — only show when user has credits */}
           {!hasNoCredits && (
