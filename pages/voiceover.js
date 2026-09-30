@@ -838,9 +838,6 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
     <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
       <span style={{fontWeight:700,color:'#1976D2'}}>4. Credits —</span> Generate गर्दा Credits घट्छन्। Generate गर्नु अघि आफ्नो balance check गर्नुहोस्।
     </div>
-
-  </div>
-</div>
         {/* RIGHT PANEL */}
         <div style={{display:'flex',flexDirection:'column',gap:12}}>
 
