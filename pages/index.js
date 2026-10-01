@@ -8,12 +8,48 @@ import HomepageDemoBox from '../components/HomepageDemoBox'
 const FORMSPREE_ID = 'xaqkjezd'
 
 const FEATURED_VOICES = [
-  { voice_id: '1zUSi8LeHs9M2mV8X6YS', name: 'Priyanka', label: 'Romantic', photo: '/priyanka.jpg' },
-  { voice_id: 'LK1Sn9bmEczSFI65RF0v', name: 'Sunita', label: 'Nepali Aunty', photo: '/sunita.jpg' },
-  { voice_id: 'FszY75334ExxVmg7yl0U', name: 'Dhurundhar', label: 'Narration', photo: '/dhurundhar.jpg' },
-  { voice_id: 'ecp3DWciuUyW7BYM7II1', name: 'Anika', label: 'Social Media', photo: '/anika.jpg' },
-  { voice_id: 'rHhok70RpCi5GgianXRA', name: 'Rudra', label: 'Romantic Male', photo: '/rudra.jpg' },
-  { voice_id: '2W8HrWcBFzCEf5cQQdIL', name: 'Karan', label: 'Documentary', photo: '/karan.jpg' },
+  { 
+    voice_id: '1zUSi8LeHs9M2mV8X6YS', 
+    name: 'Priyanka', 
+    label: 'Romantic', 
+    photo: '/priyanka.jpg',
+    script: '[whispers] कहिलेकाहीँ, सबैभन्दा सुन्दर पलहरू [pause] कुनै योजना बिना नै आउँछन्। [sighs] अनि थाहा हुन्छ, माया भन्नु सँगै हुनु मात्र होइन, मौनतामा पनि एकअर्कालाई महसुस गर्नु रहेछ।'
+  },
+  { 
+    voice_id: 'LK1Sn9bmEczSFI65RF0v', 
+    name: 'Sunita', 
+    label: 'Nepali Aunty', 
+    photo: '/sunita.jpg',
+    script: 'हेर न बाबु, समय कति छिटो बित्छ है! [laughs] हिजो जस्तै लाग्छ, तिमीहरू आँगनमा खेलेको। [sighs] जे भए पनि, पहिले तातो चिया खाऊ, बाँकी कुरा बिस्तारै मिल्दै जान्छ नि!'
+  },
+  { 
+    voice_id: 'FszY75334ExxVmg7yl0U', 
+    name: 'Dhurundhar', 
+    label: 'Narration', 
+    photo: '/dhurundhar.jpg',
+    script: '[serious] इतिहासका केही रातहरूले सिंगो सभ्यताको भाग्य बदल्छन्। [pause] मध्यरातमा दरबारभित्र एउटा भीषण विस्फोट भयो। [explosion] बिहानसम्म, त्यो साम्राज्यको भविष्य सधैंका लागि बदलियो।'
+  },
+  { 
+    voice_id: 'ecp3DWciuUyW7BYM7II1', 
+    name: 'Anika', 
+    label: 'Social Media', 
+    photo: '/anika.jpg',
+    script: '[excited] साथीहरू, एउटा कुरा थाहा छ? अब भिडियोको लागि घण्टौँ माइक अगाडि बस्नै पर्दैन! [laughs] [mischievously] आफ्नो स्क्रिप्ट लेख्नुस्, मनपर्ने आवाज छान्नुस्, अनि भ्वाइसओभर तयार!'
+  },
+  { 
+    voice_id: 'rHhok70RpCi5GgianXRA', 
+    name: 'Rudra', 
+    label: 'Romantic Male', 
+    photo: '/rudra.jpg',
+    script: '[whispers] यदि तिमी भोलि मेरो जीवनमा रहेनौ भने? [pause] [gulps] यो सोच्दा पनि डर लाग्छ। मैले संसारसँग लड्न सक्छु, तर तिमीलाई गुमाउने पीडा कहिल्यै सहन सक्दिनँ।'
+  },
+  { 
+    voice_id: '2W8HrWcBFzCEf5cQQdIL', 
+    name: 'Karan', 
+    label: 'Documentary', 
+    photo: '/karan.jpg',
+    script: '[whispers] रातको ठीक दुई बजे, घरको बत्ती निभ्यो। [pause] अँध्यारोमा कसैको पाइला मतिर बढ्दै थियो। अचानक, गोली चल्यो! [gunshot] त्यसपछि सुनिएको आवाजले मेरो सास नै रोकियो।'
+  },
 ]
 
 const ALL_VOICES = [
@@ -56,6 +92,7 @@ export default function Landing() {
   const [isNepali, setIsNepali] = useState(false)
   const [filter, setFilter] = useState('all')
   const [playingId, setPlayingId] = useState(null)
+  const [activeScript, setActiveScript] = useState(null)
   const audioRef = useRef(null)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -96,11 +133,12 @@ export default function Landing() {
     }
   }
 
-  function playPreview(voiceId) {
+function playPreview(voiceId) {
     if (playingId === voiceId) {
       audioRef.current?.pause()
       audioRef.current = null
       setPlayingId(null)
+      setActiveScript(null)
       return
     }
     audioRef.current?.pause()
@@ -108,8 +146,10 @@ export default function Landing() {
     audioRef.current = audio
     audio.play()
     setPlayingId(voiceId)
-    audio.onended = () => setPlayingId(null)
-    audio.onerror = () => setPlayingId(null)
+    const voice = FEATURED_VOICES.find(v => v.voice_id === voiceId)
+    setActiveScript(voice?.script || null)
+    audio.onended = () => { setPlayingId(null); setActiveScript(null) }
+    audio.onerror = () => { setPlayingId(null); setActiveScript(null) }
   }
 
 const filtered = ALL_VOICES.filter(v => {
@@ -332,8 +372,48 @@ const filtered = ALL_VOICES.filter(v => {
                   {playingId===v.voice_id?'■':'▶'}
                 </button>
               </div>
-            ))}
+                    ))}
             </div>
+
+            {/* REVEAL UI — Script popup */}
+            {activeScript && (
+              <div style={{
+                marginTop:16,
+                background:'linear-gradient(135deg,#1d1d1f,#2d1020)',
+                borderRadius:16,
+                padding:'16px 20px',
+                border:'1px solid rgba(220,20,60,.3)',
+                animation:'fadeUp .3s ease',
+                maxWidth:640,
+                margin:'16px auto 0',
+              }}>
+                <div style={{fontSize:10,fontWeight:700,color:'rgba(220,20,60,.7)',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:10}}>
+                  🎙️ Script — See how emotion tags work
+                </div>
+                <div style={{fontSize:13,fontFamily:'Noto Sans Devanagari, Manrope, sans-serif',color:'rgba(255,255,255,.85)',lineHeight:1.9}}>
+                  {activeScript.split(/(\[[^\]]+\])/g).map((part, i) => 
+                    /^\[[^\]]+\]$/.test(part) ? (
+                      <span key={i} style={{
+                        color:'#DC143C',
+                        fontWeight:700,
+                        fontFamily:'Courier New, monospace',
+                        fontSize:12,
+                        background:'rgba(220,20,60,.12)',
+                        padding:'1px 6px',
+                        borderRadius:6,
+                        margin:'0 2px',
+                      }}>{part}</span>
+                    ) : (
+                      <span key={i}>{part}</span>
+                    )
+                  )}
+                </div>
+                <div style={{fontSize:11,color:'rgba(255,255,255,.3)',marginTop:10}}>
+                  Tap any voice card to hear it speak this script ✨
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
       </section>
