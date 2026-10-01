@@ -372,7 +372,7 @@ setTimeout(() => fetchHistory(), 2000)
 
 const canGenerate = text.trim().length > 0 && !loading && session !== null && session !== false && !session.isPendingPayment && (
   session.isLegacy 
-    ? (session.credits || 0) >= 25 && text.length <= 500
+    ? (session.credits || 0) >= 25 && text.length <= 3500
     : (session.credits || 0) >= text.length
 )
   const credits = session ? session.credits || 0 : null
