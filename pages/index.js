@@ -1150,7 +1150,7 @@ const filtered = ALL_VOICES.filter(v => {
           <div style={{fontSize:14,color:'#1d1d1f',lineHeight:1.85}}>
             <p style={{margin:'0 0 14px'}}>नमस्ते, I&apos;m Avash Shrestha. You might already know me from Adopt a Dog Nepal or <a href="https://hamropets.com" target="_blank" rel="noopener noreferrer" style={{color:'#DC143C',fontWeight:600,textDecoration:'none'}}>HamroPets.com</a> — which I have operated publicly in Nepal since 2018, rehoming 1,000+ pets and serving 90,000+ community members.</p>
             <p style={{margin:'0 0 14px'}}>I built Swor AI because I know how frustrating and expensive it is for Nepali creators to get clean, professional audio. Before this, I spent 12+ years in financial services across the US and Nepal — including at Wells Fargo Silicon Valley — holding <strong>FINRA Series 6 and 66 licenses</strong>, US-regulated credentials that are publicly verifiable.</p>
-            <p style={{margin:'0 0 20px'}}>Swor AI is not an anonymous foreign site. It is operated legally and locally right here in Kathmandu — every eSewa and Khalti payment is backed personally by me, your credits never expire, and I am directly available on WhatsApp. In 2015, I also organized a fundraiser that raised <strong>USD 28,000 for Nepal earthquake victims</strong> — <a href="https://dailyvoice.com/article/university-of-bridgeport-students-take-a-lunch-break-to-help-nepal/" target="_blank" rel="noopener noreferrer" style={{color:'#DC143C',textDecoration:'none'}}>covered by the Daily Voice, Bridgeport CT</a>.</p>
+            <p style={{margin:'0 0 20px'}}>Swor AI is not an anonymous foreign site. It operates legally and locally right here in Kathmandu—every eSewa and Khalti payment is personally backed by me, your credits never expire, and I am directly available on WhatsApp. In 2015, I also organized a fundraiser that raised <strong>USD 28,000 for Nepal earthquake victims</strong> — <a href="https://dailyvoice.com/article/university-of-bridgeport-students-take-a-lunch-break-to-help-nepal/" target="_blank" rel="noopener noreferrer" style={{color:'#DC143C',textDecoration:'none'}}>covered by the Daily Voice, Bridgeport CT</a>.</p>
           </div>
         ) : (
           <div style={{fontSize:14,color:'#1d1d1f',lineHeight:1.85}}>
@@ -1163,7 +1163,7 @@ const filtered = ALL_VOICES.filter(v => {
         {/* Credential pills */}
         <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
           {(founderLang==='en'?[
-            {e:'🏦', t:'FINRA Series 6 & 66 — US regulated'},
+            {e:'🏦', t:'Wells Fargo Silicon Valley · Financial Professional'},
             {e:'🎓', t:'MBA — California University, USA'},
             {e:'🐾', t:'ADAN founder since April 2018'},
             {e:'🌐', t:'HamroPets.com — publicly verifiable'},
