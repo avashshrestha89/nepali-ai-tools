@@ -3,8 +3,6 @@ import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
 import HomepageDemoBox from '../components/HomepageDemoBox'
 
-
-
 const FORMSPREE_ID = 'xaqkjezd'
 
 const FEATURED_VOICES = [
@@ -95,7 +93,7 @@ export default function Landing() {
   const [activeScript, setActiveScript] = useState(null)
   const audioRef = useRef(null)
   const [isMobile, setIsMobile] = useState(false)
-
+const [founderLang, setFounderLang] = useState('en');
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll)
@@ -1100,53 +1098,85 @@ const filtered = ALL_VOICES.filter(v => {
         </div>
       </section>
 {/* ══ FOUNDER TRUST SECTION ══ */}
-<section style={{padding:isMobile?'60px 16px':'80px 48px',background:'#fff',borderTop:'1px solid #e8e8ed'}}>
+<section style={{padding:isMobile?'52px 16px':'72px 48px',background:'#fff',borderTop:'1px solid #e8e8ed'}}>
   <div style={{maxWidth:860,margin:'0 auto'}}>
 
-    <div style={{display:'flex',flexDirection:isMobile?'column':'row',gap:isMobile?36:56,alignItems:'flex-start'}}>
+    {/* Header + toggle */}
+    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:36,flexWrap:'wrap',gap:12}}>
+      <div>
+        <div style={{fontSize:11,fontWeight:700,color:'#DC143C',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:6}}>Who is behind Swor AI</div>
+        <h2 style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?20:24,fontWeight:800,margin:0,letterSpacing:'-0.3px'}}>
+          {founderLang==='en' ? 'Built in Nepal. By name.' : 'नेपालमा बनाइएको। नाम सहित।'}
+        </h2>
+      </div>
+      <div style={{display:'inline-flex',borderRadius:10,overflow:'hidden',border:'1px solid #e8e8ed',flexShrink:0}}>
+        {['en','np'].map(lang=>(
+          <button key={lang} onClick={()=>setFounderLang(lang)}
+            style={{padding:'8px 18px',fontSize:12,fontWeight:700,border:'none',cursor:'pointer',
+              background:founderLang===lang?'#DC143C':'#fff',
+              color:founderLang===lang?'#fff':'#6e6e73',
+              transition:'all 0.2s'}}>
+            {lang==='en'?'EN':'नेपाली'}
+          </button>
+        ))}
+      </div>
+    </div>
 
-      {/* Photo */}
-      <div style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:14}}>
-        <div style={{width:130,height:130,borderRadius:'50%',overflow:'hidden',border:'3px solid #f0f0f0',background:'#f5f5f7',display:'flex',alignItems:'center',justifyContent:'center'}}>
-          {/* REPLACE with: <img src="/avash.jpg" alt="Avash Shrestha" style={{width:'100%',height:'100%',objectFit:'cover'}} /> */}
-          <span style={{fontSize:52}}>👤</span>
-        </div>
-        <a
-          href="https://wa.me/977XXXXXXXXXX"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{display:'inline-flex',alignItems:'center',gap:6,background:'#25D366',color:'#fff',borderRadius:10,padding:'9px 16px',fontSize:13,fontWeight:600,textDecoration:'none',whiteSpace:'nowrap'}}
-        >
-          <span>💬</span> WhatsApp me
+    {/* Content */}
+    <div style={{display:'flex',flexDirection:isMobile?'column':'row',gap:isMobile?28:44,alignItems:'flex-start'}}>
+
+      {/* Photo + WhatsApp */}
+      <div style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:12}}>
+        <img
+          src="https://elfqryasvlhawhrlwhvn.supabase.co/storage/v1/object/public/hamropets-media/AVASH.jpeg"
+          alt="Avash Shrestha — Founder, Swor AI"
+          style={{width:120,height:120,borderRadius:'50%',objectFit:'cover',border:'3px solid #f0f0f0'}}
+        />
+        <a href="https://wa.me/9779851405178" target="_blank" rel="noopener noreferrer"
+          style={{display:'inline-flex',alignItems:'center',gap:6,background:'#25D366',color:'#fff',
+            borderRadius:10,padding:'8px 14px',fontSize:12,fontWeight:600,textDecoration:'none'}}>
+          💬 {founderLang==='en'?'WhatsApp me':'म्यासेज गर्नुस्'}
         </a>
       </div>
 
       {/* Bio */}
       <div style={{flex:1}}>
-        <div style={{fontSize:11,fontWeight:700,color:'#DC143C',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:10}}>Who is behind Swor AI</div>
-        <h2 style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?22:26,fontWeight:800,marginBottom:4,letterSpacing:'-0.3px'}}>Avash Shrestha</h2>
-        <p style={{fontSize:14,color:'#6e6e73',marginBottom:20,fontWeight:500}}>Founder · Kathmandu, Nepal</p>
-
-        <p style={{fontSize:15,color:'#1d1d1f',lineHeight:1.8,marginBottom:14}}>
-          I built Swor AI because I couldn't find a single Nepali AI voice tool that actually sounded right. After years of running digital platforms for Nepali audiences, I decided to build it myself.
+        <h3 style={{fontFamily:'Sora,sans-serif',fontSize:18,fontWeight:800,margin:'0 0 2px'}}>Avash Shrestha</h3>
+        <p style={{fontSize:13,color:'#6e6e73',margin:'0 0 18px',fontWeight:500}}>
+          {founderLang==='en'?'Founder · Kathmandu, Nepal':'संस्थापक · काठमाडौं, नेपाल'}
         </p>
 
-        <p style={{fontSize:15,color:'#1d1d1f',lineHeight:1.8,marginBottom:24}}>
-          I've been operating{' '}
-          <a href="https://hamropets.com" target="_blank" rel="noopener noreferrer" style={{color:'#DC143C',fontWeight:600,textDecoration:'none'}}>HamroPets.com</a>
-          {' '}and Adopt a Dog Nepal since 2018 — 1,000+ animals rehomed, 91,000+ TikTok followers, eight years of building real platforms for Nepal. In 2015, I organized a USD 28,000 earthquake fundraiser from the US that was covered by American media. These are public and verifiable. I'm not anonymous.
-        </p>
+        {founderLang==='en' ? (
+          <div style={{fontSize:14,color:'#1d1d1f',lineHeight:1.85}}>
+            <p style={{margin:'0 0 14px'}}>Swor AI is built by someone Nepali audiences have been able to find online since 2018. I founded Adopt a Dog Nepal in April 2018 and have run <a href="https://hamropets.com" target="_blank" rel="noopener noreferrer" style={{color:'#DC143C',fontWeight:600,textDecoration:'none'}}>HamroPets.com</a> since — 1,000+ animals rehomed, 91,000+ TikTok followers, eight years of operating publicly in Nepal.</p>
+            <p style={{margin:'0 0 14px'}}>Before that, I spent 12+ years in financial services in the US and Nepal, including at Wells Fargo Silicon Valley, where I held <strong>FINRA Series 6 and 66 licenses</strong> — US-regulated credentials that are publicly verifiable.</p>
+            <p style={{margin:'0 0 20px'}}>In 2015, while studying in Connecticut, I organized a fundraiser that raised <strong>USD 28,000 for Nepal earthquake victims</strong> — <a href="https://dailyvoice.com/article/university-of-bridgeport-students-take-a-lunch-break-to-help-nepal/" target="_blank" rel="noopener noreferrer" style={{color:'#DC143C',textDecoration:'none'}}>covered by the Daily Voice, Bridgeport CT</a>. I'm building Swor AI the same way I built everything else: in public, in Nepal, with my name on it.</p>
+          </div>
+        ) : (
+          <div style={{fontSize:14,color:'#1d1d1f',lineHeight:1.85}}>
+            <p style={{margin:'0 0 14px'}}>Swor AI एउटा यस्तो व्यक्तिले बनाएको हो जसलाई नेपाली दर्शकहरूले २०१८ देखि अनलाइनमा भेट्टाउँदै आएका छन्। मैले अप्रिल २०१८ मा Adopt a Dog Nepal स्थापना गरेँ र त्यसपछि <a href="https://hamropets.com" target="_blank" rel="noopener noreferrer" style={{color:'#DC143C',fontWeight:600,textDecoration:'none'}}>HamroPets.com</a> सञ्चालन गर्दै आएको छु — १,०००+ जनावरहरूले घर पाए, ९१,०००+ TikTok फलोअरहरू, आठ वर्षको सार्वजनिक सञ्चालन।</p>
+            <p style={{margin:'0 0 14px'}}>त्यसभन्दा पहिले, मैले अमेरिका र नेपालमा वित्तीय सेवाहरूमा १२+ वर्ष बिताएँ — Wells Fargo Silicon Valley सहित, जहाँ मैले <strong>FINRA Series 6 र 66 लाइसेन्सहरू</strong> प्राप्त गरेँ। यी अमेरिकी नियामक प्रमाणपत्रहरू सार्वजनिक रूपमा प्रमाणित गर्न सकिन्छन्।</p>
+            <p style={{margin:'0 0 20px'}}>२०१५ मा Connecticut मा पढ्दै गर्दा, मैले नेपाल भूकम्प पीडितहरूका लागि <strong>USD २८,०००</strong> उठाएँ — <a href="https://dailyvoice.com/article/university-of-bridgeport-students-take-a-lunch-break-to-help-nepal/" target="_blank" rel="noopener noreferrer" style={{color:'#DC143C',textDecoration:'none'}}>Daily Voice, Bridgeport CT ले कभर गरेको</a>। म Swor AI लाई पनि त्यसरी नै बनाउँदैछु: सार्वजनिक रूपमा, नेपालमा, मेरो नामसहित।</p>
+          </div>
+        )}
 
-        {/* Credibility pills */}
+        {/* Credential pills */}
         <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
-          {[
-            {e:'🏦', t:'12+ years in finance & fintech (US & Nepal)'},
+          {(founderLang==='en'?[
+            {e:'🏦', t:'FINRA Series 6 & 66 — US regulated'},
             {e:'🎓', t:'MBA — California University, USA'},
-            {e:'🐾', t:'Adopt a Dog Nepal — founder since 2018'},
+            {e:'🐾', t:'ADAN founder since April 2018'},
             {e:'🌐', t:'HamroPets.com — publicly verifiable'},
-            {e:'📍', t:'Based in Kathmandu, Nepal'},
-          ].map((b,i)=>(
-            <div key={i} style={{display:'inline-flex',alignItems:'center',gap:6,background:'#f5f5f7',borderRadius:20,padding:'7px 13px',fontSize:12,color:'#1d1d1f',fontWeight:500}}>
+            {e:'📍', t:'Kathmandu, Nepal'},
+          ]:[
+            {e:'🏦', t:'FINRA Series 6 & 66 — अमेरिकी नियामक'},
+            {e:'🎓', t:'MBA — California University, USA'},
+            {e:'🐾', t:'ADAN संस्थापक — अप्रिल २०१८'},
+            {e:'🌐', t:'HamroPets.com — सार्वजनिक प्रमाण'},
+            {e:'📍', t:'काठमाडौं, नेपाल'},
+          ]).map((b,i)=>(
+            <div key={i} style={{display:'inline-flex',alignItems:'center',gap:6,background:'#f5f5f7',
+              borderRadius:20,padding:'6px 12px',fontSize:12,color:'#1d1d1f',fontWeight:500}}>
               <span>{b.e}</span><span>{b.t}</span>
             </div>
           ))}
