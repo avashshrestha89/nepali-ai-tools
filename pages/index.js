@@ -8,8 +8,9 @@ const FORMSPREE_ID = 'xaqkjezd'
 const FEATURED_VOICES = [
   { 
     voice_id: '1zUSi8LeHs9M2mV8X6YS', 
-    name: 'Priyanka', 
-    label: 'Romantic', 
+      name: 'Priyanka', 
+    label: 'Romantic',
+    badge: '🔥 Most Popular',
     photo: '/priyanka.jpg',
     script: '[whispers] कहिलेकाहीँ, सबैभन्दा सुन्दर पलहरू [pause] कुनै योजना बिना नै आउँछन्। [sighs] अनि थाहा हुन्छ, माया भन्नु सँगै हुनु मात्र होइन, मौनतामा पनि एकअर्कालाई महसुस गर्नु रहेछ।'
   },
@@ -23,14 +24,16 @@ const FEATURED_VOICES = [
   { 
     voice_id: 'FszY75334ExxVmg7yl0U', 
     name: 'Dhurundhar', 
-    label: 'Narration', 
+    label: 'Narration',
+    badge: '💎 Staff Pick',
     photo: '/dhurundhar.jpg',
     script: '[serious] इतिहासका केही रातहरूले सिंगो सभ्यताको भाग्य बदल्छन्। [pause] मध्यरातमा दरबारभित्र एउटा भीषण विस्फोट भयो। [explosion] बिहानसम्म, त्यो साम्राज्यको भविष्य सधैंका लागि बदलियो।'
   },
   { 
     voice_id: 'ecp3DWciuUyW7BYM7II1', 
     name: 'Anika', 
-    label: 'Social Media', 
+    label: 'Social Media',
+    badge: '✨ New',
     photo: '/anika.jpg',
     script: '[excited] साथीहरू, एउटा कुरा थाहा छ? अब भिडियोको लागि घण्टौँ माइक अगाडि बस्नै पर्दैन! [laughs] [mischievously] आफ्नो स्क्रिप्ट लेख्नुस्, मनपर्ने आवाज छान्नुस्, अनि भ्वाइसओभर तयार!'
   },
@@ -355,8 +358,11 @@ const filtered = ALL_VOICES.filter(v => {
                     onError={e=>{e.target.style.display='none';e.target.parentNode.style.background='linear-gradient(135deg,#DC143C,#FF6B8A)';e.target.parentNode.innerHTML=`<span style="color:#fff;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;width:100%;height:100%">${v.name[0]}</span>`}}
                   />
                 </div>
-                <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f',lineHeight:1.2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{v.name}</div>
+                              <div style={{flex:1,minWidth:0}}>
+                  <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
+                    <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f',lineHeight:1.2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{v.name}</div>
+                    {v.badge && <span style={{fontSize:10,fontWeight:700,background:'#fff3f5',color:'#DC143C',borderRadius:6,padding:'2px 6px',whiteSpace:'nowrap'}}>{v.badge}</span>}
+                  </div>
                   <div style={{fontSize:11,color:'#999',marginTop:1}}>{v.label}</div>
                 </div>
                 <button
