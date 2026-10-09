@@ -646,7 +646,7 @@ const filtered = ALL_VOICES.filter(v => {
                 </div>
               </div>
               <h3 style={{fontFamily:'Sora,sans-serif',fontSize:20,fontWeight:700,marginBottom:10}}>Save 90% of your time</h3>
-              <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.7}}>What used to take hours now takes seconds. Upload, generate, download. Done.</p>
+              <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.7}}>Nepali content creators used to spend hours recording, re-recording, and editing audio. Now the same job takes under 60 seconds — paste your script, pick a voice, download. That's the whole workflow.</p>
             </div>
 
             <div className="feature-card">
@@ -661,7 +661,7 @@ const filtered = ALL_VOICES.filter(v => {
                 <div style={{fontSize:11,color:'#999'}}>नमस्ते! म तपाईँको आवाज हुँ...</div>
               </div>
               <h3 style={{fontFamily:'Sora,sans-serif',fontSize:20,fontWeight:700,marginBottom:10}}>20 natural Nepali voices</h3>
-              <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.7}}>From romantic to documentary — choose the voice that fits your content perfectly.</p>
+              <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.7}}>Each Nepali AI voice was built specifically for Nepali content — not translated from English or adapted from Hindi. Priyanka for romantic reels, Dhurundhar for documentaries, Sunita for everything in between.</p>
             </div>
 
             <div className="feature-card">
@@ -675,7 +675,7 @@ const filtered = ALL_VOICES.filter(v => {
                 </div>
               </div>
               <h3 style={{fontFamily:'Sora,sans-serif',fontSize:20,fontWeight:700,marginBottom:10}}>Accurate Nepali subtitles</h3>
-              <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.7}}>Auto-generated captions synced to your video. Devanagari or Romanized — ready for CapCut.</p>
+              <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.7}}>Devanagari captions auto-synced to your video, frame by frame. Export in Devanagari or Roman script — ready to drop straight into CapCut, Premiere, or any editor. No manual timing, no copy-paste.</p>
             </div>
 
           </div>
@@ -1099,7 +1099,63 @@ const filtered = ALL_VOICES.filter(v => {
           </div>
         </div>
       </section>
+{/* ══ FOUNDER TRUST SECTION ══ */}
+<section style={{padding:isMobile?'60px 16px':'80px 48px',background:'#fff',borderTop:'1px solid #e8e8ed'}}>
+  <div style={{maxWidth:860,margin:'0 auto'}}>
 
+    <div style={{display:'flex',flexDirection:isMobile?'column':'row',gap:isMobile?36:56,alignItems:'flex-start'}}>
+
+      {/* Photo */}
+      <div style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:14}}>
+        <div style={{width:130,height:130,borderRadius:'50%',overflow:'hidden',border:'3px solid #f0f0f0',background:'#f5f5f7',display:'flex',alignItems:'center',justifyContent:'center'}}>
+          {/* REPLACE with: <img src="/avash.jpg" alt="Avash Shrestha" style={{width:'100%',height:'100%',objectFit:'cover'}} /> */}
+          <span style={{fontSize:52}}>👤</span>
+        </div>
+        <a
+          href="https://wa.me/977XXXXXXXXXX"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{display:'inline-flex',alignItems:'center',gap:6,background:'#25D366',color:'#fff',borderRadius:10,padding:'9px 16px',fontSize:13,fontWeight:600,textDecoration:'none',whiteSpace:'nowrap'}}
+        >
+          <span>💬</span> WhatsApp me
+        </a>
+      </div>
+
+      {/* Bio */}
+      <div style={{flex:1}}>
+        <div style={{fontSize:11,fontWeight:700,color:'#DC143C',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:10}}>Who is behind Swor AI</div>
+        <h2 style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?22:26,fontWeight:800,marginBottom:4,letterSpacing:'-0.3px'}}>Avash Shrestha</h2>
+        <p style={{fontSize:14,color:'#6e6e73',marginBottom:20,fontWeight:500}}>Founder · Kathmandu, Nepal</p>
+
+        <p style={{fontSize:15,color:'#1d1d1f',lineHeight:1.8,marginBottom:14}}>
+          I built Swor AI because I couldn't find a single Nepali AI voice tool that actually sounded right. After years of running digital platforms for Nepali audiences, I decided to build it myself.
+        </p>
+
+        <p style={{fontSize:15,color:'#1d1d1f',lineHeight:1.8,marginBottom:24}}>
+          I've been operating{' '}
+          <a href="https://hamropets.com" target="_blank" rel="noopener noreferrer" style={{color:'#DC143C',fontWeight:600,textDecoration:'none'}}>HamroPets.com</a>
+          {' '}and Adopt a Dog Nepal since 2018 — 1,000+ animals rehomed, 91,000+ TikTok followers, eight years of building real platforms for Nepal. In 2015, I organized a USD 28,000 earthquake fundraiser from the US that was covered by American media. These are public and verifiable. I'm not anonymous.
+        </p>
+
+        {/* Credibility pills */}
+        <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
+          {[
+            {e:'🏦', t:'12+ years in finance & fintech (US & Nepal)'},
+            {e:'🎓', t:'MBA — California University, USA'},
+            {e:'🐾', t:'Adopt a Dog Nepal — founder since 2018'},
+            {e:'🌐', t:'HamroPets.com — publicly verifiable'},
+            {e:'📍', t:'Based in Kathmandu, Nepal'},
+          ].map((b,i)=>(
+            <div key={i} style={{display:'inline-flex',alignItems:'center',gap:6,background:'#f5f5f7',borderRadius:20,padding:'7px 13px',fontSize:12,color:'#1d1d1f',fontWeight:500}}>
+              <span>{b.e}</span><span>{b.t}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
  
 
