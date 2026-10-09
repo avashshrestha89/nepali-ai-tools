@@ -1132,7 +1132,7 @@ const filtered = ALL_VOICES.filter(v => {
           alt="Avash Shrestha — Founder, Swor AI"
           style={{width:120,height:120,borderRadius:'50%',objectFit:'cover',border:'3px solid #f0f0f0'}}
         />
-        <a href="https://wa.me/9779851405178" target="_blank" rel="noopener noreferrer"
+        <a href="https://wa.me/19255379425" target="_blank" rel="noopener noreferrer"
           style={{display:'inline-flex',alignItems:'center',gap:6,background:'#25D366',color:'#fff',
             borderRadius:10,padding:'8px 14px',fontSize:12,fontWeight:600,textDecoration:'none'}}>
           💬 {founderLang==='en'?'WhatsApp me':'म्यासेज गर्नुस्'}
