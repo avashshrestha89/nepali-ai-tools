@@ -810,7 +810,7 @@ const filtered = ALL_VOICES.filter(v => {
   </div>
   {(()=>{
     const packCredits={starter:8000,creator:20000,founders:50000}
-    const credits=calcPack==='custom'?(parseInt(calcCustom)||0):(packCredits[calcPack]||0)
+    const credits=calcPack==='custom'?Math.max(0,parseInt(calcCustom)||0):(packCredits[calcPack]||0)
     const costMin=calcDuration===30?250:170
     const costMax=calcDuration===30?300:200
     if(!credits&&calcPack==='custom') return(
@@ -877,7 +877,7 @@ const filtered = ALL_VOICES.filter(v => {
    <div style={{fontSize:14,fontWeight:700,color:'#999',marginBottom:4,textDecoration:'line-through'}}>NPR 1,000</div>
 <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 499</div>
 <div style={{fontSize:13,color:'#999',marginBottom:4}}>$4.99 USD &nbsp;·&nbsp; one-time</div>
-<div style={{fontSize:12,fontWeight:700,color:'#1d1d1f',marginBottom:12,background:'#f5f5f7',borderRadius:8,padding:'6px 10px',display:'inline-block'}}>8,000 credits &nbsp;≈&nbsp; <span style={{color:'#DC143C'}}>26–32 voiceovers</span> <span style={{fontWeight:400,color:'#999'}}>(30s est.)</span></div>
+<div style={{fontSize:12,fontWeight:700,color:'#1d1d1f',marginBottom:12,background:'#f5f5f7',borderRadius:8,padding:'6px 10px',display:'block',width:'fit-content'}}>8,000 credits &nbsp;≈&nbsp; <span style={{color:'#DC143C'}}>26–32 voiceovers</span> <span style={{fontWeight:400,color:'#999'}}>(30s est.)</span></div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:16}}>
       First Week Experience
     </div>
@@ -922,7 +922,7 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{fontSize:14,fontWeight:700,color:'rgba(255,255,255,.5)',marginBottom:4,textDecoration:'line-through'}}>NPR 5,000</div>
     <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#fff',lineHeight:1,marginBottom:4}}>NPR 2,500</div>
     <div style={{fontSize:13,color:'rgba(255,255,255,.6)',marginBottom:8}}>$19.99 USD — one-time, forever</div>
-    <div style={{fontSize:12,fontWeight:700,color:'#fff',marginBottom:12,background:'rgba(255,255,255,.15)',borderRadius:8,padding:'6px 10px',display:'inline-block'}}>50,000 credits &nbsp;≈&nbsp; <span style={{color:'#FFD700'}}>166–200 voiceovers</span> <span style={{fontWeight:400,color:'rgba(255,255,255,.6)'}}>(30s est.)</span></div>
+    <div style={{fontSize:12,fontWeight:700,color:'#fff',marginBottom:12,background:'rgba(255,255,255,.15)',borderRadius:8,padding:'6px 10px',display:'block',width:'fit-content'}}>50,000 credits &nbsp;≈&nbsp; <span style={{color:'#FFD700'}}>166–200 voiceovers</span> <span style={{fontWeight:400,color:'rgba(255,255,255,.6)'}}>(30s est.)</span></div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,255,255,.15)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#fff',marginBottom:16}}>
       One Time Payment — Credits Never Expire
     </div>
@@ -962,7 +962,7 @@ const filtered = ALL_VOICES.filter(v => {
   <div style={{fontSize:14,fontWeight:700,color:'#999',marginBottom:4,textDecoration:'line-through'}}>NPR 1,899</div>
 <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 999</div>
 <div style={{fontSize:13,color:'#999',marginBottom:4}}>$8.99 USD &nbsp;·&nbsp; one-time</div>
-<div style={{fontSize:12,fontWeight:700,color:'#1d1d1f',marginBottom:12,background:'#f5f5f7',borderRadius:8,padding:'6px 10px',display:'inline-block'}}>20,000 credits &nbsp;≈&nbsp; <span style={{color:'#DC143C'}}>66–80 voiceovers</span> <span style={{fontWeight:400,color:'#999'}}>(30s est.)</span></div>
+<div style={{fontSize:12,fontWeight:700,color:'#1d1d1f',marginBottom:12,background:'#f5f5f7',borderRadius:8,padding:'6px 10px',display:'block',width:'fit-content'}}>20,000 credits &nbsp;≈&nbsp; <span style={{color:'#DC143C'}}>66–80 voiceovers</span> <span style={{fontWeight:400,color:'#999'}}>(30s est.)</span></div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:16}}>
       🚀 Launch Pricing — Save 47%
     </div>
