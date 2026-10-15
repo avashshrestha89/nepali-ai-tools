@@ -13,7 +13,6 @@ const LEGACY_VOICEOVER_COST = 25
 const LEGACY_CHAR_LIMIT = 500
 const STALE_THRESHOLD_MS = 120_000  // 2 minutes
 const IDEM_TTL_S = 86400            // 24 hours — idempotency record lifetime
-const ACTIVE_TTL_S = 604800         // 7 days  — active-hash lifetime (survives user inactivity)
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Lua: atomic credit reservation + idempotency record creation
@@ -25,17 +24,17 @@ const ACTIVE_TTL_S = 604800         // 7 days  — active-hash lifetime (survive
 // ARGV[2] = idempotency payload JSON (status: processing)
 // ARGV[3] = idem TTL in seconds        (IDEM_TTL_S = 24 h)
 // ARGV[4] = idempotencyKey UUID        (field stored in active hash)
-// ARGV[5] = active-hash TTL in seconds (ACTIVE_TTL_S = 7 d — survives user inactivity)
 //
 // Returns: remaining credit balance as string
 // Errors:  IDEM_EXISTS:{existing_json}  — key already set (race)
 //          USER_NOT_FOUND               — session/user mismatch
 //          INSUFFICIENT:{have}:{need}   — not enough credits
 //
-// NOTE: HSET {uuid → cost} + EXPIRE on KEYS[3] is atomic with credit deduction.
-// Storing the cost allows LUA_DIRECT_REFUND to refund even after the idem key
-// has expired (TTL gap protection).  ACTIVE_TTL_S > IDEM_TTL_S ensures the hash
-// entry outlives the idem key for exactly this reason.
+// NOTE: HSET {uuid → cost} is atomic with credit deduction.  The active hash has
+// NO TTL — entries persist until explicitly removed by HDEL in LUA_FINALIZE or
+// LUA_DIRECT_REFUND.  This ensures unresolved reservations are never silently lost
+// regardless of how long a user is inactive.  Storing the cost allows
+// LUA_DIRECT_REFUND to refund even after the idem key has expired (>24 h crash).
 // ─────────────────────────────────────────────────────────────────────────────
 const LUA_RESERVE = `
 local existing = redis.call('GET', KEYS[2])
@@ -57,7 +56,6 @@ redis.call('SET', KEYS[1], cjson.encode(user))
 redis.call('SET', KEYS[2], ARGV[2])
 redis.call('EXPIRE', KEYS[2], tonumber(ARGV[3]))
 redis.call('HSET', KEYS[3], ARGV[4], ARGV[1])
-redis.call('EXPIRE', KEYS[3], tonumber(ARGV[5]))
 return tostring(user.credits)
 `
 
@@ -400,7 +398,7 @@ export default async function handler(req, res) {
       idemPayload,
       String(IDEM_TTL_S),
       idempotencyKey,
-      String(ACTIVE_TTL_S),   // ARGV[5]: longer TTL for active-hash (7d > 24h idem TTL)
+      // No 5th arg: active hash has no TTL — entries live until HDEL in LUA_FINALIZE
     ])
     creditsAfterReserve = parseInt(result, 10)
   } catch (err) {
@@ -527,15 +525,16 @@ export default async function handler(req, res) {
     // Non-fatal — generation succeeded; continue
   }
 
-  // ── Finalize success (with retry — Issue A mitigation) ──────────────────
+  // ── Finalize success (with retry) ────────────────────────────────────────
   // If Redis is briefly down after audio is generated, finalize() returns
-  // {credits:null, conflictStatus:null}.  Without a retry the idem stays
-  // 'processing' and orphan recovery would later refund the user even though
-  // they received audio.  We retry up to 3× with short back-off; if all
-  // attempts fail we still return 200 (user has their audio) and log a CRITICAL
-  // event for manual recovery.  Residual risk: Redis down >~300 ms post-generation
-  // → idem stays 'processing' → orphan recovery may refund.  Mitigated but not
-  // fully eliminated without a persistent retry queue.
+  // {credits:null, conflictStatus:null}.  We retry up to 3× with back-off.
+  // If ALL attempts fail we MUST NOT return the audio URL — the idem stays
+  // 'processing', and orphan recovery would later refund credits if we had
+  // already delivered audio (violating the invariant).  Instead we return 503
+  // so the client retries with the same idempotency key:
+  //   • retry within stale window (120 s): 202 IN_PROGRESS
+  //   • retry after stale window:  orphan recovery refunds + 422
+  // The blob is orphaned but credits are safe.
   const MAX_FINALIZE_RETRIES = 3
   let finalResult = { credits: null, conflictStatus: null }
   for (let attempt = 0; attempt < MAX_FINALIZE_RETRIES; attempt++) {
@@ -557,18 +556,22 @@ export default async function handler(req, res) {
   }
 
   if (finalResult.credits === null) {
-    // All 3 finalize attempts failed — Redis still down.  Audio was generated and
-    // stored; return it to avoid losing the user's work.  The idem stays
-    // 'processing'; orphan recovery will eventually refund — manual review needed.
+    // All 3 finalize retries failed — do NOT deliver audio URL.
+    // Idem stays 'processing'; client retries with the same key.
+    // Within stale window → 202; after stale window → orphan recovery refunds + 422.
     console.error(
       `CRITICAL: finalize failed after ${MAX_FINALIZE_RETRIES} attempts — ` +
       `email=${email} idemKey=${idemKey} blobUrl=${blobUrl} creditsDeducted=${cost}. ` +
-      `Idem record stuck 'processing'; manual recovery may be required.`
+      `Returning 503; client retry will resolve via idem record or stale recovery.`
     )
+    return res.status(503).json({
+      code: 'FINALIZE_PENDING',
+      error: 'Generation completed but could not be confirmed. Please retry your request to retrieve your audio.',
+    })
   }
 
   return res.status(200).json({
     url: blobUrl,
-    credits: finalCredits !== null ? finalCredits : creditsAfterReserve,
+    credits: finalCredits,
   })
 }

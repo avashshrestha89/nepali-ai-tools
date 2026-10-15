@@ -130,11 +130,12 @@ class FakeRedis {
     this._set(idemKey, idemPayload, parseInt(ttlStr, 10))
 
     // Simulate HSET KEYS[3] ARGV[4] ARGV[1] — stores {uuid → cost} in active hash
+    // No TTL set on the hash (Issue 2 fix — entries persist until HDEL)
     if (activeHashKey && idemUuid) {
       const raw = this._get(activeHashKey)
       const obj = raw ? JSON.parse(raw) : {}
       obj[idemUuid] = costStr   // cost as string, matching Lua HSET semantics
-      this._set(activeHashKey, JSON.stringify(obj), parseInt(activeTtlStr || '604800', 10))
+      this._set(activeHashKey, JSON.stringify(obj))  // no TTL
     }
 
     return String(user.credits)
@@ -251,7 +252,7 @@ const LEGACY_VOICEOVER_COST = 25
 const LEGACY_CHAR_LIMIT = 500
 const STALE_THRESHOLD_MS = 120_000
 const IDEM_TTL_S = 86400
-const ACTIVE_TTL_S = 604800
+// ACTIVE_TTL_S removed — active hash has no TTL (Issue 2 fix)
 
 const LUA_RESERVE_MARKER = 'IDEM_EXISTS'         // substring present in reserve script
 const LUA_FINALIZE_MARKER = 'ALREADY_FINALIZED'   // substring present in finalize script
@@ -370,7 +371,8 @@ async function runHandler({ req, res, redis, fetchFn, putFn }) {
   try {
     const activeSetKey = `vo_active_idem:${email}`
     const result = await redis.eval(LUA_RESERVE_MARKER, [userKey, idemKey, activeSetKey],
-      [String(cost), idemPayload, String(IDEM_TTL_S), idempotencyKey, String(ACTIVE_TTL_S)])
+      [String(cost), idemPayload, String(IDEM_TTL_S), idempotencyKey])
+      // No 5th arg: active hash has no TTL (Issue 2 fix)
     creditsAfterReserve = parseInt(result, 10)
   } catch (err) {
     const msg = err?.message || String(err)
@@ -432,7 +434,14 @@ async function runHandler({ req, res, redis, fetchFn, putFn }) {
   if (conflictStatus === 'failed') {
     return res.status(409).json({ code: 'CONFLICT', error: 'Generation completed but credits were already refunded.' })
   }
-  return res.status(200).json({ url: blobUrl, credits: finalCredits !== null ? finalCredits : creditsAfterReserve })
+  // Issue A fix: if all retries failed, do NOT return audio URL
+  if (finalResult.credits === null) {
+    return res.status(503).json({
+      code: 'FINALIZE_PENDING',
+      error: 'Generation completed but could not be confirmed. Please retry your request to retrieve your audio.',
+    })
+  }
+  return res.status(200).json({ url: blobUrl, credits: finalCredits })
 }
 
 async function _finalize(redis, userKey, idemKey, status, refundAmt, creditsAfter, url, errorMsg) {
@@ -1059,6 +1068,243 @@ await test('15. Success-path finalize: retries up to 3×, succeeds on 3rd attemp
   // Idem record must be 'complete' (not stuck as 'processing')
   const idem = JSON.parse(redis._get(`vo_idem:${email}:idem-key-0001`))
   assertEqual(idem.status, 'complete', 'idem finalized as complete after retry')
+})
+
+// ── Test 16: All 3 finalize attempts fail → 503, no URL, idem stays 'processing' ──
+/**
+ * Issue A fix: when ALL finalize retries are exhausted after audio generation,
+ * the handler MUST return 503 without the audio URL.  Credits remain deducted
+ * (the generation ran) but the idem stays 'processing' so that a client retry
+ * can recover via the stale-record path.
+ */
+class AllFailFakeRedis extends FakeRedis {
+  _evalFinalize(keys, [status, ...rest]) {
+    if (status === 'complete') throw new Error('REDIS_TIMEOUT_SIMULATED')
+    return super._evalFinalize(keys, [status, ...rest])
+  }
+}
+
+await test('16. All 3 finalize retries fail → 503 FINALIZE_PENDING, no URL, credits still deducted', async () => {
+  const email = 'user@test.com'
+  const text = 'All retries fail test'
+  const cost = text.trim().length
+  const redis = new AllFailFakeRedis(makeStore(email, makeUser({ credits: 500 })))
+  const { req, res } = makeReqRes({ body: stdReq({ text }), cookies: { swor_session: 'tok123' } })
+
+  await runHandler({ req, res, redis, fetchFn: successFetch(text.trim()), putFn: successPut() })
+
+  // Must return 503, not 200
+  assertEqual(res._status, 503, 'status must be 503 — not 200 with audio')
+  assertEqual(res._body.code, 'FINALIZE_PENDING', 'code must be FINALIZE_PENDING')
+  assert(!res._body.url, 'response must NOT contain audio URL (invariant: no delivery without durable complete)')
+
+  // Credits remain deducted (generation ran successfully — not a refundable failure)
+  const storedUser = JSON.parse(redis._get(`user:${email}`))
+  assertEqual(storedUser.credits, 500 - cost, 'credits still deducted — generation completed even though finalize failed')
+
+  // Idem record must still be 'processing'
+  const idem = JSON.parse(redis._get(`vo_idem:${email}:idem-key-0001`))
+  assertEqual(idem.status, 'processing', 'idem stays processing — not artificially finalized')
+})
+
+// ── Test 17: Retry after all-finalize-fail, within stale window → 202 IN_PROGRESS ──
+/**
+ * After a 503 FINALIZE_PENDING response, the client retries with the same
+ * idempotency key.  The idem record is still 'processing' and fresh (< 120 s),
+ * so the handler returns 202 IN_PROGRESS.  No re-synthesis, no re-charge.
+ */
+await test('17. Retry with same key after 503 (within stale window) → 202 IN_PROGRESS, no re-charge', async () => {
+  const email = 'user@test.com'
+  const text = 'Retry after 503 test'
+  const hash = payloadHash(text, 'voice123')
+  const cost = text.trim().length
+  const creditsAfterDeduction = 500 - cost
+
+  const store = makeStore(email, makeUser({ credits: creditsAfterDeduction }))
+  // Idem is 'processing' but fresh (< 120 s) — simulates state after 503 response
+  store[`vo_idem:${email}:idem-key-0001`] = {
+    value: JSON.stringify({
+      status: 'processing',
+      payloadHash: hash,
+      creditsDeducted: cost,
+      creditsAfter: creditsAfterDeduction,
+      ts: Date.now() - 10_000,   // 10 seconds ago — well within 120 s stale window
+      url: null,
+      error: null,
+    }),
+  }
+
+  const redis = new FakeRedis(store)
+  const { req, res } = makeReqRes({ body: stdReq({ text }), cookies: { swor_session: 'tok123' } })
+
+  await runHandler({ req, res, redis, fetchFn: successFetch(text.trim()), putFn: successPut() })
+
+  // Must return 202 IN_PROGRESS — not synthesizing again, not charging again
+  assertEqual(res._status, 202, 'status must be 202 IN_PROGRESS')
+  assertEqual(res._body.code, 'IN_PROGRESS', 'code must be IN_PROGRESS')
+  assert(!res._body.url, 'no audio URL on 202')
+
+  // Credits must not be deducted again
+  const storedUser = JSON.parse(redis._get(`user:${email}`))
+  assertEqual(storedUser.credits, creditsAfterDeduction, 'credits unchanged — no second deduction')
+
+  // Eval must NOT have been called (no new reservation)
+  const reserveCalls = redis.evalCalls.filter(c => c.script.includes('IDEM_EXISTS'))
+  assertEqual(reserveCalls.length, 0, 'no LUA_RESERVE call — no re-synthesis')
+})
+
+// ── Test 18: Retry after all-finalize-fail, after stale threshold → 422, refunded ──
+/**
+ * If the client retries after > 120 s (stale window), the stale-record path
+ * triggers: credits are refunded and 422 is returned.  The client can then start
+ * a fresh generation.
+ */
+await test('18. Retry with same key after stale threshold → 422, credits refunded', async () => {
+  const email = 'user@test.com'
+  const text = 'Stale retry after 503 test'
+  const hash = payloadHash(text, 'voice123')
+  const cost = text.trim().length
+  const creditsAfterDeduction = 500 - cost
+
+  const store = makeStore(email, makeUser({ credits: creditsAfterDeduction }))
+  // Idem is 'processing' but stale (> 120 s) — simulates client retrying late
+  store[`vo_idem:${email}:idem-key-0001`] = {
+    value: JSON.stringify({
+      status: 'processing',
+      payloadHash: hash,
+      creditsDeducted: cost,
+      creditsAfter: creditsAfterDeduction,
+      ts: Date.now() - 200_000,   // 200 seconds ago — past 120 s stale window
+      url: null,
+      error: null,
+    }),
+  }
+
+  const redis = new FakeRedis(store)
+  const { req, res } = makeReqRes({ body: stdReq({ text }), cookies: { swor_session: 'tok123' } })
+
+  await runHandler({ req, res, redis, fetchFn: successFetch(text.trim()), putFn: successPut() })
+
+  // Must return 422 GENERATION_FAILED (stale recovery path)
+  assertEqual(res._status, 422, 'status must be 422 — stale recovery')
+  assertEqual(res._body.code, 'GENERATION_FAILED', 'code must be GENERATION_FAILED')
+  assert(!res._body.url, 'no audio URL on 422')
+  assert(res._body.error.includes('timed out'), 'error message mentions timeout')
+
+  // Credits must be refunded
+  const storedUser = JSON.parse(redis._get(`user:${email}`))
+  assertEqual(storedUser.credits, 500, 'credits fully refunded after stale recovery')
+
+  // Idem record must be 'failed'
+  const idem = JSON.parse(redis._get(`vo_idem:${email}:idem-key-0001`))
+  assertEqual(idem.status, 'failed', 'idem marked failed by stale recovery')
+})
+
+// ── Test 19: Orphan recovery does NOT refund a 'complete' idem ─────────────────
+/**
+ * Verifies that orphan recovery cannot refund a generation whose audio was
+ * already delivered.  After a successful finalize('complete'), the UUID is
+ * removed from the active hash by HDEL.  If somehow a stale UUID for a 'complete'
+ * idem appeared in the hash (edge case), orphan recovery must skip it because
+ * orphan.status !== 'processing'.
+ */
+await test('19. Orphan recovery skips \'complete\' idem — delivered audio cannot be refunded', async () => {
+  const email = 'user@test.com'
+  const deliveredUuid = 'delivered-uuid-already-complete'
+  const deliveredCost = 60
+  const creditsAfterDelivery = 500 - deliveredCost   // 440
+
+  const deliveredIdemKey = `vo_idem:${email}:${deliveredUuid}`
+  const store = makeStore(email, makeUser({ credits: creditsAfterDelivery }))
+
+  // Idem is 'complete' — audio was delivered.  Simulate edge-case where hash entry
+  // was not cleaned up (would not happen with atomic HDEL, but verifying the guard).
+  store[deliveredIdemKey] = {
+    value: JSON.stringify({
+      status: 'complete',
+      payloadHash: payloadHash('Delivered text', 'voice123'),
+      creditsDeducted: deliveredCost,
+      creditsAfter: creditsAfterDelivery,
+      ts: Date.now() - 300_000,   // 5 minutes old — past stale threshold
+      url: 'https://blob.example.com/delivered.mp3',
+      error: null,
+    }),
+  }
+  // Hash entry still present (edge case — simulates incomplete cleanup)
+  store[`vo_active_idem:${email}`] = {
+    value: JSON.stringify({ [deliveredUuid]: String(deliveredCost) }),
+  }
+
+  const redis = new FakeRedis(store)
+  const newText = 'New request after delivered audio'
+  const newCost = newText.trim().length
+  const { req, res } = makeReqRes({
+    body: stdReq({ text: newText, idempotencyKey: 'new-key-test-19' }),
+    cookies: { swor_session: 'tok123' },
+  })
+
+  await runHandler({ req, res, redis, fetchFn: successFetch(newText.trim()), putFn: successPut() })
+
+  // New request must succeed
+  assertEqual(res._status, 200, 'new request returns 200')
+
+  // Delivered audio's credits must NOT have been refunded
+  // (440 - newCost, not 500 - newCost)
+  const storedUser = JSON.parse(redis._get(`user:${email}`))
+  assertEqual(storedUser.credits, creditsAfterDelivery - newCost,
+    `credits = ${creditsAfterDelivery} - ${newCost} (delivered uuid NOT refunded)`)
+
+  // Delivered idem must remain 'complete' (not touched by orphan recovery)
+  const deliveredIdem = JSON.parse(redis._get(deliveredIdemKey))
+  assertEqual(deliveredIdem.status, 'complete', 'complete idem untouched by orphan recovery')
+})
+
+// ── Test 20: Concurrent direct-refund race — double-HDEL guard prevents double refund ──
+/**
+ * Verifies LUA_DIRECT_REFUND's double-refund guard: two concurrent workers both
+ * attempt to direct-refund the same expired orphan UUID.  Only the first HDEL
+ * returns 1 (removed), the second gets ALREADY_REMOVED.  Credits are restored
+ * exactly once.
+ */
+await test('20. Concurrent direct-refund: ALREADY_REMOVED guard prevents double credit restore', async () => {
+  const email = 'user@test.com'
+  const orphanUuid = 'concurrent-orphan-uuid'
+  const orphanCost = 80
+  const stuckCredits = 500 - orphanCost   // 420
+
+  const store = makeStore(email, makeUser({ credits: stuckCredits }))
+  // Active hash entry (idem key expired)
+  store[`vo_active_idem:${email}`] = {
+    value: JSON.stringify({ [orphanUuid]: String(orphanCost) }),
+  }
+
+  const redis = new FakeRedis(store)
+  const userKey = `user:${email}`
+  const activeHashKey = `vo_active_idem:${email}`
+
+  // First direct-refund call — must succeed and restore credits
+  const result1 = await redis.eval(LUA_DIRECT_REFUND_MARKER, [userKey, activeHashKey],
+    [orphanUuid, String(orphanCost)])
+  const creditsAfterFirst = parseInt(result1, 10)
+  assertEqual(creditsAfterFirst, 500, 'first direct-refund restores credits to 500')
+
+  // Second direct-refund call — must throw ALREADY_REMOVED (double-refund guard)
+  let secondThrew = false
+  try {
+    await redis.eval(LUA_DIRECT_REFUND_MARKER, [userKey, activeHashKey],
+      [orphanUuid, String(orphanCost)])
+  } catch (err) {
+    secondThrew = err?.message?.startsWith('ALREADY_REMOVED')
+  }
+  assert(secondThrew, 'second direct-refund must throw ALREADY_REMOVED')
+
+  // Credits must equal exactly 500 (only restored once, not 500+80=580)
+  const storedUser = JSON.parse(redis._get(`user:${email}`))
+  assertEqual(storedUser.credits, 500, 'credits restored exactly once — no double refund')
+
+  // Hash entry must be gone
+  const activeHash = await redis.hgetall(activeHashKey)
+  assert(!activeHash || !(orphanUuid in (activeHash || {})), 'hash entry removed')
 })
 
 // ─── Summary ──────────────────────────────────────────────────────────────────
