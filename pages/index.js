@@ -302,22 +302,18 @@ const filtered = ALL_VOICES.filter(v => {
 
           {/* LEFT */}
           <div>
-          <div className="fu fu1" style={{fontSize:12,fontWeight:700,color:'#888',letterSpacing:'0.04em',marginBottom:18,lineHeight:1.6}}>
+          <div className="fu fu1" style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(220,20,60,.08)',border:'1px solid rgba(220,20,60,.2)',borderRadius:20,padding:'5px 14px',fontSize:11,fontWeight:700,color:'#DC143C',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:18}}>
   Nepal's #1 Nepali AI Voice Generator &amp; Text to Speech Platform
 </div>
 <h1 className="fu fu2" style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?'20px':'clamp(28px,3.8vw,50px)',fontWeight:800,lineHeight:1.15,letterSpacing:'-1.2px',marginBottom:20,color:'#1d1d1f'}}>
-  Build your audience in Nepali.<br/>
-  <span style={{color:'#DC143C',fontStyle:'italic'}}>No mic. No studio.</span><br/>
-  No retakes.
+  Studio-Quality Nepali Voiceovers{' '}
+  <span style={{color:'#DC143C',fontStyle:'italic'}}>in Seconds.</span><br/>
+  No mic. No studio. Just type and generate.
 </h1>
 <p className="fu fu3" style={{fontSize:16,color:'#6e6e73',lineHeight:1.75,marginBottom:32,maxWidth:440}}>
-  Swor AI is Nepal's fastest{' '}
-  <strong style={{color:'#1d1d1f'}}>Nepali AI voice generator</strong>{' '}
-  and{' '}
-  <strong style={{color:'#1d1d1f'}}>Nepali text to speech</strong>{' '}
-  platform. Turn raw{' '}
-  <span style={{fontFamily:'Noto Sans Devanagari, sans-serif',color:'#1d1d1f'}}>देवनागरी</span>{' '}
-  text into studio-grade Nepali voiceovers in under 10 seconds — for faceless YouTube channels, TikTok reels, and high-converting Nepali ads.
+  Turn <span style={{fontFamily:'Noto Sans Devanagari, sans-serif',color:'#1d1d1f'}}>देवनागरी</span> text into 30+ natural-sounding Nepali voices for your{' '}
+  <strong style={{color:'#1d1d1f'}}>TikToks, Reels, YouTube videos, and ads</strong>.
+  Studio-grade narration in under 10 seconds — without expensive recording gear or robotic accents.
 </p>
             {/* Music announcement */}
           <div style={{display:'flex',alignItems:'center',gap:12,background:'linear-gradient(135deg,#5B2D9E,#7B3FBE)',border:'1px solid rgba(107,63,190,.4)',borderRadius:14,padding:'14px 20px',marginBottom:20,flexWrap:'wrap',boxShadow:'0 4px 20px rgba(107,63,190,.25)'}}>
@@ -329,10 +325,15 @@ const filtered = ALL_VOICES.filter(v => {
               <Link href="/tool"><button style={{background:'#fff',color:'#6B3FBE',border:'none',padding:'8px 16px',borderRadius:8,fontSize:13,fontWeight:800,cursor:'pointer',flexShrink:0,whiteSpace:'nowrap'}}>Try Free Music →</button></Link>
             </div>
             <div className="fu fu4" style={{display:'flex',gap:12,flexWrap:'wrap',marginBottom:20}}>
-              <a href="#homepage-demo"><button className="btn-primary">Hear a Free Sample →</button></a>
-              <Link href="/tool"><button className="btn-secondary">Try the tool first</button></Link>
+              <Link href="/tool"><button className="btn-primary">🎙️ Generate Free Nepali Voiceover →</button></Link>
+              <a href="#homepage-demo"><button className="btn-secondary">▶ Listen to Sample</button></a>
             </div>
-            <div style={{fontSize:13,color:'#DC143C',fontWeight:600}}>🔥 Only 20 beta spots — 7 already filled</div>
+            <div style={{display:'flex',flexWrap:'wrap',gap:'6px 20px',fontSize:12,color:'#6e6e73',fontWeight:600}}>
+              <span>✓ Free trial credits included</span>
+              <span>✓ No monthly subscription</span>
+              <span>✓ Credits never expire</span>
+              <span>✓ eSewa &amp; Khalti supported</span>
+            </div>
           </div>
 
           {/* RIGHT — Badge + Voice Cards */}
