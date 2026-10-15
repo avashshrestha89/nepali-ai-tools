@@ -897,6 +897,45 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
     )}
   </div>
 )}
+{/* Cost Preview — live credit estimate above Generate button */}
+{session && session !== null && session !== false && text.trim().length > 0 && (
+  <div style={{
+    background: canGenerate ? '#f0f7ff' : '#fff5f5',
+    border: `1.5px solid ${canGenerate ? '#90CAF9' : '#FFAAAA'}`,
+    borderRadius: 10,
+    padding: '10px 14px',
+    marginBottom: 8,
+  }}>
+    {session.isLegacy ? (
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+        <span style={{fontSize:12,color:'#555'}}>⚡ Legacy rate</span>
+        <span style={{fontSize:13,fontWeight:700,color:'#1976D2'}}>25 credits</span>
+      </div>
+    ) : (
+      <>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
+          <span style={{fontSize:12,color:'#555'}}>📝 This generation</span>
+          <span style={{fontSize:14,fontWeight:800,color: canGenerate ? '#1976D2' : '#DC143C'}}>{text.length} credits</span>
+        </div>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
+          <span style={{fontSize:12,color:'#555'}}>💳 Your balance</span>
+          <span style={{fontSize:13,fontWeight:700,color: canGenerate ? '#34C759' : '#DC143C'}}>{credits} credits</span>
+        </div>
+        {!canGenerate && credits !== null && (
+          <div style={{fontSize:12,color:'#DC143C',fontWeight:600,marginTop:4,paddingTop:6,borderTop:'1px solid rgba(220,20,60,.15)'}}>
+            ⚠️ Need {text.length - credits} more credits to generate
+          </div>
+        )}
+        {canGenerate && (
+          <div style={{fontSize:11,color:'#888',marginTop:4,paddingTop:6,borderTop:'1px solid rgba(25,118,210,.1)'}}>
+            After generation: {credits - text.length} credits remaining
+          </div>
+        )}
+      </>
+    )}
+  </div>
+)}
+
 {/* Generate button */}
 <button onClick={handleGenerate} disabled={!canGenerate}
   style={{width:'100%',padding:'14px',borderRadius:12,border:'none',
@@ -913,7 +952,13 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
               <div>
                 <div style={{fontSize:24,fontWeight:800,color:credits === 0 ? '#DC143C' : '#1976D2',fontFamily:'Sora,sans-serif'}}>{credits}</div>
                 <div style={{fontSize:12,color:'#888',marginTop:2}}>Swor Credits remaining</div>
-                <div style={{fontSize:12,color:'#888',marginTop:6}}>Credits deducted per generation</div>
+                {text.trim().length > 0 && !session.isLegacy ? (
+                  <div style={{fontSize:12,fontWeight:600,color: canGenerate ? '#1976D2' : '#DC143C',marginTop:6}}>
+                    Current text: {text.length} credits ({text.length} chars)
+                  </div>
+                ) : (
+                  <div style={{fontSize:12,color:'#888',marginTop:6}}>1 credit = 1 character</div>
+                )}
               </div>
             ) : isAnon ? (
               <div>
