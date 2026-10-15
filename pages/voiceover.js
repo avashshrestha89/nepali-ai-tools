@@ -352,28 +352,32 @@ setTimeout(() => {
     const isAnon = session === false
     if (isAnon) { setShowSignup(true); return }
     setLoading(true); setResult(null); setError(null)
+    const idempotencyKey = crypto.randomUUID()
     try {
- const res = await fetch('/api/voiceover', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voiceId: selectedVoice.voice_id, voiceName: selectedVoice.name }) })
-if (!res.ok) { const e = await res.json(); throw new Error(e.error) }
-const data = await res.json()
-console.log('voiceover response data:', data)
-const url = data.url
-if (!url) throw new Error('No audio URL returned. Please try again.')
-if (session && url) {
-  const cr = await fetch('/api/auth/use-credit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'voiceover', charCount: text.length }) })
-  const cd = await cr.json()
-  if (cr.ok) setSession(prev => ({ ...prev, credits: cd.credits }))
-}
-setResult({ url, filename: `swor_${selectedVoice.name.toLowerCase()}_${Date.now()}.mp3` })
-setTimeout(() => fetchHistory(), 2000)
+      const res = await fetch('/api/voiceover', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, voiceId: selectedVoice.voice_id, voiceName: selectedVoice.name, idempotencyKey }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Generation failed. Please try again.')
+      const url = data.url
+      if (!url) throw new Error('No audio URL returned. Please try again.')
+      // B1 fix: credits returned from server — no separate use-credit call needed
+      if (data.credits !== undefined) {
+        setSession(prev => ({ ...prev, credits: data.credits }))
+      }
+      setResult({ url, filename: `swor_${selectedVoice.name.toLowerCase()}_${Date.now()}.mp3` })
+      setTimeout(() => fetchHistory(), 2000)
     } catch (e) { setError(e.message) }
     setLoading(false)
   }
 
-const canGenerate = text.trim().length > 0 && !loading && session !== null && session !== false && !session.isPendingPayment && (
-  session.isLegacy 
-    ? (session.credits || 0) >= 25 && text.length <= 3500
-    : (session.credits || 0) >= text.length
+const billableLength = text.trim().length  // B3 fix: matches server-side billing
+const canGenerate = billableLength > 0 && !loading && session !== null && session !== false && !session.isPendingPayment && (
+  session.isLegacy
+    ? (session.credits || 0) >= 25 && billableLength <= 500
+    : (session.credits || 0) >= billableLength
 )
   const credits = session ? session.credits || 0 : null
   const isAnon = session === false
@@ -915,7 +919,7 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
       <>
         <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
           <span style={{color:'#6e6e73'}}>Characters</span>
-          <span style={{fontWeight:700,color:'#1d1d1f'}}>{text.length.toLocaleString()}</span>
+          <span style={{fontWeight:700,color:'#1d1d1f'}}>{billableLength.toLocaleString()}</span>
         </div>
         <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
           <span style={{color:'#6e6e73'}}>Estimated cost</span>
@@ -930,11 +934,11 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
       <>
         <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
           <span style={{color:'#6e6e73'}}>Characters</span>
-          <span style={{fontWeight:700,color:'#1d1d1f'}}>{text.length.toLocaleString()}</span>
+          <span style={{fontWeight:700,color:'#1d1d1f'}}>{billableLength.toLocaleString()}</span>
         </div>
         <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
           <span style={{color:'#6e6e73'}}>Estimated cost</span>
-          <span style={{fontWeight:700,color: canGenerate ? '#1976D2' : '#DC143C'}}>{text.length.toLocaleString()} {text.length === 1 ? 'credit' : 'credits'}</span>
+          <span style={{fontWeight:700,color: canGenerate ? '#1976D2' : '#DC143C'}}>{billableLength.toLocaleString()} {billableLength === 1 ? 'credit' : 'credits'}</span>
         </div>
         <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
           <span style={{color:'#6e6e73'}}>Available balance</span>
@@ -943,13 +947,13 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
         <div style={{display:'flex',justifyContent:'space-between',paddingTop:6,borderTop:`1px solid ${canGenerate ? 'rgba(25,118,210,.12)' : 'rgba(220,20,60,.12)'}`}}>
           <span style={{color:'#6e6e73'}}>Balance after generation</span>
           <span style={{fontWeight:700,color: canGenerate ? '#34C759' : '#DC143C'}}>
-            {canGenerate ? `${(credits - text.length).toLocaleString()} ${credits - text.length === 1 ? 'credit' : 'credits'}` : '—'}
+            {canGenerate ? `${(credits - billableLength).toLocaleString()} ${credits - billableLength === 1 ? 'credit' : 'credits'}` : '—'}
           </span>
         </div>
         {!canGenerate && credits !== null && (
           <div style={{marginTop:8,paddingTop:8,borderTop:'1px solid rgba(220,20,60,.12)'}}>
             <div style={{color:'#DC143C',fontWeight:600,marginBottom:8}}>
-              ⚠️ {(text.length - credits).toLocaleString()} more {(text.length - credits) === 1 ? 'credit' : 'credits'} needed
+              ⚠️ {(billableLength - credits).toLocaleString()} more {(billableLength - credits) === 1 ? 'credit' : 'credits'} needed
             </div>
             <a
               href={`https://wa.me/19255379425?text=Hi! I want to buy more Swor AI credits to generate my voiceover.`}
@@ -974,7 +978,7 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
   {loading
     ? '⏳ Generating...'
     : text.trim().length > 0 && session && !session.isLegacy
-      ? `🎙️ Generate Voiceover · ${text.length.toLocaleString()} ${text.length === 1 ? 'credit' : 'credits'}`
+      ? `🎙️ Generate Voiceover · ${billableLength.toLocaleString()} ${billableLength === 1 ? 'credit' : 'credits'}`
       : text.trim().length > 0 && session && session.isLegacy
         ? '🎙️ Generate Voiceover · 25 credits'
         : '🎙️ Generate Voiceover'}
