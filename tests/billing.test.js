@@ -72,6 +72,29 @@ class FakeRedis {
   async set(key, value, opts) { this._set(key, value, opts?.ex || null); return 'OK' }
   async setex(key, ttl, value) { this._set(key, value, ttl); return 'OK' }
 
+  // Redis SET commands (for vo_active_idem tracking)
+  async sadd(key, ...members) {
+    let raw = this._get(key)
+    const set = raw ? new Set(JSON.parse(raw)) : new Set()
+    for (const m of members) set.add(m)
+    this._set(key, JSON.stringify([...set]))
+    return members.length
+  }
+  async srem(key, ...members) {
+    const raw = this._get(key)
+    if (!raw) return 0
+    const set = new Set(JSON.parse(raw))
+    let removed = 0
+    for (const m of members) { if (set.delete(m)) removed++ }
+    this._set(key, JSON.stringify([...set]))
+    return removed
+  }
+  async smembers(key) {
+    const raw = this._get(key)
+    if (!raw) return []
+    try { return JSON.parse(raw) } catch { return [] }
+  }
+
   /**
    * Simulate Lua eval by executing equivalent JS logic.
    * This faithfully replicates both Lua scripts' semantics.
@@ -89,7 +112,9 @@ class FakeRedis {
     throw new Error('Unknown Lua script')
   }
 
-  _evalReserve([userKey, idemKey], [costStr, idemPayload, ttlStr]) {
+  // KEYS[1]=userKey, KEYS[2]=idemKey, KEYS[3]=activeSetKey
+  // ARGV[1]=cost, ARGV[2]=idemPayload, ARGV[3]=ttl, ARGV[4]=idemUuid
+  _evalReserve([userKey, idemKey, activeSetKey], [costStr, idemPayload, ttlStr, idemUuid]) {
     const existing = this._get(idemKey)
     if (existing) throw new Error('IDEM_EXISTS:' + existing)
 
@@ -104,10 +129,21 @@ class FakeRedis {
     user.credits = credits - cost
     this._set(userKey, JSON.stringify(user))
     this._set(idemKey, idemPayload, parseInt(ttlStr, 10))
+
+    // Simulate SADD KEYS[3] ARGV[4] (atomic in Lua; replicated here)
+    if (activeSetKey && idemUuid) {
+      const raw = this._get(activeSetKey)
+      const set = raw ? new Set(JSON.parse(raw)) : new Set()
+      set.add(idemUuid)
+      this._set(activeSetKey, JSON.stringify([...set]))
+    }
+
     return String(user.credits)
   }
 
-  _evalFinalize([userKey, idemKey], [status, refundAmtStr, creditsAfterStr, url, errorMsg]) {
+  // KEYS[1]=userKey, KEYS[2]=idemKey, KEYS[3]=activeSetKey
+  // ARGV[1]=status, ARGV[2]=refund, ARGV[3]=creditsAfter, ARGV[4]=url, ARGV[5]=error, ARGV[6]=idemUuid
+  _evalFinalize([userKey, idemKey, activeSetKey], [status, refundAmtStr, creditsAfterStr, url, errorMsg, idemUuid]) {
     const raw = this._get(idemKey)
     if (!raw) throw new Error('IDEM_NOT_FOUND')
 
@@ -127,6 +163,16 @@ class FakeRedis {
         user.credits = (user.credits || 0) + refund
         idem.creditsAfter = user.credits
         this._set(userKey, JSON.stringify(user))
+      }
+    }
+
+    // Simulate SREM KEYS[3] ARGV[6] (atomic in Lua; replicated here)
+    if (activeSetKey && idemUuid) {
+      const rawSet = this._get(activeSetKey)
+      if (rawSet) {
+        const set = new Set(JSON.parse(rawSet))
+        set.delete(idemUuid)
+        this._set(activeSetKey, JSON.stringify([...set]))
       }
     }
 
@@ -227,20 +273,24 @@ async function runHandler({ req, res, redis, fetchFn, putFn }) {
   const userKey = `user:${email}`
   const idemKey = `vo_idem:${email}:${idempotencyKey}`
 
-  // Orphan recovery (mirrors production handler)
+  // Orphan recovery (mirrors production handler — smembers-based, recovers ALL orphans)
   try {
-    const lastKey = await redis.get(`vo_last_idem:${email}`)
-    if (lastKey && lastKey !== idempotencyKey) {
-      const orphanFull = `vo_idem:${email}:${lastKey}`
+    const activeSetKey = `vo_active_idem:${email}`
+    const activeUuids = await redis.smembers(activeSetKey)
+    for (const activeUuid of activeUuids) {
+      if (activeUuid === idempotencyKey) continue
+      const orphanFull = `vo_idem:${email}:${activeUuid}`
       const orphanRaw = await redis.get(orphanFull)
-      if (orphanRaw) {
-        const orphan = typeof orphanRaw === 'string' ? JSON.parse(orphanRaw) : orphanRaw
-        if (orphan.status === 'processing' && Date.now() - (orphan.ts || 0) > STALE_THRESHOLD_MS) {
-          const staleCost = orphan.creditsDeducted || 0
-          const staleAfter = (orphan.creditsAfter ?? 0) + staleCost
-          await _finalize(redis, userKey, orphanFull, 'failed', staleCost, staleAfter, null,
-            'Generation timed out. Credits refunded.')
-        }
+      if (!orphanRaw) {
+        await redis.srem(activeSetKey, activeUuid)
+        continue
+      }
+      const orphan = typeof orphanRaw === 'string' ? JSON.parse(orphanRaw) : orphanRaw
+      if (orphan.status === 'processing' && Date.now() - (orphan.ts || 0) > STALE_THRESHOLD_MS) {
+        const staleCost = orphan.creditsDeducted || 0
+        const staleAfter = (orphan.creditsAfter ?? 0) + staleCost
+        await _finalize(redis, userKey, orphanFull, 'failed', staleCost, staleAfter, null,
+          'Generation timed out. Credits refunded.')
       }
     }
   } catch (_) { /* best-effort */ }
@@ -279,7 +329,8 @@ async function runHandler({ req, res, redis, fetchFn, putFn }) {
 
   let creditsAfterReserve
   try {
-    const result = await redis.eval(LUA_RESERVE_MARKER, [userKey, idemKey], [String(cost), idemPayload, String(IDEM_TTL_S)])
+    const activeSetKey = `vo_active_idem:${email}`
+    const result = await redis.eval(LUA_RESERVE_MARKER, [userKey, idemKey, activeSetKey], [String(cost), idemPayload, String(IDEM_TTL_S), idempotencyKey])
     creditsAfterReserve = parseInt(result, 10)
   } catch (err) {
     const msg = err?.message || String(err)
@@ -294,8 +345,7 @@ async function runHandler({ req, res, redis, fetchFn, putFn }) {
     return res.status(500).json({ code: 'RESERVE_FAILED', error: 'Reserve failed' })
   }
 
-  // Track last idem for orphan recovery (mirrors production handler)
-  try { await redis.set(`vo_last_idem:${email}`, idempotencyKey, { ex: IDEM_TTL_S }) } catch (_) {}
+  // (SADD to vo_active_idem is now atomic inside LUA_RESERVE — no separate tracking step)
 
   // Audio generation
   let audioBytes
@@ -338,9 +388,12 @@ async function runHandler({ req, res, redis, fetchFn, putFn }) {
 }
 
 async function _finalize(redis, userKey, idemKey, status, refundAmt, creditsAfter, url, errorMsg) {
+  const email = userKey.slice('user:'.length)
+  const idemUuid = idemKey.split(':').pop()
+  const activeSetKey = `vo_active_idem:${email}`
   try {
-    const result = await redis.eval(LUA_FINALIZE_MARKER, [userKey, idemKey], [
-      status, String(refundAmt), String(creditsAfter), url || '', errorMsg || '',
+    const result = await redis.eval(LUA_FINALIZE_MARKER, [userKey, idemKey, activeSetKey], [
+      status, String(refundAmt), String(creditsAfter), url || '', errorMsg || '', idemUuid,
     ])
     return { credits: parseInt(result, 10), conflictStatus: null }
   } catch (err) {
@@ -724,9 +777,9 @@ await test('Bonus: Network error on fetch refunds credits', async () => {
  */
 class ConflictFakeRedis extends FakeRedis {
   // Override: throw ALREADY_FINALIZED:failed whenever finalize is called with status='complete'
-  _evalFinalize([userKey, idemKey], [status, ...rest]) {
+  _evalFinalize([userKey, idemKey, activeSetKey], [status, ...rest]) {
     if (status === 'complete') throw new Error('ALREADY_FINALIZED:failed')
-    return super._evalFinalize([userKey, idemKey], [status, ...rest])
+    return super._evalFinalize([userKey, idemKey, activeSetKey], [status, ...rest])
   }
 }
 
@@ -765,8 +818,8 @@ await test('12. Orphan recovery: new request with different key refunds stale or
       error: null,
     }),
   }
-  // vo_last_idem pointer points at the orphan
-  store[`vo_last_idem:${email}`] = { value: orphanKey }
+  // vo_active_idem set contains the orphan UUID (as LUA_RESERVE would have written)
+  store[`vo_active_idem:${email}`] = { value: JSON.stringify([orphanKey]) }
 
   const redis = new FakeRedis(store)
   const newText = 'New request'
@@ -788,6 +841,87 @@ await test('12. Orphan recovery: new request with different key refunds stale or
   // User credits: orphanCost refunded (500 restored) then newCost deducted
   const storedUser = JSON.parse(redis._get(`user:${email}`))
   assertEqual(storedUser.credits, 500 - newCost, `credits = 500 (orphan refunded) - ${newCost} (new cost)`)
+})
+
+// ── Test 13: Two concurrent orphans — both recovered, credits correct ─────────
+/**
+ * Simulates two concurrent generations that both crashed (e.g. Vercel timeout).
+ * LUA_RESERVE ran for both: credits deducted twice, both UUIDs in vo_active_idem.
+ * A third request must recover BOTH orphans via smembers, refunding each exactly
+ * once, and then succeed normally.
+ *
+ * This test closes the multi-orphan gap: the old single-pointer scheme would have
+ * recovered only the last-written orphan; the set-based scheme recovers all of them.
+ */
+await test('13. Two concurrent orphans: both refunded exactly once, third request succeeds', async () => {
+  const email = 'user@test.com'
+  const orphanUuid1 = 'orphan-uuid-A'
+  const orphanUuid2 = 'orphan-uuid-B'
+  const orphanCost1 = 30
+  const orphanCost2 = 40
+  // Both crashed after LUA_RESERVE; user balance is stuck at 500 - 30 - 40 = 430
+  const userCreditsStuck = 500 - orphanCost1 - orphanCost2
+
+  const orphanIdemKey1 = `vo_idem:${email}:${orphanUuid1}`
+  const orphanIdemKey2 = `vo_idem:${email}:${orphanUuid2}`
+  const store = makeStore(email, makeUser({ credits: userCreditsStuck }))
+
+  // Both stale orphans (3 minutes old), status 'processing'
+  store[orphanIdemKey1] = {
+    value: JSON.stringify({
+      status: 'processing',
+      payloadHash: payloadHash('Orphan text A', 'voice123'),
+      creditsDeducted: orphanCost1,
+      creditsAfter: userCreditsStuck,
+      ts: Date.now() - 180_000,
+      url: null, error: null,
+    }),
+  }
+  store[orphanIdemKey2] = {
+    value: JSON.stringify({
+      status: 'processing',
+      payloadHash: payloadHash('Orphan text B', 'voice123'),
+      creditsDeducted: orphanCost2,
+      creditsAfter: userCreditsStuck,
+      ts: Date.now() - 180_000,
+      url: null, error: null,
+    }),
+  }
+  // Both UUIDs in the active set (as LUA_RESERVE would have written them atomically)
+  store[`vo_active_idem:${email}`] = {
+    value: JSON.stringify([orphanUuid1, orphanUuid2]),
+  }
+
+  const redis = new FakeRedis(store)
+  const newText = 'Fresh request after two crashes'
+  const newCost = newText.trim().length
+  const { req, res } = makeReqRes({
+    body: stdReq({ text: newText, idempotencyKey: 'new-key-fresh-013' }),
+    cookies: { swor_session: 'tok123' },
+  })
+
+  await runHandler({ req, res, redis, fetchFn: successFetch(newText.trim()), putFn: successPut() })
+
+  // New request must succeed
+  assertEqual(res._status, 200, 'third request returns 200')
+  assert(res._body.url, 'audio URL present')
+
+  // Both orphan idem records must be marked failed
+  const orphan1 = JSON.parse(redis._get(orphanIdemKey1))
+  assertEqual(orphan1.status, 'failed', 'orphan1 marked failed')
+  const orphan2 = JSON.parse(redis._get(orphanIdemKey2))
+  assertEqual(orphan2.status, 'failed', 'orphan2 marked failed')
+
+  // Credits: 430 stuck → +30 (orphan1 refund) → +40 (orphan2 refund) → 500 → -newCost
+  const storedUser = JSON.parse(redis._get(`user:${email}`))
+  const expectedFinal = 500 - newCost
+  assertEqual(storedUser.credits, expectedFinal,
+    `credits = 500 (both refunded) - ${newCost} (new cost) = ${expectedFinal}`)
+
+  // Active set must contain only the new key (orphans removed by their SREM calls)
+  const activeSet = await redis.smembers(`vo_active_idem:${email}`)
+  assert(!activeSet.includes(orphanUuid1), 'orphan1 removed from active set')
+  assert(!activeSet.includes(orphanUuid2), 'orphan2 removed from active set')
 })
 
 // ─── Summary ──────────────────────────────────────────────────────────────────

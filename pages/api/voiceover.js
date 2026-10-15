@@ -19,14 +19,19 @@ const IDEM_TTL_S = 86400            // 24 hours
 //
 // KEYS[1] = "user:{email}"
 // KEYS[2] = "vo_idem:{email}:{uuid}"
+// KEYS[3] = "vo_active_idem:{email}"   ← active-set (crash-safe orphan tracking)
 // ARGV[1] = cost (string int)
 // ARGV[2] = idempotency payload JSON (status: processing)
 // ARGV[3] = TTL in seconds
+// ARGV[4] = idempotencyKey UUID (stored in active set)
 //
 // Returns: remaining credit balance as string
 // Errors:  IDEM_EXISTS:{existing_json}  — key already set (race)
 //          USER_NOT_FOUND               — session/user mismatch
 //          INSUFFICIENT:{have}:{need}   — not enough credits
+//
+// NOTE: SADD + EXPIRE on KEYS[3] is atomic with credit deduction — no crash
+// window between reservation and orphan-tracking pointer write.
 // ─────────────────────────────────────────────────────────────────────────────
 const LUA_RESERVE = `
 local existing = redis.call('GET', KEYS[2])
@@ -47,6 +52,8 @@ user.credits = credits - cost
 redis.call('SET', KEYS[1], cjson.encode(user))
 redis.call('SET', KEYS[2], ARGV[2])
 redis.call('EXPIRE', KEYS[2], tonumber(ARGV[3]))
+redis.call('SADD', KEYS[3], ARGV[4])
+redis.call('EXPIRE', KEYS[3], tonumber(ARGV[3]))
 return tostring(user.credits)
 `
 
@@ -55,15 +62,20 @@ return tostring(user.credits)
 //
 // KEYS[1] = "user:{email}"
 // KEYS[2] = "vo_idem:{email}:{uuid}"
+// KEYS[3] = "vo_active_idem:{email}"   ← active-set (remove on finalize)
 // ARGV[1] = new status: 'complete' | 'failed'
 // ARGV[2] = refund amount (string int; 0 for success)
 // ARGV[3] = creditsAfter (string int; informational for idem record)
 // ARGV[4] = url (string; '' for none)
 // ARGV[5] = error message (string; '' for none)
+// ARGV[6] = idempotencyKey UUID (to SREM from active set)
 //
 // Returns: creditsAfter as string
 // Errors:  IDEM_NOT_FOUND      — key expired or never existed
 //          ALREADY_FINALIZED:{status} — already completed/failed (idempotent noop)
+//
+// NOTE: SREM on KEYS[3] is atomic with status update — no window where idem is
+// finalized but UUID still appears as a recoverable orphan.
 // ─────────────────────────────────────────────────────────────────────────────
 const LUA_FINALIZE = `
 local raw = redis.call('GET', KEYS[2])
@@ -89,21 +101,28 @@ if refund > 0 then
     redis.call('SET', KEYS[1], cjson.encode(user))
   end
 end
+redis.call('SREM', KEYS[3], ARGV[6])
 return tostring(idem.creditsAfter)
 `
 
 // ─────────────────────────────────────────────────────────────────────────────
 // finalize: call LUA_FINALIZE; swallow ALREADY_FINALIZED (idempotent)
-// Returns final credit balance (number) or null on error.
+// Passes 3 KEYS (user, idem, activeSet) and 6 ARGV (status, refund, credits,
+// url, error, idemUuid) so the active-set SREM is atomic with the status write.
+// Returns { credits, conflictStatus } — conflictStatus is non-null on race.
 // ─────────────────────────────────────────────────────────────────────────────
 async function finalize(userKey, idemKey, status, refundAmt, creditsAfter, url, errorMsg) {
+  const email = userKey.slice('user:'.length)
+  const idemUuid = idemKey.split(':').pop()
+  const activeSetKey = `vo_active_idem:${email}`
   try {
-    const result = await redis.eval(LUA_FINALIZE, [userKey, idemKey], [
+    const result = await redis.eval(LUA_FINALIZE, [userKey, idemKey, activeSetKey], [
       status,
       String(refundAmt),
       String(creditsAfter),
       url || '',
       errorMsg || '',
+      idemUuid,
     ])
     return { credits: parseInt(result, 10), conflictStatus: null }
   } catch (err) {
@@ -206,24 +225,32 @@ export default async function handler(req, res) {
 
   // ── Proactive orphan recovery ─────────────────────────────────────────────
   // The client generates a new UUID per click, so a crashed request's idem key
-  // is never retried. We track the last idem key written for this user and, on
-  // any new request, recover stale orphans so credits are not permanently lost.
+  // is never retried by the same client.  We track ALL in-progress UUIDs for
+  // this user in the vo_active_idem:{email} Redis SET (written atomically inside
+  // LUA_RESERVE, removed atomically inside LUA_FINALIZE).  On any new request
+  // we scan the whole set and recover every stale orphan — no crash window, no
+  // single-pointer multi-orphan gap.
   try {
-    const lastKey = await redis.get(`vo_last_idem:${email}`)
-    if (lastKey && lastKey !== idempotencyKey) {
-      const orphanFull = `vo_idem:${email}:${lastKey}`
+    const activeSetKey = `vo_active_idem:${email}`
+    const activeUuids = await redis.smembers(activeSetKey)
+    for (const activeUuid of activeUuids) {
+      if (activeUuid === idempotencyKey) continue   // skip current request
+      const orphanFull = `vo_idem:${email}:${activeUuid}`
       const orphanRaw = await redis.get(orphanFull)
-      if (orphanRaw) {
-        const orphan = typeof orphanRaw === 'string' ? JSON.parse(orphanRaw) : orphanRaw
-        if (orphan.status === 'processing') {
-          const ageMs = Date.now() - (orphan.ts || 0)
-          if (ageMs > STALE_THRESHOLD_MS) {
-            const staleCost = orphan.creditsDeducted || 0
-            const staleAfter = (orphan.creditsAfter ?? 0) + staleCost
-            await finalize(userKey, orphanFull, 'failed', staleCost, staleAfter, null,
-              'Generation timed out. Credits refunded.')
-            console.log(`Proactive orphan recovery: ${orphanFull} (age ${ageMs}ms)`)
-          }
+      if (!orphanRaw) {
+        // Idem key expired but wasn't removed from active set — clean up
+        await redis.srem(activeSetKey, activeUuid)
+        continue
+      }
+      const orphan = typeof orphanRaw === 'string' ? JSON.parse(orphanRaw) : orphanRaw
+      if (orphan.status === 'processing') {
+        const ageMs = Date.now() - (orphan.ts || 0)
+        if (ageMs > STALE_THRESHOLD_MS) {
+          const staleCost = orphan.creditsDeducted || 0
+          const staleAfter = (orphan.creditsAfter ?? 0) + staleCost
+          await finalize(userKey, orphanFull, 'failed', staleCost, staleAfter, null,
+            'Generation timed out. Credits refunded.')
+          console.log(`Proactive orphan recovery: ${orphanFull} (age ${ageMs}ms)`)
         }
       }
     }
@@ -305,10 +332,12 @@ export default async function handler(req, res) {
 
   let creditsAfterReserve
   try {
-    const result = await redis.eval(LUA_RESERVE, [userKey, idemKey], [
+    const activeSetKey = `vo_active_idem:${email}`
+    const result = await redis.eval(LUA_RESERVE, [userKey, idemKey, activeSetKey], [
       String(cost),
       idemPayload,
       String(IDEM_TTL_S),
+      idempotencyKey,
     ])
     creditsAfterReserve = parseInt(result, 10)
   } catch (err) {
@@ -336,13 +365,6 @@ export default async function handler(req, res) {
     }
     console.error('LUA_RESERVE error:', err)
     return res.status(500).json({ code: 'RESERVE_FAILED', error: 'Failed to reserve credits. Please try again.' })
-  }
-
-  // ── Track last idem key for proactive orphan recovery ─────────────────────
-  try {
-    await redis.set(`vo_last_idem:${email}`, idempotencyKey, { ex: IDEM_TTL_S })
-  } catch (trackErr) {
-    console.error('vo_last_idem tracking error (non-fatal):', trackErr)
   }
 
   // ── Generate audio via AI voice engine ───────────────────────────────────
