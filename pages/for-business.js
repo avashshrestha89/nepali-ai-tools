@@ -21,7 +21,7 @@ export default function ForBusiness() {
 
 const benefits = [
     { stat: '8s', label: 'मा professional voiceover ready' },
-    { stat: '20', label: 'premium Nepali AI voices' },
+    { stat: '30', label: 'premium Nepali AI voices' },
     { stat: '75%', label: 'कम cost — voice artist भन्दा' },
     { stat: '500+', label: 'characters per generation' },
   ]
@@ -236,7 +236,7 @@ const benefits = [
               </div>
             ))}
           </div>
-          <p style={{textAlign:'center',fontSize:13,color:'#888'}}>+ 14 more voices available on the platform</p>
+          <p style={{textAlign:'center',fontSize:13,color:'#888'}}>+ 24 more voices available on the platform</p>
         </div>
       </section>
 
@@ -364,7 +364,7 @@ const benefits = [
               },
               {
                 q:'Swor AI र अरु global TTS tools मा के फरक छ?',
-                a:'Google TTS, ElevenLabs, र अरु global tools मा Nepali एउटा afterthought हो — 100+ languages मध्ये एउटा। Swor AI specifically Nepali content creators र Nepal businesses को लागि बनाइएको हो। 20 dedicated Nepali voices, NPR मा pricing, eSewa/Khalti payment, र Kathmandu बाट direct support।'
+                a:'Google TTS, ElevenLabs, र अरु global tools मा Nepali एउटा afterthought हो — 100+ languages मध्ये एउटा। Swor AI specifically Nepali content creators र Nepal businesses को लागि बनाइएको हो। 30 dedicated Nepali voices, NPR मा pricing, eSewa/Khalti payment, र Kathmandu बाट direct support।'
               },
             ].map((faq,i)=>(
               <div key={i} style={{borderBottom:'1px solid #e8e8ed',padding:'20px 0'}}>

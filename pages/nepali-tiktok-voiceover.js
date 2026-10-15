@@ -59,7 +59,7 @@ export default function NepaliTiktokVoiceover() {
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:16}}>
             {[
               {step:'01',icon:'✍️',title:'Write your TikTok script',desc:'Type your Nepali script in Devanagari. Up to 500 characters per generation — perfect for a 30-40 second TikTok video.'},
-              {step:'02',icon:'🎙️',title:'Pick your voice',desc:'Choose from 20 AI Nepali voices. Add emotion tags like [excited] or [whispers] for dynamic TikTok delivery.'},
+              {step:'02',icon:'🎙️',title:'Pick your voice',desc:'Choose from 30 AI Nepali voices. Add emotion tags like [excited] or [whispers] for dynamic TikTok delivery.'},
               {step:'03',icon:'⬇️',title:'Download and import',desc:'Download your MP3 voiceover and import directly into CapCut, InShot, or TikTok\'s video editor. Done in under 60 seconds.'},
             ].map(s=>(
               <div key={s.step} style={{background:'#f5f5f7',borderRadius:16,padding:'24px'}}>

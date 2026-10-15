@@ -39,7 +39,7 @@ export default function NepaliVoiceGenerator() {
             Nepal's #1 Free Nepali<br />Voice Generator Online
           </h1>
           <p style={{fontSize:18,color:'#6e6e73',lineHeight:1.7,marginBottom:32,maxWidth:560,margin:'0 auto 32px'}}>
-            Generate professional AI Nepali voices in seconds. 20 natural-sounding voices for TikTok, YouTube, documentary, news, ads and more. No microphone needed.
+            Generate professional AI Nepali voices in seconds. 30 natural-sounding voices for TikTok, YouTube, documentary, news, ads and more. No microphone needed.
           </p>
           <Link href="/voiceover">
             <button style={{background:'#DC143C',color:'#fff',border:'none',padding:'16px 40px',borderRadius:14,fontSize:17,fontWeight:700,cursor:'pointer',fontFamily:'Sora,sans-serif',boxShadow:'0 8px 32px rgba(220,20,60,.25)'}}>
