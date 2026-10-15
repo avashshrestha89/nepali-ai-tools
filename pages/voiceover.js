@@ -923,7 +923,7 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
         </div>
         <div style={{display:'flex',justifyContent:'space-between'}}>
           <span style={{color:'#6e6e73'}}>Available balance</span>
-          <span style={{fontWeight:700,color: canGenerate ? '#1d1d1f' : '#DC143C'}}>{credits.toLocaleString()} credits</span>
+          <span style={{fontWeight:700,color: canGenerate ? '#1d1d1f' : '#DC143C'}}>{credits.toLocaleString()} {credits === 1 ? 'credit' : 'credits'}</span>
         </div>
       </>
     ) : (
@@ -934,22 +934,22 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
         </div>
         <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
           <span style={{color:'#6e6e73'}}>Estimated cost</span>
-          <span style={{fontWeight:700,color: canGenerate ? '#1976D2' : '#DC143C'}}>{text.length.toLocaleString()} credits</span>
+          <span style={{fontWeight:700,color: canGenerate ? '#1976D2' : '#DC143C'}}>{text.length.toLocaleString()} {text.length === 1 ? 'credit' : 'credits'}</span>
         </div>
         <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
           <span style={{color:'#6e6e73'}}>Available balance</span>
-          <span style={{fontWeight:700,color:'#1d1d1f'}}>{credits.toLocaleString()} credits</span>
+          <span style={{fontWeight:700,color:'#1d1d1f'}}>{credits.toLocaleString()} {credits === 1 ? 'credit' : 'credits'}</span>
         </div>
         <div style={{display:'flex',justifyContent:'space-between',paddingTop:6,borderTop:`1px solid ${canGenerate ? 'rgba(25,118,210,.12)' : 'rgba(220,20,60,.12)'}`}}>
           <span style={{color:'#6e6e73'}}>Balance after generation</span>
           <span style={{fontWeight:700,color: canGenerate ? '#34C759' : '#DC143C'}}>
-            {canGenerate ? `${(credits - text.length).toLocaleString()} credits` : '—'}
+            {canGenerate ? `${(credits - text.length).toLocaleString()} ${credits - text.length === 1 ? 'credit' : 'credits'}` : '—'}
           </span>
         </div>
         {!canGenerate && credits !== null && (
           <div style={{marginTop:8,paddingTop:8,borderTop:'1px solid rgba(220,20,60,.12)'}}>
             <div style={{color:'#DC143C',fontWeight:600,marginBottom:8}}>
-              ⚠️ {(text.length - credits).toLocaleString()} more credits needed
+              ⚠️ {(text.length - credits).toLocaleString()} more {(text.length - credits) === 1 ? 'credit' : 'credits'} needed
             </div>
             <a
               href={`https://wa.me/19255379425?text=Hi! I want to buy more Swor AI credits to generate my voiceover.`}
@@ -974,7 +974,7 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
   {loading
     ? '⏳ Generating...'
     : text.trim().length > 0 && session && !session.isLegacy
-      ? `🎙️ Generate Voiceover · ${text.length.toLocaleString()} credits`
+      ? `🎙️ Generate Voiceover · ${text.length.toLocaleString()} ${text.length === 1 ? 'credit' : 'credits'}`
       : text.trim().length > 0 && session && session.isLegacy
         ? '🎙️ Generate Voiceover · 25 credits'
         : '🎙️ Generate Voiceover'}
