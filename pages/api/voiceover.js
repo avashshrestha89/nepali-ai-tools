@@ -12,26 +12,30 @@ const MAX_HISTORY = 5
 const LEGACY_VOICEOVER_COST = 25
 const LEGACY_CHAR_LIMIT = 500
 const STALE_THRESHOLD_MS = 120_000  // 2 minutes
-const IDEM_TTL_S = 86400            // 24 hours
+const IDEM_TTL_S = 86400            // 24 hours — idempotency record lifetime
+const ACTIVE_TTL_S = 604800         // 7 days  — active-hash lifetime (survives user inactivity)
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Lua: atomic credit reservation + idempotency record creation
 //
 // KEYS[1] = "user:{email}"
 // KEYS[2] = "vo_idem:{email}:{uuid}"
-// KEYS[3] = "vo_active_idem:{email}"   ← active-set (crash-safe orphan tracking)
+// KEYS[3] = "vo_active_idem:{email}"   ← active HASH (crash-safe orphan tracking)
 // ARGV[1] = cost (string int)
 // ARGV[2] = idempotency payload JSON (status: processing)
-// ARGV[3] = TTL in seconds
-// ARGV[4] = idempotencyKey UUID (stored in active set)
+// ARGV[3] = idem TTL in seconds        (IDEM_TTL_S = 24 h)
+// ARGV[4] = idempotencyKey UUID        (field stored in active hash)
+// ARGV[5] = active-hash TTL in seconds (ACTIVE_TTL_S = 7 d — survives user inactivity)
 //
 // Returns: remaining credit balance as string
 // Errors:  IDEM_EXISTS:{existing_json}  — key already set (race)
 //          USER_NOT_FOUND               — session/user mismatch
 //          INSUFFICIENT:{have}:{need}   — not enough credits
 //
-// NOTE: SADD + EXPIRE on KEYS[3] is atomic with credit deduction — no crash
-// window between reservation and orphan-tracking pointer write.
+// NOTE: HSET {uuid → cost} + EXPIRE on KEYS[3] is atomic with credit deduction.
+// Storing the cost allows LUA_DIRECT_REFUND to refund even after the idem key
+// has expired (TTL gap protection).  ACTIVE_TTL_S > IDEM_TTL_S ensures the hash
+// entry outlives the idem key for exactly this reason.
 // ─────────────────────────────────────────────────────────────────────────────
 const LUA_RESERVE = `
 local existing = redis.call('GET', KEYS[2])
@@ -52,8 +56,8 @@ user.credits = credits - cost
 redis.call('SET', KEYS[1], cjson.encode(user))
 redis.call('SET', KEYS[2], ARGV[2])
 redis.call('EXPIRE', KEYS[2], tonumber(ARGV[3]))
-redis.call('SADD', KEYS[3], ARGV[4])
-redis.call('EXPIRE', KEYS[3], tonumber(ARGV[3]))
+redis.call('HSET', KEYS[3], ARGV[4], ARGV[1])
+redis.call('EXPIRE', KEYS[3], tonumber(ARGV[5]))
 return tostring(user.credits)
 `
 
@@ -62,20 +66,20 @@ return tostring(user.credits)
 //
 // KEYS[1] = "user:{email}"
 // KEYS[2] = "vo_idem:{email}:{uuid}"
-// KEYS[3] = "vo_active_idem:{email}"   ← active-set (remove on finalize)
+// KEYS[3] = "vo_active_idem:{email}"   ← active HASH (remove field on finalize)
 // ARGV[1] = new status: 'complete' | 'failed'
 // ARGV[2] = refund amount (string int; 0 for success)
 // ARGV[3] = creditsAfter (string int; informational for idem record)
 // ARGV[4] = url (string; '' for none)
 // ARGV[5] = error message (string; '' for none)
-// ARGV[6] = idempotencyKey UUID (to SREM from active set)
+// ARGV[6] = idempotencyKey UUID (field to HDEL from active hash)
 //
 // Returns: creditsAfter as string
 // Errors:  IDEM_NOT_FOUND      — key expired or never existed
 //          ALREADY_FINALIZED:{status} — already completed/failed (idempotent noop)
 //
-// NOTE: SREM on KEYS[3] is atomic with status update — no window where idem is
-// finalized but UUID still appears as a recoverable orphan.
+// NOTE: HDEL on KEYS[3] is atomic with status update — no window where idem is
+// finalized but UUID still appears as a recoverable orphan in the tracking hash.
 // ─────────────────────────────────────────────────────────────────────────────
 const LUA_FINALIZE = `
 local raw = redis.call('GET', KEYS[2])
@@ -101,8 +105,46 @@ if refund > 0 then
     redis.call('SET', KEYS[1], cjson.encode(user))
   end
 end
-redis.call('SREM', KEYS[3], ARGV[6])
+redis.call('HDEL', KEYS[3], ARGV[6])
 return tostring(idem.creditsAfter)
+`
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Lua: direct refund for TTL-expired orphan idem records
+//
+// Called when orphan recovery finds a UUID in the active hash but its
+// vo_idem:{email}:{uuid} key has already expired (>24 h since crash).
+// We still have the cost stored in the hash — use it to refund the user.
+//
+// KEYS[1] = "user:{email}"
+// KEYS[2] = "vo_active_idem:{email}"   ← active HASH
+// ARGV[1] = uuid (hash field to remove)
+// ARGV[2] = cost to refund (stored in hash; may be '0')
+//
+// Returns: user's new credit balance as string
+// Errors:  ALREADY_REMOVED — hash field already gone (idempotent; concurrent worker)
+//          USER_NOT_FOUND  — user key missing (edge case; hash field is still removed)
+//
+// NOTE: HDEL return value (1 = removed, 0 = already gone) is the double-refund
+// guard.  Concurrent recovery workers racing on the same UUID each call HDEL;
+// only the one that gets removed=1 performs the credit restore.
+// ─────────────────────────────────────────────────────────────────────────────
+const LUA_DIRECT_REFUND = `
+local removed = redis.call('HDEL', KEYS[2], ARGV[1])
+if removed == 0 then
+  return redis.error_reply('ALREADY_REMOVED')
+end
+local cost = tonumber(ARGV[2])
+if cost > 0 then
+  local userRaw = redis.call('GET', KEYS[1])
+  if userRaw then
+    local user = cjson.decode(userRaw)
+    user.credits = (user.credits or 0) + cost
+    redis.call('SET', KEYS[1], cjson.encode(user))
+    return tostring(user.credits)
+  end
+end
+return '0'
 `
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -226,31 +268,51 @@ export default async function handler(req, res) {
   // ── Proactive orphan recovery ─────────────────────────────────────────────
   // The client generates a new UUID per click, so a crashed request's idem key
   // is never retried by the same client.  We track ALL in-progress UUIDs for
-  // this user in the vo_active_idem:{email} Redis SET (written atomically inside
-  // LUA_RESERVE, removed atomically inside LUA_FINALIZE).  On any new request
-  // we scan the whole set and recover every stale orphan — no crash window, no
-  // single-pointer multi-orphan gap.
+  // this user in vo_active_idem:{email}, a Redis HASH of {uuid → cost} written
+  // atomically inside LUA_RESERVE and cleaned up atomically inside LUA_FINALIZE.
+  // On any new request we scan the whole hash and recover every stale orphan.
+  //
+  // Two recovery paths:
+  //   A) Idem key still alive (crash within 24 h): LUA_FINALIZE marks failed +
+  //      refunds + removes from hash in one atomic op.
+  //   B) Idem key expired (crash >24 h ago):  LUA_DIRECT_REFUND uses the stored
+  //      cost in the hash to refund credits + removes the hash field atomically,
+  //      with HDEL-based double-refund guard for concurrent workers.
   try {
-    const activeSetKey = `vo_active_idem:${email}`
-    const activeUuids = await redis.smembers(activeSetKey)
-    for (const activeUuid of activeUuids) {
-      if (activeUuid === idempotencyKey) continue   // skip current request
-      const orphanFull = `vo_idem:${email}:${activeUuid}`
-      const orphanRaw = await redis.get(orphanFull)
-      if (!orphanRaw) {
-        // Idem key expired but wasn't removed from active set — clean up
-        await redis.srem(activeSetKey, activeUuid)
-        continue
-      }
-      const orphan = typeof orphanRaw === 'string' ? JSON.parse(orphanRaw) : orphanRaw
-      if (orphan.status === 'processing') {
-        const ageMs = Date.now() - (orphan.ts || 0)
-        if (ageMs > STALE_THRESHOLD_MS) {
-          const staleCost = orphan.creditsDeducted || 0
-          const staleAfter = (orphan.creditsAfter ?? 0) + staleCost
-          await finalize(userKey, orphanFull, 'failed', staleCost, staleAfter, null,
-            'Generation timed out. Credits refunded.')
-          console.log(`Proactive orphan recovery: ${orphanFull} (age ${ageMs}ms)`)
+    const activeHashKey = `vo_active_idem:${email}`
+    const activeHash = await redis.hgetall(activeHashKey)
+    if (activeHash) {
+      for (const [activeUuid, costStr] of Object.entries(activeHash)) {
+        if (activeUuid === idempotencyKey) continue   // skip current request
+        const orphanFull = `vo_idem:${email}:${activeUuid}`
+        const orphanRaw = await redis.get(orphanFull)
+        if (!orphanRaw) {
+          // PATH B: Idem key expired — refund using cost stored in active hash
+          const storedCost = parseInt(costStr, 10) || 0
+          try {
+            const result = await redis.eval(LUA_DIRECT_REFUND, [userKey, activeHashKey],
+              [activeUuid, String(storedCost)])
+            console.log(`Direct refund for TTL-expired orphan: ${email}:${activeUuid}, cost=${storedCost}, creditsAfter=${result}`)
+          } catch (refundErr) {
+            const refundMsg = refundErr?.message || String(refundErr)
+            if (!refundMsg.startsWith('ALREADY_REMOVED')) {
+              // ALREADY_REMOVED = concurrent worker beat us; idempotent, not an error
+              console.error(`Direct refund error for ${email}:${activeUuid}:`, refundErr)
+            }
+          }
+          continue
+        }
+        // PATH A: Idem key still alive — check if processing and stale
+        const orphan = typeof orphanRaw === 'string' ? JSON.parse(orphanRaw) : orphanRaw
+        if (orphan.status === 'processing') {
+          const ageMs = Date.now() - (orphan.ts || 0)
+          if (ageMs > STALE_THRESHOLD_MS) {
+            const staleCost = orphan.creditsDeducted || 0
+            const staleAfter = (orphan.creditsAfter ?? 0) + staleCost
+            await finalize(userKey, orphanFull, 'failed', staleCost, staleAfter, null,
+              'Generation timed out. Credits refunded.')
+            console.log(`Proactive orphan recovery: ${orphanFull} (age ${ageMs}ms)`)
+          }
         }
       }
     }
@@ -338,6 +400,7 @@ export default async function handler(req, res) {
       idemPayload,
       String(IDEM_TTL_S),
       idempotencyKey,
+      String(ACTIVE_TTL_S),   // ARGV[5]: longer TTL for active-hash (7d > 24h idem TTL)
     ])
     creditsAfterReserve = parseInt(result, 10)
   } catch (err) {
@@ -464,9 +527,24 @@ export default async function handler(req, res) {
     // Non-fatal — generation succeeded; continue
   }
 
-  // ── Finalize success ──────────────────────────────────────────────────────
-  const { credits: finalCredits, conflictStatus } = await finalize(
-    userKey, idemKey, 'complete', 0, creditsAfterReserve, blobUrl, null)
+  // ── Finalize success (with retry — Issue A mitigation) ──────────────────
+  // If Redis is briefly down after audio is generated, finalize() returns
+  // {credits:null, conflictStatus:null}.  Without a retry the idem stays
+  // 'processing' and orphan recovery would later refund the user even though
+  // they received audio.  We retry up to 3× with short back-off; if all
+  // attempts fail we still return 200 (user has their audio) and log a CRITICAL
+  // event for manual recovery.  Residual risk: Redis down >~300 ms post-generation
+  // → idem stays 'processing' → orphan recovery may refund.  Mitigated but not
+  // fully eliminated without a persistent retry queue.
+  const MAX_FINALIZE_RETRIES = 3
+  let finalResult = { credits: null, conflictStatus: null }
+  for (let attempt = 0; attempt < MAX_FINALIZE_RETRIES; attempt++) {
+    if (attempt > 0) await new Promise(r => setTimeout(r, 100 * attempt))
+    finalResult = await finalize(userKey, idemKey, 'complete', 0, creditsAfterReserve, blobUrl, null)
+    // Break on success OR on a definitive conflict (don't retry ALREADY_FINALIZED)
+    if (finalResult.credits !== null || finalResult.conflictStatus !== null) break
+  }
+  const { credits: finalCredits, conflictStatus } = finalResult
 
   if (conflictStatus === 'failed') {
     // A stale recovery already refunded credits before we could write 'complete'.
@@ -476,6 +554,17 @@ export default async function handler(req, res) {
       code: 'CONFLICT',
       error: 'Generation completed, but a timeout recovery had already refunded your credits. Please try again.',
     })
+  }
+
+  if (finalResult.credits === null) {
+    // All 3 finalize attempts failed — Redis still down.  Audio was generated and
+    // stored; return it to avoid losing the user's work.  The idem stays
+    // 'processing'; orphan recovery will eventually refund — manual review needed.
+    console.error(
+      `CRITICAL: finalize failed after ${MAX_FINALIZE_RETRIES} attempts — ` +
+      `email=${email} idemKey=${idemKey} blobUrl=${blobUrl} creditsDeducted=${cost}. ` +
+      `Idem record stuck 'processing'; manual recovery may be required.`
+    )
   }
 
   return res.status(200).json({

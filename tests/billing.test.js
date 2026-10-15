@@ -72,27 +72,29 @@ class FakeRedis {
   async set(key, value, opts) { this._set(key, value, opts?.ex || null); return 'OK' }
   async setex(key, ttl, value) { this._set(key, value, ttl); return 'OK' }
 
-  // Redis SET commands (for vo_active_idem tracking)
-  async sadd(key, ...members) {
-    let raw = this._get(key)
-    const set = raw ? new Set(JSON.parse(raw)) : new Set()
-    for (const m of members) set.add(m)
-    this._set(key, JSON.stringify([...set]))
-    return members.length
+  // Redis HASH commands (for vo_active_idem:{email} tracking — {uuid → cost})
+  async hset(key, kv) {
+    const raw = this._get(key)
+    const obj = raw ? JSON.parse(raw) : {}
+    Object.assign(obj, kv)
+    this._set(key, JSON.stringify(obj))
+    return Object.keys(kv).length
   }
-  async srem(key, ...members) {
+  async hgetall(key) {
+    const raw = this._get(key)
+    if (!raw) return null
+    try { return JSON.parse(raw) } catch { return null }
+  }
+  async hdel(key, ...fields) {
     const raw = this._get(key)
     if (!raw) return 0
-    const set = new Set(JSON.parse(raw))
+    const obj = JSON.parse(raw)
     let removed = 0
-    for (const m of members) { if (set.delete(m)) removed++ }
-    this._set(key, JSON.stringify([...set]))
+    for (const f of fields) { if (f in obj) { delete obj[f]; removed++ } }
+    // Mirror real Redis: empty hash → key deleted
+    if (Object.keys(obj).length === 0) this._del(key)
+    else this._set(key, JSON.stringify(obj))
     return removed
-  }
-  async smembers(key) {
-    const raw = this._get(key)
-    if (!raw) return []
-    try { return JSON.parse(raw) } catch { return [] }
   }
 
   /**
@@ -103,18 +105,15 @@ class FakeRedis {
     this.evalCalls.push({ script: script.trim().slice(0, 60), keys, args })
 
     // ── Detect which script is being called ──
-    if (script.includes('IDEM_EXISTS')) {
-      return this._evalReserve(keys, args)
-    }
-    if (script.includes('ALREADY_FINALIZED')) {
-      return this._evalFinalize(keys, args)
-    }
+    if (script.includes('IDEM_EXISTS')) return this._evalReserve(keys, args)
+    if (script.includes('ALREADY_FINALIZED')) return this._evalFinalize(keys, args)
+    if (script.includes('ALREADY_REMOVED')) return this._evalDirectRefund(keys, args)
     throw new Error('Unknown Lua script')
   }
 
-  // KEYS[1]=userKey, KEYS[2]=idemKey, KEYS[3]=activeSetKey
-  // ARGV[1]=cost, ARGV[2]=idemPayload, ARGV[3]=ttl, ARGV[4]=idemUuid
-  _evalReserve([userKey, idemKey, activeSetKey], [costStr, idemPayload, ttlStr, idemUuid]) {
+  // KEYS[1]=userKey, KEYS[2]=idemKey, KEYS[3]=activeHashKey
+  // ARGV[1]=cost, ARGV[2]=idemPayload, ARGV[3]=idemTtl, ARGV[4]=idemUuid, ARGV[5]=activeTtl
+  _evalReserve([userKey, idemKey, activeHashKey], [costStr, idemPayload, ttlStr, idemUuid, activeTtlStr]) {
     const existing = this._get(idemKey)
     if (existing) throw new Error('IDEM_EXISTS:' + existing)
 
@@ -130,20 +129,20 @@ class FakeRedis {
     this._set(userKey, JSON.stringify(user))
     this._set(idemKey, idemPayload, parseInt(ttlStr, 10))
 
-    // Simulate SADD KEYS[3] ARGV[4] (atomic in Lua; replicated here)
-    if (activeSetKey && idemUuid) {
-      const raw = this._get(activeSetKey)
-      const set = raw ? new Set(JSON.parse(raw)) : new Set()
-      set.add(idemUuid)
-      this._set(activeSetKey, JSON.stringify([...set]))
+    // Simulate HSET KEYS[3] ARGV[4] ARGV[1] — stores {uuid → cost} in active hash
+    if (activeHashKey && idemUuid) {
+      const raw = this._get(activeHashKey)
+      const obj = raw ? JSON.parse(raw) : {}
+      obj[idemUuid] = costStr   // cost as string, matching Lua HSET semantics
+      this._set(activeHashKey, JSON.stringify(obj), parseInt(activeTtlStr || '604800', 10))
     }
 
     return String(user.credits)
   }
 
-  // KEYS[1]=userKey, KEYS[2]=idemKey, KEYS[3]=activeSetKey
+  // KEYS[1]=userKey, KEYS[2]=idemKey, KEYS[3]=activeHashKey
   // ARGV[1]=status, ARGV[2]=refund, ARGV[3]=creditsAfter, ARGV[4]=url, ARGV[5]=error, ARGV[6]=idemUuid
-  _evalFinalize([userKey, idemKey, activeSetKey], [status, refundAmtStr, creditsAfterStr, url, errorMsg, idemUuid]) {
+  _evalFinalize([userKey, idemKey, activeHashKey], [status, refundAmtStr, creditsAfterStr, url, errorMsg, idemUuid]) {
     const raw = this._get(idemKey)
     if (!raw) throw new Error('IDEM_NOT_FOUND')
 
@@ -166,18 +165,43 @@ class FakeRedis {
       }
     }
 
-    // Simulate SREM KEYS[3] ARGV[6] (atomic in Lua; replicated here)
-    if (activeSetKey && idemUuid) {
-      const rawSet = this._get(activeSetKey)
-      if (rawSet) {
-        const set = new Set(JSON.parse(rawSet))
-        set.delete(idemUuid)
-        this._set(activeSetKey, JSON.stringify([...set]))
+    // Simulate HDEL KEYS[3] ARGV[6] — remove uuid field from active hash
+    if (activeHashKey && idemUuid) {
+      const rawHash = this._get(activeHashKey)
+      if (rawHash) {
+        const obj = JSON.parse(rawHash)
+        delete obj[idemUuid]
+        if (Object.keys(obj).length === 0) this._del(activeHashKey)
+        else this._set(activeHashKey, JSON.stringify(obj))
       }
     }
 
     this._set(idemKey, JSON.stringify(idem))
     return String(idem.creditsAfter)
+  }
+
+  // KEYS[1]=userKey, KEYS[2]=activeHashKey
+  // ARGV[1]=uuid, ARGV[2]=cost
+  _evalDirectRefund([userKey, activeHashKey], [uuid, costStr]) {
+    const raw = this._get(activeHashKey)
+    if (!raw) throw new Error('ALREADY_REMOVED')
+    const obj = JSON.parse(raw)
+    if (!(uuid in obj)) throw new Error('ALREADY_REMOVED')
+    delete obj[uuid]
+    if (Object.keys(obj).length === 0) this._del(activeHashKey)
+    else this._set(activeHashKey, JSON.stringify(obj))
+
+    const cost = parseInt(costStr, 10) || 0
+    if (cost > 0) {
+      const rawUser = this._get(userKey)
+      if (rawUser) {
+        const user = JSON.parse(rawUser)
+        user.credits = (user.credits || 0) + cost
+        this._set(userKey, JSON.stringify(user))
+        return String(user.credits)
+      }
+    }
+    return '0'
   }
 }
 
@@ -227,9 +251,11 @@ const LEGACY_VOICEOVER_COST = 25
 const LEGACY_CHAR_LIMIT = 500
 const STALE_THRESHOLD_MS = 120_000
 const IDEM_TTL_S = 86400
+const ACTIVE_TTL_S = 604800
 
-const LUA_RESERVE_MARKER = 'IDEM_EXISTS'   // substring present in reserve script
-const LUA_FINALIZE_MARKER = 'ALREADY_FINALIZED'
+const LUA_RESERVE_MARKER = 'IDEM_EXISTS'         // substring present in reserve script
+const LUA_FINALIZE_MARKER = 'ALREADY_FINALIZED'   // substring present in finalize script
+const LUA_DIRECT_REFUND_MARKER = 'ALREADY_REMOVED' // substring present in direct-refund script
 
 async function runHandler({ req, res, redis, fetchFn, putFn }) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
@@ -273,24 +299,37 @@ async function runHandler({ req, res, redis, fetchFn, putFn }) {
   const userKey = `user:${email}`
   const idemKey = `vo_idem:${email}:${idempotencyKey}`
 
-  // Orphan recovery (mirrors production handler — smembers-based, recovers ALL orphans)
+  // Orphan recovery (mirrors production handler — hgetall-based, recovers ALL orphans)
+  // PATH A: idem alive  → LUA_FINALIZE (marks failed + refunds + removes from hash)
+  // PATH B: idem expired → LUA_DIRECT_REFUND (uses stored cost, removes hash field)
   try {
-    const activeSetKey = `vo_active_idem:${email}`
-    const activeUuids = await redis.smembers(activeSetKey)
-    for (const activeUuid of activeUuids) {
-      if (activeUuid === idempotencyKey) continue
-      const orphanFull = `vo_idem:${email}:${activeUuid}`
-      const orphanRaw = await redis.get(orphanFull)
-      if (!orphanRaw) {
-        await redis.srem(activeSetKey, activeUuid)
-        continue
-      }
-      const orphan = typeof orphanRaw === 'string' ? JSON.parse(orphanRaw) : orphanRaw
-      if (orphan.status === 'processing' && Date.now() - (orphan.ts || 0) > STALE_THRESHOLD_MS) {
-        const staleCost = orphan.creditsDeducted || 0
-        const staleAfter = (orphan.creditsAfter ?? 0) + staleCost
-        await _finalize(redis, userKey, orphanFull, 'failed', staleCost, staleAfter, null,
-          'Generation timed out. Credits refunded.')
+    const activeHashKey = `vo_active_idem:${email}`
+    const activeHash = await redis.hgetall(activeHashKey)
+    if (activeHash) {
+      for (const [activeUuid, costStr] of Object.entries(activeHash)) {
+        if (activeUuid === idempotencyKey) continue
+        const orphanFull = `vo_idem:${email}:${activeUuid}`
+        const orphanRaw = await redis.get(orphanFull)
+        if (!orphanRaw) {
+          // PATH B: idem expired — direct refund using stored cost
+          const storedCost = parseInt(costStr, 10) || 0
+          try {
+            await redis.eval(LUA_DIRECT_REFUND_MARKER, [userKey, activeHashKey],
+              [activeUuid, String(storedCost)])
+          } catch (e) {
+            const m = e?.message || String(e)
+            if (!m.startsWith('ALREADY_REMOVED')) console.error('Direct refund error:', e)
+          }
+          continue
+        }
+        // PATH A: idem alive — check stale
+        const orphan = typeof orphanRaw === 'string' ? JSON.parse(orphanRaw) : orphanRaw
+        if (orphan.status === 'processing' && Date.now() - (orphan.ts || 0) > STALE_THRESHOLD_MS) {
+          const staleCost = orphan.creditsDeducted || 0
+          const staleAfter = (orphan.creditsAfter ?? 0) + staleCost
+          await _finalize(redis, userKey, orphanFull, 'failed', staleCost, staleAfter, null,
+            'Generation timed out. Credits refunded.')
+        }
       }
     }
   } catch (_) { /* best-effort */ }
@@ -330,7 +369,8 @@ async function runHandler({ req, res, redis, fetchFn, putFn }) {
   let creditsAfterReserve
   try {
     const activeSetKey = `vo_active_idem:${email}`
-    const result = await redis.eval(LUA_RESERVE_MARKER, [userKey, idemKey, activeSetKey], [String(cost), idemPayload, String(IDEM_TTL_S), idempotencyKey])
+    const result = await redis.eval(LUA_RESERVE_MARKER, [userKey, idemKey, activeSetKey],
+      [String(cost), idemPayload, String(IDEM_TTL_S), idempotencyKey, String(ACTIVE_TTL_S)])
     creditsAfterReserve = parseInt(result, 10)
   } catch (err) {
     const msg = err?.message || String(err)
@@ -380,7 +420,15 @@ async function runHandler({ req, res, redis, fetchFn, putFn }) {
 
   // History save (best-effort, skip in tests)
 
-  const { credits: finalCredits, conflictStatus } = await _finalize(redis, userKey, idemKey, 'complete', 0, creditsAfterReserve, blobUrl, null)
+  // Success-path finalize with retry (Issue A mitigation — mirrors production handler)
+  const MAX_FINALIZE_RETRIES = 3
+  let finalResult = { credits: null, conflictStatus: null }
+  for (let attempt = 0; attempt < MAX_FINALIZE_RETRIES; attempt++) {
+    if (attempt > 0) await new Promise(r => setTimeout(r, 10 * attempt))  // shorter delay in tests
+    finalResult = await _finalize(redis, userKey, idemKey, 'complete', 0, creditsAfterReserve, blobUrl, null)
+    if (finalResult.credits !== null || finalResult.conflictStatus !== null) break
+  }
+  const { credits: finalCredits, conflictStatus } = finalResult
   if (conflictStatus === 'failed') {
     return res.status(409).json({ code: 'CONFLICT', error: 'Generation completed but credits were already refunded.' })
   }
@@ -818,8 +866,8 @@ await test('12. Orphan recovery: new request with different key refunds stale or
       error: null,
     }),
   }
-  // vo_active_idem set contains the orphan UUID (as LUA_RESERVE would have written)
-  store[`vo_active_idem:${email}`] = { value: JSON.stringify([orphanKey]) }
+  // vo_active_idem hash contains {uuid → cost} (as LUA_RESERVE would have written)
+  store[`vo_active_idem:${email}`] = { value: JSON.stringify({ [orphanKey]: String(orphanCost) }) }
 
   const redis = new FakeRedis(store)
   const newText = 'New request'
@@ -887,9 +935,9 @@ await test('13. Two concurrent orphans: both refunded exactly once, third reques
       url: null, error: null,
     }),
   }
-  // Both UUIDs in the active set (as LUA_RESERVE would have written them atomically)
+  // Both UUIDs in the active hash {uuid → cost} (as LUA_RESERVE would have written atomically)
   store[`vo_active_idem:${email}`] = {
-    value: JSON.stringify([orphanUuid1, orphanUuid2]),
+    value: JSON.stringify({ [orphanUuid1]: String(orphanCost1), [orphanUuid2]: String(orphanCost2) }),
   }
 
   const redis = new FakeRedis(store)
@@ -918,10 +966,99 @@ await test('13. Two concurrent orphans: both refunded exactly once, third reques
   assertEqual(storedUser.credits, expectedFinal,
     `credits = 500 (both refunded) - ${newCost} (new cost) = ${expectedFinal}`)
 
-  // Active set must contain only the new key (orphans removed by their SREM calls)
-  const activeSet = await redis.smembers(`vo_active_idem:${email}`)
-  assert(!activeSet.includes(orphanUuid1), 'orphan1 removed from active set')
-  assert(!activeSet.includes(orphanUuid2), 'orphan2 removed from active set')
+  // Active hash must not contain the orphan UUIDs (removed by HDEL during finalize)
+  const activeHash = await redis.hgetall(`vo_active_idem:${email}`)
+  assert(!activeHash || !(orphanUuid1 in activeHash), 'orphan1 removed from active hash')
+  assert(!activeHash || !(orphanUuid2 in activeHash), 'orphan2 removed from active hash')
+})
+
+// ── Test 14: TTL-expired idem key with active-hash entry → direct refund ────────
+/**
+ * Closes the TTL gap (Point 1): vo_idem:{email}:{uuid} TTL = 24 h, but
+ * vo_active_idem:{email} hash TTL = 7 d.  If a user is inactive for >24 h after
+ * a crash, the idem key expires while the hash entry remains.  Orphan recovery must
+ * use LUA_DIRECT_REFUND to restore credits from the cost stored in the hash.
+ */
+await test('14. TTL-expired idem key: direct refund from active-hash cost entry', async () => {
+  const email = 'user@test.com'
+  const expiredUuid = 'expired-uuid-TTL-gap'
+  const expiredCost = 75
+  const stuckCredits = 500 - expiredCost  // 425 — stuck after crash; idem since expired
+
+  const store = makeStore(email, makeUser({ credits: stuckCredits }))
+  // Idem key is NOT in store (simulating >24 h TTL expiry)
+  // Active hash still holds the UUID → cost entry (7 d TTL survives)
+  store[`vo_active_idem:${email}`] = {
+    value: JSON.stringify({ [expiredUuid]: String(expiredCost) }),
+  }
+
+  const redis = new FakeRedis(store)
+  const newText = 'Recovery after TTL expiry'
+  const newCost = newText.trim().length  // 25
+  const { req, res } = makeReqRes({
+    body: stdReq({ text: newText, idempotencyKey: 'new-key-post-ttl' }),
+    cookies: { swor_session: 'tok123' },
+  })
+
+  await runHandler({ req, res, redis, fetchFn: successFetch(newText.trim()), putFn: successPut() })
+
+  // New request must succeed
+  assertEqual(res._status, 200, 'new request returns 200')
+  assert(res._body.url, 'audio URL present')
+
+  // Expired orphan must have been refunded: 425 + 75 = 500, then newCost deducted
+  const storedUser = JSON.parse(redis._get(`user:${email}`))
+  assertEqual(storedUser.credits, 500 - newCost,
+    `credits = 500 (TTL-expired orphan refunded) - ${newCost} (new cost)`)
+
+  // Active hash must not contain the expired UUID
+  const activeHash = await redis.hgetall(`vo_active_idem:${email}`)
+  assert(!activeHash || !(expiredUuid in activeHash), 'expired UUID removed from active hash')
+})
+
+// ── Test 15: Success-path finalize retry — succeeds on 3rd attempt ────────────
+/**
+ * Verifies Issue A mitigation: if Redis is transiently unavailable after audio is
+ * generated, finalize() returns {credits:null} and the handler retries up to 3×.
+ * The test injects a Redis that throws on the first 2 finalize('complete') calls,
+ * then succeeds on the 3rd — the response must still be 200 with the audio URL.
+ */
+class RetryTestFakeRedis extends FakeRedis {
+  constructor(store, maxFails = 2) {
+    super(store)
+    this._finalizeFails = 0
+    this._maxFails = maxFails
+  }
+  _evalFinalize(keys, [status, ...rest]) {
+    if (status === 'complete' && this._finalizeFails < this._maxFails) {
+      this._finalizeFails++
+      throw new Error('REDIS_TIMEOUT_SIMULATED')   // transient, not ALREADY_FINALIZED
+    }
+    return super._evalFinalize(keys, [status, ...rest])
+  }
+}
+
+await test('15. Success-path finalize: retries up to 3×, succeeds on 3rd attempt', async () => {
+  const email = 'user@test.com'
+  const text = 'Retry finalize test'
+  // maxFails=2 → first 2 attempts throw, 3rd succeeds (within MAX_FINALIZE_RETRIES=3)
+  const redis = new RetryTestFakeRedis(makeStore(email, makeUser({ credits: 500 })), 2)
+  const { req, res } = makeReqRes({ body: stdReq({ text }), cookies: { swor_session: 'tok123' } })
+
+  await runHandler({ req, res, redis, fetchFn: successFetch(text.trim()), putFn: successPut() })
+
+  // Must still return 200 — audio was generated and finalize eventually succeeded
+  assertEqual(res._status, 200, 'returns 200 after retries')
+  assert(res._body.url, 'audio URL present')
+  assertEqual(redis._finalizeFails, 2, 'finalize was retried exactly twice before succeeding')
+
+  // Credits correctly deducted
+  const storedUser = JSON.parse(redis._get(`user:${email}`))
+  assertEqual(storedUser.credits, 500 - text.trim().length, 'credits correctly deducted')
+
+  // Idem record must be 'complete' (not stuck as 'processing')
+  const idem = JSON.parse(redis._get(`vo_idem:${email}:idem-key-0001`))
+  assertEqual(idem.status, 'complete', 'idem finalized as complete after retry')
 })
 
 // ─── Summary ──────────────────────────────────────────────────────────────────
