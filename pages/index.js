@@ -989,7 +989,7 @@ const filtered = ALL_VOICES.filter(v => {
       </a>
       <a href="https://paypal.me/sworai/8.99" target="_blank" rel="noreferrer"
         style={{background:'#f5f5f7',color:'#1d1d1f',padding:'11px',borderRadius:10,fontSize:14,fontWeight:600,textDecoration:'none',textAlign:'center',border:'1px solid #e8e8ed'}}>
-        💳 PayPal ($12.99)
+        💳 PayPal ($8.99)
       </a>
     </div>
   </div>
