@@ -6,11 +6,11 @@ const TOOLS = [
   {
     id: 'voiceover',
     emoji: '🎙️',
-    badge: '20 voices',
+    badge: '30 voices',
     badgeColor: '#E8F4FD',
     badgeText: '#1976D2',
     name: 'Nepali Voiceover',
-    desc: 'Type Nepali text and get a professional AI voiceover in 8 seconds. 20 premium voices.',
+    desc: 'Type Nepali text and get a professional AI voiceover in 8 seconds. 30 Nepali AI voices.',
     href: '/voiceover',
     cta: 'Open Nepali Voiceover →',
     color: '#DC143C',
@@ -59,7 +59,7 @@ export default function Tool() {
     <link rel="canonical" href="https://meroadai.com/voiceover" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>Nepali AI Audio Tools — Swor AI</title>
-        <meta name="description" content="Nepal's first AI audio studio. Generate Nepali voiceover, AI music and subtitles in seconds. 20 premium Nepali voices." />
+        <meta name="description" content="Nepal's first AI audio studio. Generate Nepali voiceover, AI music and subtitles in seconds. 30 Nepali AI voices." />
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
 

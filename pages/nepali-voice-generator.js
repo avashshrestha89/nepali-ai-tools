@@ -46,7 +46,7 @@ export default function NepaliVoiceGenerator() {
               Generate Nepali Voice Free →
             </button>
           </Link>
-          <div style={{fontSize:13,color:'#999',marginTop:12}}>✓ 20 voices &nbsp;·&nbsp; ✓ Emotion control &nbsp;·&nbsp; ✓ Voice cloning &nbsp;·&nbsp; ✓ 100% royalty-free</div>
+          <div style={{fontSize:13,color:'#999',marginTop:12}}>✓ 30 voices &nbsp;·&nbsp; ✓ Emotion control &nbsp;·&nbsp; ✓ Voice cloning &nbsp;·&nbsp; ✓ 100% royalty-free</div>
         </div>
       </section>
 
@@ -54,7 +54,7 @@ export default function NepaliVoiceGenerator() {
       <section style={{padding:'80px 24px',background:'#fff'}}>
         <div style={{maxWidth:900,margin:'0 auto'}}>
           <h2 style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(22px,3.5vw,36px)',fontWeight:800,textAlign:'center',letterSpacing:'-0.8px',marginBottom:48}}>
-            20 Premium Nepali AI Voices
+            30 Nepali AI Voices
           </h2>
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:12}}>
             {[
@@ -90,7 +90,7 @@ export default function NepaliVoiceGenerator() {
           <div style={{textAlign:'center',marginTop:36}}>
             <Link href="/voiceover">
               <button style={{background:'#DC143C',color:'#fff',border:'none',padding:'14px 32px',borderRadius:12,fontSize:15,fontWeight:700,cursor:'pointer'}}>
-                Try All 20 Voices Free →
+                Try All 30 Voices Free →
               </button>
             </Link>
           </div>
@@ -129,7 +129,7 @@ export default function NepaliVoiceGenerator() {
             Start Generating Nepali Voices Free
           </h2>
           <p style={{fontSize:16,color:'rgba(255,255,255,.55)',lineHeight:1.7,marginBottom:36,maxWidth:440,margin:'0 auto 36px'}}>
-            Nepal's only AI voice generator with 20 Nepali voices, emotion control, voice cloning and AI music — all in one platform.
+            Nepal's only AI voice generator with 30 Nepali AI voices, emotion control, voice cloning and AI music — all in one platform.
           </p>
           <Link href="/voiceover">
             <button style={{background:'#DC143C',color:'#fff',border:'none',padding:'16px 40px',borderRadius:14,fontSize:17,fontWeight:700,cursor:'pointer',fontFamily:'Sora,sans-serif',boxShadow:'0 8px 32px rgba(220,20,60,.3)'}}>

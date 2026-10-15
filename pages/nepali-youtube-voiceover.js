@@ -46,7 +46,7 @@ export default function NepaliYoutubeVoiceover() {
               Generate YouTube Voiceover Free →
             </button>
           </Link>
-          <div style={{fontSize:13,color:'#999',marginTop:12}}>✓ 20 Nepali voices &nbsp;·&nbsp; ✓ No microphone needed &nbsp;·&nbsp; ✓ 100% royalty-free &nbsp;·&nbsp; ✓ Download MP3</div>
+          <div style={{fontSize:13,color:'#999',marginTop:12}}>✓ 30 Nepali voices &nbsp;·&nbsp; ✓ No microphone needed &nbsp;·&nbsp; ✓ 100% royalty-free &nbsp;·&nbsp; ✓ Download MP3</div>
         </div>
       </section>
 
@@ -106,7 +106,7 @@ export default function NepaliYoutubeVoiceover() {
           <div style={{textAlign:'center',marginTop:36}}>
             <Link href="/voiceover">
               <button style={{background:'#DC143C',color:'#fff',border:'none',padding:'14px 32px',borderRadius:12,fontSize:15,fontWeight:700,cursor:'pointer'}}>
-                Try All 20 Voices Free →
+                Try All 30 Voices Free →
               </button>
             </Link>
           </div>

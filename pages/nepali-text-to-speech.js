@@ -212,7 +212,7 @@ const FAQS = [
   },
   {
     q: 'How do I convert Nepali text to audio?',
-    a: 'With Swor AI, it takes 3 steps: Type or paste your Nepali text in Devanagari script, choose from 30+ premium Nepali voices, click Generate and download your MP3 in seconds. No recording equipment, no studio, no voice artist needed. You can also use emotion tags like [excited], [whispers], [calm] to control how the voice sounds.',
+    a: 'With Swor AI, it takes 3 steps: Type or paste your Nepali text in Devanagari script, choose from 30 premium Nepali voices, click Generate and download your MP3 in seconds. No recording equipment, no studio, no voice artist needed. You can also use emotion tags like [excited], [whispers], [calm] to control how the voice sounds.',
   },
   {
     q: 'Can I use Swor AI for TikTok and YouTube voiceover?',
@@ -273,7 +273,7 @@ export default function NepaliTextToSpeech() {
                 "@type": "WebApplication",
                 "name": "Swor AI — Nepali Text to Speech",
                 "url": "https://meroadai.com/nepali-text-to-speech",
-                "description": "Nepal's #1 Nepali AI voice generator. Convert Nepali text to speech online with 20 natural voices for TikTok, YouTube, documentary, news and ads.",
+                "description": "Nepal's #1 Nepali AI voice generator. Convert Nepali text to speech online with 30 natural voices for TikTok, YouTube, documentary, news and ads.",
                 "applicationCategory": "MultimediaApplication",
                 "operatingSystem": "Web",
                 "offers": {
@@ -327,7 +327,7 @@ export default function NepaliTextToSpeech() {
         "name": "How do I convert Nepali text to audio online for free?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "On Swor AI, type your Nepali Devanagari text, choose from 30+ premium Nepali voices, and click Generate. Try 200 characters free with no signup needed at sworai.com."
+          "text": "On Swor AI, type your Nepali Devanagari text, choose from 30 Nepali AI voices, and click Generate. Try 200 characters free with no signup needed at meroadai.com."
         }
       },
       {
@@ -534,7 +534,7 @@ export default function NepaliTextToSpeech() {
           <div style={{textAlign:'center',marginTop:36}}>
             <Link href="/voiceover">
               <button style={{background:'#DC143C',color:'#fff',border:'none',padding:'14px 32px',borderRadius:12,fontSize:15,fontWeight:700,cursor:'pointer'}}>
-                Try All 20 Voices Free →
+                Try All 30 Voices Free →
               </button>
             </Link>
           </div>
@@ -593,7 +593,7 @@ export default function NepaliTextToSpeech() {
             Start Generating Nepali Voiceover Free
           </h2>
           <p style={{fontSize:16,color:'rgba(255,255,255,.55)',lineHeight:1.7,marginBottom:36,maxWidth:440,margin:'0 auto 36px'}}>
-            Nepal&apos;s only AI voice generator with 20 Nepali voices, emotion control, voice cloning and AI music — all in one platform.
+            Nepal&apos;s only AI voice generator with 30 Nepali AI voices, emotion control, voice cloning and AI music — all in one platform.
           </p>
           <Link href="/voiceover">
             <button style={{background:'#DC143C',color:'#fff',border:'none',padding:'16px 40px',borderRadius:14,fontSize:17,fontWeight:700,cursor:'pointer',fontFamily:'Sora,sans-serif',boxShadow:'0 8px 32px rgba(220,20,60,.3)'}}>

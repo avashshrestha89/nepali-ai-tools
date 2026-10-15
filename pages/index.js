@@ -668,7 +668,7 @@ const filtered = ALL_VOICES.filter(v => {
                 </div>
                 <div style={{fontSize:11,color:'#999'}}>नमस्ते! म तपाईँको आवाज हुँ...</div>
               </div>
-              <h3 style={{fontFamily:'Sora,sans-serif',fontSize:20,fontWeight:700,marginBottom:10}}>20 natural Nepali voices</h3>
+              <h3 style={{fontFamily:'Sora,sans-serif',fontSize:20,fontWeight:700,marginBottom:10}}>30 natural Nepali voices</h3>
               <p style={{fontSize:14,color:'#6e6e73',lineHeight:1.7}}>Each Nepali AI voice was built specifically for Nepali content — not translated from English or adapted from Hindi. Priyanka for romantic reels, Dhurundhar for documentaries, Sunita for everything in between.</p>
             </div>
 
@@ -885,7 +885,7 @@ const filtered = ALL_VOICES.filter(v => {
       {[
         '8,000 Swor Credits — never expire',
         'Unlimited subtitles forever',
-        'All 30+ Nepali AI voices included',
+        'All 30 Nepali AI voices included',
         'Commercial usage rights'
       ].map(f=>(
         <div key={f} style={{fontSize:13,color:'#555',display:'flex',alignItems:'flex-start',gap:6}}>
@@ -970,7 +970,7 @@ const filtered = ALL_VOICES.filter(v => {
       {[
         '20,000 Swor Credits — never expire',
         'Unlimited subtitles forever',
-        'All 30+ Nepali AI voices included',
+        'All 30 Nepali AI voices included',
         'Commercial usage rights'
       ].map(f=>(
         <div key={f} style={{fontSize:13,color:'#555',display:'flex',alignItems:'flex-start',gap:6}}>
@@ -1021,7 +1021,7 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
       {[
         '68,000 Swor Credits — never expire',
-        'All 30+ Nepali AI voices included',
+        'All 30 Nepali AI voices included',
         'Unlimited subtitles forever',
         'Commercial usage rights',
       ].map(f=>(
@@ -1060,7 +1060,7 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
       {[
         '118,000 Swor Credits — never expire',
-        'All 30+ Nepali AI voices included',
+        'All 30 Nepali AI voices included',
         'Unlimited subtitles forever',
         'Commercial usage rights',
       ].map(f=>(
@@ -1096,7 +1096,7 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
       {[
         '215,000 Swor Credits — never expire',
-        'All 30+ Nepali AI voices included',
+        'All 30 Nepali AI voices included',
         'Unlimited subtitles forever',
         'Commercial usage rights',
       ].map(f=>(

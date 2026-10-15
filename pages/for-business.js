@@ -117,7 +117,7 @@ const benefits = [
               </button>
             </a>
           </div>
-          <p style={{fontSize:13,color:'#999',marginTop:12}}>eSewa / Khalti / IME Pay / PayPal accepted · 20 natural Nepali voices</p>
+          <p style={{fontSize:13,color:'#999',marginTop:12}}>eSewa / Khalti / IME Pay / PayPal accepted · 30 Nepali AI voices</p>
         </div>
       </section>
 
@@ -217,7 +217,7 @@ const benefits = [
       <section style={{padding:isMobile?'60px 20px':'80px 24px',background:'#fff'}}>
         <div style={{maxWidth:900,margin:'0 auto'}}>
           <h2 style={{fontFamily:'Sora,sans-serif',fontSize:isMobile?'22px':'clamp(22px,3.5vw,36px)',fontWeight:800,textAlign:'center',letterSpacing:'-0.8px',marginBottom:12}}>
-            20 Premium Nepali Voices
+            30 Nepali AI Voices
           </h2>
           <p style={{textAlign:'center',color:'#6e6e73',fontSize:16,marginBottom:48}}>
             हरेक content type को लागि perfect voice
@@ -276,7 +276,7 @@ const benefits = [
               <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.1em',marginBottom:12}}>STARTER</div>
               <div style={{fontFamily:'Sora,sans-serif',fontSize:32,fontWeight:800,color:'#1d1d1f',marginBottom:4}}>NPR 499</div>
               <div style={{fontSize:13,color:'#888',marginBottom:20}}>3,500 Swor Credits</div>
-{['3,500 Swor Credits','~7 TikTok/Reels OR 3 YouTube Intros','All 20+ voices','Credits never expire'].map((f,i) => (
+{['3,500 Swor Credits','~7 TikTok/Reels OR 3 YouTube Intros','All 30 voices','Credits never expire'].map((f,i) => (
                 <div key={i} style={{display:'flex',gap:8,marginBottom:8,fontSize:13,color:'#555'}}>
                   <span style={{color:'#34C759',fontWeight:700}}>✓</span> {f}
                 </div>
@@ -286,7 +286,7 @@ const benefits = [
               <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.6)',letterSpacing:'0.1em',marginBottom:12}}>CREATOR — MOST POPULAR</div>
               <div style={{fontFamily:'Sora,sans-serif',fontSize:32,fontWeight:800,color:'#fff',marginBottom:4}}>NPR 999</div>
             <div style={{fontSize:13,color:'rgba(255,255,255,.6)',marginBottom:20}}>7,500 Swor Credits</div>
-{['7,500 Swor Credits','~15 TikTok/Reels OR 6 YouTube Intros','All 20+ voices','Priority support'].map((f,i) => (
+{['7,500 Swor Credits','~15 TikTok/Reels OR 6 YouTube Intros','All 30 voices','Priority support'].map((f,i) => (
                 <div key={i} style={{display:'flex',gap:8,marginBottom:8,fontSize:13,color:'rgba(255,255,255,.85)'}}>
                   <span style={{color:'#fff',fontWeight:700}}>✓</span> {f}
                 </div>
@@ -336,7 +336,7 @@ const benefits = [
             {[
               {
                 q:'Swor AI कसरी काम गर्छ?',
-                a:'Swor AI एउटा Nepali AI voice generator हो। तपाईं Devanagari script मा आफ्नो script type गर्नुहोस्, 20 premium Nepali voices मध्ये एउटा छान्नुहोस्, र Generate थिच्नुहोस्। 8 seconds मा professional Nepali voiceover MP3 ready हुन्छ।'
+                a:'Swor AI एउटा Nepali AI voice generator हो। तपाईं Devanagari script मा आफ्नो script type गर्नुहोस्, 30 Nepali AI voices मध्ये एउटा छान्नुहोस्, र Generate थिच्नुहोस्। 8 seconds मा professional Nepali voiceover MP3 ready हुन्छ।'
               },
               {
                 q:'के Swor AI को audio TikTok र YouTube मा copyright हुन्छ?',

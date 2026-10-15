@@ -20,7 +20,7 @@ export default function ElevenLabsAlternativeNepal() {
     },
     {
       q: 'Is Swor AI free to try?',
-      a: 'Yes. Swor AI offers a free 200-character preview with no signup required. You can test any of the 30+ Nepali AI voices instantly at meroadai.com before purchasing any credit pack.',
+      a: 'Yes. Swor AI offers a free 200-character preview with no signup required. You can test any of the 30 Nepali AI voices instantly at meroadai.com before purchasing any credit pack.',
     },
     {
       q: 'Can I use Swor AI voiceovers for commercial YouTube and TikTok content?',
@@ -160,8 +160,8 @@ export default function ElevenLabsAlternativeNepal() {
               },
               {
                 icon:'🎙️',
-                title:'30+ Voices Built for Nepali Content',
-                body:'ElevenLabs has thousands of voices but very few trained specifically on Nepali language patterns. Swor AI has 30+ voices curated for Nepali news, TikTok reels, storytelling, documentary, ASMR, and advertising.',
+                title:'30 Voices Built for Nepali Content',
+                body:'ElevenLabs has thousands of voices but very few trained specifically on Nepali language patterns. Swor AI has 30 voices curated for Nepali news, TikTok reels, storytelling, documentary, ASMR, and advertising.',
               },
               {
                 icon:'♾️',
@@ -248,7 +248,7 @@ export default function ElevenLabsAlternativeNepal() {
               ElevenLabs is the global leader in AI voice synthesis and offers excellent voice quality. However, for Nepali creators, it has three critical barriers: it requires an international USD credit card, charges monthly subscriptions where unused credits are lost, and has no voices specifically trained for the Nepali language and Devanagari script.
             </p>
             <p style={{fontSize:15,color:'#6e6e73',lineHeight:1.75}}>
-              Swor AI solves all three. Pay in NPR via eSewa or Khalti, buy credits once and keep them forever, and access 30+ voices specifically curated for Nepali news, storytelling, reels, documentary, and advertising content.
+              Swor AI solves all three. Pay in NPR via eSewa or Khalti, buy credits once and keep them forever, and access 30 voices specifically curated for Nepali news, storytelling, reels, documentary, and advertising content.
             </p>
           </div>
 

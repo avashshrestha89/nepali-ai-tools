@@ -86,7 +86,7 @@ const PACKS = [
     usd: 4.99,
     credits: '8,000',
     popular: false,
-    features: ['3,500 Swor Credits', '~7 TikTok/Reels OR 3 YouTube Intros', 'All 20+ voices', 'Credits never expire'],
+    features: ['3,500 Swor Credits', '~7 TikTok/Reels OR 3 YouTube Intros', 'All 30 voices', 'Credits never expire'],
     color: '#1976D2',
   },
   {
@@ -96,7 +96,7 @@ const PACKS = [
     usd: 12.99,
     credits: '20,000',
     popular: true,
-    features: ['7,500 Swor Credits', '~15 TikTok/Reels OR 6 YouTube Intros', 'All 20+ voices', 'Credits never expire'],
+    features: ['7,500 Swor Credits', '~15 TikTok/Reels OR 6 YouTube Intros', 'All 30 voices', 'Credits never expire'],
     color: '#DC143C',
   },
   {
@@ -106,7 +106,7 @@ const PACKS = [
     usd: 19.99,
     credits: '50,000',
     popular: false,
-    features: ['25,000 Swor Credits (Lifetime)', '5 AI Music Tracks', 'All 20+ voices', 'Credits never expire', 'Founders status forever'],
+    features: ['25,000 Swor Credits (Lifetime)', '5 AI Music Tracks', 'All 30 voices', 'Credits never expire', 'Founders status forever'],
     color: '#C9940A',
   },
 ]

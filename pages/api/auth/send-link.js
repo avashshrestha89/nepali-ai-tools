@@ -70,7 +70,7 @@ await redis.set(`user:${email}`, JSON.stringify({
               ✓ 10 Nepali voiceover generations<br/>
               ✓ 500 characters per generation<br/>
               ✓ Unlimited Nepali subtitle generation<br/>
-              ✓ All 15 premium Nepali voices
+              ✓ All 30 Nepali AI voices
             </div>
           </div>
           <p style="color:#aaa;font-size:12px;text-align:center;line-height:1.6">
