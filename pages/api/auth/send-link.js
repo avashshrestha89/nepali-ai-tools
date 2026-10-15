@@ -1,5 +1,6 @@
 import { Redis } from '@upstash/redis'
 import { Resend } from 'resend'
+import { randomBytes } from 'crypto'
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL,
@@ -9,9 +10,7 @@ const redis = new Redis({
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 function generateToken() {
-  return Math.random().toString(36).substr(2) +
-    Math.random().toString(36).substr(2) +
-    Date.now().toString(36)
+  return randomBytes(32).toString('hex')
 }
 
 export default async function handler(req, res) {
