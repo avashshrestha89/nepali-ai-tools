@@ -69,7 +69,7 @@ class FakeRedis {
   _del(key) { delete this.store[key] }
 
   async get(key) { return this._get(key) }
-  async set(key, value) { this._set(key, value); return 'OK' }
+  async set(key, value, opts) { this._set(key, value, opts?.ex || null); return 'OK' }
   async setex(key, ttl, value) { this._set(key, value, ttl); return 'OK' }
 
   /**
@@ -227,6 +227,24 @@ async function runHandler({ req, res, redis, fetchFn, putFn }) {
   const userKey = `user:${email}`
   const idemKey = `vo_idem:${email}:${idempotencyKey}`
 
+  // Orphan recovery (mirrors production handler)
+  try {
+    const lastKey = await redis.get(`vo_last_idem:${email}`)
+    if (lastKey && lastKey !== idempotencyKey) {
+      const orphanFull = `vo_idem:${email}:${lastKey}`
+      const orphanRaw = await redis.get(orphanFull)
+      if (orphanRaw) {
+        const orphan = typeof orphanRaw === 'string' ? JSON.parse(orphanRaw) : orphanRaw
+        if (orphan.status === 'processing' && Date.now() - (orphan.ts || 0) > STALE_THRESHOLD_MS) {
+          const staleCost = orphan.creditsDeducted || 0
+          const staleAfter = (orphan.creditsAfter ?? 0) + staleCost
+          await _finalize(redis, userKey, orphanFull, 'failed', staleCost, staleAfter, null,
+            'Generation timed out. Credits refunded.')
+        }
+      }
+    }
+  } catch (_) { /* best-effort */ }
+
   const rawExisting = await redis.get(idemKey)
   if (rawExisting) {
     const existingIdem = typeof rawExisting === 'string' ? JSON.parse(rawExisting) : rawExisting
@@ -276,6 +294,9 @@ async function runHandler({ req, res, redis, fetchFn, putFn }) {
     return res.status(500).json({ code: 'RESERVE_FAILED', error: 'Reserve failed' })
   }
 
+  // Track last idem for orphan recovery (mirrors production handler)
+  try { await redis.set(`vo_last_idem:${email}`, idempotencyKey, { ex: IDEM_TTL_S }) } catch (_) {}
+
   // Audio generation
   let audioBytes
   try {
@@ -309,7 +330,10 @@ async function runHandler({ req, res, redis, fetchFn, putFn }) {
 
   // History save (best-effort, skip in tests)
 
-  const finalCredits = await _finalize(redis, userKey, idemKey, 'complete', 0, creditsAfterReserve, blobUrl, null)
+  const { credits: finalCredits, conflictStatus } = await _finalize(redis, userKey, idemKey, 'complete', 0, creditsAfterReserve, blobUrl, null)
+  if (conflictStatus === 'failed') {
+    return res.status(409).json({ code: 'CONFLICT', error: 'Generation completed but credits were already refunded.' })
+  }
   return res.status(200).json({ url: blobUrl, credits: finalCredits !== null ? finalCredits : creditsAfterReserve })
 }
 
@@ -318,11 +342,13 @@ async function _finalize(redis, userKey, idemKey, status, refundAmt, creditsAfte
     const result = await redis.eval(LUA_FINALIZE_MARKER, [userKey, idemKey], [
       status, String(refundAmt), String(creditsAfter), url || '', errorMsg || '',
     ])
-    return parseInt(result, 10)
+    return { credits: parseInt(result, 10), conflictStatus: null }
   } catch (err) {
     const msg = err?.message || String(err)
-    if (msg.startsWith('ALREADY_FINALIZED:')) return creditsAfter
-    return null
+    if (msg.startsWith('ALREADY_FINALIZED:')) {
+      return { credits: creditsAfter, conflictStatus: msg.slice('ALREADY_FINALIZED:'.length) }
+    }
+    return { credits: null, conflictStatus: null }
   }
 }
 
@@ -688,6 +714,80 @@ await test('Bonus: Network error on fetch refunds credits', async () => {
 
   const storedUser = JSON.parse(redis._get(`user:${email}`))
   assertEqual(storedUser.credits, 500, 'credits refunded')
+})
+
+// ── Test 11: Late success blocked when stale recovery already finalized as 'failed' ──
+/**
+ * Simulates the race: stale recovery (Request B) finalized the idem as 'failed'
+ * just before the original request (Request A) calls finalize('complete').
+ * The handler MUST return 409, not 200 — the audio URL must not be delivered.
+ */
+class ConflictFakeRedis extends FakeRedis {
+  // Override: throw ALREADY_FINALIZED:failed whenever finalize is called with status='complete'
+  _evalFinalize([userKey, idemKey], [status, ...rest]) {
+    if (status === 'complete') throw new Error('ALREADY_FINALIZED:failed')
+    return super._evalFinalize([userKey, idemKey], [status, ...rest])
+  }
+}
+
+await test('11. Late success (ALREADY_FINALIZED:failed) returns 409, not 200 with audio URL', async () => {
+  const email = 'user@test.com'
+  const text = 'Late success test'
+  const redis = new ConflictFakeRedis(makeStore(email, makeUser({ credits: 500 })))
+  const { req, res } = makeReqRes({ body: stdReq({ text }), cookies: { swor_session: 'tok123' } })
+
+  await runHandler({ req, res, redis, fetchFn: successFetch(text.trim()), putFn: successPut() })
+
+  assertEqual(res._status, 409, 'status must be 409 — no free audio after refund')
+  assertEqual(res._body.code, 'CONFLICT', 'code must be CONFLICT')
+  assert(!res._body.url, 'response must NOT contain an audio URL')
+})
+
+// ── Test 12: Orphan recovery — new request proactively refunds stale orphan ──────
+await test('12. Orphan recovery: new request with different key refunds stale orphan', async () => {
+  const email = 'user@test.com'
+  const orphanKey = 'orphan-key-old'
+  const orphanCost = 50
+  const userCreditsAfterOrphan = 500 - orphanCost  // 450 — credits are stuck here
+
+  const orphanIdemKey = `vo_idem:${email}:${orphanKey}`
+  const store = makeStore(email, makeUser({ credits: userCreditsAfterOrphan }))
+
+  // Stale orphan: different key, 3 minutes old, still 'processing'
+  store[orphanIdemKey] = {
+    value: JSON.stringify({
+      status: 'processing',
+      payloadHash: payloadHash('Old text', 'voice123'),
+      creditsDeducted: orphanCost,
+      creditsAfter: userCreditsAfterOrphan,
+      ts: Date.now() - 180_000,
+      url: null,
+      error: null,
+    }),
+  }
+  // vo_last_idem pointer points at the orphan
+  store[`vo_last_idem:${email}`] = { value: orphanKey }
+
+  const redis = new FakeRedis(store)
+  const newText = 'New request'
+  const newCost = newText.trim().length  // 11
+  const { req, res } = makeReqRes({
+    body: stdReq({ text: newText, idempotencyKey: 'new-key-0002' }),
+    cookies: { swor_session: 'tok123' },
+  })
+
+  await runHandler({ req, res, redis, fetchFn: successFetch(newText.trim()), putFn: successPut() })
+
+  // New request must succeed
+  assertEqual(res._status, 200, 'new request returns 200')
+
+  // Orphan idem must now be marked failed
+  const orphan = JSON.parse(redis._get(orphanIdemKey))
+  assertEqual(orphan.status, 'failed', 'orphan idem marked failed')
+
+  // User credits: orphanCost refunded (500 restored) then newCost deducted
+  const storedUser = JSON.parse(redis._get(`user:${email}`))
+  assertEqual(storedUser.credits, 500 - newCost, `credits = 500 (orphan refunded) - ${newCost} (new cost)`)
 })
 
 // ─── Summary ──────────────────────────────────────────────────────────────────

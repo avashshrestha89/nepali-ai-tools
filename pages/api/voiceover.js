@@ -105,15 +105,17 @@ async function finalize(userKey, idemKey, status, refundAmt, creditsAfter, url, 
       url || '',
       errorMsg || '',
     ])
-    return parseInt(result, 10)
+    return { credits: parseInt(result, 10), conflictStatus: null }
   } catch (err) {
     const msg = err?.message || String(err)
     if (msg.startsWith('ALREADY_FINALIZED:')) {
-      // Race with another worker — idempotent, not a real error
-      return creditsAfter
+      // Race with another worker — record what it was finalized as so callers
+      // can distinguish an idempotent duplicate ('complete') from a conflict ('failed')
+      const conflictStatus = msg.slice('ALREADY_FINALIZED:'.length)
+      return { credits: creditsAfter, conflictStatus }
     }
     console.error('LUA_FINALIZE error:', err)
-    return null
+    return { credits: null, conflictStatus: null }
   }
 }
 
@@ -201,6 +203,33 @@ export default async function handler(req, res) {
 
   const userKey = `user:${email}`
   const idemKey = `vo_idem:${email}:${idempotencyKey}`
+
+  // ── Proactive orphan recovery ─────────────────────────────────────────────
+  // The client generates a new UUID per click, so a crashed request's idem key
+  // is never retried. We track the last idem key written for this user and, on
+  // any new request, recover stale orphans so credits are not permanently lost.
+  try {
+    const lastKey = await redis.get(`vo_last_idem:${email}`)
+    if (lastKey && lastKey !== idempotencyKey) {
+      const orphanFull = `vo_idem:${email}:${lastKey}`
+      const orphanRaw = await redis.get(orphanFull)
+      if (orphanRaw) {
+        const orphan = typeof orphanRaw === 'string' ? JSON.parse(orphanRaw) : orphanRaw
+        if (orphan.status === 'processing') {
+          const ageMs = Date.now() - (orphan.ts || 0)
+          if (ageMs > STALE_THRESHOLD_MS) {
+            const staleCost = orphan.creditsDeducted || 0
+            const staleAfter = (orphan.creditsAfter ?? 0) + staleCost
+            await finalize(userKey, orphanFull, 'failed', staleCost, staleAfter, null,
+              'Generation timed out. Credits refunded.')
+            console.log(`Proactive orphan recovery: ${orphanFull} (age ${ageMs}ms)`)
+          }
+        }
+      }
+    }
+  } catch (orphanErr) {
+    console.error('Orphan recovery error (non-fatal):', orphanErr)
+  }
 
   // ── Check existing idempotency record ─────────────────────────────────────
   let existingIdem = null
@@ -309,6 +338,13 @@ export default async function handler(req, res) {
     return res.status(500).json({ code: 'RESERVE_FAILED', error: 'Failed to reserve credits. Please try again.' })
   }
 
+  // ── Track last idem key for proactive orphan recovery ─────────────────────
+  try {
+    await redis.set(`vo_last_idem:${email}`, idempotencyKey, { ex: IDEM_TTL_S })
+  } catch (trackErr) {
+    console.error('vo_last_idem tracking error (non-fatal):', trackErr)
+  }
+
   // ── Generate audio via AI voice engine ───────────────────────────────────
   let audioBytes
   try {
@@ -407,7 +443,18 @@ export default async function handler(req, res) {
   }
 
   // ── Finalize success ──────────────────────────────────────────────────────
-  const finalCredits = await finalize(userKey, idemKey, 'complete', 0, creditsAfterReserve, blobUrl, null)
+  const { credits: finalCredits, conflictStatus } = await finalize(
+    userKey, idemKey, 'complete', 0, creditsAfterReserve, blobUrl, null)
+
+  if (conflictStatus === 'failed') {
+    // A stale recovery already refunded credits before we could write 'complete'.
+    // Do NOT deliver the audio URL — the user's credits are already back.
+    console.error(`Late-success conflict for ${email}: idem finalized as 'failed' before 'complete'`)
+    return res.status(409).json({
+      code: 'CONFLICT',
+      error: 'Generation completed, but a timeout recovery had already refunded your credits. Please try again.',
+    })
+  }
 
   return res.status(200).json({
     url: blobUrl,
