@@ -97,6 +97,9 @@ export default function Landing() {
   const audioRef = useRef(null)
   const [isMobile, setIsMobile] = useState(false)
 const [founderLang, setFounderLang] = useState('en');
+const [calcPack, setCalcPack] = useState('starter')
+const [calcDuration, setCalcDuration] = useState(30)
+const [calcCustom, setCalcCustom] = useState('')
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll)
@@ -761,6 +764,83 @@ const filtered = ALL_VOICES.filter(v => {
   </div>
 </div>
 
+{/* ── CREDIT CALCULATOR ── */}
+<div style={{background:'#fff',borderRadius:20,padding:isMobile?'24px 20px':'28px 32px',border:'1.5px solid #e8e8ed',marginBottom:32}}>
+  <div style={{fontSize:11,fontWeight:700,color:'#DC143C',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:8}}>UNDERSTAND YOUR CREDITS</div>
+  <div style={{fontFamily:'Sora,sans-serif',fontSize:'clamp(18px,2vw,24px)',fontWeight:800,marginBottom:6,letterSpacing:'-0.3px',color:'#1d1d1f'}}>Know What Your Credits Can Create</div>
+  <p style={{fontSize:13,color:'#6e6e73',marginBottom:24,lineHeight:1.6,maxWidth:480}}>Estimate how many Nepali voiceovers you can generate before choosing a pack.</p>
+  <div style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:16,marginBottom:20}}>
+    <div>
+      <label style={{fontSize:12,fontWeight:700,color:'#555',display:'block',marginBottom:8}}>Choose credit balance</label>
+      <select
+        value={calcPack}
+        onChange={e=>{setCalcPack(e.target.value);if(e.target.value!=='custom')setCalcCustom('');}}
+        style={{width:'100%',padding:'10px 12px',borderRadius:10,border:'1.5px solid #e8e8ed',fontSize:13,fontWeight:600,color:'#1d1d1f',background:'#f5f5f7',outline:'none',cursor:'pointer'}}
+      >
+        <option value="starter">Starter Pack — 8,000 credits (NPR 499)</option>
+        <option value="creator">Creator Pack — 20,000 credits (NPR 999)</option>
+        <option value="founders">Founders Lifetime — 50,000 credits (NPR 2,500)</option>
+        <option value="custom">Enter your own credit amount</option>
+      </select>
+      {calcPack==='custom'&&(
+        <input
+          type="number"
+          placeholder="e.g. 15000"
+          value={calcCustom}
+          onChange={e=>setCalcCustom(e.target.value)}
+          style={{width:'100%',marginTop:8,padding:'10px 12px',borderRadius:10,border:'1.5px solid #e8e8ed',fontSize:13,color:'#1d1d1f',background:'#fff',boxSizing:'border-box',outline:'none'}}
+        />
+      )}
+    </div>
+    <div>
+      <label style={{fontSize:12,fontWeight:700,color:'#555',display:'block',marginBottom:8}}>Typical voiceover duration</label>
+      <div style={{display:'flex',gap:8}}>
+        {[20,30].map(d=>(
+          <button
+            key={d}
+            onClick={()=>setCalcDuration(d)}
+            style={{flex:1,padding:'10px',borderRadius:10,border:`1.5px solid ${calcDuration===d?'#DC143C':'#e8e8ed'}`,background:calcDuration===d?'rgba(220,20,60,.08)':'#f5f5f7',color:calcDuration===d?'#DC143C':'#555',fontSize:13,fontWeight:700,cursor:'pointer',transition:'all .15s'}}
+          >
+            {d} sec
+          </button>
+        ))}
+      </div>
+      <div style={{fontSize:11,color:'#999',marginTop:8}}>Typical short-form video length</div>
+    </div>
+  </div>
+  {(()=>{
+    const packCredits={starter:8000,creator:20000,founders:50000}
+    const credits=calcPack==='custom'?(parseInt(calcCustom)||0):(packCredits[calcPack]||0)
+    const costMin=calcDuration===30?250:170
+    const costMax=calcDuration===30?300:200
+    if(!credits&&calcPack==='custom') return(
+      <div style={{textAlign:'center',padding:'20px',color:'#999',fontSize:13}}>Enter a credit amount above to see your estimate.</div>
+    )
+    const minV=Math.floor(credits/costMax)
+    const maxV=Math.floor(credits/costMin)
+    return(
+      <div style={{background:'rgba(220,20,60,.04)',borderRadius:14,padding:'20px 24px',border:'1px solid rgba(220,20,60,.12)'}}>
+        <div style={{display:'flex',alignItems:'center',gap:isMobile?16:32,flexWrap:'wrap'}}>
+          <div style={{textAlign:'center',minWidth:100}}>
+            <div style={{fontFamily:'Sora,sans-serif',fontSize:42,fontWeight:800,color:'#DC143C',lineHeight:1}}>{minV}–{maxV}</div>
+            <div style={{fontSize:12,fontWeight:700,color:'#555',marginTop:4}}>est. voiceovers</div>
+            <div style={{fontSize:11,color:'#999',marginTop:2}}>at {calcDuration}s each</div>
+          </div>
+          <div style={{flex:1,minWidth:180}}>
+            <div style={{fontSize:13,color:'#1d1d1f',fontWeight:600,marginBottom:4}}>{credits.toLocaleString()} credits</div>
+            <div style={{fontSize:12,color:'#6e6e73',lineHeight:1.7}}>
+              At ~{costMin}–{costMax} credits per {calcDuration}s voiceover. <strong style={{color:'#1d1d1f'}}>Actual usage depends on your script length</strong> — 1 credit = 1 Nepali character typed.
+            </div>
+          </div>
+        </div>
+        <div style={{fontSize:11,color:'#888',marginTop:12,padding:'8px 12px',background:'rgba(0,0,0,.03)',borderRadius:8,lineHeight:1.6}}>
+          ⓘ Estimate only. A {calcDuration}-second script typically contains {costMin}–{costMax} Nepali characters. Shorter scripts use fewer credits proportionally.
+        </div>
+      </div>
+    )
+  })()}
+</div>
+
 {/* SCARCITY COUNTER */}
 <div style={{background:'linear-gradient(135deg,#1d1d1f,#2d1020)',borderRadius:16,padding:'14px 24px',marginBottom:24,display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,border:'1px solid rgba(220,20,60,.2)'}}>
   <div style={{display:'flex',alignItems:'center',gap:10}}>
@@ -796,7 +876,8 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{fontSize:13,fontWeight:700,color:'#6e6e73',marginBottom:8}}>Starter Pack</div>
    <div style={{fontSize:14,fontWeight:700,color:'#999',marginBottom:4,textDecoration:'line-through'}}>NPR 1,000</div>
 <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 499</div>
-<div style={{fontSize:13,color:'#999',marginBottom:12}}>$4.99 USD</div>
+<div style={{fontSize:13,color:'#999',marginBottom:4}}>$4.99 USD &nbsp;·&nbsp; one-time</div>
+<div style={{fontSize:12,fontWeight:700,color:'#1d1d1f',marginBottom:12,background:'#f5f5f7',borderRadius:8,padding:'6px 10px',display:'inline-block'}}>8,000 credits &nbsp;≈&nbsp; <span style={{color:'#DC143C'}}>26–32 voiceovers</span> <span style={{fontWeight:400,color:'#999'}}>(30s est.)</span></div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:16}}>
       First Week Experience
     </div>
@@ -840,9 +921,10 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{fontSize:13,fontWeight:700,color:'rgba(255,255,255,.7)',marginBottom:4}}>Founders' Lifetime Pack</div>
     <div style={{fontSize:14,fontWeight:700,color:'rgba(255,255,255,.5)',marginBottom:4,textDecoration:'line-through'}}>NPR 5,000</div>
     <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#fff',lineHeight:1,marginBottom:4}}>NPR 2,500</div>
-    <div style={{fontSize:13,color:'rgba(255,255,255,.6)',marginBottom:12}}>$19.99 USD — One time, forever</div>
+    <div style={{fontSize:13,color:'rgba(255,255,255,.6)',marginBottom:8}}>$19.99 USD — one-time, forever</div>
+    <div style={{fontSize:12,fontWeight:700,color:'#fff',marginBottom:12,background:'rgba(255,255,255,.15)',borderRadius:8,padding:'6px 10px',display:'inline-block'}}>50,000 credits &nbsp;≈&nbsp; <span style={{color:'#FFD700'}}>166–200 voiceovers</span> <span style={{fontWeight:400,color:'rgba(255,255,255,.6)'}}>(30s est.)</span></div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,255,255,.15)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#fff',marginBottom:16}}>
-      50,000 Credits — One Time Payment
+      One Time Payment — Credits Never Expire
     </div>
     <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:16}}>
       {[
@@ -879,7 +961,8 @@ const filtered = ALL_VOICES.filter(v => {
     <div style={{fontSize:13,fontWeight:700,color:'#6e6e73',marginBottom:8}}>Creator Value Pack</div>
   <div style={{fontSize:14,fontWeight:700,color:'#999',marginBottom:4,textDecoration:'line-through'}}>NPR 1,899</div>
 <div style={{fontFamily:'Sora,sans-serif',fontSize:36,fontWeight:800,color:'#1d1d1f',lineHeight:1,marginBottom:4}}>NPR 999</div>
-<div style={{fontSize:13,color:'#999',marginBottom:12}}>$8.99 USD</div>
+<div style={{fontSize:13,color:'#999',marginBottom:4}}>$8.99 USD &nbsp;·&nbsp; one-time</div>
+<div style={{fontSize:12,fontWeight:700,color:'#1d1d1f',marginBottom:12,background:'#f5f5f7',borderRadius:8,padding:'6px 10px',display:'inline-block'}}>20,000 credits &nbsp;≈&nbsp; <span style={{color:'#DC143C'}}>66–80 voiceovers</span> <span style={{fontWeight:400,color:'#999'}}>(30s est.)</span></div>
     <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(52,199,89,.1)',borderRadius:8,padding:'4px 10px',fontSize:12,fontWeight:700,color:'#1A9E6A',marginBottom:16}}>
       🚀 Launch Pricing — Save 47%
     </div>
