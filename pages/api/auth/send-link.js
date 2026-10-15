@@ -9,6 +9,19 @@ const redis = new Redis({
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
+const RL_MAX = 3       // max send-link requests
+const RL_WINDOW = 60   // per this many seconds
+
+// Atomic: INCR the counter; set EXPIRE only on the first increment so the
+// window is fixed from the first request, not reset on each one.
+const LUA_RL = `
+local count = redis.call('INCR', KEYS[1])
+if count == 1 then
+  redis.call('EXPIRE', KEYS[1], ARGV[1])
+end
+return count
+`
+
 function generateToken() {
   return randomBytes(32).toString('hex')
 }
@@ -19,6 +32,22 @@ export default async function handler(req, res) {
 const { email: rawEmail } = req.body
 const email = rawEmail?.trim().toLowerCase()
 if (!email || !email.includes('@')) return res.status(400).json({ error: 'Valid email required' })
+
+  // ── Rate limit: 3 requests per email per 60 s ──
+  let rlCount
+  try {
+    rlCount = Number(await redis.eval(LUA_RL, [`rl:sendlink:${email}`], [String(RL_WINDOW)]))
+  } catch (rlErr) {
+    console.error('Rate limit check failed:', rlErr)
+    // Fail closed: a Redis error must not silently bypass the control
+    return res.status(503).json({ error: 'Service temporarily unavailable. Please try again shortly.' })
+  }
+
+  if (rlCount > RL_MAX) {
+    const ttl = await redis.ttl(`rl:sendlink:${email}`).catch(() => RL_WINDOW)
+    res.setHeader('Retry-After', String(Math.max(Number(ttl), 1)))
+    return res.status(429).json({ error: 'Too many requests. Please wait before requesting another link.' })
+  }
 
   try {
     // Create user if doesn't exist
