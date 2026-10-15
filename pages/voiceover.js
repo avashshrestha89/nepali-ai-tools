@@ -897,38 +897,66 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
     )}
   </div>
 )}
-{/* Cost Preview — live credit estimate above Generate button */}
-{session && session !== null && session !== false && text.trim().length > 0 && (
+{/* Cost summary — shown to logged-in users when text is present */}
+{session && session !== false && session !== null && text.trim().length > 0 && (
   <div style={{
-    background: canGenerate ? '#f0f7ff' : '#fff5f5',
-    border: `1.5px solid ${canGenerate ? '#90CAF9' : '#FFAAAA'}`,
+    background: session.isPendingPayment ? 'rgba(255,149,0,.05)' : canGenerate ? '#f0f7ff' : '#fff5f5',
+    border: `1.5px solid ${session.isPendingPayment ? 'rgba(255,149,0,.4)' : canGenerate ? '#90CAF9' : '#FFAAAA'}`,
     borderRadius: 10,
-    padding: '10px 14px',
+    padding: '12px 14px',
     marginBottom: 8,
+    fontSize: 12,
   }}>
-    {session.isLegacy ? (
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <span style={{fontSize:12,color:'#555'}}>⚡ Legacy rate</span>
-        <span style={{fontSize:13,fontWeight:700,color:'#1976D2'}}>25 credits</span>
+    {session.isPendingPayment ? (
+      <div style={{color:'#B45309',fontWeight:600,textAlign:'center'}}>
+        ⏳ Payment pending — credits will be activated after WhatsApp confirmation
       </div>
+    ) : session.isLegacy ? (
+      <>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
+          <span style={{color:'#6e6e73'}}>Characters</span>
+          <span style={{fontWeight:700,color:'#1d1d1f'}}>{text.length.toLocaleString()}</span>
+        </div>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
+          <span style={{color:'#6e6e73'}}>Estimated cost</span>
+          <span style={{fontWeight:700,color:'#1976D2'}}>25 credits (Legacy flat rate)</span>
+        </div>
+        <div style={{display:'flex',justifyContent:'space-between'}}>
+          <span style={{color:'#6e6e73'}}>Available balance</span>
+          <span style={{fontWeight:700,color: canGenerate ? '#1d1d1f' : '#DC143C'}}>{credits.toLocaleString()} credits</span>
+        </div>
+      </>
     ) : (
       <>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
-          <span style={{fontSize:12,color:'#555'}}>📝 This generation</span>
-          <span style={{fontSize:14,fontWeight:800,color: canGenerate ? '#1976D2' : '#DC143C'}}>{text.length} credits</span>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
+          <span style={{color:'#6e6e73'}}>Characters</span>
+          <span style={{fontWeight:700,color:'#1d1d1f'}}>{text.length.toLocaleString()}</span>
         </div>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
-          <span style={{fontSize:12,color:'#555'}}>💳 Your balance</span>
-          <span style={{fontSize:13,fontWeight:700,color: canGenerate ? '#34C759' : '#DC143C'}}>{credits} credits</span>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
+          <span style={{color:'#6e6e73'}}>Estimated cost</span>
+          <span style={{fontWeight:700,color: canGenerate ? '#1976D2' : '#DC143C'}}>{text.length.toLocaleString()} credits</span>
+        </div>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
+          <span style={{color:'#6e6e73'}}>Available balance</span>
+          <span style={{fontWeight:700,color:'#1d1d1f'}}>{credits.toLocaleString()} credits</span>
+        </div>
+        <div style={{display:'flex',justifyContent:'space-between',paddingTop:6,borderTop:`1px solid ${canGenerate ? 'rgba(25,118,210,.12)' : 'rgba(220,20,60,.12)'}`}}>
+          <span style={{color:'#6e6e73'}}>Balance after generation</span>
+          <span style={{fontWeight:700,color: canGenerate ? '#34C759' : '#DC143C'}}>
+            {canGenerate ? `${(credits - text.length).toLocaleString()} credits` : '—'}
+          </span>
         </div>
         {!canGenerate && credits !== null && (
-          <div style={{fontSize:12,color:'#DC143C',fontWeight:600,marginTop:4,paddingTop:6,borderTop:'1px solid rgba(220,20,60,.15)'}}>
-            ⚠️ Need {text.length - credits} more credits to generate
-          </div>
-        )}
-        {canGenerate && (
-          <div style={{fontSize:11,color:'#888',marginTop:4,paddingTop:6,borderTop:'1px solid rgba(25,118,210,.1)'}}>
-            After generation: {credits - text.length} credits remaining
+          <div style={{marginTop:8,paddingTop:8,borderTop:'1px solid rgba(220,20,60,.12)'}}>
+            <div style={{color:'#DC143C',fontWeight:600,marginBottom:8}}>
+              ⚠️ {(text.length - credits).toLocaleString()} more credits needed
+            </div>
+            <a
+              href={`https://wa.me/19255379425?text=Hi! I want to buy more Swor AI credits to generate my voiceover.`}
+              target="_blank" rel="noreferrer"
+              style={{display:'block',background:'#DC143C',color:'#fff',padding:'8px 12px',borderRadius:8,fontSize:12,fontWeight:700,textAlign:'center',textDecoration:'none'}}>
+              💳 Get More Credits →
+            </a>
           </div>
         )}
       </>
@@ -943,22 +971,22 @@ const canGenerate = text.trim().length > 0 && !loading && session !== null && se
     color:'#fff',fontSize:15,fontWeight:700,cursor:canGenerate?'pointer':'not-allowed',
     fontFamily:'Sora,sans-serif',transition:'all .15s',
     boxShadow:canGenerate?'0 4px 20px rgba(220,20,60,.35)':'none'}}>
-  {loading ? '⏳ Generating...' : '🎙️ Generate Voiceover'}
+  {loading
+    ? '⏳ Generating...'
+    : text.trim().length > 0 && session && !session.isLegacy
+      ? `🎙️ Generate Voiceover · ${text.length.toLocaleString()} credits`
+      : text.trim().length > 0 && session && session.isLegacy
+        ? '🎙️ Generate Voiceover · 25 credits'
+        : '🎙️ Generate Voiceover'}
 </button>
           {/* Credits info */}
           <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
             <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>Balance</div>
             {session ? (
               <div>
-                <div style={{fontSize:24,fontWeight:800,color:credits === 0 ? '#DC143C' : '#1976D2',fontFamily:'Sora,sans-serif'}}>{credits}</div>
+                <div style={{fontSize:24,fontWeight:800,color:credits === 0 ? '#DC143C' : '#1976D2',fontFamily:'Sora,sans-serif'}}>{credits.toLocaleString()}</div>
                 <div style={{fontSize:12,color:'#888',marginTop:2}}>Swor Credits remaining</div>
-                {text.trim().length > 0 && !session.isLegacy ? (
-                  <div style={{fontSize:12,fontWeight:600,color: canGenerate ? '#1976D2' : '#DC143C',marginTop:6}}>
-                    Current text: {text.length} credits ({text.length} chars)
-                  </div>
-                ) : (
-                  <div style={{fontSize:12,color:'#888',marginTop:6}}>1 credit = 1 character</div>
-                )}
+                <div style={{fontSize:11,color:'#888',marginTop:4}}>1 credit = 1 Nepali character</div>
               </div>
             ) : isAnon ? (
               <div>
