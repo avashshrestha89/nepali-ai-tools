@@ -2,8 +2,8 @@ import { Redis } from '@upstash/redis'
 import { randomBytes } from 'crypto'
 
 const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
+  url: process.env.STAGING_UPSTASH_URL || process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.STAGING_UPSTASH_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN,
 })
 
 export default async function handler(req, res) {

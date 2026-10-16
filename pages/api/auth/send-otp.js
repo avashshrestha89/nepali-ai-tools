@@ -3,8 +3,8 @@ import { Resend } from 'resend'
 import { randomInt } from 'crypto'
 
 const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
+  url: process.env.STAGING_UPSTASH_URL || process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.STAGING_UPSTASH_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN,
 })
 
 const resend = new Resend(process.env.RESEND_API_KEY)
