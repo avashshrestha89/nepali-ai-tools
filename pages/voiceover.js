@@ -223,6 +223,12 @@ const previewAudioRef = useRef(null)
   const [showSignup, setShowSignup] = useState(false)
   const [signupEmail, setSignupEmail] = useState('')
   const [signupStatus, setSignupStatus] = useState('idle')
+  // OTP state
+  const [loginMode, setLoginMode] = useState('link')   // 'link' | 'otp'
+  const [otpStatus, setOtpStatus] = useState('idle')   // 'idle'|'sending'|'sent'|'verifying'|'error'|'exhausted'|'expired'|'ratelimit'|'service'
+  const [otpCode, setOtpCode] = useState('')
+  const [otpError, setOtpError] = useState(null)
+  const [otpAttemptsLeft, setOtpAttemptsLeft] = useState(null)
   const [history, setHistory] = useState([])
   const [historyLoading, setHistoryLoading] = useState(false)
   const audioRef = useRef(null)
@@ -267,6 +273,84 @@ const previewAudioRef = useRef(null)
       const res = await fetch('/api/auth/send-link', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: signupEmail }) })
       const d = await res.json(); setSignupStatus(d.success ? 'sent' : 'error')
     } catch { setSignupStatus('error') }
+  }
+
+  async function sendOtp(e) {
+    e.preventDefault()
+    setOtpStatus('sending'); setOtpError(null); setOtpAttemptsLeft(null)
+    try {
+      const res = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: signupEmail }),
+      })
+      if (res.status === 429) {
+        setOtpStatus('ratelimit'); return
+      }
+      if (res.status === 503) {
+        setOtpStatus('service'); return
+      }
+      const d = await res.json()
+      setOtpStatus(d.success ? 'sent' : 'error')
+      if (!d.success) setOtpError(d.error || 'Something went wrong.')
+    } catch {
+      setOtpStatus('error'); setOtpError('Could not send code. Please try again.')
+    }
+  }
+
+  async function verifyOtp(e) {
+    e.preventDefault()
+    setOtpStatus('verifying'); setOtpError(null)
+    try {
+      const res = await fetch('/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: signupEmail, code: otpCode }),
+      })
+      const d = await res.json()
+      if (res.status === 200 && d.success) {
+        // Session cookie set server-side; reload session
+        const sess = await fetch('/api/auth/session').then(r => r.json())
+        setSession(sess.loggedIn ? sess : false)
+        setShowSignup(false)
+        setOtpStatus('idle'); setOtpCode('')
+        return
+      }
+      if (res.status === 429) {
+        setOtpStatus('exhausted')
+        setOtpError(d.error || 'Too many incorrect attempts. Request a new code.')
+        return
+      }
+      if (res.status === 401) {
+        if (d.error && d.error.includes('expired')) {
+          setOtpStatus('expired')
+          setOtpError('Code has expired. Request a new one.')
+        } else {
+          setOtpStatus('sent')  // stay on entry screen
+          setOtpAttemptsLeft(d.attemptsRemaining ?? null)
+          setOtpError(d.error || 'Incorrect code.')
+        }
+        return
+      }
+      if (res.status === 503) {
+        setOtpStatus('service')
+        setOtpError('Service temporarily unavailable. Please try again.')
+        return
+      }
+      setOtpStatus('error')
+      setOtpError(d.error || 'Something went wrong.')
+    } catch {
+      setOtpStatus('error')
+      setOtpError('Could not verify code. Please try again.')
+    }
+  }
+
+  function resetOtp() {
+    setOtpStatus('idle'); setOtpCode(''); setOtpError(null); setOtpAttemptsLeft(null)
+  }
+
+  function switchLoginMode(mode) {
+    setLoginMode(mode); resetOtp(); setSignupStatus('idle')
   }
   async function handleGenerateScript() {
   if (!scriptPrompt.trim()) return
@@ -1152,25 +1236,157 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
             <div style={{textAlign:'center',marginBottom:24}}>
               <div style={{fontSize:26,fontWeight:800,color:'#1976D2',fontFamily:'Sora,sans-serif',marginBottom:4}}>SWOR AI</div>
               <div style={{fontSize:14,fontWeight:700,marginBottom:6}}>Sign in to access Swor AI</div>
-              <p style={{fontSize:13,color:'#888',lineHeight:1.6}}>Magic link sent instantly. No password needed. A credit pack is required to generate voiceovers.</p>
+              <p style={{fontSize:13,color:'#888',lineHeight:1.6}}>No password needed. A credit pack is required to generate voiceovers.</p>
             </div>
-            {signupStatus === 'sent' ? (
-              <div style={{textAlign:'center',padding:'20px 0'}}>
-                <div style={{fontSize:40,marginBottom:12}}>📧</div>
-                <div style={{fontSize:16,fontWeight:700,marginBottom:8}}>Check your inbox!</div>
-                <p style={{fontSize:13,color:'#888'}}>Magic link sent to <strong>{signupEmail}</strong></p>
-              </div>
-            ) : (
-              <form onSubmit={sendMagicLink}>
-                <input type="email" placeholder="your@email.com" required value={signupEmail} onChange={e => setSignupEmail(e.target.value)}
-                  style={{width:'100%',padding:'13px 16px',borderRadius:10,border:'1.5px solid #e8e8ed',fontSize:14,outline:'none',marginBottom:10,fontFamily:'inherit'}} />
-                <button type="submit" disabled={signupStatus === 'loading'}
-                  style={{width:'100%',padding:'13px',borderRadius:10,border:'none',background:'#1976D2',color:'#fff',fontSize:15,fontWeight:700,cursor:'pointer',opacity:signupStatus==='loading'?.7:1}}>
-                  {signupStatus === 'loading' ? 'Sending...' : 'Send magic link →'}
-                </button>
-                {signupStatus === 'error' && <p style={{fontSize:12,color:'#CC3333',marginTop:8,textAlign:'center'}}>Something went wrong. Try again.</p>}
-              </form>
+
+            {/* Mode tabs */}
+            <div style={{display:'flex',gap:6,marginBottom:20,background:'#f5f5f7',borderRadius:10,padding:4}}>
+              <button onClick={() => switchLoginMode('link')}
+                style={{flex:1,padding:'8px',borderRadius:8,border:'none',
+                  background:loginMode==='link'?'#fff':'transparent',
+                  fontWeight:700,fontSize:13,cursor:'pointer',
+                  color:loginMode==='link'?'#1d1d1f':'#888',
+                  boxShadow:loginMode==='link'?'0 1px 4px rgba(0,0,0,.1)':undefined}}>
+                Magic link
+              </button>
+              <button onClick={() => switchLoginMode('otp')}
+                style={{flex:1,padding:'8px',borderRadius:8,border:'none',
+                  background:loginMode==='otp'?'#fff':'transparent',
+                  fontWeight:700,fontSize:13,cursor:'pointer',
+                  color:loginMode==='otp'?'#1d1d1f':'#888',
+                  boxShadow:loginMode==='otp'?'0 1px 4px rgba(0,0,0,.1)':undefined}}>
+                6-digit code
+              </button>
+            </div>
+
+            {/* ── MAGIC LINK MODE ── */}
+            {loginMode === 'link' && (
+              signupStatus === 'sent' ? (
+                <div style={{textAlign:'center',padding:'20px 0'}}>
+                  <div style={{fontSize:40,marginBottom:12}}>📧</div>
+                  <div style={{fontSize:16,fontWeight:700,marginBottom:8}}>Check your inbox!</div>
+                  <p style={{fontSize:13,color:'#888'}}>Magic link sent to <strong>{signupEmail}</strong></p>
+                </div>
+              ) : (
+                <form onSubmit={sendMagicLink}>
+                  <input type="email" placeholder="your@email.com" required value={signupEmail}
+                    onChange={e => setSignupEmail(e.target.value)}
+                    style={{width:'100%',padding:'13px 16px',borderRadius:10,border:'1.5px solid #e8e8ed',fontSize:14,outline:'none',marginBottom:10,fontFamily:'inherit'}} />
+                  <button type="submit" disabled={signupStatus === 'loading'}
+                    style={{width:'100%',padding:'13px',borderRadius:10,border:'none',background:'#1976D2',color:'#fff',fontSize:15,fontWeight:700,cursor:'pointer',opacity:signupStatus==='loading'?.7:1}}>
+                    {signupStatus === 'loading' ? 'Sending...' : 'Send magic link →'}
+                  </button>
+                  {signupStatus === 'error' && <p style={{fontSize:12,color:'#CC3333',marginTop:8,textAlign:'center'}}>Something went wrong. Try again.</p>}
+                </form>
+              )
             )}
+
+            {/* ── OTP MODE ── */}
+            {loginMode === 'otp' && (() => {
+              // Email entry screen
+              if (otpStatus === 'idle' || otpStatus === 'sending' || otpStatus === 'error') {
+                return (
+                  <form onSubmit={sendOtp}>
+                    <input type="email" placeholder="your@email.com" required value={signupEmail}
+                      onChange={e => setSignupEmail(e.target.value)}
+                      style={{width:'100%',padding:'13px 16px',borderRadius:10,border:'1.5px solid #e8e8ed',fontSize:14,outline:'none',marginBottom:10,fontFamily:'inherit'}} />
+                    <button type="submit" disabled={otpStatus === 'sending'}
+                      style={{width:'100%',padding:'13px',borderRadius:10,border:'none',background:'#1976D2',color:'#fff',fontSize:15,fontWeight:700,cursor:'pointer',opacity:otpStatus==='sending'?.7:1}}>
+                      {otpStatus === 'sending' ? 'Sending code...' : 'Send 6-digit code →'}
+                    </button>
+                    {otpStatus === 'error' && <p style={{fontSize:12,color:'#CC3333',marginTop:8,textAlign:'center'}}>{otpError || 'Something went wrong. Try again.'}</p>}
+                  </form>
+                )
+              }
+
+              // Rate-limited on send
+              if (otpStatus === 'ratelimit') {
+                return (
+                  <div style={{textAlign:'center',padding:'16px 0'}}>
+                    <div style={{fontSize:32,marginBottom:10}}>⏳</div>
+                    <div style={{fontSize:14,fontWeight:700,marginBottom:6}}>Too many requests</div>
+                    <p style={{fontSize:13,color:'#888',lineHeight:1.6}}>You've requested several codes in a short time. Please wait a few minutes and try again.</p>
+                    <button onClick={resetOtp} style={{marginTop:16,padding:'9px 20px',borderRadius:8,border:'1.5px solid #e8e8ed',background:'transparent',fontSize:13,cursor:'pointer'}}>Try again</button>
+                  </div>
+                )
+              }
+
+              // Service unavailable
+              if (otpStatus === 'service') {
+                return (
+                  <div style={{textAlign:'center',padding:'16px 0'}}>
+                    <div style={{fontSize:32,marginBottom:10}}>⚠️</div>
+                    <div style={{fontSize:14,fontWeight:700,marginBottom:6}}>Temporarily unavailable</div>
+                    <p style={{fontSize:13,color:'#888',lineHeight:1.6}}>We couldn't send the code right now. Please try again in a moment.</p>
+                    <button onClick={resetOtp} style={{marginTop:16,padding:'9px 20px',borderRadius:8,border:'1.5px solid #e8e8ed',background:'transparent',fontSize:13,cursor:'pointer'}}>Try again</button>
+                  </div>
+                )
+              }
+
+              // Code entry screen (sent, verifying, expired, exhausted, error-after-sent)
+              if (['sent','verifying','expired','exhausted'].includes(otpStatus)) {
+                return (
+                  <div>
+                    {otpStatus !== 'expired' && otpStatus !== 'exhausted' && (
+                      <div style={{textAlign:'center',marginBottom:16}}>
+                        <div style={{fontSize:13,color:'#555'}}>Code sent to <strong>{signupEmail}</strong></div>
+                        <div style={{fontSize:12,color:'#888',marginTop:2}}>Expires in 10 minutes</div>
+                      </div>
+                    )}
+
+                    {otpStatus === 'expired' && (
+                      <div style={{textAlign:'center',padding:'12px 0',marginBottom:12}}>
+                        <div style={{fontSize:28,marginBottom:8}}>⌛</div>
+                        <div style={{fontSize:14,fontWeight:700,marginBottom:4,color:'#CC3333'}}>Code expired</div>
+                        <p style={{fontSize:13,color:'#888'}}>Request a new code below.</p>
+                      </div>
+                    )}
+
+                    {otpStatus === 'exhausted' && (
+                      <div style={{textAlign:'center',padding:'12px 0',marginBottom:12}}>
+                        <div style={{fontSize:28,marginBottom:8}}>🔒</div>
+                        <div style={{fontSize:14,fontWeight:700,marginBottom:4,color:'#CC3333'}}>Too many incorrect attempts</div>
+                        <p style={{fontSize:13,color:'#888'}}>Request a new code to try again.</p>
+                      </div>
+                    )}
+
+                    {otpStatus !== 'expired' && otpStatus !== 'exhausted' && (
+                      <form onSubmit={verifyOtp}>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          pattern="\d{6}"
+                          maxLength={6}
+                          placeholder="123456"
+                          required
+                          value={otpCode}
+                          onChange={e => { setOtpCode(e.target.value.replace(/\D/g,'')); setOtpError(null) }}
+                          style={{width:'100%',padding:'13px 16px',borderRadius:10,border:`1.5px solid ${otpError?'#CC3333':'#e8e8ed'}`,fontSize:22,fontFamily:'monospace',letterSpacing:'0.2em',textAlign:'center',outline:'none',marginBottom:10}}
+                        />
+                        {otpError && (
+                          <p style={{fontSize:12,color:'#CC3333',marginTop:0,marginBottom:8,textAlign:'center'}}>
+                            {otpError}
+                            {otpAttemptsLeft != null && ` (${otpAttemptsLeft} attempt${otpAttemptsLeft===1?'':'s'} left)`}
+                          </p>
+                        )}
+                        <button type="submit" disabled={otpStatus==='verifying'||otpCode.length!==6}
+                          style={{width:'100%',padding:'13px',borderRadius:10,border:'none',background:'#1976D2',color:'#fff',fontSize:15,fontWeight:700,cursor:'pointer',opacity:(otpStatus==='verifying'||otpCode.length!==6)?.7:1}}>
+                          {otpStatus === 'verifying' ? 'Verifying...' : 'Verify code →'}
+                        </button>
+                      </form>
+                    )}
+
+                    <button onClick={resetOtp}
+                      style={{width:'100%',marginTop:10,padding:'9px',borderRadius:10,border:'1px solid #e8e8ed',background:'transparent',fontSize:13,color:'#888',cursor:'pointer'}}>
+                      Send a new code
+                    </button>
+                  </div>
+                )
+              }
+
+              return null
+            })()}
+
             <button onClick={() => setShowSignup(false)}
               style={{width:'100%',marginTop:10,padding:'10px',borderRadius:10,border:'1px solid #e8e8ed',background:'transparent',fontSize:13,color:'#888',cursor:'pointer'}}>
               Maybe later
