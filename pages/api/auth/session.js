@@ -1,15 +1,18 @@
-import { Redis } from '@upstash/redis'
-
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
-})
+import { createRedisClient } from '../../../lib/redis'
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' })
 
   const sessionToken = req.cookies.swor_session
   if (!sessionToken) return res.status(200).json({ loggedIn: false })
+
+  let redis
+  try {
+    redis = createRedisClient()
+  } catch (configErr) {
+    console.error('session: Redis config error:', configErr.message)
+    return res.status(503).json({ error: 'Service temporarily unavailable.' })
+  }
 
   try {
     const email = await redis.get(`session:${sessionToken}`)
