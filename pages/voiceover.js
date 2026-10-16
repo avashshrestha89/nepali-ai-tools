@@ -720,12 +720,12 @@ export default function Voiceover() {
               {showStylePresets && (
                 <div className="fade-in" style={{padding:'4px 14px 12px',display:'flex',flexWrap:'wrap',gap:6}}>
                   {[
-                    { label: '😢 Emotional', tag: '[sad] [slow]' },
-                    { label: '⚡ Energetic', tag: '[excited] [fast]' },
-                    { label: '📺 News Anchor', tag: '[serious] [authoritative]' },
-                    { label: '😄 Fun & Light', tag: '[cheerful] [laughs]' },
-                    { label: '🌙 ASMR', tag: '[whispers] [calm] [slow]' },
-                    { label: '🎬 Cinematic', tag: '[dramatic] [pause] [deep]' },
+                    { label: '😢 Emotional', tag: '[sad] [slowly]' },
+                    { label: '⚡ Energetic', tag: '[excited] [shouts]' },
+                    { label: '📺 News Anchor', tag: '[calm] [serious]' },
+                    { label: '😄 Fun & Light', tag: '[happy] [laughs]' },
+                    { label: '🌙 ASMR / Whisper', tag: '[whispers] [quietly]' },
+                    { label: '🎬 Suspense', tag: '[serious] [slowly]' },
                   ].map(p => (
                     <button key={p.label}
                       onClick={() => {
@@ -820,7 +820,7 @@ export default function Voiceover() {
                   {['all','emotions','reactions','sfx','accents'].map(tab => (
                     <button key={tab} onClick={() => setActiveTagTab(tab)}
                       style={{padding:'5px 14px',borderRadius:20,border:'1.5px solid',borderColor:activeTagTab===tab?'#DC143C':'#e8e8ed',background:activeTagTab===tab?'rgba(220,20,60,.06)':'#fff',fontSize:11,fontWeight:700,cursor:'pointer',color:activeTagTab===tab?'#DC143C':'#666',whiteSpace:'nowrap',transition:'all .15s'}}>
-                      {tab.charAt(0).toUpperCase()+tab.slice(1)}
+                      {({'all':'All','emotions':'Emotions','reactions':'Reactions','sfx':'SFX','accents':'Accents & Pace'})[tab]}
                     </button>
                   ))}
                 </div>
@@ -828,17 +828,21 @@ export default function Voiceover() {
                 {/* Tag chips */}
                 <div style={{padding:'10px 14px',display:'flex',flexWrap:'wrap',gap:5}}>
                   {[
+                    // Emotions — all 18 original production tags + 3 verified additions
                     ...(activeTagTab==='all'||activeTagTab==='emotions'?[
-                      '[excited]','[sad]','[angry]','[calm]','[scared]','[surprised]','[happy]','[serious]','[cheerful]','[whispers]','[dramatic]','[romantic]','[authoritative]','[playful]','[mysterious]',
+                      '[excited]','[calm]','[serious]','[sad]','[angry]','[nervous]','[curious]','[sarcastic]','[mischievously]','[happy]','[tired]','[frustrated]','[sorrowful]','[deadpan]','[whispers]','[shouts]','[slowly]','[quietly]','[scared]','[surprised]','[cheerful]',
                     ]:[]),
+                    // Reactions — all 13 original production tags + 3 additions
                     ...(activeTagTab==='all'||activeTagTab==='reactions'?[
-                      '[laughs]','[sighs]','[gasps]','[cries]','[gulps]','[clears throat]','[pause]','[long pause]',
+                      '[laughs]','[starts laughing]','[laughs harder]','[wheezing]','[snorts]','[sighs]','[exhales]','[gasps]','[crying]','[hesitates]','[stammers]','[gulps]','[swallows]','[clears throat]','[pause]','[long pause]',
                     ]:[]),
+                    // SFX — 5 original production tags + 6 additions
                     ...(activeTagTab==='all'||activeTagTab==='sfx'?[
-                      '[explosion]','[gunshot]','[rain]','[thunder]','[wind]','[crowd cheering]','[clapping]','[bell]','[alarm]',
+                      '[applause]','[woo]','[clapping]','[explosion]','[gunshot]','[rain]','[thunder]','[wind]','[crowd cheering]','[bell]','[alarm]',
                     ]:[]),
+                    // Accents & Pace — 4 original accent tags + 2 pace modifiers
                     ...(activeTagTab==='all'||activeTagTab==='accents'?[
-                      '[fast]','[slow]','[deep]','[high pitch]','[low pitch]','[echo]',
+                      '[strong Nepali accent]','[strong Indian accent]','[strong British accent]','[sings]','[fast]','[slow]',
                     ]:[]),
                   ].map(tag => (
                     <button key={tag} className="tag-chip"
@@ -941,18 +945,36 @@ export default function Voiceover() {
                 <div style={{fontSize:11,color:'#888',marginTop:4}}>Max 500 chars · 25 credits flat per generation</div>
               </div>
             ) : session && credits > 0 && billableLength > 0 ? (
-              <div style={{background:'#f8f8f8',borderRadius:10,padding:'10px 12px',marginBottom:12}}>
-                <div style={{display:'flex',justifyContent:'space-between',fontSize:12,fontWeight:600,color:'#555',marginBottom:4}}>
-                  <span>This generation</span>
-                  <span style={{color:'#DC143C',fontWeight:700}}>{billableLength.toLocaleString()} credits</span>
+              credits >= billableLength ? (
+                <div style={{background:'#f8f8f8',borderRadius:10,padding:'10px 12px',marginBottom:12}}>
+                  <div style={{display:'flex',justifyContent:'space-between',fontSize:12,fontWeight:600,color:'#555',marginBottom:4}}>
+                    <span>This generation</span>
+                    <span style={{color:'#DC143C',fontWeight:700}}>{billableLength.toLocaleString()} credits</span>
+                  </div>
+                  <div style={{display:'flex',justifyContent:'space-between',fontSize:11,color:'#888'}}>
+                    <span>Balance after</span>
+                    <span style={{color:'#2E7D32',fontWeight:600}}>
+                      {credits.toLocaleString()} → {(credits - billableLength).toLocaleString()}
+                    </span>
+                  </div>
                 </div>
-                <div style={{display:'flex',justifyContent:'space-between',fontSize:11,color:'#888'}}>
-                  <span>Your balance</span>
-                  <span style={{color:(credits - billableLength) < 0 ? '#DC143C' : '#2E7D32', fontWeight:600}}>
-                    {credits.toLocaleString()} → {Math.max(0, credits - billableLength).toLocaleString()}
-                  </span>
+              ) : (
+                <div style={{background:'#FFF5F5',border:'1.5px solid #FFCCCC',borderRadius:10,padding:'10px 12px',marginBottom:12}}>
+                  <div style={{display:'flex',justifyContent:'space-between',fontSize:12,fontWeight:700,color:'#CC3333',marginBottom:4}}>
+                    <span>⚠️ Not enough credits</span>
+                    <span>{(billableLength - credits).toLocaleString()} more needed</span>
+                  </div>
+                  <div style={{display:'flex',justifyContent:'space-between',fontSize:11,color:'#888',marginBottom:8}}>
+                    <span>You have</span>
+                    <span style={{fontWeight:600}}>{credits.toLocaleString()} of {billableLength.toLocaleString()} needed</span>
+                  </div>
+                  <a href={`https://wa.me/19255379425?text=Hi! I need more Swor Credits to generate voiceovers.`}
+                    target="_blank" rel="noreferrer"
+                    style={{display:'block',background:'#DC143C',color:'#fff',padding:'7px 12px',borderRadius:8,fontSize:12,fontWeight:700,textAlign:'center',textDecoration:'none'}}>
+                    💳 Get More Credits → WhatsApp
+                  </a>
                 </div>
-              </div>
+              )
             ) : null}
 
             {/* Generate button */}
