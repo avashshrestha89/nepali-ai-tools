@@ -1,4 +1,5 @@
 import { Redis } from '@upstash/redis'
+import { randomBytes } from 'crypto'
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL,
@@ -28,9 +29,12 @@ export default async function handler(req, res) {
     // Real user click — consume token and create session
     await redis.del(`magic:${token}`)
 
-    const sessionToken = Math.random().toString(36).substr(2) +
-      Math.random().toString(36).substr(2) +
-      Date.now().toString(36)
+    // 256-bit cryptographically secure session token (64 hex chars).
+    // Replaces the previous Math.random()-based generator, which used V8's
+    // xorshift128+ PRNG and was not suitable for security tokens.
+    // Existing sessions stored under the old format remain valid — session.js
+    // is purely a key lookup and is agnostic to the token's character set or length.
+    const sessionToken = randomBytes(32).toString('hex')
 
     await redis.setex(`session:${sessionToken}`, 60 * 60 * 24 * 30, email)
 
