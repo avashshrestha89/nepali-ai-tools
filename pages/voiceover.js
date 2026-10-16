@@ -768,11 +768,29 @@ export default function Voiceover() {
               {result && (
                 <div style={{marginTop:12,background:'rgba(220,20,60,.04)',border:'1.5px solid rgba(220,20,60,.2)',borderRadius:10,padding:'12px 14px'}}>
                   <div style={{fontSize:11,fontWeight:700,color:'#DC143C',marginBottom:8,letterSpacing:'0.06em',textTransform:'uppercase'}}>✅ Voiceover Ready</div>
-                  <audio controls src={result.url} style={{width:'100%',height:36}} />
-                  <a href={result.url} download={result.filename}
-                    style={{display:'inline-flex',alignItems:'center',gap:6,marginTop:8,background:'#DC143C',color:'#fff',padding:'7px 16px',borderRadius:8,fontSize:12,fontWeight:700,textDecoration:'none'}}>
+                  <audio controls playsInline preload="metadata" crossOrigin="anonymous"
+                    src={result.url} style={{width:'100%',height:36,borderRadius:6}}
+                    onError={() => window.open(result.url, '_blank')} />
+                  <button
+                    onClick={async () => {
+                      try {
+                        const response = await fetch(result.url)
+                        const blob = await response.blob()
+                        const url = window.URL.createObjectURL(blob)
+                        const link = document.createElement('a')
+                        link.href = url
+                        link.download = result.filename
+                        document.body.appendChild(link)
+                        link.click()
+                        document.body.removeChild(link)
+                        window.URL.revokeObjectURL(url)
+                      } catch {
+                        window.open(result.url, '_blank')
+                      }
+                    }}
+                    style={{display:'inline-flex',alignItems:'center',gap:6,marginTop:8,background:'#DC143C',color:'#fff',padding:'7px 16px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer',border:'none'}}>
                     ⬇ Download MP3
-                  </a>
+                  </button>
                 </div>
               )}
 
@@ -942,7 +960,15 @@ export default function Voiceover() {
               <button onClick={handleGenerate} disabled={!canGenerate}
                 className="btn-primary"
                 style={{width:'100%',padding:'13px',fontSize:15,opacity:canGenerate?1:0.5}}>
-                {loading ? '⏳ Generating...' : session === null ? 'Loading...' : '🎙️ Generate Voiceover'}
+                {loading
+                  ? '⏳ Generating...'
+                  : session === null
+                    ? 'Loading...'
+                    : text.trim().length > 0 && session && !session.isLegacy
+                      ? `🎙️ Generate Voiceover · ${billableLength.toLocaleString()} ${billableLength === 1 ? 'credit' : 'credits'}`
+                      : text.trim().length > 0 && session && session.isLegacy
+                        ? '🎙️ Generate Voiceover · 25 credits'
+                        : '🎙️ Generate Voiceover'}
               </button>
             ) : null}
           </div>
