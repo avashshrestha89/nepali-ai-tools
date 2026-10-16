@@ -46,11 +46,19 @@ end
 attempts = attempts + 1
 data['attempts'] = attempts
 local remaining  = maxAttempts - attempts
-local ttl        = redis.call('TTL', KEYS[1])
+local ttl = redis.call('TTL', KEYS[1])
 if ttl > 0 then
   redis.call('SETEX', KEYS[1], ttl, cjson.encode(data))
 else
-  redis.call('SET', KEYS[1], cjson.encode(data))
+  -- ttl == 0  : key expiring within <1 s — treat as expired to prevent a
+  --             persistent key from being created by the SET without EXPIRY.
+  -- ttl == -1 : no TTL set (should never happen; send-otp always uses SETEX) —
+  --             delete defensively rather than creating an immortal record.
+  -- ttl == -2 : key already gone (race between GET and TTL) — DEL is a no-op.
+  -- In all three cases the submitted code is useless; returning {0, 0} sends
+  -- the caller to the "expired" path (401, request a new code).
+  redis.call('DEL', KEYS[1])
+  return {0, 0}
 end
 return {2, remaining}
 `
