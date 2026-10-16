@@ -1,11 +1,6 @@
-import { Redis } from '@upstash/redis'
 import { Resend } from 'resend'
 import { randomInt } from 'crypto'
-
-const redis = new Redis({
-  url: process.env.STAGING_UPSTASH_URL || process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.STAGING_UPSTASH_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN,
-})
+import { createRedisClient } from '../../../lib/redis'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -30,6 +25,14 @@ function generateCode() {
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
+
+  let redis
+  try {
+    redis = createRedisClient()
+  } catch (configErr) {
+    console.error('send-otp: Redis config error:', configErr.message)
+    return res.status(503).json({ error: 'Service temporarily unavailable. Please try again shortly.' })
+  }
 
   const { email: rawEmail } = req.body
   const email = rawEmail?.trim().toLowerCase()

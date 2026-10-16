@@ -1,16 +1,19 @@
-import { Redis } from '@upstash/redis'
 import { randomBytes } from 'crypto'
-
-const redis = new Redis({
-  url: process.env.STAGING_UPSTASH_URL || process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.STAGING_UPSTASH_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN,
-})
+import { createRedisClient } from '../../../lib/redis'
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' })
 
   const { token } = req.query
   if (!token) return res.status(400).json({ error: 'Token required' })
+
+  let redis
+  try {
+    redis = createRedisClient()
+  } catch (configErr) {
+    console.error('verify: Redis config error:', configErr.message)
+    return res.status(503).json({ error: 'Service temporarily unavailable. Please try again shortly.' })
+  }
 
   try {
     const email = await redis.get(`magic:${token}`)

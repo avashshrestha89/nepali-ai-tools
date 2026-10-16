@@ -1,10 +1,5 @@
-import { Redis } from '@upstash/redis'
 import { randomBytes } from 'crypto'
-
-const redis = new Redis({
-  url: process.env.STAGING_UPSTASH_URL || process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.STAGING_UPSTASH_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN,
-})
+import { createRedisClient } from '../../../lib/redis'
 
 const MAX_ATTEMPTS = 5
 
@@ -69,6 +64,14 @@ function createSession() {
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
+
+  let redis
+  try {
+    redis = createRedisClient()
+  } catch (configErr) {
+    console.error('verify-otp: Redis config error:', configErr.message)
+    return res.status(503).json({ error: 'Service temporarily unavailable. Please try again shortly.' })
+  }
 
   const { email: rawEmail, code: rawCode } = req.body
 

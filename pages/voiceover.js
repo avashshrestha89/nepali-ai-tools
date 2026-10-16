@@ -231,6 +231,7 @@ const previewAudioRef = useRef(null)
   const [otpAttemptsLeft, setOtpAttemptsLeft] = useState(null)
   const [history, setHistory] = useState([])
   const [historyLoading, setHistoryLoading] = useState(false)
+  const [loggingOut, setLoggingOut] = useState(false)
   const audioRef = useRef(null)
 
   useEffect(() => {
@@ -255,6 +256,17 @@ const previewAudioRef = useRef(null)
       if (d.success) setHistory(d.history || [])
     } catch {}
     setHistoryLoading(false)
+  }
+
+  async function handleLogout() {
+    if (loggingOut) return
+    setLoggingOut(true)
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' })
+    } catch {}
+    setSession(false)
+    setHistory([])
+    setLoggingOut(false)
   }
 
   function playPreview(voiceId) {
@@ -511,6 +523,15 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
         </div>
         <div style={{display:'flex',alignItems:'center',gap:10}}>
           {session && <div style={{fontSize:13,fontWeight:600,background:'#E8F4FD',color:'#1976D2',padding:'5px 12px',borderRadius:20}}>{credits} credits</div>}
+          {session && (
+            <button
+              onClick={handleLogout}
+              disabled={loggingOut}
+              style={{background:'none',border:'1px solid #e0e0e0',color:'#888',padding:'5px 12px',borderRadius:20,fontSize:13,fontWeight:600,cursor:loggingOut?'not-allowed':'pointer',opacity:loggingOut?0.6:1}}
+            >
+              {loggingOut ? 'Signing out…' : 'Sign out'}
+            </button>
+          )}
           {!session && <button onClick={() => setShowSignup(true)} style={{background:'#1976D2',color:'#fff',border:'none',padding:'7px 16px',borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer'}}>Sign in</button>}
         </div>
       </nav>
