@@ -933,6 +933,8 @@ const filtered = ALL_VOICES.filter(v => {
         'Unlimited subtitles forever',
         'Credits NEVER expire',
         'Exclusive Founders Status & Badge',
+        'Priority WhatsApp support',
+        'Early access to new voices & features',
         'Commercial usage rights'
       ].map(f=>(
         <div key={f} style={{fontSize:13,color:'#fff',display:'flex',alignItems:'flex-start',gap:6,fontWeight:600}}>
@@ -971,7 +973,8 @@ const filtered = ALL_VOICES.filter(v => {
         '20,000 Swor Credits — never expire',
         'Unlimited subtitles forever',
         'All 30 Nepali AI voices included',
-        'Commercial usage rights'
+        'Commercial usage rights',
+        'Priority WhatsApp support'
       ].map(f=>(
         <div key={f} style={{fontSize:13,color:'#555',display:'flex',alignItems:'flex-start',gap:6}}>
           <span style={{color:'#34C759',fontWeight:700,flexShrink:0}}>✓</span> {f}
