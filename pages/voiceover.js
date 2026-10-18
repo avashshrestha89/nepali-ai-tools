@@ -1265,6 +1265,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
             </div>
 
             {/* Mode tabs */}
+            <div style={{fontSize:12,fontWeight:600,color:'#888',textAlign:'center',marginBottom:8}}>Choose one way to sign in (either works)</div>
             <div style={{display:'flex',gap:6,marginBottom:20,background:'#f5f5f7',borderRadius:10,padding:4}}>
               <button onClick={() => switchLoginMode('link')}
                 style={{flex:1,padding:'8px',borderRadius:8,border:'none',
@@ -1272,7 +1273,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
                   fontWeight:700,fontSize:13,cursor:'pointer',
                   color:loginMode==='link'?'#1d1d1f':'#888',
                   boxShadow:loginMode==='link'?'0 1px 4px rgba(0,0,0,.1)':undefined}}>
-                Magic link
+                Email me a magic link
               </button>
               <button onClick={() => switchLoginMode('otp')}
                 style={{flex:1,padding:'8px',borderRadius:8,border:'none',
@@ -1280,7 +1281,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
                   fontWeight:700,fontSize:13,cursor:'pointer',
                   color:loginMode==='otp'?'#1d1d1f':'#888',
                   boxShadow:loginMode==='otp'?'0 1px 4px rgba(0,0,0,.1)':undefined}}>
-                6-digit code
+                Email me a 6-digit code
               </button>
             </div>
 
