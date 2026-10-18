@@ -205,7 +205,7 @@ export default function Voiceover() {
   const [text, setText] = useState('')
   const [proTipsOpen, setProTipsOpen] = useState(false)
 const [activeTagTab, setActiveTagTab] = useState('all')
-  const [selectedVoice, setSelectedVoice] = useState(VOICES[0])
+  const [selectedVoice, setSelectedVoice] = useState(VOICES.find(v => v.voice_id === 'FszY75334ExxVmg7yl0U') || VOICES[0])
   const [showVoicePanel, setShowVoicePanel] = useState(false)
   const [loading, setLoading] = useState(false)
   const [previewing, setPreviewing] = useState(false)
