@@ -271,12 +271,12 @@ export default function HomepageDemoBox({ isMobile }) {
 
       {/* REWARD POPUP */}
       {showReward && (
-        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.75)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',padding:16,backdropFilter:'blur(6px)'}}>
-          <div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1020 100%)',borderRadius:24,padding:isMobile?24:36,maxWidth:480,width:'100%',border:'1.5px solid rgba(220,20,60,.3)',boxShadow:'0 24px 60px rgba(0,0,0,.5)',position:'relative'}}>
+        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.75)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',padding:16,backdropFilter:'blur(6px)',overflowY:'auto',WebkitOverflowScrolling:'touch'}}>
+          <div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1020 100%)',borderRadius:24,padding:isMobile?24:28,maxWidth:480,width:'100%',border:'1.5px solid rgba(220,20,60,.3)',boxShadow:'0 24px 60px rgba(0,0,0,.5)',position:'relative',margin:'auto'}}>
 
             {/* Close button */}
             <button onClick={() => setShowReward(false)}
-              style={{position:'absolute',top:16,right:16,background:'rgba(255,255,255,.1)',border:'none',color:'#fff',width:32,height:32,borderRadius:'50%',cursor:'pointer',fontSize:16,display:'flex',alignItems:'center',justifyContent:'center'}}>
+              aria-label="Close" style={{position:'fixed',top:16,right:16,zIndex:10000,background:'rgba(255,255,255,.22)',border:'none',color:'#fff',width:40,height:40,borderRadius:'50%',cursor:'pointer',fontSize:18,display:'flex',alignItems:'center',justifyContent:'center'}}>
               ✕
             </button>
 
@@ -304,11 +304,11 @@ export default function HomepageDemoBox({ isMobile }) {
               <div style={{background:'#1d1d1f',borderRadius:12,padding:'12px 20px',marginBottom:16,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
                 <div>
                   <div style={{fontSize:11,color:'#888',marginBottom:4}}>Your exclusive code / तपाईंको विशेष कोड:</div>
-                  <div style={{fontFamily:'monospace',fontSize:20,fontWeight:800,color:'#DC143C',letterSpacing:'0.1em'}}>SWOR-LAUNCH-10K</div>
+                  <div style={{fontFamily:'monospace',fontSize:20,fontWeight:800,color:'#DC143C',letterSpacing:'0.1em'}}>DASHAIN-TIHAR-2026</div>
                 </div>
                 <button
                   onClick={() => {
-                    navigator.clipboard.writeText('SWOR-LAUNCH-10K')
+                    navigator.clipboard.writeText('DASHAIN-TIHAR-2026')
                     alert('Code copied!')
                   }}
                   style={{background:'rgba(220,20,60,.2)',border:'1px solid rgba(220,20,60,.4)',color:'#DC143C',padding:'6px 12px',borderRadius:8,fontSize:11,fontWeight:700,cursor:'pointer',flexShrink:0}}>
@@ -321,18 +321,18 @@ export default function HomepageDemoBox({ isMobile }) {
 </div>
 <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:12}}>
   {[
-    {name:'Starter Pack',npr:'499',normal:'3,500',bonus:'10,000'},
-    {name:'Creator Pack',npr:'999',normal:'8,000',bonus:'20,000'},
-    {name:'Founders Lifetime',npr:'2,500',normal:'30,000',bonus:'50,000'},
+    {name:'Starter Pack',npr:'499',base:'8,000',extra:'2,000',bonus:'10,000'},
+    {name:'Creator Pack',npr:'999',base:'20,000',extra:'5,000',bonus:'25,000'},
+    {name:'Founders Lifetime',npr:'2,500',base:'50,000',extra:'8,000',bonus:'58,000'},
   ].map(p => (
     <div key={p.name} style={{background:'rgba(255,255,255,.05)',borderRadius:10,padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:8}}>
       <div>
         <div style={{fontSize:12,fontWeight:700,color:'#fff'}}>{p.name} — NPR {p.npr}</div>
-        <div style={{fontSize:11,color:'rgba(255,255,255,.4)',textDecoration:'line-through'}}>{p.normal} credits</div>
+        <div style={{fontSize:11,color:'rgba(255,255,255,.55)'}}>{p.base} credits + {p.extra} bonus</div>
       </div>
       <div style={{textAlign:'right'}}>
         <div style={{fontSize:14,fontWeight:800,color:'#34C759'}}>{p.bonus} credits</div>
-        <div style={{fontSize:10,color:'rgba(255,255,255,.4)'}}>with code</div>
+        <div style={{fontSize:10,color:'rgba(255,255,255,.4)'}}>total with code</div>
       </div>
     </div>
   ))}
@@ -356,8 +356,8 @@ export default function HomepageDemoBox({ isMobile }) {
             </div>
 
             {/* CTA */}
-            <a href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20generated%20a%20demo%20on%20Swor%20AI%20and%20unlocked%20code%20SWOR-LAUNCH-10K.%20I%20want%20to%20claim%20my%20bonus%20credits!" target="_blank" rel="noreferrer" style={{display:'block',background:'#25D366',color:'#fff',padding:'14px',borderRadius:12,fontSize:15,fontWeight:700,textAlign:'center',textDecoration:'none',boxShadow:'0 4px 20px rgba(37,211,102,.3)',marginBottom:10}}>
-              {'💬 Claim 10,000 Credits on WhatsApp Now'}
+            <a href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20generated%20a%20demo%20on%20Swor%20AI%20and%20unlocked%20code%20DASHAIN-TIHAR-2026.%20I%20want%20to%20claim%20my%20bonus%20credits!" target="_blank" rel="noreferrer" style={{display:'block',background:'#25D366',color:'#fff',padding:'14px',borderRadius:12,fontSize:15,fontWeight:700,textAlign:'center',textDecoration:'none',boxShadow:'0 4px 20px rgba(37,211,102,.3)',marginBottom:10}}>
+              {'💬 Get Your Bonus Code Applied on WhatsApp'}
             </a>
             <div style={{textAlign:'center',fontSize:11,color:'rgba(255,255,255,.3)'}}>
               {'या / or '}
