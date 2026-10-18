@@ -9,6 +9,7 @@ const redis = new Redis({
 })
 
 const DEMO_VOICES = [
+  'FszY75334ExxVmg7yl0U',
   '1zUSi8LeHs9M2mV8X6YS',
   'WdZjiN0nNcik2LBjOHiv',
   'TX3LPaxmHKxFdv7VOQHJ',
