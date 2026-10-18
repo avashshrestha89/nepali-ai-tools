@@ -1275,6 +1275,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
                   boxShadow:loginMode==='link'?'0 1px 4px rgba(0,0,0,.1)':undefined}}>
                 Email me a magic link
               </button>
+              <span style={{alignSelf:'center',fontSize:12,fontWeight:700,color:'#888',flexShrink:0}}>or</span>
               <button onClick={() => switchLoginMode('otp')}
                 style={{flex:1,padding:'8px',borderRadius:8,border:'none',
                   background:loginMode==='otp'?'#fff':'transparent',
