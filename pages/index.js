@@ -868,6 +868,9 @@ const filtered = ALL_VOICES.filter(v => {
   </div>
 </div>
 
+<div style={{background:'linear-gradient(135deg,rgba(220,20,60,.08),rgba(255,149,0,.08))',border:'1.5px solid rgba(220,20,60,.25)',borderRadius:12,padding:'10px 14px',marginTop:0,marginBottom:16,textAlign:'center',fontSize:13,lineHeight:1.5,color:'#1d1d1f'}}>
+  🎉 <strong>Dashain-Tihar offer:</strong> send code <strong style={{color:'#DC143C'}}>DASHAIN-TIHAR-2026</strong> on WhatsApp for <strong>+2,000 / +5,000 / +8,000 bonus credits</strong> on Starter / Creator / Founders. Limited time.
+</div>
  {/* ── 3-COLUMN PRICING GRID ── */}
 <div style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'repeat(3,1fr)',gap:16,marginBottom:20,alignItems:'start'}}>
 

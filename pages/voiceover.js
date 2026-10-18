@@ -1164,6 +1164,9 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
                     </div>
                   ))}
                 </div>
+<div style={{background:'linear-gradient(135deg,rgba(220,20,60,.08),rgba(255,149,0,.08))',border:'1.5px solid rgba(220,20,60,.25)',borderRadius:12,padding:'10px 14px',marginTop:12,marginBottom:0,textAlign:'center',fontSize:12,lineHeight:1.5,color:'#1d1d1f'}}>
+  🎉 <strong>Dashain-Tihar offer:</strong> send code <strong style={{color:'#DC143C'}}>DASHAIN-TIHAR-2026</strong> on WhatsApp for <strong>+2,000 / +5,000 / +8,000 bonus credits</strong> on Starter / Creator / Founders. Limited time.
+</div>
               </div>
                   </>
           )}
@@ -1447,11 +1450,11 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
         <div style={{background:'#1d1d1f',borderRadius:12,padding:'12px 20px',marginBottom:16,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
           <div>
             <div style={{fontSize:11,color:'#888',marginBottom:4}}>Your exclusive code / तपाईंको विशेष कोड:</div>
-            <div style={{fontFamily:'monospace',fontSize:20,fontWeight:800,color:'#DC143C',letterSpacing:'0.1em'}}>SWOR-LAUNCH-10K</div>
+            <div style={{fontFamily:'monospace',fontSize:20,fontWeight:800,color:'#DC143C',letterSpacing:'0.1em'}}>DASHAIN-TIHAR-2026</div>
           </div>
           <button
             onClick={() => {
-              navigator.clipboard.writeText('SWOR-LAUNCH-10K')
+              navigator.clipboard.writeText('DASHAIN-TIHAR-2026')
               alert('Code copied!')
             }}
             style={{background:'rgba(220,20,60,.2)',border:'1px solid rgba(220,20,60,.4)',color:'#DC143C',padding:'6px 12px',borderRadius:8,fontSize:11,fontWeight:700,cursor:'pointer',flexShrink:0}}>
@@ -1494,7 +1497,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
         </div>
       </div>
 
-      <a href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20tried%20the%20free%20preview%20on%20Swor%20AI%20and%20unlocked%20code%20SWOR-LAUNCH-10K.%20I%20want%20to%20claim%20my%20bonus%20credits!" target="_blank" rel="noreferrer" style={{display:'block',background:'#25D366',color:'#fff',padding:'14px',borderRadius:12,fontSize:15,fontWeight:700,textAlign:'center',textDecoration:'none',boxShadow:'0 4px 20px rgba(37,211,102,.3)',marginBottom:10}}>
+      <a href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20tried%20the%20free%20preview%20on%20Swor%20AI%20and%20unlocked%20code%20DASHAIN-TIHAR-2026.%20I%20want%20to%20claim%20my%20bonus%20credits!" target="_blank" rel="noreferrer" style={{display:'block',background:'#25D366',color:'#fff',padding:'14px',borderRadius:12,fontSize:15,fontWeight:700,textAlign:'center',textDecoration:'none',boxShadow:'0 4px 20px rgba(37,211,102,.3)',marginBottom:10}}>
         {'💬 Claim Bonus Credits on WhatsApp'}
       </a>
       <div style={{textAlign:'center',fontSize:11,color:'rgba(255,255,255,.3)'}}>
