@@ -1441,10 +1441,10 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
 
       <div style={{background:'rgba(220,20,60,.1)',border:'1.5px solid rgba(220,20,60,.3)',borderRadius:16,padding:20,marginBottom:20,textAlign:'center'}}>
         <div style={{fontSize:13,fontWeight:700,color:'rgba(255,255,255,.7)',marginBottom:8}}>
-          🎁 You unlocked the Dashain-Tihar Bonus!
+          🎁 Dashain-Tihar Bonus Offer for You!
         </div>
         <div style={{fontFamily:'Noto Sans Devanagari,sans-serif',fontSize:12,color:'rgba(255,255,255,.5)',marginBottom:16}}>
-          तपाईंले दशैं-तिहार बोनस अनलक गर्नुभयो!
+          तपाईंका लागि विशेष बोनस अफर!
         </div>
 
         <div style={{background:'#1d1d1f',borderRadius:12,padding:'12px 20px',marginBottom:16,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
@@ -1478,10 +1478,13 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
               </div>
               <div style={{textAlign:'right'}}>
                 <div style={{fontSize:14,fontWeight:800,color:'#34C759'}}>{p.bonus} credits</div>
-                <div style={{fontSize:10,color:'rgba(255,255,255,.4)'}}>total with code</div>
+                <div style={{fontSize:10,color:'rgba(255,255,255,.4)'}}>total after purchase</div>
               </div>
             </div>
           ))}
+        </div>
+        <div style={{fontFamily:'Noto Sans Devanagari,sans-serif',fontSize:12,color:'rgba(255,255,255,.6)',lineHeight:1.6}}>
+          प्याक खरिद गरेपछि मात्र बोनस क्रेडिट प्राप्त हुनेछ।
         </div>
       </div>
 
@@ -1498,7 +1501,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
       </div>
 
       <a href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20tried%20the%20free%20preview%20on%20Swor%20AI%20and%20unlocked%20code%20DASHAIN-TIHAR-2026.%20I%20want%20to%20claim%20my%20bonus%20credits!" target="_blank" rel="noreferrer" style={{display:'block',background:'#25D366',color:'#fff',padding:'14px',borderRadius:12,fontSize:15,fontWeight:700,textAlign:'center',textDecoration:'none',boxShadow:'0 4px 20px rgba(37,211,102,.3)',marginBottom:10}}>
-        {'💬 Claim Bonus Credits on WhatsApp'}
+        {'💬 Send Code & Buy on WhatsApp'}
       </a>
       <div style={{textAlign:'center',fontSize:11,color:'rgba(255,255,255,.3)'}}>
         {'या / or '}
