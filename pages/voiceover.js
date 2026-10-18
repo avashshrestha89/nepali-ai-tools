@@ -1441,10 +1441,10 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
 
       <div style={{background:'rgba(220,20,60,.1)',border:'1.5px solid rgba(220,20,60,.3)',borderRadius:16,padding:20,marginBottom:20,textAlign:'center'}}>
         <div style={{fontSize:13,fontWeight:700,color:'rgba(255,255,255,.7)',marginBottom:8}}>
-          🎁 You unlocked an Exclusive Early Creator Reward!
+          🎁 You unlocked the Dashain-Tihar Bonus!
         </div>
         <div style={{fontFamily:'Noto Sans Devanagari,sans-serif',fontSize:12,color:'rgba(255,255,255,.5)',marginBottom:16}}>
-          तपाईंले एउटा विशेष Early Creator Reward अनलक गर्नुभयो!
+          तपाईंले दशैं-तिहार बोनस अनलक गर्नुभयो!
         </div>
 
         <div style={{background:'#1d1d1f',borderRadius:12,padding:'12px 20px',marginBottom:16,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
@@ -1463,7 +1463,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
         </div>
 
         <div style={{fontSize:13,color:'#fff',fontWeight:600,marginBottom:12}}>
-          🎁 Send this code on WhatsApp to unlock:
+          🎁 Buy any pack and send this code on WhatsApp to get bonus credits:
         </div>
         <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:12}}>
           {[

@@ -294,10 +294,10 @@ export default function HomepageDemoBox({ isMobile }) {
             {/* Reward box */}
             <div style={{background:'rgba(220,20,60,.1)',border:'1.5px solid rgba(220,20,60,.3)',borderRadius:16,padding:20,marginBottom:20,textAlign:'center'}}>
               <div style={{fontSize:13,fontWeight:700,color:'rgba(255,255,255,.7)',marginBottom:8}}>
-                🎁 You unlocked an Exclusive Early Creator Reward!
+                🎁 You unlocked the Dashain-Tihar Bonus!
               </div>
               <div style={{fontFamily:'Noto Sans Devanagari,sans-serif',fontSize:12,color:'rgba(255,255,255,.5)',marginBottom:16}}>
-                तपाईंले एउटा विशेष Early Creator Reward अनलक गर्नुभयो!
+                तपाईंले दशैं-तिहार बोनस अनलक गर्नुभयो!
               </div>
 
               {/* Code */}
@@ -317,7 +317,7 @@ export default function HomepageDemoBox({ isMobile }) {
               </div>
 
              <div style={{fontSize:13,color:'#fff',fontWeight:600,marginBottom:12}}>
-  🎁 Send this code on WhatsApp to unlock exclusive bonus credits on any pack:
+  🎁 Buy any pack and send this code on WhatsApp to get bonus credits:
 </div>
 <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:12}}>
   {[
@@ -338,7 +338,7 @@ export default function HomepageDemoBox({ isMobile }) {
   ))}
 </div>
 <div style={{fontFamily:'Noto Sans Devanagari,sans-serif',fontSize:12,color:'rgba(255,255,255,.5)'}}>
-  यो कोड WhatsApp मा पठाउनुस् र जुनसुकै Pack मा extra bonus credits पाउनुस्!
+  जुनसुकै Pack किन्नुस्, यो कोड WhatsApp मा पठाउनुस् र extra bonus credits पाउनुस्!
 </div>
             </div>
 
