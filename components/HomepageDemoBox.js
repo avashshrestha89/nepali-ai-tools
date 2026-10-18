@@ -272,11 +272,11 @@ export default function HomepageDemoBox({ isMobile }) {
       {/* REWARD POPUP */}
       {showReward && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.75)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',padding:16,backdropFilter:'blur(6px)',overflowY:'auto',WebkitOverflowScrolling:'touch'}}>
-          <div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1020 100%)',borderRadius:24,padding:isMobile?24:36,maxWidth:480,width:'100%',border:'1.5px solid rgba(220,20,60,.3)',boxShadow:'0 24px 60px rgba(0,0,0,.5)',position:'relative',margin:'auto'}}>
+          <div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1020 100%)',borderRadius:24,padding:isMobile?24:28,maxWidth:480,width:'100%',border:'1.5px solid rgba(220,20,60,.3)',boxShadow:'0 24px 60px rgba(0,0,0,.5)',position:'relative',margin:'auto'}}>
 
             {/* Close button */}
             <button onClick={() => setShowReward(false)}
-              style={{position:'absolute',top:16,right:16,background:'rgba(255,255,255,.1)',border:'none',color:'#fff',width:32,height:32,borderRadius:'50%',cursor:'pointer',fontSize:16,display:'flex',alignItems:'center',justifyContent:'center'}}>
+              aria-label="Close" style={{position:'fixed',top:16,right:16,zIndex:10000,background:'rgba(255,255,255,.22)',border:'none',color:'#fff',width:40,height:40,borderRadius:'50%',cursor:'pointer',fontSize:18,display:'flex',alignItems:'center',justifyContent:'center'}}>
               ✕
             </button>
 
