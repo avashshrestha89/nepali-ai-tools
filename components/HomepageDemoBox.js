@@ -271,8 +271,8 @@ export default function HomepageDemoBox({ isMobile }) {
 
       {/* REWARD POPUP */}
       {showReward && (
-        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.75)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',padding:16,backdropFilter:'blur(6px)'}}>
-          <div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1020 100%)',borderRadius:24,padding:isMobile?24:36,maxWidth:480,width:'100%',border:'1.5px solid rgba(220,20,60,.3)',boxShadow:'0 24px 60px rgba(0,0,0,.5)',position:'relative'}}>
+        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.75)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',padding:16,backdropFilter:'blur(6px)',overflowY:'auto',WebkitOverflowScrolling:'touch'}}>
+          <div style={{background:'linear-gradient(135deg,#1d1d1f 0%,#2d1020 100%)',borderRadius:24,padding:isMobile?24:36,maxWidth:480,width:'100%',border:'1.5px solid rgba(220,20,60,.3)',boxShadow:'0 24px 60px rgba(0,0,0,.5)',position:'relative',margin:'auto'}}>
 
             {/* Close button */}
             <button onClick={() => setShowReward(false)}
@@ -357,7 +357,7 @@ export default function HomepageDemoBox({ isMobile }) {
 
             {/* CTA */}
             <a href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20generated%20a%20demo%20on%20Swor%20AI%20and%20unlocked%20code%20SWOR-LAUNCH-10K.%20I%20want%20to%20claim%20my%20bonus%20credits!" target="_blank" rel="noreferrer" style={{display:'block',background:'#25D366',color:'#fff',padding:'14px',borderRadius:12,fontSize:15,fontWeight:700,textAlign:'center',textDecoration:'none',boxShadow:'0 4px 20px rgba(37,211,102,.3)',marginBottom:10}}>
-              {'💬 Claim 10,000 Credits on WhatsApp Now'}
+              {'💬 Get Your Bonus Code Applied on WhatsApp'}
             </a>
             <div style={{textAlign:'center',fontSize:11,color:'rgba(255,255,255,.3)'}}>
               {'या / or '}
