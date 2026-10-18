@@ -1464,18 +1464,18 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
         </div>
         <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:12}}>
           {[
-            {name:'Starter Pack',npr:'499',normal:'3,500',bonus:'8,000'},
-            {name:'Creator Pack',npr:'999',normal:'8,000',bonus:'20,000'},
-            {name:'Founders Lifetime',npr:'2,500',normal:'30,000',bonus:'50,000'},
+            {name:'Starter Pack',npr:'499',base:'8,000',extra:'2,000',bonus:'10,000'},
+    {name:'Creator Pack',npr:'999',base:'20,000',extra:'5,000',bonus:'25,000'},
+    {name:'Founders Lifetime',npr:'2,500',base:'50,000',extra:'8,000',bonus:'58,000'},
           ].map(p => (
             <div key={p.name} style={{background:'rgba(255,255,255,.05)',borderRadius:10,padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:8}}>
               <div>
                 <div style={{fontSize:12,fontWeight:700,color:'#fff'}}>{p.name} — NPR {p.npr}</div>
-                <div style={{fontSize:11,color:'rgba(255,255,255,.4)',textDecoration:'line-through'}}>{p.normal} credits</div>
+                <div style={{fontSize:11,color:'rgba(255,255,255,.55)'}}>{p.base} credits + {p.extra} bonus</div>
               </div>
               <div style={{textAlign:'right'}}>
                 <div style={{fontSize:14,fontWeight:800,color:'#34C759'}}>{p.bonus} credits</div>
-                <div style={{fontSize:10,color:'rgba(255,255,255,.4)'}}>with code</div>
+                <div style={{fontSize:10,color:'rgba(255,255,255,.4)'}}>total with code</div>
               </div>
             </div>
           ))}
