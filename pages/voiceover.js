@@ -1260,12 +1260,12 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
           <div className="modal">
             <div style={{textAlign:'center',marginBottom:24}}>
               <div style={{fontSize:26,fontWeight:800,color:'#1976D2',fontFamily:'Sora,sans-serif',marginBottom:4}}>SWOR AI</div>
-              <div style={{fontSize:14,fontWeight:700,marginBottom:6}}>Sign in to access Swor AI</div>
+              <div style={{fontSize:14,fontWeight:700,marginBottom:6}}>Sign in or create an account</div>
               <p style={{fontSize:13,color:'#888',lineHeight:1.6}}>No password needed. A credit pack is required to generate voiceovers.</p>
             </div>
 
             {/* Mode tabs */}
-            <div style={{fontSize:12,fontWeight:600,color:'#888',textAlign:'center',marginBottom:8}}>Choose one way to sign in (either works)</div>
+            <div style={{fontSize:12,fontWeight:600,color:'#888',textAlign:'center',marginBottom:8}}>Choose either option below. You don't need to do both.</div>
             <div style={{display:'flex',gap:6,marginBottom:20,background:'#f5f5f7',borderRadius:10,padding:4}}>
               <button onClick={() => switchLoginMode('link')}
                 style={{flex:1,padding:'8px',borderRadius:8,border:'none',
@@ -1284,6 +1284,13 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
                 Email me a 6-digit code
               </button>
             </div>
+
+            {/* Hint for the active sign-in method */}
+            {((loginMode === 'link' && signupStatus !== 'sent') || (loginMode === 'otp' && !['sent','verifying','exhausted','expired'].includes(otpStatus))) && (
+              <p style={{fontSize:12,color:'#888',textAlign:'center',margin:'-8px 0 12px'}}>
+                {loginMode === 'link' ? "We'll email you a link to sign in." : "We'll email you a 6-digit code to enter here."}
+              </p>
+            )}
 
             {/* ── MAGIC LINK MODE ── */}
             {loginMode === 'link' && (
