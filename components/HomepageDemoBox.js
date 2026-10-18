@@ -355,7 +355,8 @@ export default function HomepageDemoBox({ isMobile }) {
               </div>
             </div>
 
-            {/* CTA */}
+            {/* CTA (sticky so it is always on screen) */}
+            <div style={{position:'sticky',bottom:-16,zIndex:2,background:'#2a0f1b',margin:'0 -4px',padding:'10px 4px 18px',borderTop:'1px solid rgba(220,20,60,.25)'}}>
             <a href="https://wa.me/19255379425?text=Namaste%20Avash!%20I%20just%20generated%20a%20demo%20on%20Swor%20AI%20and%20unlocked%20code%20DASHAIN-TIHAR-2026.%20I%20want%20to%20claim%20my%20bonus%20credits!" target="_blank" rel="noreferrer" style={{display:'block',background:'#25D366',color:'#fff',padding:'14px',borderRadius:12,fontSize:15,fontWeight:700,textAlign:'center',textDecoration:'none',boxShadow:'0 4px 20px rgba(37,211,102,.3)',marginBottom:10}}>
               {'💬 Send Code & Buy on WhatsApp'}
             </a>
@@ -364,6 +365,7 @@ export default function HomepageDemoBox({ isMobile }) {
               <span style={{cursor:'pointer',textDecoration:'underline'}} onClick={() => { setShowReward(false); window.location.href='/voiceover' }}>
                 {'Continue to full tool'}
               </span>
+            </div>
             </div>
           </div>
         </div>
