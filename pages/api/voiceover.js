@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import { put } from '@vercel/blob'
+import { put, del } from '@vercel/blob'
 import { Redis } from '@upstash/redis'
 import { createHash } from 'crypto'
 
@@ -519,7 +519,15 @@ export default async function handler(req, res) {
       url: blobUrl,
       createdAt: new Date().toISOString(),
     }
-    await redis.set(`history:${email}`, JSON.stringify([newEntry, ...history].slice(0, MAX_HISTORY)))
+    const updated = [newEntry, ...history]
+    await redis.set(`history:${email}`, JSON.stringify(updated.slice(0, MAX_HISTORY)))
+
+    // Delete audio files that just fell out of the customer's last-5 history.
+    // They are no longer reachable from the dashboard. Best-effort only.
+    const evicted = updated.slice(MAX_HISTORY).map(h => h && h.url).filter(Boolean)
+    if (evicted.length) {
+      try { await del(evicted) } catch (delErr) { console.error('Blob cleanup error:', delErr) }
+    }
   } catch (histErr) {
     console.error('History save error:', histErr)
     // Non-fatal — generation succeeded; continue
