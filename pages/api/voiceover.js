@@ -2,6 +2,7 @@ import fetch from 'node-fetch'
 import { put, del } from '@vercel/blob'
 import { Redis } from '@upstash/redis'
 import { createHash } from 'crypto'
+import { stripTags } from '../../lib/tags'
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL,
@@ -242,9 +243,13 @@ export default async function handler(req, res) {
 
   // ── Server-side cost calculation (B3 fix) ────────────────────────────────
   const isLegacy = !!user.isLegacy
+  const billableChars = stripTags(billableText).trim().length   // tags like [excited] are free
+  if (billableChars === 0) {
+    return res.status(400).json({ code: 'INVALID_INPUT', error: 'Please enter some text to speak.' })
+  }
   let cost
   if (isLegacy) {
-    if (billableText.length > LEGACY_CHAR_LIMIT) {
+    if (billableChars > LEGACY_CHAR_LIMIT) {
       return res.status(400).json({
         code: 'TEXT_TOO_LONG',
         error: `Maximum ${LEGACY_CHAR_LIMIT} characters allowed on your plan.`,
@@ -252,7 +257,7 @@ export default async function handler(req, res) {
     }
     cost = LEGACY_VOICEOVER_COST
   } else {
-    cost = billableText.length   // 1 credit per trimmed character
+    cost = billableChars   // 1 credit per spoken character (tags are free)
   }
 
   // ── Idempotency key setup ─────────────────────────────────────────────────

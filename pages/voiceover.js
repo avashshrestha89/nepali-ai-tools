@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
+import { stripTags } from '../lib/tags'
 
 const VOICE_CATEGORIES = [
   {
@@ -203,6 +204,9 @@ export default function Voiceover() {
   const [isMobile, setIsMobile] = useState(false)
   const [session, setSession] = useState(null)
   const [text, setText] = useState('')
+  const [tagging, setTagging] = useState(false)
+  const [tagMsg, setTagMsg] = useState(null)   // { ok: bool, text: string }
+  const [preTagText, setPreTagText] = useState(null)
   const [proTipsOpen, setProTipsOpen] = useState(false)
 const [activeTagTab, setActiveTagTab] = useState('all')
   const [selectedVoice, setSelectedVoice] = useState(VOICES.find(v => v.voice_id === 'FszY75334ExxVmg7yl0U') || VOICES[0])
@@ -470,7 +474,26 @@ setTimeout(() => {
     setLoading(false)
   }
 
-const billableLength = text.trim().length  // B3 fix: matches server-side billing
+const handleAutoTag = async () => {
+    if (tagging || !text.trim()) return
+    setTagging(true); setTagMsg(null)
+    try {
+      const r = await fetch('/api/auto-tag', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) })
+      const d = await r.json().catch(() => ({}))
+      if (!r.ok || !d.text) {
+        setTagMsg({ ok: false, text: d.error || 'Auto tag failed. Please try again.' })
+      } else {
+        setPreTagText(text)
+        setText(d.text.slice(0, 3500))
+        setTagMsg({ ok: true, text: `Tags added. You can edit them. ${d.remaining} of ${d.limit} tries left today.` })
+      }
+    } catch (e) {
+      setTagMsg({ ok: false, text: 'Network error. Please try again.' })
+    }
+    setTagging(false)
+  }
+
+const billableLength = stripTags(text).trim().length  // matches server-side billing; [tags] are free
 const canGenerate = billableLength > 0 && !loading && session !== null && session !== false && !session.isPendingPayment && (
   session.isLegacy
     ? (session.credits || 0) >= 25 && billableLength <= 500
@@ -709,6 +732,23 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
               placeholder="नमस्ते! यहाँ आफ्नो नेपाली पाठ टाइप गर्नुस्... (Devanagari script only — देवनागरी मा लेख्नुस्)"
               style={{width:'100%',minHeight:isMobile?160:220,padding:'16px',fontSize:15,lineHeight:1.8,border:'none',background:'transparent',color:'#1d1d1f'}}
             />
+            {session && session !== false && (
+              <div style={{padding:'8px 16px',borderTop:'1px solid #f0f0f0',display:'flex',alignItems:'center',gap:10,flexWrap:'wrap',background:'#fff'}}>
+                <button onClick={handleAutoTag} disabled={tagging || !text.trim()}
+                  style={{background:'#1976D2',color:'#fff',border:'none',borderRadius:20,padding:'7px 14px',fontSize:12,fontWeight:700,cursor:(tagging || !text.trim())?'not-allowed':'pointer',opacity:(tagging || !text.trim())?0.5:1,fontFamily:'inherit'}}>
+                  {tagging ? 'Adding tags…' : '✨ Auto tag'}
+                </button>
+                {preTagText !== null && tagMsg?.ok && (
+                  <button onClick={() => { setText(preTagText); setPreTagText(null); setTagMsg(null) }}
+                    style={{background:'transparent',color:'#6e6e73',border:'1px solid #d2d2d7',borderRadius:20,padding:'6px 12px',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>
+                    Undo
+                  </button>
+                )}
+                <span style={{fontSize:11,color: tagMsg ? (tagMsg.ok ? '#166534' : '#CC3333') : '#888'}}>
+                  {tagMsg ? tagMsg.text : 'Adds emotion and pause tags for you. Tags are free, only spoken words use credits.'}
+                </span>
+              </div>
+            )}
             <div style={{padding:'8px 16px',borderTop:'1px solid #f0f0f0',display:'flex',justifyContent:'space-between',alignItems:'center',background:'#fafafa'}}>
               <span style={{fontSize:12,color:'#DC143C',fontWeight:600}}>⚠️ Devanagari script only — type in नेपाली not Roman</span>
      <span style={{fontSize:12,fontWeight:600,color:text.length > 3300 ? '#DC143C' : text.length > 2500 ? '#FF9500' : '#888'}}>
