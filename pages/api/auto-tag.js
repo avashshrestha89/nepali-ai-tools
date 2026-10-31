@@ -8,8 +8,8 @@ const redis = new Redis({
 
 const MODEL = process.env.GEMINI_MODEL || 'gemini-3.6-flash' // same model generate-script.js uses
 const MAX_CHARS = 3500
-const FOUNDER_DAILY = 20
-const DEFAULT_DAILY = 3
+// Daily tries by plan. Founders is also implied by user.isFounder.
+const DAILY_LIMITS = { starter: 5, creator: 20, founders: 50 }
 
 const SYSTEM_PROMPT = `You add emotion and pacing tags to a Nepali voiceover script.
 
@@ -52,8 +52,9 @@ export default async function handler(req, res) {
   if (!user) return res.status(401).json({ error: 'Account not found.' })
   if (user.isPendingPayment) return res.status(403).json({ error: 'Your account is pending activation.' })
 
-  // Daily limit. Per-user override: user.autoTagLimit. Otherwise Founders 20, everyone else 3.
-  const limit = Number.isFinite(user.autoTagLimit) ? user.autoTagLimit : (user.isFounder ? FOUNDER_DAILY : DEFAULT_DAILY)
+  // Daily limit. Per-user override: user.autoTagLimit. Otherwise Starter 5, Creator 20, Founders 50 (unknown plan counts as Starter).
+  const plan = user.isFounder ? 'founders' : (DAILY_LIMITS[user.plan] ? user.plan : 'starter')
+  const limit = Number.isFinite(user.autoTagLimit) ? user.autoTagLimit : DAILY_LIMITS[plan]
   const day = new Date().toISOString().slice(0, 10)
   const key = `autotag:${email}:${day}`
   let used

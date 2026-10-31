@@ -2,9 +2,9 @@ import { useState } from 'react'
 import Head from 'next/head'
 
 const PACKS = [
-  { key: 'starter',  label: 'Starter Pack — 500 credits (NPR 499)' },
-  { key: 'creator',  label: 'Creator Pack — 1,100 credits (NPR 999)' },
-  { key: 'founders', label: "Founders' Lifetime Pack (NPR 2,500) + music bonus" },
+  { key: 'starter',  label: 'Starter Pack — 8,000 credits (NPR 499)' },
+  { key: 'creator',  label: 'Creator Pack — 20,000 credits (NPR 999)' },
+  { key: 'founders', label: "Founders' Lifetime Pack — 50,000 credits (NPR 2,500) + music bonus" },
   { key: 'custom',   label: 'Custom credits' },
 ]
 
@@ -12,6 +12,7 @@ export default function AdminBalance() {
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
   const [pack, setPack] = useState('starter')
+  const [plan, setPlan] = useState('')
   const [custom, setCustom] = useState('')
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState(null)
@@ -125,7 +126,7 @@ const [sortDirection, setSortDirection] = useState('desc')
       const res = await fetch('/api/add-balance', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, pack, customCredits: custom, adminPassword: password }),
+        body: JSON.stringify({ email, pack, customCredits: custom, adminPassword: password, plan }),
       })
       const data = await res.json()
       setResult(res.ok ? { success: true, ...data } : { success: false, error: data.error })
@@ -204,6 +205,15 @@ async function handleSetLegacy(action) {
             <label style={labelStyle}>Pack to Activate</label>
             <select value={pack} onChange={e=>setPack(e.target.value)} style={{...inputStyle,cursor:'pointer'}}>
               {PACKS.map(p=><option key={p.key} value={p.key}>{p.label}</option>)}
+            </select>
+          </div>
+          <div>
+            <label style={labelStyle}>Plan (for perks like Auto tag)</label>
+            <select value={plan} onChange={e=>setPlan(e.target.value)} style={{...inputStyle,cursor:'pointer'}}>
+              <option value="">Automatic (from pack above)</option>
+              <option value="starter">Starter</option>
+              <option value="creator">Creator</option>
+              <option value="founders">Founders</option>
             </select>
           </div>
           {pack==='custom'&&(
