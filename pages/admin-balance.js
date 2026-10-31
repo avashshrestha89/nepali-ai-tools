@@ -2,9 +2,9 @@ import { useState } from 'react'
 import Head from 'next/head'
 
 const PACKS = [
-  { key: 'starter',  label: 'Starter Pack — 500 credits (NPR 499)' },
-  { key: 'creator',  label: 'Creator Pack — 1,100 credits (NPR 999)' },
-  { key: 'founders', label: "Founders' Lifetime Pack (NPR 2,500) + music bonus" },
+  { key: 'starter',  label: 'Starter Pack — 8,000 credits (NPR 499)' },
+  { key: 'creator',  label: 'Creator Pack — 20,000 credits (NPR 999)' },
+  { key: 'founders', label: "Founders' Lifetime Pack — 50,000 credits (NPR 2,500) + music bonus" },
   { key: 'custom',   label: 'Custom credits' },
 ]
 
