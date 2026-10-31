@@ -16,10 +16,13 @@ const PACKS = {
   custom:         { credits: 0,      label: 'Custom amount' },
 }
 
+// Plan tiers (used for perks like Auto tag limits). Only ever moves up.
+const PLAN_RANK = { starter: 1, creator: 2, founders: 3 }
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
-const { email: rawEmail, pack, customCredits, adminPassword } = req.body
+const { email: rawEmail, pack, customCredits, adminPassword, plan: planInput } = req.body
 const email = rawEmail?.trim().toLowerCase()
 
   if (adminPassword !== process.env.ADMIN_PASSWORD) {
@@ -37,6 +40,8 @@ const email = rawEmail?.trim().toLowerCase()
       : packData?.credits || 0
 
     const isFounderPack = packData?.isFounder || false
+    // Plan: explicit choice from admin, else implied by the pack bought.
+    const newPlan = PLAN_RANK[planInput] ? planInput : (PLAN_RANK[pack] ? pack : null)
 
     if (!raw) {
       // Create new user
@@ -52,6 +57,7 @@ const email = rawEmail?.trim().toLowerCase()
         credits: creditsToAdd,
         musicFreeUsed: false,
         isFounder: isFounderPack,
+        ...(newPlan ? { plan: newPlan } : {}),
        founderMusicRemaining: isFounderPack ? 5 : 0,
       }
       await redis.set(`user:${email}`, JSON.stringify(newUser))
@@ -68,6 +74,7 @@ const email = rawEmail?.trim().toLowerCase()
     const oldCredits = user.credits || 0
     user.credits = oldCredits + creditsToAdd
 user.isPendingPayment = false
+if (newPlan && (PLAN_RANK[newPlan] > (PLAN_RANK[user.plan] || 0))) user.plan = newPlan
 
 if (isFounderPack) {
   user.isFounder = true
