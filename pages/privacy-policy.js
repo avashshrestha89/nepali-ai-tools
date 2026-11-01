@@ -32,7 +32,7 @@ export default function PrivacyPolicy() {
       {/* CONTENT */}
       <main style={{maxWidth:760,margin:'0 auto',padding:'60px 24px 80px'}}>
         <h1>Privacy Policy</h1>
-        <p style={{fontSize:13,color:'#999',marginBottom:32}}>Last updated: September 25, 2026</p>
+        <p style={{fontSize:13,color:'#999',marginBottom:32}}>Last updated: November 1, 2026</p>
 
         <p>Swor AI ("we", "our", or "us"), a product of MeroAD.ai, is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and protect your information when you use our platform at meroadai.com and sworai.com.</p>
 
@@ -72,7 +72,7 @@ export default function PrivacyPolicy() {
         <p>Each of these services has their own privacy policy and data handling practices.</p>
 
         <h2>5. Cookies</h2>
-        <p>Swor AI uses a single session cookie (<code>swor_session</code>) to keep you logged in for 30 days. This cookie is HttpOnly and Secure. We do not use tracking cookies or advertising cookies.</p>
+        <p>Swor AI uses a single session cookie (<code>swor_session</code>) to keep you logged in for 30 days. This cookie is HttpOnly and Secure. We also use Vercel Analytics and Google Analytics to understand how visitors use the site, such as which pages are viewed and what type of device is used. Google Analytics uses cookies and may collect your IP address and browser information; see Google's privacy policy at policies.google.com/privacy. You can opt out with Google's Analytics opt-out browser add-on. We do not use advertising cookies.</p>
 
         <h2>6. Your Rights</h2>
         <p>You have the right to:</p>
