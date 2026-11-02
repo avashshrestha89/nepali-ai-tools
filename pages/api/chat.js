@@ -98,7 +98,8 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: RULES + KNOWLEDGE }] },
           contents: messages.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] })),
-          generationConfig: { temperature: 0.3, maxOutputTokens: 600 },
+          // Generous cap: this model spends part of the limit on internal thinking, and a low cap cut answers off mid-sentence.
+          generationConfig: { temperature: 0.3, maxOutputTokens: 4096 },
         }),
       }
     )
@@ -107,7 +108,9 @@ export default async function handler(req, res) {
       return res.status(502).json({ error: 'Sorry, I could not answer just now. Please try again or message us on WhatsApp.', whatsapp: WHATSAPP_URL })
     }
     const data = await r.json()
-    reply = (data.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('').trim()
+    const cand = data.candidates?.[0]
+    reply = (cand?.content?.parts || []).filter(p => !p.thought).map(p => p.text || '').join('').trim()
+    if (cand?.finishReason === 'MAX_TOKENS') console.error('chat reply hit the token cap')
   } catch (e) {
     console.error('chat error:', e.message)
     return res.status(502).json({ error: 'Sorry, I could not answer just now. Please try again or message us on WhatsApp.', whatsapp: WHATSAPP_URL })
