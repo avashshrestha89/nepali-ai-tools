@@ -32,7 +32,7 @@ export default function PrivacyPolicy() {
       {/* CONTENT */}
       <main style={{maxWidth:760,margin:'0 auto',padding:'60px 24px 80px'}}>
         <h1>Privacy Policy</h1>
-        <p style={{fontSize:13,color:'#999',marginBottom:32}}>Last updated: November 1, 2026</p>
+        <p style={{fontSize:13,color:'#999',marginBottom:32}}>Last updated: November 2, 2026</p>
 
         <p>Swor AI ("we", "our", or "us"), a product of MeroAD.ai, is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and protect your information when you use our platform at meroadai.com and sworai.com.</p>
 
@@ -58,6 +58,7 @@ export default function PrivacyPolicy() {
 
         <h2>3. Data Storage</h2>
         <p>Your account data (email, credits, tier) is stored securely in Upstash Redis. Generated audio files are stored temporarily in Vercel Blob storage and are accessible only via your unique download link. We do not sell or share your personal data with third parties for marketing purposes.</p>
+        <p><strong>Voice Changer.</strong> If you use the Voice Changer (Creator and Founders packs), the audio clip you upload is sent to our voice provider, ElevenLabs, to convert it into the voice you chose. We delete your uploaded clip from our own storage as soon as the conversion finishes (clips that were uploaded but never converted are removed within a few hours). The converted audio is kept in your history like any other voiceover. ElevenLabs handles the clip under its own privacy policy. Only upload audio you have the right to use.</p>
 
         <h2>4. Third-Party Services</h2>
         <p>Swor AI uses the following third-party services to operate:</p>
