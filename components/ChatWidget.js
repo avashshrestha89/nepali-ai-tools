@@ -45,7 +45,6 @@ export default function ChatWidget() {
   const [sending, setSending] = useState(false)
   const [whatsapp, setWhatsapp] = useState(null)
   const endRef = useRef(null)
-  const [hideBubble, setHideBubble] = useState(false)   // phones: tuck the bubble away while scrolling or typing
 
   useEffect(() => {
     try {
@@ -58,30 +57,6 @@ export default function ChatWidget() {
     try { sessionStorage.setItem(STORE_KEY, JSON.stringify(messages.slice(-20))) } catch {}
     endRef.current?.scrollIntoView({ block: 'end' })
   }, [messages, open, sending])
-
-  // On phones the bubble steps aside while the page scrolls or a field is focused,
-  // so it never sits on top of text, chips or the keyboard area.
-  useEffect(() => {
-    let timer = null
-    let typing = false
-    const isField = el => el && /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)
-    const onScroll = () => {
-      setHideBubble(true)
-      clearTimeout(timer)
-      timer = setTimeout(() => setHideBubble(typing), 900)
-    }
-    const onFocusIn = e => { if (isField(e.target)) { typing = true; setHideBubble(true) } }
-    const onFocusOut = () => { typing = false; setHideBubble(false) }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    document.addEventListener('focusin', onFocusIn)
-    document.addEventListener('focusout', onFocusOut)
-    return () => {
-      clearTimeout(timer)
-      window.removeEventListener('scroll', onScroll)
-      document.removeEventListener('focusin', onFocusIn)
-      document.removeEventListener('focusout', onFocusOut)
-    }
-  }, [])
 
   if (HIDE_ON.includes(router.pathname)) return null
 
@@ -119,24 +94,12 @@ export default function ChatWidget() {
 
   return (
     <>
-      <style>{`
-        .swor-chat-label{display:inline}
-        .swor-chat-icon{display:none}
-        .swor-chat-bubble{transition:opacity .2s, transform .2s}
-        @media (max-width:768px){
-          .swor-chat-bubble{width:44px;height:44px;padding:0!important;border-radius:50%!important;display:flex!important;align-items:center;justify-content:center;
-            right:max(10px, env(safe-area-inset-right))!important;bottom:calc(12px + env(safe-area-inset-bottom))!important;opacity:.92}
-          .swor-chat-label{display:none}
-          .swor-chat-icon{display:inline;font-size:20px;line-height:1}
-          .swor-chat-bubble.swor-hide{opacity:0;transform:translateX(70px);pointer-events:none}
-        }
-      `}</style>
       {!open && (
-        <button onClick={openChat} aria-label="Open help chat" className={`swor-chat-bubble${hideBubble ? ' swor-hide' : ''}`}
+        <button onClick={openChat} aria-label="Open help chat"
           style={{ position: 'fixed', right: 16, bottom: 16, zIndex: 9000, background: '#DC143C', color: '#fff', border: 'none',
             borderRadius: 999, padding: '12px 16px', fontSize: 14, fontWeight: 800, cursor: 'pointer',
             boxShadow: '0 6px 20px rgba(220,20,60,.4)', fontFamily: 'inherit' }}>
-          <span className="swor-chat-icon" aria-hidden="true">💬</span><span className="swor-chat-label">💬 Help · मद्दत</span>
+          💬 Help · मद्दत
         </button>
       )}
 
