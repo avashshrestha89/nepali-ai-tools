@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
-import { stripTags } from '../lib/tags'
+import { stripTags, AUTO_TAGS } from '../lib/tags'
 
 import { VOICE_CATEGORIES, VOICES } from '../lib/voices'
 
@@ -131,6 +131,51 @@ function DemoBoxInline() {
   )
 }
 
+// ── Small help building blocks (native <details>: keyboard and screen-reader friendly) ──
+function Help({ label, children }) {
+  return (
+    <details className="vo-help">
+      <summary>
+        <span className="vo-help-q" aria-hidden="true">?</span>
+        <span>{label}</span>
+      </summary>
+      <div className="vo-help-body">{children}</div>
+    </details>
+  )
+}
+
+// Nepali first, English underneath.
+function Bi({ ne, en }) {
+  return (
+    <div className="vo-bi">
+      <p className="vo-ne">{ne}</p>
+      <p className="vo-en">{en}</p>
+    </div>
+  )
+}
+
+const PRESETS = [
+  { label: '📺 News Anchor', tags: '[calm] [serious] ', ne: 'समाचार र सूचना', en: 'News and announcements' },
+  { label: '🎯 Aggressive Ad', tags: '[aggressive] [urgent] ', ne: 'जोसिलो, प्रभावशाली विज्ञापन', en: 'Powerful advertising' },
+  { label: '😌 Calm & Meditative', tags: '[calm] [slowly] ', ne: 'शान्त, आरामदायी वर्णन', en: 'Relaxing narration' },
+  { label: '⚡ Energetic Reels', tags: '[excited] [energetic] ', ne: 'छोटा सोसल मिडिया भिडियो', en: 'Short-form social media videos' },
+  { label: '🎭 Dramatic Story', tags: '[sorrowful] [whispers] ', ne: 'भावुक कथा', en: 'Emotional storytelling' },
+  { label: '💼 Corporate Pro', tags: '[confident] ', ne: 'व्यावसायिक सामग्री', en: 'Professional business content' },
+]
+
+const EMOTION_TAGS = ['[excited]','[calm]','[serious]','[sad]','[angry]','[nervous]','[curious]','[sarcastic]','[mischievously]','[happy]','[tired]','[frustrated]','[sorrowful]','[deadpan]','[whispers]','[shouts]','[slowly]','[quietly]']
+const REACTION_TAGS = ['[laughs]','[starts laughing]','[laughs harder]','[wheezing]','[snorts]','[sighs]','[exhales]','[gasps]','[crying]','[hesitates]','[stammers]','[gulps]','[swallows]']
+const SFX_TAGS = ['[applause]','[clapping]','[explosion]','[gunshot]','[woo]']
+const ACCENT_TAGS = ['[strong Nepali accent]','[strong Indian accent]','[strong British accent]','[sings]']
+const PAUSE_TAGS = ['[pause]','[long pause]']
+
+const EXAMPLES = [
+  { title: '🎬 REELS / TIKTOK', color: '#DC143C', text: '[applause] बधाई छ साथीहरू! [excited] नेपालमै पहिलो पटक यस्तो कमालको AI टुल आएको छ। [laughs] अब भिडियो बनाउन माइक किन्नै पर्दैन! [mischievously] अरूले थाहै पाउँदैनन् कि यो असली मान्छे हो कि AI।' },
+  { title: '🎙️ DOCUMENTARY / SUSPENSE', color: '#4E342E', text: '[whispers] मध्यरातको ठीक दुई बजे, त्यो पुरानो ढोका बिस्तारै खुल्यो। [gulps] कोठाभित्र कसैको पाइलाको आवाज आयो। [explosion] अनि अचानक एउटा ठूलो आवाजले पूरै सन्नाटा तोडिदियो! [serious] के त्यो कुनै षड्यन्त्र थियो, या केवल संयोग?' },
+  { title: '🛒 BUSINESS / AD', color: '#26A69A', text: '[curious] के तपाईँ पनि आफ्नो व्यापार बढाउन नयाँ तरिका खोज्दै हुनुहुन्छ? [excited] Swor AI ले तपाईँको विज्ञापनलाई दिन्छ एकदमै प्रोफेसनल स्टुडियो आवाज। [clapping] आजै साइन अप गर्नुहोस् र आफ्नो पहिलो अफर क्लेम गर्नुहोस्!' },
+  { title: '🎧 ASMR & MEDITATION', color: '#26A69A', text: '[whispers] बिस्तारै आँखा बन्द गर्नुहोस्... [sighs] अब दिनभरिको थकान बिर्सिएर मीठो निद्रामा हराउने समय भयो।' },
+]
+
 const CHAR_LIMIT = 3500
 
 export default function Voiceover() {
@@ -140,8 +185,10 @@ export default function Voiceover() {
   const [tagging, setTagging] = useState(false)
   const [tagMsg, setTagMsg] = useState(null)   // { ok: bool, text: string }
   const [preTagText, setPreTagText] = useState(null)
-  const [proTipsOpen, setProTipsOpen] = useState(false)
-const [activeTagTab, setActiveTagTab] = useState('all')
+  const [tipMsg, setTipMsg] = useState(null)
+  const [presetMsg, setPresetMsg] = useState(null)
+  const [editing, setEditing] = useState(false)   // true while the script box has focus (keyboard open)
+  const textareaRef = useRef(null)
   const [selectedVoice, setSelectedVoice] = useState(VOICES.find(v => v.voice_id === 'FszY75334ExxVmg7yl0U') || VOICES[0])
   const [showVoicePanel, setShowVoicePanel] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -407,8 +454,37 @@ setTimeout(() => {
     setLoading(false)
   }
 
+  // Put a tag into the script at the cursor (used by the Pro Tips chips).
+  function insertTag(tag) {
+    const ta = textareaRef.current
+    const start = ta ? ta.selectionStart : text.length
+    const end = ta ? ta.selectionEnd : text.length
+    const ins = tag + ' '
+    const next = (text.slice(0, start) + ins + text.slice(end)).slice(0, 3500)
+    setText(next)
+    const pos = Math.min(start + ins.length, next.length)
+    requestAnimationFrame(() => {
+      const t = textareaRef.current
+      if (t) { try { t.setSelectionRange(pos, pos) } catch {} }
+    })
+    setTipMsg(`✓ ${tag} स्क्रिप्टमा थपियो · added to your script`)
+    setTimeout(() => setTipMsg(null), 2500)
+  }
+
+  function applyPreset(p) {
+    if (!text.trim()) {
+      setPresetMsg('पहिले आफ्नो स्क्रिप्ट लेख्नुहोस्, अनि शैली छान्नुहोस्। · Write your script first, then pick a style.')
+      setTimeout(() => setPresetMsg(null), 4000)
+      return
+    }
+    setPresetMsg(null)
+    const cleaned = text.trim().replace(/^(?:\[[^\]]+\]\s*)+/, '')
+    setText(p.tags + cleaned)
+  }
+
 const handleAutoTag = async () => {
     if (tagging || !text.trim()) return
+    if (!session) { if (session === false) setShowSignup(true); return }   // signed out: ask to sign in first
     setTagging(true); setTagMsg(null)
     try {
       const r = await fetch('/api/auto-tag', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) })
@@ -446,6 +522,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
       <Head>
     <link rel="canonical" href="https://meroadai.com/voiceover" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <title>Nepali AI Voiceover Generator — Swor AI</title>
         <meta name="description" content="Generate professional Nepali AI voiceovers in seconds using 30 natural voices. Add emotion tags like [excited] or [calm], use AI script generator, and download MP3 instantly. Credits never expire. Pay with eSewa or Khalti." />
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet" />
@@ -465,6 +542,83 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
         .modal{background:#fff;border-radius:20px;padding:32px;max-width:420px;width:90%;box-shadow:0 24px 60px rgba(0,0,0,.15)}
         .history-item{background:#f8f8f8;border-radius:10px;padding:10px 12px;border:1px solid #e8e8ed}
         .history-item:hover{border-color:#1976D2;background:#E8F4FD}
+
+        /* ── Layout: desktop keeps two columns. Mobile becomes ONE ordered column. ── */
+        .vo-main{max-width:1100px;margin:0 auto;padding:32px 24px;display:grid;grid-template-columns:1fr 320px;gap:20px}
+        .vo-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+        .vo-h{font-family:'Sora',sans-serif;font-size:15px;font-weight:800;color:#DC143C;margin-bottom:8px;line-height:1.4}
+        .vo-h-dark{color:#1d1d1f}
+        .vo-bi{margin-bottom:10px}
+        .vo-ne{font-family:'Noto Sans Devanagari','Manrope',sans-serif;font-size:14px;line-height:1.8;color:#1d1d1f}
+        .vo-en{font-size:13px;line-height:1.6;color:#6e6e73;margin-top:2px}
+        .vo-help{margin-top:10px}
+        .vo-help summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:4px 14px 4px 5px;border-radius:999px;background:#EEF4FF;color:#1565C0;font-weight:700;font-size:13px;font-family:'Noto Sans Devanagari','Manrope',sans-serif;user-select:none}
+        .vo-help summary::-webkit-details-marker{display:none}
+        .vo-help summary:focus-visible,.vo-btn:focus-visible,.vo-cat summary:focus-visible{outline:3px solid #1976D2;outline-offset:2px}
+        .vo-help-q{width:26px;height:26px;border-radius:50%;background:#1976D2;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0}
+        .vo-help[open] summary{background:#1976D2;color:#fff}
+        .vo-help[open] .vo-help-q{background:#fff;color:#1976D2}
+        .vo-help-body{margin-top:10px;padding:12px 14px;background:#F8FAFF;border:1px solid #DCE8FB;border-radius:12px;font-size:14px;line-height:1.7;color:#333}
+        .vo-help-body ol,.vo-help-body ul{margin:6px 0 8px 20px}
+        .vo-help-body li{margin-bottom:6px}
+        .vo-help-body li .vo-en{display:block;margin-top:0}
+        .vo-help-body .vo-en{font-size:13px}
+        .vo-example{background:#fff;border:1px dashed #90CAF9;border-radius:10px;padding:10px 12px;margin:8px 0;font-family:'Noto Sans Devanagari','Manrope',sans-serif;font-size:14px}
+        .vo-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;cursor:pointer}
+        .vo-chip{padding:7px 14px;border-radius:20px;border:1.5px solid #e8e8ed;background:#f5f5f7;color:#1d1d1f;font-size:12px;font-weight:600;transition:border-color .15s}
+        .vo-chip:hover{border-color:#DC143C}
+        .vo-tag{border:none;padding:3px 9px;border-radius:20px;font-size:12px;font-weight:600;font-family:'Manrope',sans-serif}
+        .vo-steps{list-style:none;margin:0 0 12px 0!important;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+        .vo-steps li{display:flex;gap:8px;align-items:flex-start;background:#F5F9FF;border:1px solid #DCE8FB;border-radius:10px;padding:8px 10px;margin:0!important}
+        .vo-step-n{width:24px;height:24px;border-radius:50%;background:#1976D2;color:#fff;font-size:13px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+        .vo-steps .vo-ne{font-size:13px;line-height:1.5}
+        .vo-steps .vo-en{font-size:12px;line-height:1.4}
+        .vo-cat{background:#fff;border:1px solid #DCE8FB;border-radius:12px;margin-bottom:8px;overflow:hidden}
+        .vo-cat summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 14px;min-height:48px;font-weight:700;font-size:14px;color:#1d1d1f;font-family:'Noto Sans Devanagari','Manrope',sans-serif}
+        .vo-cat summary::-webkit-details-marker{display:none}
+        .vo-cat summary::after{content:'+';font-size:20px;font-weight:700;color:#1976D2;flex-shrink:0}
+        .vo-cat[open] summary::after{content:'−'}
+        .vo-cat-body{padding:2px 14px 14px}
+        .vo-tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+        .vo-genbar{}
+        .vo-voicegrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+        .vo-sg{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+        .vo-sg-input{flex:1 1 200px;min-width:0}
+
+        @media (max-width:768px){
+          .vo-main{display:flex;flex-direction:column;gap:12px;padding:16px 16px 28px}
+          .vo-col,.vo-col-right{display:contents!important}
+          .vo-main [class*="vo-o-"]{margin-bottom:0!important}
+          .vo-o-10{order:10}.vo-o-20{order:20}.vo-o-21{order:21}.vo-o-30{order:30}.vo-o-40{order:40}.vo-o-50{order:50}
+          .vo-o-55{order:55}.vo-o-60{order:60}.vo-o-70{order:70}.vo-o-80{order:80}.vo-o-82{order:82}.vo-o-85{order:85}.vo-o-86{order:86}
+          .vo-o-90{order:90}.vo-o-95{order:95}.vo-o-96{order:96}.vo-o-97{order:97}.vo-o-100{order:100}.vo-o-105{order:105}
+          .vo-o-110{order:110}.vo-o-120{order:120}.vo-o-130{order:130}.vo-o-140{order:140}
+          /* Phones zoom the page when an input is smaller than 16px. */
+          .vo-input{font-size:16px!important}
+          /* Comfortable touch targets */
+          .vo-btn{min-height:44px}
+          .vo-chip{min-height:44px;padding:8px 16px;font-size:14px}
+          .vo-tag{min-height:40px;padding:6px 14px;font-size:14px}
+          .vo-help summary{min-height:44px;font-size:14px}
+          .vo-ne{font-size:15px}
+          .vo-en{font-size:14px}
+          .vo-help-body{font-size:15px}
+          .vo-steps{grid-template-columns:1fr;gap:4px}
+          .vo-steps li{padding:5px 8px;align-items:center}
+          .vo-steps .vo-ne{font-size:14px;line-height:1.4}
+          .vo-steps .vo-en{display:none}
+          .vo-sg-input{flex:1 1 100%}
+          .vo-sg select{flex:1 1 38%;min-height:48px}
+          .vo-sg button{flex:1 1 55%;min-height:48px}
+          .vo-voice-chip-btn{width:40px!important;height:40px!important}
+          /* Generate stays reachable while writing. It un-sticks while the keyboard is open. */
+          .vo-genbar{position:sticky;bottom:0;z-index:50;margin:0 -16px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(250,250,250,.97);border-top:1px solid #e8e8ed;box-shadow:0 -4px 16px rgba(0,0,0,.06)}
+          .vo-genbar.vo-editing{position:static;box-shadow:none}
+          .vo-genbar button.vo-generate{min-height:52px;font-size:16px!important}
+        }
+        @media (max-width:480px){
+          .vo-voicegrid{grid-template-columns:1fr}
+        }
       `}</style>
 
       {/* NAV */}
@@ -504,18 +658,19 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
           <div style={{width:40,height:40,borderRadius:10,background:'#E8F4FD',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>🎙️</div>
           <div>
             <h1 style={{fontFamily:'Sora,sans-serif',fontSize:20,fontWeight:800,color:'#1d1d1f',letterSpacing:'-0.4px'}}>Nepali Voiceover</h1>
+            <p style={{fontSize:14,color:'#444',marginTop:2,fontFamily:"'Noto Sans Devanagari','Manrope',sans-serif"}}>नेपाली लेख्नुहोस्, केही सेकेन्डमै प्रोफेसनल AI आवाज पाउनुहोस्।</p>
             <p style={{fontSize:13,color:'#888',marginTop:2}}>Type Nepali text and get a professional AI voiceover in seconds</p>
           </div>
         </div>
       </div>
 
       {/* MAIN CONTENT */}
-      <div style={{maxWidth:1100,margin:'0 auto',padding:isMobile?'20px 16px':'32px 24px',display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 320px',gap:20}}>
+      <div className="vo-main">
 
         {/* LEFT — TEXT AREA */}
-        <div>
+        <div className="vo-col">
           {session === false && (
-            <div style={{background:'#E8F4FD',border:'1.5px solid #90CAF9',borderRadius:12,padding:'12px 16px',marginBottom:12,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+            <div className="vo-o-10" style={{background:'#E8F4FD',border:'1.5px solid #90CAF9',borderRadius:12,padding:'12px 16px',marginBottom:12,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
               <div>
                 <div style={{fontSize:13,fontWeight:700,color:'#1976D2'}}>🎙️ Sign in to access Swor AI</div>
                 <div style={{fontSize:11,color:'#888',marginTop:2}}>Credits required to generate. Purchase a pack to get started.</div>
@@ -528,8 +683,10 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
           )}
 
           {/* Voice selector pill */}
-          <div style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',padding:'12px 16px',marginBottom:12,display:'flex',alignItems:'center',justifyContent:'space-between',cursor:'pointer'}}
-            onClick={() => setShowVoicePanel(!showVoicePanel)}>
+          <div className="vo-o-20" role="button" tabIndex={0} aria-expanded={showVoicePanel} aria-label="Choose voice · आवाज छान्नुहोस्"
+            style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',padding:'12px 16px',marginBottom:12,display:'flex',alignItems:'center',justifyContent:'space-between',cursor:'pointer',minHeight:56}}
+            onClick={() => setShowVoicePanel(!showVoicePanel)}
+            onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setShowVoicePanel(!showVoicePanel) } }}>
             <div style={{display:'flex',alignItems:'center',gap:10}}>
               <div style={{width:32,height:32,borderRadius:8,background:selectedVoice.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:700,color:'#fff'}}>
                 {selectedVoice.name[0]}
@@ -549,13 +706,13 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
 
 {/* Voice selection panel */}
 {showVoicePanel && (
-  <div className="fade-in" style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',padding:16,marginBottom:12}}>
+  <div className="fade-in vo-o-21" style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',padding:16,marginBottom:12}}>
     {VOICE_CATEGORIES.map(cat => (
       <div key={cat.category} style={{marginBottom:16}}>
         <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:8,paddingBottom:6,borderBottom:'1px solid #f0f0f0'}}>
           {cat.category}
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6}}>
+        <div className="vo-voicegrid">
           {cat.voices.map(v => (
             <div key={v.voice_id} className={`voice-chip${selectedVoice.voice_id === v.voice_id ? ' active' : ''}`}
               onClick={() => { setSelectedVoice(v); setShowVoicePanel(false) }}>
@@ -565,7 +722,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
                 <div style={{fontSize:10,color:'#888',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{v.desc}</div>
               </div>
               <button onClick={e => { e.stopPropagation(); playPreview(v.voice_id) }}
-                style={{marginLeft:'auto',width:24,height:24,borderRadius:'50%',border:'none',background:playingPreview===v.voice_id?'#DC143C':'#f0f0f0',color:playingPreview===v.voice_id?'#fff':'#555',fontSize:9,cursor:'pointer',flexShrink:0}}>
+                className="vo-voice-chip-btn" aria-label={`Preview ${v.name}`} style={{marginLeft:'auto',width:24,height:24,borderRadius:'50%',border:'none',background:playingPreview===v.voice_id?'#DC143C':'#f0f0f0',color:playingPreview===v.voice_id?'#fff':'#555',fontSize:9,cursor:'pointer',flexShrink:0}}>
                 {playingPreview === v.voice_id ? '■' : '▶'}
               </button>
             </div>
@@ -576,33 +733,37 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
   </div>
 )}
 {/* AI Script Generator */}
-<div style={{background:'linear-gradient(135deg,#fff5f7,#fff)',border:'1.5px solid rgba(220,20,60,.15)',borderRadius:14,padding:16,marginBottom:12}}>
-  <div style={{fontSize:13,fontWeight:700,color:'#DC143C',marginBottom:8}}>
-    ✨ AI Script Generator — Describe your content in English or Nepali
-  </div>
-  <div style={{display:'flex',gap:8,marginBottom:8,flexWrap:'wrap'}}>
+<div className="vo-o-30" style={{background:'linear-gradient(135deg,#fff5f7,#fff)',border:'1.5px solid rgba(220,20,60,.15)',borderRadius:14,padding:16,marginBottom:12}}>
+  <h2 className="vo-h">✨ AI Script Generator | AI स्क्रिप्ट लेखक</h2>
+  <Bi
+    ne="भिडियो वा विज्ञापनको आइडिया छ तर स्क्रिप्ट छैन? आफ्नो विषय लेख्नुहोस्, AI ले तपाईंको लागि नेपाली स्क्रिप्ट तयार गरिदिन्छ।"
+    en="Have an idea but no script? Describe your video or advertisement, and AI will write a Nepali voiceover script for you." />
+  <div className="vo-sg">
+    <label htmlFor="vo-script-idea" className="vo-sr">Describe your video · आफ्नो भिडियोको बारेमा लेख्नुहोस्</label>
     <input
+      id="vo-script-idea"
+      className="vo-input vo-sg-input"
       type="text"
       value={scriptPrompt}
       onChange={e => setScriptPrompt(e.target.value)}
-      placeholder="e.g. 30 second aggressive ad for a computer institute in Kathmandu"
-      style={{
-        flex:1,minWidth:200,padding:'10px 14px',borderRadius:10,
-        border:'1.5px solid #e8e8ed',fontSize:13,outline:'none',
-        fontFamily:'inherit'
-      }}
+      placeholder="जस्तै: काठमाडौँको कम्प्युटर इन्स्टिच्युटको ३० सेकेन्डको विज्ञापन"
+      style={{padding:'10px 14px',borderRadius:10,border:'1.5px solid #e8e8ed',fontSize:13,outline:'none',fontFamily:"'Noto Sans Devanagari','Manrope',sans-serif"}}
     />
+    <label htmlFor="vo-script-duration" className="vo-sr">Duration · अवधि</label>
     <select
+      id="vo-script-duration"
+      className="vo-input"
       value={scriptDuration}
       onChange={e => setScriptDuration(e.target.value)}
       style={{padding:'10px 12px',borderRadius:10,border:'1.5px solid #e8e8ed',fontSize:13,outline:'none',background:'#fff'}}>
-      <option value="15">15 sec</option>
-      <option value="30">30 sec</option>
-      <option value="45">45 sec</option>
-      <option value="60">60 sec</option>
-      <option value="120">2 min</option>
+      <option value="15">15 सेकेन्ड · 15 sec</option>
+      <option value="30">30 सेकेन्ड · 30 sec</option>
+      <option value="45">45 सेकेन्ड · 45 sec</option>
+      <option value="60">60 सेकेन्ड · 60 sec</option>
+      <option value="120">२ मिनेट · 2 min</option>
     </select>
     <button
+      className="vo-btn"
       onClick={handleGenerateScript}
       disabled={generatingScript || !scriptPrompt.trim()}
       style={{
@@ -616,100 +777,114 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
     </button>
   </div>
   {scriptError && (
-    <div style={{fontSize:12,color:'#DC143C',marginTop:4}}>{scriptError}</div>
+    <div role="alert" style={{fontSize:13,color:'#DC143C',marginTop:4}}>{scriptError}</div>
   )}
-  <div style={{fontSize:11,color:'#888'}}>
-    💡 AI will write a Nepali Devanagari script based on your description — then you can generate the voiceover
-  </div>
-</div>
-{/* Style Presets */}
-<div style={{background:'#fff',border:'1.5px solid #e8e8ed',borderRadius:14,padding:'16px',marginBottom:12}}>
-  <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f',marginBottom:10}}>
-    🎨 Style Presets <span style={{fontSize:11,fontWeight:500,color:'#888'}}>— click to auto-add emotion tags</span>
-  </div>
-  <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-{[
-  {label:'📺 News Anchor',tags:'[calm] [serious] '},
-  {label:'🎯 Aggressive Ad',tags:'[aggressive] [urgent] '},
-  {label:'😌 Calm & Meditative',tags:'[calm] [slowly] '},
-  {label:'⚡ Energetic Reels',tags:'[excited] [energetic] '},
-  {label:'🎭 Dramatic Story',tags:'[sorrowful] [whispers] '},
-  {label:'💼 Corporate Pro',tags:'[confident] '},
-].map(p => (
-  <button key={p.label}
-    onClick={() => {
-      if (text.trim()) {
-        const cleaned = text.trim().replace(/^(?:\[[^\]]+\]\s*)+/, '')
-        setText(p.tags + cleaned)
-      }
-    }}
-    style={{
-      padding:'6px 14px',borderRadius:20,border:'1.5px solid #e8e8ed',
-      background:'#f5f5f7',color:'#1d1d1f',
-      fontSize:12,fontWeight:600,cursor:'pointer',
-      transition:'all .15s',
-    }}
-    onMouseEnter={e => e.target.style.borderColor='#DC143C'}
-    onMouseLeave={e => e.target.style.borderColor='#e8e8ed'}
-  >
-    {p.label}
-  </button>
-))}
-  </div>
-  <div style={{fontSize:11,color:'#888',marginTop:12,borderTop:'1px solid #f0f0f0',paddingTop:10}}>
-    💡 Type your script first, then click a preset to wrap it with emotion tags
-  </div>
+  <Help label="कसरी प्रयोग गर्ने? | How to use">
+    <ol>
+      <li><span className="vo-ne">आफ्नो भिडियो वा विज्ञापन के बारे हो, लेख्नुहोस्।</span><span className="vo-en">Describe what your video or advertisement is about.</span></li>
+      <li><span className="vo-ne">आवाजको अवधि (कति सेकेन्ड वा मिनेट) छान्नुहोस्।</span><span className="vo-en">Select the desired voiceover duration.</span></li>
+      <li><span className="vo-ne">“Generate Script” थिच्नुहोस्।</span><span className="vo-en">Click Generate Script.</span></li>
+      <li><span className="vo-ne">तयार भएको स्क्रिप्ट पढ्नुहोस् र चाहिए सम्पादन गर्नुहोस्।</span><span className="vo-en">Review and edit the generated script.</span></li>
+    </ol>
+    <div className="vo-ne" style={{fontWeight:700,marginTop:6}}>उदाहरण · Example</div>
+    <div className="vo-example">
+      काठमाडौँमा रहेको कम्प्युटर इन्स्टिच्युटको ३० सेकेन्डको विज्ञापन।
+      <div style={{marginTop:8}}>
+        <button type="button" className="vo-btn" onClick={() => setScriptPrompt('काठमाडौँमा रहेको कम्प्युटर इन्स्टिच्युटको ३० सेकेन्डको विज्ञापन।')}
+          style={{background:'#1976D2',color:'#fff',border:'none',borderRadius:20,padding:'6px 14px',fontSize:13,fontWeight:700}}>
+          यो उदाहरण प्रयोग गर्नुहोस् · Use this example
+        </button>
+      </div>
+    </div>
+    <p className="vo-ne">तपाईं आफ्नो आइडिया नेपाली वा अंग्रेजी, दुवैमा लेख्न सक्नुहुन्छ।</p>
+    <p className="vo-en">You can describe your idea in Nepali or in English.</p>
+  </Help>
 </div>
 
 {/* Text area */}
-          {/* Text area */}
-          <div style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',overflow:'hidden',marginBottom:12}}>
-            <textarea
-              value={text}
-              onChange={e => setText(e.target.value.slice(0, 3500))}
-              placeholder="नमस्ते! यहाँ आफ्नो नेपाली पाठ टाइप गर्नुस्... (Devanagari script only — देवनागरी मा लेख्नुस्)"
-              style={{width:'100%',minHeight:isMobile?160:220,padding:'16px',fontSize:15,lineHeight:1.8,border:'none',background:'transparent',color:'#1d1d1f'}}
-            />
-            {session && session !== false && (
-              <div style={{padding:'8px 16px',borderTop:'1px solid #f0f0f0',display:'flex',alignItems:'center',gap:10,flexWrap:'wrap',background:'#fff'}}>
-                <button onClick={handleAutoTag} disabled={tagging || !text.trim()}
-                  style={{background:'#1976D2',color:'#fff',border:'none',borderRadius:20,padding:'7px 14px',fontSize:12,fontWeight:700,cursor:(tagging || !text.trim())?'not-allowed':'pointer',opacity:(tagging || !text.trim())?0.5:1,fontFamily:'inherit'}}>
-                  {tagging ? 'Adding tags…' : '✨ Auto tag'}
-                </button>
-                {preTagText !== null && tagMsg?.ok && (
-                  <button onClick={() => { setText(preTagText); setPreTagText(null); setTagMsg(null) }}
-                    style={{background:'transparent',color:'#6e6e73',border:'1px solid #d2d2d7',borderRadius:20,padding:'6px 12px',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>
-                    Undo
-                  </button>
-                )}
-                <span style={{fontSize:11,color: tagMsg ? (tagMsg.ok ? '#166534' : '#CC3333') : '#888'}}>
-                  {tagMsg ? tagMsg.text : 'Adds emotion and pause tags for you. Tags are free, only spoken words use credits.'}
-                </span>
-              </div>
-            )}
-            <div style={{padding:'8px 16px',borderTop:'1px solid #f0f0f0',display:'flex',justifyContent:'space-between',alignItems:'center',background:'#fafafa'}}>
-              <span style={{fontSize:12,color:'#DC143C',fontWeight:600}}>⚠️ Devanagari script only — type in नेपाली not Roman</span>
-     <span style={{fontSize:12,fontWeight:600,color:text.length > 3300 ? '#DC143C' : text.length > 2500 ? '#FF9500' : '#888'}}>
-  {text.length} / 3,500 chars max
-  {text.length > 2500 && text.length <= 3500 && (
-    <span style={{display:'block',fontSize:11,color:'#FF9500',marginTop:2}}>
-      ⚠️ Long script — may load slowly on mobile. Consider splitting into parts.
+<div className="vo-o-50" style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',overflow:'hidden',marginBottom:12}}>
+  <label htmlFor="vo-script" className="vo-sr">Your Nepali script · तपाईंको नेपाली स्क्रिप्ट</label>
+  <textarea
+    id="vo-script"
+    ref={textareaRef}
+    className="vo-input"
+    value={text}
+    onChange={e => setText(e.target.value.slice(0, 3500))}
+    onFocus={() => setEditing(true)}
+    onBlur={() => setEditing(false)}
+    placeholder="नमस्ते! यहाँ आफ्नो नेपाली पाठ टाइप गर्नुस्... (Devanagari script only — देवनागरी मा लेख्नुस्)"
+    style={{width:'100%',minHeight:isMobile?180:220,padding:'16px',fontSize:15,lineHeight:1.8,border:'none',background:'transparent',color:'#1d1d1f'}}
+  />
+  <div style={{padding:'8px 16px',borderTop:'1px solid #f0f0f0',display:'flex',justifyContent:'space-between',alignItems:'center',gap:8,flexWrap:'wrap',background:'#fafafa'}}>
+    <span style={{fontSize:12,color:'#DC143C',fontWeight:600}}>⚠️ Devanagari script only — type in नेपाली not Roman</span>
+    <span style={{fontSize:12,fontWeight:600,color:text.length > 3300 ? '#DC143C' : text.length > 2500 ? '#FF9500' : '#888'}}>
+      {text.length} / 3,500 chars max
+      {text.length > 2500 && text.length <= 3500 && (
+        <span style={{display:'block',fontSize:11,color:'#FF9500',marginTop:2}}>
+          ⚠️ Long script — may load slowly on mobile. Consider splitting into parts.
+        </span>
+      )}
     </span>
-  )}
-</span>
-            </div>
-          </div>
+  </div>
+
+  {/* Auto Tag — directly under the editor */}
+  <div style={{borderTop:'1px solid #f0f0f0',padding:'14px 16px',background:'#fff'}}>
+    <p className="vo-ne" style={{fontWeight:700,fontSize:15,color:'#0D47A1'}}>नेपाली स्क्रिप्ट तयार छ? Auto Tag थिच्नुहोस्। AI ले उपयुक्त ठाउँमा भावना र अभिव्यक्ति आफैँ थपिदिन्छ।</p>
+    <p className="vo-en" style={{marginBottom:10}}>Script ready? Tap Auto Tag and let AI add the right emotions and expressions automatically.</p>
+    <div style={{display:'flex',gap:8,flexWrap:'wrap',alignItems:'center'}}>
+      <button type="button" className="vo-btn" onClick={handleAutoTag} disabled={tagging || !text.trim()}
+        style={{flex:'1 1 240px',background:'#1976D2',color:'#fff',border:'none',borderRadius:12,padding:'12px 16px',minHeight:52,fontSize:16,fontWeight:800,cursor:(tagging || !text.trim())?'not-allowed':'pointer',opacity:(tagging || !text.trim())?0.5:1,boxShadow:'0 3px 0 #0D47A1'}}>
+        {tagging ? 'Adding tags… · ट्याग थप्दै…' : '✨ Auto Tag | स्वतः भावना थप्नुहोस्'}
+      </button>
+      {preTagText !== null && tagMsg?.ok && (
+        <button type="button" className="vo-btn" onClick={() => { setText(preTagText); setPreTagText(null); setTagMsg(null) }}
+          style={{background:'transparent',color:'#444',border:'1.5px solid #d2d2d7',borderRadius:12,padding:'10px 16px',minHeight:48,fontSize:14,fontWeight:600}}>
+          ↩ Undo · फिर्ता
+        </button>
+      )}
+    </div>
+    <ol className="vo-steps" style={{marginTop:14}}>
+      <li><span className="vo-step-n" aria-hidden="true">१</span><div><div className="vo-ne">स्क्रिप्ट लेख्नुहोस् वा पेस्ट गर्नुहोस्</div><div className="vo-en">Write or paste your script</div></div></li>
+      <li><span className="vo-step-n" aria-hidden="true">२</span><div><div className="vo-ne">✨ Auto Tag थिच्नुहोस्</div><div className="vo-en">Click Auto Tag</div></div></li>
+      <li><span className="vo-step-n" aria-hidden="true">३</span><div><div className="vo-ne">ट्यागहरू हेरेर Generate Voiceover थिच्नुहोस्</div><div className="vo-en">Review the tags and generate your voiceover</div></div></li>
+    </ol>
+    <div role="status" aria-live="polite" style={{fontSize:13,lineHeight:1.6,marginTop:8,color: tagMsg ? (tagMsg.ok ? '#166534' : '#CC3333') : '#555'}}>
+      {tagMsg ? tagMsg.text : (<><span className="vo-ne" style={{fontSize:13}}>ब्र्याकेटभित्रका ट्यागहरूको क्रेडिट लाग्दैन।</span> <span className="vo-en" style={{display:'inline'}}>Emotion tags inside brackets are free.</span>{session === false ? <span className="vo-ne" style={{fontSize:13}}> (Auto Tag प्रयोग गर्न Sign in गर्नुहोस्।)</span> : null}</>)}
+    </div>
+    <Help label="Auto Tag कसरी काम गर्छ? | How does Auto Tag work?">
+      <p className="vo-ne"><strong>चरणबद्ध रूपमा:</strong></p>
+      <ol>
+        <li><span className="vo-ne">AI ले तपाईंको स्क्रिप्टको अर्थ र सन्दर्भ पढ्छ।</span><span className="vo-en">AI reads and understands the context of your script.</span></li>
+        <li><span className="vo-ne">कुन ठाउँमा कस्तो भाव वा अभिव्यक्ति राखे आवाज राम्रो हुन्छ, त्यो ठाउँ पहिचान गर्छ।</span><span className="vo-en">It finds places where a different emotion or expression would improve the voiceover.</span></li>
+        <li><span className="vo-ne">त्यहाँ उपयुक्त ट्यागहरू थप्छ। यी ट्यागहरू प्रयोग हुन्छन्:</span><span className="vo-en">It adds suitable tags. The tags it can use are:</span></li>
+      </ol>
+      <div className="vo-tags" style={{marginLeft:20}}>
+        {AUTO_TAGS.map(t => <span key={t} className="vo-tag" style={{background:'#E8EEFF',color:'#1565C0'}}>{`[${t}]`}</span>)}
+      </div>
+      <ol start={4}>
+        <li><span className="vo-ne">तपाईंले ट्यागहरू हेरेर आफैँ सम्पादन गर्न सक्नुहुन्छ। मन परेन भने <strong>Undo</strong> थिच्नुहोस्।</span><span className="vo-en">You can review and edit the tags yourself before making audio. Press Undo if you do not like the result.</span></li>
+        <li><span className="vo-ne">AI ले तपाईंका शब्द परिवर्तन गर्दैन, ट्याग (र विराम) मात्र थप्छ। शब्द फरक भएमा परिणाम स्वीकार गरिँदैन।</span><span className="vo-en">AI does not change your words. It only adds tags and pauses. If the words come back different, the result is rejected.</span></li>
+        <li><span className="vo-ne">ब्र्याकेटभित्रका ट्यागहरू <code>[excited]</code>, <code>[pause]</code> आदिको क्रेडिट लाग्दैन। स्क्रिप्टका अक्षर, स्पेस र विराम चिह्नको क्रेडिट गणना हुन्छ।</span><span className="vo-en">Emotion tags inside brackets are free. Script characters, spaces, and punctuation are counted toward your credits.</span></li>
+        <li><span className="vo-ne">एक दिनमा प्रयास गर्न मिल्ने संख्या: Starter ५, Creator २०, Founders ५०। असफल प्रयास गनिँदैन। Auto Tag प्रयोग गर्न Sign in आवश्यक छ।</span><span className="vo-en">Daily tries: Starter 5, Creator 20, Founders 50. A failed try is not counted. You need to be signed in.</span></li>
+      </ol>
+      <div style={{background:'#FFF8E1',border:'1px solid #FFE082',borderRadius:10,padding:'10px 12px',marginTop:8}}>
+        <p className="vo-ne"><strong>Auto Tag र Style Preset फरक छन्।</strong> Style Preset ले पहिले नै तय गरिएका ट्यागहरू थप्छ। Auto Tag ले तपाईंको वास्तविक स्क्रिप्ट पढेर सान्दर्भिक ट्यागहरू राख्छ।</p>
+        <p className="vo-en">Style Presets apply predefined tag combinations. Auto Tag analyzes your actual content and adds contextually relevant tags.</p>
+      </div>
+    </Help>
+  </div>
+</div>
 
           {/* Error */}
           {error && (
-            <div style={{background:'#FFF0F0',border:'1px solid #FFB8B8',borderRadius:10,padding:'12px 16px',fontSize:13,color:'#CC3333',marginBottom:12}}>
+            <div className="vo-o-85" role="alert" style={{background:'#FFF0F0',border:'1px solid #FFB8B8',borderRadius:10,padding:'12px 16px',fontSize:13,color:'#CC3333',marginBottom:12}}>
               ❌ {error}
             </div>
           )}
 
           {/* Result */}
           {result && (
-            <div className="fade-in" style={{background:'#E8F4FD',border:'1.5px solid #90CAF9',borderRadius:14,padding:16,marginBottom:12}}>
+            <div className="fade-in vo-o-86" style={{background:'#E8F4FD',border:'1.5px solid #90CAF9',borderRadius:14,padding:16,marginBottom:12}}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
                 <div style={{fontSize:13,fontWeight:700,color:'#1976D2'}}>✓ Voiceover ready!</div>
              <button
@@ -745,196 +920,143 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
             </div>
           )}
 
+{/* Style Presets */}
+<div className="vo-o-82" style={{background:'#fff',border:'1.5px solid #e8e8ed',borderRadius:14,padding:'16px',marginBottom:12}}>
+  <h2 className="vo-h vo-h-dark">🎨 Style Presets | बोल्ने शैली छान्नुहोस्</h2>
+  <Bi
+    ne="तपाईंको कन्टेन्टअनुसार शैली छान्नुहोस्। एक क्लिकमै स्क्रिप्टमा मिल्ने भावना ट्यागहरू थप्नुहोस्।"
+    en="Choose a style that matches your content. One click adds the corresponding emotion tags to your script." />
+  <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+    {PRESETS.map(p => (
+      <button key={p.label} type="button" className="vo-btn vo-chip" onClick={() => applyPreset(p)}>{p.label}</button>
+    ))}
+  </div>
+  <div role="status" aria-live="polite" style={{fontSize:13,color:'#B45309',marginTop:8,minHeight:0,fontFamily:"'Noto Sans Devanagari','Manrope',sans-serif"}}>{presetMsg}</div>
+  <Help label="कसरी प्रयोग गर्ने? | How to use">
+    <p className="vo-ne">पहिले माथि आफ्नो स्क्रिप्ट लेख्नुहोस् वा पेस्ट गर्नुहोस्, अनि एउटा शैली थिच्नुहोस्। ट्यागहरू स्क्रिप्टको सुरुमा थपिन्छन्।</p>
+    <p className="vo-en">First enter your script above, then tap a style. The tags are added at the start of your script (any tags already at the very start are replaced).</p>
+    <ul style={{marginTop:8}}>
+      {PRESETS.map(p => (
+        <li key={p.label}>
+          <strong>{p.label}</strong> <span className="vo-ne" style={{display:'inline'}}>: {p.ne}</span>
+          <span className="vo-en">{p.en} · adds <code>{p.tags.trim()}</code></span>
+        </li>
+      ))}
+    </ul>
+    <div style={{background:'#FFF8E1',border:'1px solid #FFE082',borderRadius:10,padding:'10px 12px',marginTop:8}}>
+      <p className="vo-ne"><strong>Style Preset र Auto Tag फरक छन्।</strong> Style Preset ले पहिले नै तय गरिएका ट्यागहरू थप्छ। Auto Tag ले तपाईंको स्क्रिप्ट पढेर सान्दर्भिक ठाउँमा ट्यागहरू राख्छ।</p>
+      <p className="vo-en">Style Presets apply a predefined combination of tags. Auto Tag analyzes your actual script and adds tags that fit its content.</p>
+    </div>
+  </Help>
+</div>
+
 {/* Emotion tags & Pro Tips */}
-<div style={{background:'#F8F9FF',border:'1.5px solid #90CAF9',borderRadius:12,padding:'16px',marginBottom:12}}>
-  <div style={{marginBottom:14,borderBottom:'1px solid #E8EEFF',paddingBottom:8}}>
-    <div style={{fontSize:12,fontWeight:800,color:'#1976D2',letterSpacing:'0.05em',textTransform:'uppercase'}}>
-      💡 Pro Tips — v4 Powered
-    </div>
-  </div>  
-  
-  <div style={{display:'flex',flexDirection:'column',gap:12}}>
+<div className="vo-o-100" style={{background:'#F8F9FF',border:'1.5px solid #90CAF9',borderRadius:12,padding:'16px',marginBottom:12}}>
+  <h2 className="vo-h" style={{color:'#1976D2'}}>💡 Pro Tips | राम्रो आवाज बनाउन उपयोगी सुझावहरू</h2>
+  <p className="vo-en" style={{marginBottom:6}}>v4 Powered</p>
+  <Bi
+    ne="ट्याग भनेको [ ] भित्र लेखिने सानो निर्देशन हो। यसले आवाजको भाव र शैली बदल्छ। तलका शीर्षक थिचेर खोल्नुहोस्। ट्याग थिच्दा त्यो तपाईंको स्क्रिप्टमा थपिन्छ।"
+    en="A tag is a short instruction inside [ ] that changes the mood and style of the voice. Tap a heading below to open it. Tapping a tag adds it to your script." />
+  <div role="status" aria-live="polite" style={{fontSize:13,fontWeight:600,color:'#166534',minHeight:20,marginBottom:6}}>{tipMsg}</div>
 
-    {/* Rule 1 */}
-    <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
-      <span style={{fontWeight:700,color:'#1976D2'}}>1. Devanagari only —</span> सधैं नेपाली फन्टमा टाइप गर्नुहोस्।{' '}
-      <span style={{fontFamily:'Noto Sans Devanagari,sans-serif',color:'#34C759',fontWeight:600}}>नमस्ते</span>{' '}✅{' '}
-      <span style={{color:'#DC143C',fontWeight:600}}>"Namaste"</span> ❌
-    </div>
-
-    {/* Rule 2 */}
-    <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
-      <span style={{fontWeight:700,color:'#1976D2'}}>2. Emotion tags —</span> शब्दको अगाडि <span style={{fontWeight:700}}>[bracket]</span> मा ट्याग राख्नुहोस्। जस्तै: <span style={{background:'#E8EEFF',color:'#1976D2',padding:'1px 7px',borderRadius:20,fontSize:11,fontWeight:600}}>[excited]</span> नमस्ते साथीहरू!
-    </div>
-
-{/* Tab switcher */}
-<div style={{display:'flex',gap:6,flexWrap:'wrap',marginBottom:4}}>
-  {[
-    {id:'all',label:'All'},
-    {id:'emotions',label:'🔥 Emotions'},
-    {id:'reactions',label:'😂 Reactions'},
-    {id:'sfx',label:'💥 SFX'},
-    {id:'accents',label:'🎭 Accents'},
-  ].map(tab => (
-    <button
-      key={tab.id}
-      onClick={()=>setActiveTagTab(tab.id)}
-      style={{
-        background:activeTagTab===tab.id?'#1976D2':'#E8EEFF',
-        color:activeTagTab===tab.id?'#fff':'#1976D2',
-        border:'none',
-        padding:'4px 10px',
-        borderRadius:20,
-        fontSize:11,
-        fontWeight:700,
-        cursor:'pointer',
-      }}
-    >
-      {tab.label}
-    </button>
-  ))}
-</div>
-
-{/* Tag Categories */}
-<div style={{display:'flex',flexDirection:'column',gap:8}}>
-
-{/* Emotions */}
-{(activeTagTab==='all'||activeTagTab==='emotions') && <div>
-        <div style={{fontSize:10,fontWeight:700,color:'#DC143C',marginBottom:5}}>🔥 भाव (Emotions)</div>
-        <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
-          {['[excited]','[calm]','[serious]','[sad]','[angry]','[nervous]','[curious]','[sarcastic]','[mischievously]','[happy]','[tired]','[frustrated]','[sorrowful]','[deadpan]','[whispers]','[shouts]','[slowly]','[quietly]'].map(tag => (
-            <span key={tag} onClick={() => {
-              const ta = document.querySelector('textarea')
-              if (ta) {
-                const start = ta.selectionStart
-                const val = ta.value
-                const newVal = val.slice(0, start) + tag + ' ' + val.slice(start)
-                ta.value = newVal
-                ta.focus()
-                ta.setSelectionRange(start + tag.length + 1, start + tag.length + 1)
-              }
-            }} style={{background:'#E8EEFF',color:'#1976D2',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600,cursor:'pointer'}}>{tag}</span>
-          ))}
-             </div>
-      </div>}
-
-      {/* Reactions */}
-      {(activeTagTab==='all'||activeTagTab==='reactions') && <div>
-        <div style={{fontSize:10,fontWeight:700,color:'#FF9500',marginBottom:5}}>😂 हाँसो / प्रतिक्रिया (Reactions)</div>
-        <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
-          {['[laughs]','[starts laughing]','[laughs harder]','[wheezing]','[snorts]','[sighs]','[exhales]','[gasps]','[crying]','[hesitates]','[stammers]','[gulps]','[swallows]'].map(tag => (
-            <span key={tag} onClick={() => {
-              const ta = document.querySelector('textarea')
-              if (ta) {
-                const start = ta.selectionStart
-                const val = ta.value
-                const newVal = val.slice(0, start) + tag + ' ' + val.slice(start)
-                ta.value = newVal
-                ta.focus()
-                ta.setSelectionRange(start + tag.length + 1, start + tag.length + 1)
-              }
-            }} style={{background:'#FFF3E0',color:'#E65100',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600,cursor:'pointer'}}>{tag}</span>
-          ))}
-         </div>
-      </div>}
-
-      {/* Sound Effects */}
-      {(activeTagTab==='all'||activeTagTab==='sfx') && <div>
-        <div style={{fontSize:10,fontWeight:700,color:'#7B2FBE',marginBottom:5}}>💥 Sound Effects (नयाँ!)</div>
-        <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
-          {['[applause]','[clapping]','[explosion]','[gunshot]','[woo]'].map(tag => (
-            <span key={tag} onClick={() => {
-              const ta = document.querySelector('textarea')
-              if (ta) {
-                const start = ta.selectionStart
-                const val = ta.value
-                const newVal = val.slice(0, start) + tag + ' ' + val.slice(start)
-                ta.value = newVal
-                ta.focus()
-                ta.setSelectionRange(start + tag.length + 1, start + tag.length + 1)
-              }
-            }} style={{background:'#F3E5F5',color:'#7B2FBE',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600,cursor:'pointer'}}>{tag}</span>
-          ))}
-         </div>
-      </div>}
-
-      {/* Accents */}
-      {(activeTagTab==='all'||activeTagTab==='accents') && <div>
-        <div style={{fontSize:10,fontWeight:700,color:'#2E7D32',marginBottom:5}}>🎭 Accent (लवज)</div>
-        <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
-          {['[strong Nepali accent]','[strong Indian accent]','[strong British accent]','[sings]'].map(tag => (
-            <span key={tag} onClick={() => {
-              const ta = document.querySelector('textarea')
-              if (ta) {
-                const start = ta.selectionStart
-                const val = ta.value
-                const newVal = val.slice(0, start) + tag + ' ' + val.slice(start)
-                ta.value = newVal
-                ta.focus()
-                ta.setSelectionRange(start + tag.length + 1, start + tag.length + 1)
-              }
-            }} style={{background:'#E8F5E9',color:'#2E7D32',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600,cursor:'pointer'}}>{tag}</span>
-          ))}
-        </div>
-      </div>}
-
-    </div>
-
-    {/* Examples */}
-    <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
-      <span style={{fontWeight:700,color:'#1976D2'}}>3. Examples — Copy गरेर try गर्नुहोस्!</span>
-      <div style={{display:'flex',flexDirection:'column',gap:6,marginTop:6}}>
-     <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
-  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:4}}>
-    <div style={{fontSize:10,fontWeight:700,color:'#DC143C'}}>🎬 REELS / TIKTOK</div>
-    <button onClick={()=>setText('[applause] बधाई छ साथीहरू! [excited] नेपालमै पहिलो पटक यस्तो कमालको AI टुल आएको छ। [laughs] अब भिडियो बनाउन माइक किन्नै पर्दैन! [mischievously] अरूले थाहै पाउँदैनन् कि यो असली मान्छे हो कि AI।')} style={{background:'#DC143C',color:'#fff',border:'none',padding:'3px 10px',borderRadius:20,fontSize:10,fontWeight:700,cursor:'pointer'}}>Use →</button>
-  </div>
-  <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
-    [applause] बधाई छ साथीहरू! [excited] नेपालमै पहिलो पटक यस्तो कमालको AI टुल आएको छ। [laughs] अब भिडियो बनाउन माइक किन्नै पर्दैन! [mischievously] अरूले थाहै पाउँदैनन् कि यो असली मान्छे हो कि AI।
-  </div>
-</div>
-        <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
-          <div style={{fontSize:10,fontWeight:700,color:'#4E342E',marginBottom:4}}>🎙️ DOCUMENTARY / SUSPENSE</div>
-          <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
-            [whispers] मध्यरातको ठीक दुई बजे, त्यो पुरानो ढोका बिस्तारै खुल्यो। [gulps] कोठाभित्र कसैको पाइलाको आवाज आयो। [explosion] अनि अचानक एउटा ठूलो आवाजले पूरै सन्नाटा तोडिदियो! [serious] के त्यो कुनै षड्यन्त्र थियो, या केवल संयोग?
-          </div>
-        </div>
-        <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
-          <div style={{fontSize:10,fontWeight:700,color:'#26A69A',marginBottom:4}}>🛒 BUSINESS / AD</div>
-          <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
-            [curious] के तपाईँ पनि आफ्नो व्यापार बढाउन नयाँ तरिका खोज्दै हुनुहुन्छ? [excited] Swor AI ले तपाईँको विज्ञापनलाई दिन्छ एकदमै प्रोफेसनल स्टुडियो आवाज। [clapping] आजै साइन अप गर्नुहोस् र आफ्नो पहिलो अफर क्लेम गर्नुहोस्!
-          </div>
-        </div>
-        <div style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:8,padding:'8px 10px'}}>
-          <div style={{fontSize:10,fontWeight:700,color:'#7B2FBE',marginBottom:4}}>🎧 ASMR & MEDITATION</div>
-          <div style={{fontSize:11,fontFamily:'Noto Sans Devanagari,sans-serif',color:'#1d1d1f',lineHeight:1.7}}>
-            [whispers] बिस्तारै आँखा बन्द गर्नुहोस्... [sighs] अब दिनभरिको थकान बिर्सिएर मीठो निद्रामा हराउने समय भयो।
-          </div>
-        </div>
+  <details className="vo-cat">
+    <summary><span>🔤 भाषा र उच्चारण <span style={{color:'#6e6e73',fontWeight:500}}>| Language &amp; Pronunciation</span></span></summary>
+    <div className="vo-cat-body">
+      <p className="vo-ne">सधैं नेपाली देवनागरी (Unicode) मा लेख्नुहोस्। Roman अक्षरमा लेखे उच्चारण बिग्रन सक्छ।</p>
+      <p className="vo-en">Always write Nepali in Devanagari. Roman letters can make the pronunciation wrong.</p>
+      <div className="vo-example" style={{display:'flex',flexDirection:'column',gap:6}}>
+        <div><span style={{color:'#34C759',fontWeight:700}}>✅ सही · Correct:</span> <span style={{fontWeight:600}}>नमस्ते! आज हामी नयाँ उत्पादन लिएर आएका छौं।</span></div>
+        <div><span style={{color:'#DC143C',fontWeight:700}}>❌ गलत · Wrong:</span> <span style={{fontWeight:600}}>Namaste! Aaja hami naya utpadan liera aayeka chhau.</span></div>
       </div>
     </div>
+  </details>
 
-{/* Quick notes */}
-    <div style={{background:'#FFFDE7',border:'1px solid rgba(255,193,7,.3)',borderRadius:8,padding:'8px 12px',fontSize:11,color:'#555',lineHeight:1.7}}>
-      <span style={{fontWeight:700,color:'#F57F17'}}>⚡ Quick Notes:</span><br/>
-      • Tags भित्रका अक्षरहरूले पनि Credits प्रयोग गर्छन् (१ अक्षर = १ Credit)<br/>
-      • एउटै sentence मा बढीमा <span style={{fontWeight:700}}>2 tags</span> मात्र राख्नुहोस्
-    </div>
-
-   {/* Credits note */}
-      <div style={{fontSize:12,color:'#555',lineHeight:1.6}}>
-        <span style={{fontWeight:700,color:'#1976D2'}}>4. Credits —</span> Generate गर्दा Credits घट्छन्। Generate गर्नु अघि आफ्नो balance check गर्नुहोस्।
+  <details className="vo-cat">
+    <summary><span>🔥 भावना र अभिव्यक्ति <span style={{color:'#6e6e73',fontWeight:500}}>| Emotions &amp; Expressions</span></span></summary>
+    <div className="vo-cat-body">
+      <p className="vo-ne">जुन वाक्यमा भाव चाहिन्छ, त्यसको सुरुमा ट्याग राख्नुहोस्। एउटै वाक्यमा बढीमा २ ट्याग।</p>
+      <p className="vo-en">Put the tag at the start of the sentence that needs the feeling. Use at most 2 tags in one sentence.</p>
+      <div className="vo-example"><strong>[excited]</strong> नमस्ते साथीहरू! <strong>[serious]</strong> आजको मुख्य समाचार सुन्नुहोस्।</div>
+      <div className="vo-tags">
+        {EMOTION_TAGS.map(t => <button key={t} type="button" className="vo-btn vo-tag" onClick={() => insertTag(t)} style={{background:'#E8EEFF',color:'#1565C0'}}>{t}</button>)}
+      </div>
+      <p className="vo-ne" style={{marginTop:6}}>विराम (रोकिने ठाउँ):</p>
+      <p className="vo-en">Pauses (a short or long silence):</p>
+      <div className="vo-tags">
+        {PAUSE_TAGS.map(t => <button key={t} type="button" className="vo-btn vo-tag" onClick={() => insertTag(t)} style={{background:'#E8EEFF',color:'#1565C0'}}>{t}</button>)}
       </div>
     </div>
-        </div>
+  </details>
+
+  <details className="vo-cat">
+    <summary><span>😂 प्रतिक्रिया र ध्वनि प्रभाव <span style={{color:'#6e6e73',fontWeight:500}}>| Reactions &amp; Sound Effects</span></span></summary>
+    <div className="vo-cat-body">
+      <p className="vo-ne">हाँसो, सास फेर्ने जस्ता मानवीय प्रतिक्रिया र ताली जस्ता आवाज थप्न सकिन्छ। कथा, मजाक र विज्ञापनको बीचमा थोरै प्रयोग गर्नुहोस्।</p>
+      <p className="vo-en">Add human reactions like laughing or sighing, and sounds like applause. Use them sparingly in stories, jokes and ads.</p>
+      <ul>
+        <li><span className="vo-ne"><strong>[laughs]</strong> मजाकपछि · <strong>[sighs]</strong> थकान वा दुःखमा · <strong>[gasps]</strong> आश्चर्यमा</span><span className="vo-en">[laughs] after a joke · [sighs] when tired or sad · [gasps] for surprise</span></li>
+        <li><span className="vo-ne"><strong>[applause]</strong> / <strong>[clapping]</strong> बधाई वा घोषणामा · <strong>[explosion]</strong> / <strong>[gunshot]</strong> नाटकीय कथामा</span><span className="vo-en">[applause] / [clapping] for congratulations or announcements · [explosion] / [gunshot] for dramatic stories</span></li>
+      </ul>
+      <p className="vo-ne" style={{marginTop:4}}>प्रतिक्रिया</p>
+      <div className="vo-tags">
+        {REACTION_TAGS.map(t => <button key={t} type="button" className="vo-btn vo-tag" onClick={() => insertTag(t)} style={{background:'#FFF3E0',color:'#BF360C'}}>{t}</button>)}
+      </div>
+      <p className="vo-ne">ध्वनि प्रभाव (Sound Effects)</p>
+      <div className="vo-tags">
+        {SFX_TAGS.map(t => <button key={t} type="button" className="vo-btn vo-tag" onClick={() => insertTag(t)} style={{background:'#F3E5F5',color:'#6A1B9A'}}>{t}</button>)}
+      </div>
+      <p className="vo-en">Not every sound works the same in every voice. Press Preview first to hear it.</p>
+    </div>
+  </details>
+
+  <details className="vo-cat">
+    <summary><span>🎭 बोल्ने लवज <span style={{color:'#6e6e73',fontWeight:500}}>| Accents</span></span></summary>
+    <div className="vo-cat-body">
+      <p className="vo-ne">आवाजको लवज बदल्न: कडा नेपाली, भारतीय वा बेलायती (British)। <strong>[sings]</strong> ले गाएजस्तो शैली दिन्छ।</p>
+      <p className="vo-en">Change how the voice sounds: strong Nepali, Indian or British accent. [sings] gives a singing style.</p>
+      <div className="vo-tags">
+        {ACCENT_TAGS.map(t => <button key={t} type="button" className="vo-btn vo-tag" onClick={() => insertTag(t)} style={{background:'#E8F5E9',color:'#1B5E20'}}>{t}</button>)}
+      </div>
+      <p className="vo-ne">नतिजा आवाजअनुसार फरक पर्न सक्छ। पहिले Preview सुन्नुहोस्।</p>
+      <p className="vo-en">Results can differ from voice to voice. Press Preview first.</p>
+    </div>
+  </details>
+
+  <details className="vo-cat">
+    <summary><span>🎬 उदाहरण <span style={{color:'#6e6e73',fontWeight:500}}>| Examples</span></span></summary>
+    <div className="vo-cat-body">
+      <p className="vo-ne">‘प्रयोग गर्नुहोस्’ थिचेर नमुना स्क्रिप्ट आफ्नो बक्समा हाल्नुहोस् र सुनेर हेर्नुहोस्।</p>
+      <p className="vo-en">Tap Use to put a sample script into your box and listen to it.</p>
+      <div style={{display:'flex',flexDirection:'column',gap:8,marginTop:8}}>
+        {EXAMPLES.map(ex => (
+          <div key={ex.title} style={{background:'#fff',border:'1px solid #e8e8ed',borderRadius:10,padding:'10px 12px'}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,marginBottom:6}}>
+              <div style={{fontSize:11,fontWeight:700,color:ex.color}}>{ex.title}</div>
+              <button type="button" className="vo-btn" onClick={() => setText(ex.text)} style={{background:'#DC143C',color:'#fff',border:'none',padding:'6px 14px',borderRadius:20,fontSize:12,fontWeight:700}}>प्रयोग · Use →</button>
+            </div>
+            <div className="vo-ne" style={{fontSize:13}}>{ex.text}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </details>
+
+  <div style={{background:'#FFFDE7',border:'1px solid rgba(255,193,7,.4)',borderRadius:10,padding:'12px 14px',marginTop:4}}>
+    <div style={{fontWeight:800,color:'#F57F17',fontSize:13,marginBottom:4}}>💳 Credit कसरी गनिन्छ? | How credits are counted</div>
+    <p className="vo-ne">१ अक्षर = १ Credit। ब्र्याकेटभित्रका ट्यागहरू <code>[excited]</code>, <code>[pause]</code> आदिको क्रेडिट लाग्दैन। स्क्रिप्टका अक्षर, स्पेस र विराम चिह्नको क्रेडिट गणना हुन्छ।</p>
+    <p className="vo-en">1 character = 1 credit. Emotion tags inside brackets are free. Script characters, spaces, and punctuation are counted toward your credits.</p>
+    <p className="vo-ne" style={{marginTop:4}}>Generate थिच्नुअघि बटनमै तपाईंको खर्च देखिन्छ।</p>
+    <p className="vo-en">The cost is shown on the Generate button before you press it.</p>
+  </div>
+</div>
       </div>
 
       {/* RIGHT PANEL */}
-      <div style={{display:'flex',flexDirection:'column',gap:12}}>
+      <div className="vo-col vo-col-right" style={{display:'flex',flexDirection:'column',gap:12}}>
 
         {/* Roman text warning */}
         {text.length > 0 && /^[a-zA-Z\s.,!?]+$/.test(text) && (
-          <div style={{background:'#FFF8F0',border:'1px solid rgba(255,149,0,.3)',borderRadius:10,padding:'10px 14px',marginBottom:10,fontSize:13,color:'#B45309',fontWeight:500}}>
+          <div className="vo-o-55" style={{background:'#FFF8F0',border:'1px solid rgba(255,149,0,.3)',borderRadius:10,padding:'10px 14px',marginBottom:10,fontSize:13,color:'#B45309',fontWeight:500}}>
             ⚠️ Devanagari script मा लेख्नुस् — "namaste" होइन "नमस्ते"
             <div style={{display:'flex',flexDirection:'column',gap:5,marginTop:8}}>
               <div style={{display:'flex',alignItems:'center',gap:8,fontSize:12}}>
@@ -951,7 +1073,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
 
 {/* Preview button */}
 {text.trim().length > 0 && (
-  <div style={{marginBottom:10}}>
+  <div className="vo-o-60" style={{marginBottom:10}}>
     <button
       onClick={handlePreview}
       disabled={previewing || !selectedVoice}
@@ -987,7 +1109,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
 )}
 {/* Cost summary — shown to logged-in users when text is present */}
 {session && session !== false && session !== null && text.trim().length > 0 && (
-  <div style={{
+  <div className="vo-o-70" style={{
     background: session.isPendingPayment ? 'rgba(255,149,0,.05)' : canGenerate ? '#f0f7ff' : '#fff5f5',
     border: `1.5px solid ${session.isPendingPayment ? 'rgba(255,149,0,.4)' : canGenerate ? '#90CAF9' : '#FFAAAA'}`,
     borderRadius: 10,
@@ -1052,8 +1174,9 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
   </div>
 )}
 
-{/* Generate button */}
-<button onClick={handleGenerate} disabled={!canGenerate}
+{/* Generate button (sticky bar on phones) */}
+<div className={`vo-genbar vo-o-80${editing ? ' vo-editing' : ''}`}>
+<button className="vo-generate vo-btn" onClick={handleGenerate} disabled={!canGenerate}
   style={{width:'100%',padding:'14px',borderRadius:12,border:'none',
     background:canGenerate?'#DC143C':'#ccc',
     color:'#fff',fontSize:15,fontWeight:700,cursor:canGenerate?'pointer':'not-allowed',
@@ -1067,8 +1190,21 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
         ? '🎙️ Generate Voiceover · 25 credits'
         : '🎙️ Generate Voiceover'}
 </button>
+{!canGenerate && !loading && session !== null && !(session && session.isPendingPayment) && (
+  <div style={{marginTop:8,fontSize:13,lineHeight:1.5,textAlign:'center',color:'#6e6e73',fontFamily:"'Noto Sans Devanagari','Manrope',sans-serif"}}>
+    {session === false ? (
+      <>Generate गर्न पहिले <button type="button" onClick={() => setShowSignup(true)} style={{background:'none',border:'none',color:'#1976D2',fontWeight:700,textDecoration:'underline',cursor:'pointer',fontSize:13,fontFamily:'inherit',padding:'6px 2px'}}>Sign in</button> गर्नुहोस्। · Sign in to generate.</>
+    ) : billableLength === 0 ? (
+      <>पहिले आफ्नो स्क्रिप्ट लेख्नुहोस्। · Write your script first.</>
+    ) : (
+      <>तपाईंको Credit पुगेन। · Not enough credits.</>
+    )}
+  </div>
+)}
+</div>
+
           {/* Credits info */}
-          <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
+          <div className="vo-o-105" style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
             <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>Balance</div>
             {session ? (
               <div>
@@ -1091,7 +1227,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
 
           {/* ZERO CREDITS — Show Demo + Pricing */}
 {session && session.isPendingPayment && (
-  <div style={{background:'rgba(255,149,0,.08)',border:'1.5px solid rgba(255,149,0,.3)',borderRadius:14,padding:20,marginBottom:16,textAlign:'center'}}>
+  <div className="vo-o-95" style={{background:'rgba(255,149,0,.08)',border:'1.5px solid rgba(255,149,0,.3)',borderRadius:14,padding:20,marginBottom:16,textAlign:'center'}}>
     <div style={{fontSize:16,marginBottom:8}}>⏳</div>
     <div style={{fontFamily:'Sora,sans-serif',fontSize:14,fontWeight:700,color:'#FF9500',marginBottom:6}}>
       Payment Verification Pending
@@ -1109,10 +1245,10 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
           {hasNoCredits && (
             <>
               {/* Demo Box */}
-              <DemoBoxInline />
+              <div className="vo-o-96"><DemoBoxInline /></div>
 
               {/* Pricing */}
-              <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
+              <div className="vo-o-97" style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
                 <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:12}}>
                   Get Full Access
                 </div>
@@ -1151,7 +1287,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
 
           {/* Voice info card — only show when user has credits */}
           {!hasNoCredits && (
-            <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
+            <div className="vo-o-110" style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
               <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>Selected Voice</div>
               <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
                 <div style={{width:40,height:40,borderRadius:10,background:selectedVoice.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,color:'#fff'}}>
@@ -1170,7 +1306,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
           )}
 
           {/* VOICE CHANGER PROMO */}
-          <div style={{background:'linear-gradient(135deg,#FFF5F7 0%,#fff 100%)',borderRadius:12,border:'1.5px solid rgba(220,20,60,.25)',padding:'14px 16px',marginBottom:12}}>
+          <div className="vo-o-120" style={{background:'linear-gradient(135deg,#FFF5F7 0%,#fff 100%)',borderRadius:12,border:'1.5px solid rgba(220,20,60,.25)',padding:'14px 16px',marginBottom:12}}>
             <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}>
               <span style={{fontSize:10,fontWeight:800,color:'#fff',background:'#DC143C',padding:'2px 8px',borderRadius:20,letterSpacing:'0.06em'}}>NEW · नयाँ</span>
               <span style={{fontSize:14,fontWeight:800,color:'#1d1d1f',fontFamily:'Sora,sans-serif'}}>🔄 Voice Changer</span>
@@ -1198,7 +1334,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
 
           {/* HISTORY PANEL */}
           {session && !hasNoCredits && (
-            <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
+            <div className="vo-o-130" style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
               <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>
                 Recent Generations
               </div>
@@ -1245,7 +1381,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
           )}
 
           {/* Other tools */}
-          <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
+          <div className="vo-o-140" style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
             <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>Other Tools</div>
             <div style={{display:'flex',flexDirection:'column',gap:6}}>
               <Link href="/music" style={{display:'flex',alignItems:'center',gap:8,padding:'8px 10px',borderRadius:8,background:'#E8F5E9',textDecoration:'none',fontSize:13,fontWeight:600,color:'#2E7D32'}}>
