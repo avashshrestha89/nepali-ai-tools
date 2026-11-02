@@ -1167,6 +1167,33 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
             </div>
           )}
 
+          {/* VOICE CHANGER PROMO */}
+          <div style={{background:'linear-gradient(135deg,#FFF5F7 0%,#fff 100%)',borderRadius:12,border:'1.5px solid rgba(220,20,60,.25)',padding:'14px 16px',marginBottom:12}}>
+            <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}>
+              <span style={{fontSize:10,fontWeight:800,color:'#fff',background:'#DC143C',padding:'2px 8px',borderRadius:20,letterSpacing:'0.06em'}}>NEW · नयाँ</span>
+              <span style={{fontSize:14,fontWeight:800,color:'#1d1d1f',fontFamily:'Sora,sans-serif'}}>🔄 Voice Changer</span>
+            </div>
+            <div style={{fontSize:13,fontWeight:700,color:'#1d1d1f',marginBottom:4}}>भ्वाइस चेन्जर: आफ्नो आवाज, प्रोफेसनल आवाजमा</div>
+            <p style={{fontSize:12,color:'#555',lineHeight:1.6,marginBottom:4}}>
+              Don't want to type? Speak into your phone, upload the recording, and we turn it into a professional voice. Your words and your feeling stay the same. Only the voice changes.
+            </p>
+            <p style={{fontSize:12,color:'#555',lineHeight:1.6,marginBottom:10}}>
+              टाइप गर्न मन छैन? फोनमा बोलेर रेकर्ड गर्नुहोस् र अपलोड गर्नुहोस्। हामी त्यसलाई प्रोफेसनल आवाजमा बदलिदिन्छौं। तपाईंका शब्द र भाव उस्तै रहन्छन्, आवाज मात्र फेरिन्छ।
+            </p>
+            <div style={{fontSize:12,color:'#444',lineHeight:1.7,marginBottom:10}}>
+              <div>1️⃣ Record yourself (up to 1 minute) · रेकर्ड गर्नुहोस् (१ मिनेटसम्म)</div>
+              <div>2️⃣ Upload it and pick a voice · अपलोड गरी आवाज छान्नुहोस्</div>
+              <div>3️⃣ Download the new audio · नयाँ अडियो डाउनलोड गर्नुहोस्</div>
+            </div>
+            <div style={{fontSize:11,color:'#777',lineHeight:1.6,marginBottom:10}}>
+              For Creator and Founders packs. No extra fee: it uses your normal credits (1 minute ≈ 1,000 credits).<br />
+              क्रिएटर र फाउन्डर्स प्याकका लागि। अतिरिक्त शुल्क छैन: सामान्य क्रेडिट नै लाग्छ (१ मिनेट ≈ १,००० क्रेडिट)।
+            </div>
+            <Link href="/voice-changer" style={{display:'block',textAlign:'center',background:'#DC143C',color:'#fff',padding:'9px',borderRadius:8,fontSize:13,fontWeight:700,textDecoration:'none'}}>
+              {session && session.canVoiceChange ? 'Open Voice Changer →' : 'See how it works · कसरी काम गर्छ →'}
+            </Link>
+          </div>
+
           {/* HISTORY PANEL */}
           {session && !hasNoCredits && (
             <div style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
