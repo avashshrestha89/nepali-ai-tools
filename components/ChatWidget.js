@@ -94,8 +94,11 @@ export default function ChatWidget() {
 
   return (
     <>
+      {router.pathname === '/voiceover' && (
+        <style>{`@media (max-width:768px){.swor-chat-bubble{bottom:calc(88px + env(safe-area-inset-bottom))!important}}`}</style>
+      )}
       {!open && (
-        <button onClick={openChat} aria-label="Open help chat"
+        <button onClick={openChat} aria-label="Open help chat" className="swor-chat-bubble"
           style={{ position: 'fixed', right: 16, bottom: 16, zIndex: 9000, background: '#DC143C', color: '#fff', border: 'none',
             borderRadius: 999, padding: '12px 16px', fontSize: 14, fontWeight: 800, cursor: 'pointer',
             boxShadow: '0 6px 20px rgba(220,20,60,.4)', fontFamily: 'inherit' }}>
