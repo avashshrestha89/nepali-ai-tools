@@ -579,6 +579,9 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
         .vo-cat-body{padding:2px 14px 14px}
         .vo-tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
         .vo-voicegrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+        .vo-editor-title{display:block;margin:0 2px 8px;font-family:'Noto Sans Devanagari','Manrope',sans-serif;color:#1d1d1f;line-height:1.6}
+        .vo-editor-box{background:#fff;border-radius:14px;border:2.5px solid #DC143C;overflow:hidden;box-shadow:0 0 0 4px rgba(220,20,60,.10);transition:box-shadow .15s}
+        .vo-editor-box:focus-within{box-shadow:0 0 0 4px rgba(220,20,60,.28)}
         .vo-h2{font-family:'Sora',sans-serif;font-size:15px;font-weight:800;color:#312E81;margin-bottom:6px;line-height:1.4}
         .vo-hr{border:none;border-top:1px solid #e8e8ed;margin:16px 0}
         .vo-flow{list-style:none;margin:0!important;padding:0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
@@ -811,8 +814,12 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
 </div>
 
 {/* Text area */}
-<div className="vo-o-50" style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',overflow:'hidden',marginBottom:12}}>
-  <label htmlFor="vo-script" className="vo-sr">Your Nepali script · तपाईंको नेपाली स्क्रिप्ट</label>
+<div className="vo-o-50" style={{marginBottom:12}}>
+  <label htmlFor="vo-script" className="vo-editor-title">
+    <span className="vo-ne" style={{fontWeight:800,fontSize:16}}>✍️ तपाईंको स्क्रिप्ट यहाँ लेख्नुहोस् वा पेस्ट गर्नुहोस्</span>
+    <span className="vo-en" style={{display:'block'}}>Type or paste your script in the box below</span>
+  </label>
+  <div className="vo-editor-box">
   <textarea
     id="vo-script"
     ref={textareaRef}
@@ -835,6 +842,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
   </div>
 
   </div>
+</div>
 
 {/* Script Enhancement Tools: Auto Tag + Style Presets (act on the script above) */}
 <div className="vo-o-58" style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',padding:16,marginBottom:12}}>
