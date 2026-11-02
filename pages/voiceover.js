@@ -21,17 +21,17 @@ const PACKS = [
     usd: 4.99,
     credits: '8,000',
     popular: false,
-    features: ['3,500 Swor Credits', '~7 TikTok/Reels OR 3 YouTube Intros', 'All 30 voices', 'Credits never expire'],
+    features: ['8,000 Swor Credits', '~26-32 voiceovers (30 sec each)', 'All 30 voices', 'Credits never expire'],
     color: '#1976D2',
   },
   {
     key: 'creator',
     name: 'Creator Pack',
     npr: 999,
-    usd: 12.99,
+    usd: 8.99,
     credits: '20,000',
     popular: true,
-    features: ['7,500 Swor Credits', '~15 TikTok/Reels OR 6 YouTube Intros', 'All 30 voices', 'Credits never expire'],
+    features: ['20,000 Swor Credits', '~66-80 voiceovers (30 sec each)', 'All 30 voices', 'Credits never expire'],
     color: '#DC143C',
   },
   {
@@ -41,7 +41,7 @@ const PACKS = [
     usd: 19.99,
     credits: '50,000',
     popular: false,
-    features: ['25,000 Swor Credits (Lifetime)', '5 AI Music Tracks', 'All 30 voices', 'Credits never expire', 'Founders status forever'],
+    features: ['50,000 Swor Credits (Lifetime)', '5 AI Music Tracks', 'All 30 voices', 'Credits never expire', 'Founders status forever'],
     color: '#C9940A',
   },
 ]
@@ -477,9 +477,11 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
           <Link href="/tool" style={{fontSize:13,color:'#888',textDecoration:'none',display:'flex',alignItems:'center',gap:4}}>
             ← All Tools
           </Link>
-          <Link href="/voice-changer" style={{fontSize:12,fontWeight:700,color:'#DC143C',background:'#FDECEF',padding:'4px 10px',borderRadius:20,textDecoration:'none'}}>
-            🔄 Voice Changer
-          </Link>
+          {!isMobile && (
+            <Link href="/voice-changer" style={{fontSize:12,fontWeight:700,color:'#DC143C',background:'#FDECEF',padding:'4px 10px',borderRadius:20,textDecoration:'none',whiteSpace:'nowrap'}}>
+              🔄 Voice Changer
+            </Link>
+          )}
         </div>
         <div style={{display:'flex',alignItems:'center',gap:10}}>
           {session && <div style={{fontSize:13,fontWeight:600,background:'#E8F4FD',color:'#1976D2',padding:'5px 12px',borderRadius:20}}>{credits} credits</div>}
