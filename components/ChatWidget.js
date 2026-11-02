@@ -18,13 +18,19 @@ const SUGGESTIONS = [
   { en: 'Can I use it on YouTube?', ne: 'YouTube मा चलाउन मिल्छ?' },
 ]
 
-// Turn plain links in a reply into clickable links (no raw HTML is ever inserted).
+// Clean the reply and turn links into clickable links (no raw HTML is ever inserted).
+// The AI sometimes writes markdown or puts "!" right after a link, so tidy both first.
+const LINK_RE = /(https?:\/\/[^\s)]*[^\s).,!?:;]|meroadai\.com(?:\/[^\s)]*[^\s).,!?:;])?)/g
+
 function renderText(text) {
-  return String(text).split(/(https?:\/\/[^\s)]+|meroadai\.com\/[^\s)]*)/g).map((part, i) => {
+  const clean = String(text)
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '$2')   // [label](url) -> url
+    .replace(/\*\*/g, '')                                         // **bold** -> plain
+  return clean.split(LINK_RE).map((part, i) => {
     if (/^https?:\/\//.test(part)) {
       return <a key={i} href={part} target="_blank" rel="noreferrer" style={{ color: '#1976D2', wordBreak: 'break-all' }}>{part}</a>
     }
-    if (/^meroadai\.com\//.test(part)) {
+    if (/^meroadai\.com/.test(part)) {
       return <a key={i} href={`https://${part}`} style={{ color: '#1976D2', wordBreak: 'break-all' }}>{part}</a>
     }
     return part
