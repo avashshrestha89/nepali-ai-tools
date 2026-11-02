@@ -89,6 +89,7 @@ export default function Terms() {
           <li>Infringes on the intellectual property rights of others.</li>
           <li>Is used for spam, phishing, or fraudulent purposes.</li>
         </ul>
+        <p><strong>Voice Changer.</strong> When you convert your own recording with the Voice Changer, you confirm that you own the recording or have permission to use it, and that you will not use it to imitate a real person to mislead others, to spread false information, or to convert music or other content you do not have the rights to. You are responsible for what you upload and publish.</p>
         <p>Violation of this policy may result in immediate account suspension without refund.</p>
 
         <h2>7. Intellectual Property</h2>
