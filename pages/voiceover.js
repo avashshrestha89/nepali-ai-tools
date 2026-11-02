@@ -187,7 +187,7 @@ export default function Voiceover() {
   const [preTagText, setPreTagText] = useState(null)
   const [tipMsg, setTipMsg] = useState(null)
   const [presetMsg, setPresetMsg] = useState(null)
-  const [editing, setEditing] = useState(false)   // true while the script box has focus (keyboard open)
+  const genLock = useRef(false)   // blocks a second tap on Generate before the first has finished
   const textareaRef = useRef(null)
   const [selectedVoice, setSelectedVoice] = useState(VOICES.find(v => v.voice_id === 'FszY75334ExxVmg7yl0U') || VOICES[0])
   const [showVoicePanel, setShowVoicePanel] = useState(false)
@@ -432,6 +432,8 @@ setTimeout(() => {
     if (!text.trim()) return
     const isAnon = session === false
     if (isAnon) { setShowSignup(true); return }
+    if (genLock.current) return
+    genLock.current = true
     setLoading(true); setResult(null); setError(null)
     const idempotencyKey = crypto.randomUUID()
     try {
@@ -451,6 +453,7 @@ setTimeout(() => {
       setResult({ url, filename: `swor_${selectedVoice.name.toLowerCase()}_${Date.now()}.mp3` })
       setTimeout(() => fetchHistory(), 2000)
     } catch (e) { setError(e.message) }
+    genLock.current = false
     setLoading(false)
   }
 
@@ -568,11 +571,6 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
         .vo-chip{padding:7px 14px;border-radius:20px;border:1.5px solid #e8e8ed;background:#f5f5f7;color:#1d1d1f;font-size:12px;font-weight:600;transition:border-color .15s}
         .vo-chip:hover{border-color:#DC143C}
         .vo-tag{border:none;padding:3px 9px;border-radius:20px;font-size:12px;font-weight:600;font-family:'Manrope',sans-serif}
-        .vo-steps{list-style:none;margin:0 0 12px 0!important;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-        .vo-steps li{display:flex;gap:8px;align-items:flex-start;background:#F5F9FF;border:1px solid #DCE8FB;border-radius:10px;padding:8px 10px;margin:0!important}
-        .vo-step-n{width:24px;height:24px;border-radius:50%;background:#1976D2;color:#fff;font-size:13px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
-        .vo-steps .vo-ne{font-size:13px;line-height:1.5}
-        .vo-steps .vo-en{font-size:12px;line-height:1.4}
         .vo-cat{background:#fff;border:1px solid #DCE8FB;border-radius:12px;margin-bottom:8px;overflow:hidden}
         .vo-cat summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 14px;min-height:48px;font-weight:700;font-size:14px;color:#1d1d1f;font-family:'Noto Sans Devanagari','Manrope',sans-serif}
         .vo-cat summary::-webkit-details-marker{display:none}
@@ -580,8 +578,27 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
         .vo-cat[open] summary::after{content:'−'}
         .vo-cat-body{padding:2px 14px 14px}
         .vo-tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
-        .vo-genbar{}
         .vo-voicegrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+        .vo-editor-title{display:block;margin:0 2px 8px;font-family:'Noto Sans Devanagari','Manrope',sans-serif;color:#1d1d1f;line-height:1.6}
+        .vo-editor-box{background:#fff;border-radius:14px;border:2.5px solid #DC143C;overflow:hidden;box-shadow:0 0 0 4px rgba(220,20,60,.10);transition:box-shadow .15s}
+        .vo-editor-box:focus-within{box-shadow:0 0 0 4px rgba(220,20,60,.28)}
+        .vo-h2{font-family:'Sora',sans-serif;font-size:15px;font-weight:800;color:#312E81;margin-bottom:6px;line-height:1.4}
+        .vo-hr{border:none;border-top:1px solid #e8e8ed;margin:16px 0}
+        .vo-flow{list-style:none;margin:0!important;padding:0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+        .vo-flow li{display:flex;align-items:center;gap:6px;background:#EEF2FF;border:1px solid #C7D2FE;border-radius:999px;padding:4px 12px 4px 5px;font-size:13px;line-height:1.4;font-family:'Noto Sans Devanagari','Manrope',sans-serif;color:#1d1d1f}
+        .vo-flow li.vo-arrow{background:none;border:none;padding:0;color:#6366F1;font-weight:800}
+        .vo-step-n{width:22px;height:22px;border-radius:50%;background:#4F46E5;color:#fff;font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+        .vo-autotag{flex:1 1 220px;min-height:52px;padding:12px 18px;border-radius:12px;border:none;background:#4F46E5;color:#fff;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 3px 0 #3730A3;font-family:'Noto Sans Devanagari','Manrope',sans-serif}
+        .vo-autotag:hover:not(:disabled){background:#4338CA}
+        .vo-autotag:disabled{background:#E5E7EB;color:#9CA3AF;box-shadow:none;cursor:not-allowed}
+        .vo-autotag[aria-busy="true"]:disabled{background:#6366F1;color:#fff;cursor:progress}
+        .vo-autotag.vo-autotag-done{background:#15803D;box-shadow:0 3px 0 #166534}
+        .vo-undo{min-height:48px;padding:10px 16px;border-radius:12px;border:1.5px solid #d2d2d7;background:transparent;color:#444;font-size:14px;font-weight:600}
+        .vo-presets{display:flex;gap:8px;flex-wrap:wrap}
+        .vo-genwrap{margin-bottom:0}
+        .vo-genhint{margin-top:8px;font-size:13px;line-height:1.6;text-align:center;color:#6e6e73;font-family:'Noto Sans Devanagari','Manrope',sans-serif}
+        .vo-genhint:empty{display:none}
+        .vo-signin-link{background:none;border:none;color:#1976D2;font-weight:800;text-decoration:underline;cursor:pointer;font-size:15px;font-family:inherit;min-height:44px;padding:8px 12px}
         .vo-sg{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
         .vo-sg-input{flex:1 1 200px;min-width:0}
 
@@ -590,31 +607,26 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
           .vo-col,.vo-col-right{display:contents!important}
           .vo-main [class*="vo-o-"]{margin-bottom:0!important}
           .vo-o-10{order:10}.vo-o-20{order:20}.vo-o-21{order:21}.vo-o-30{order:30}.vo-o-40{order:40}.vo-o-50{order:50}
-          .vo-o-55{order:55}.vo-o-60{order:60}.vo-o-70{order:70}.vo-o-80{order:80}.vo-o-82{order:82}.vo-o-85{order:85}.vo-o-86{order:86}
+          .vo-o-55{order:55}.vo-o-60{order:60}.vo-o-70{order:70}.vo-o-58{order:58}.vo-o-80{order:80}.vo-o-82{order:82}.vo-o-88{order:88}.vo-o-85{order:85}.vo-o-86{order:86}
           .vo-o-90{order:90}.vo-o-95{order:95}.vo-o-96{order:96}.vo-o-97{order:97}.vo-o-100{order:100}.vo-o-105{order:105}
           .vo-o-110{order:110}.vo-o-120{order:120}.vo-o-130{order:130}.vo-o-140{order:140}
           /* Phones zoom the page when an input is smaller than 16px. */
           .vo-input{font-size:16px!important}
           /* Comfortable touch targets */
           .vo-btn{min-height:44px}
-          .vo-chip{min-height:44px;padding:8px 16px;font-size:14px}
+          .vo-chip{min-height:48px;padding:8px 16px;font-size:14px}
+          .vo-flow li{font-size:14px}
+          .vo-flow li.vo-arrow{display:none}
           .vo-tag{min-height:40px;padding:6px 14px;font-size:14px}
           .vo-help summary{min-height:44px;font-size:14px}
           .vo-ne{font-size:15px}
           .vo-en{font-size:14px}
           .vo-help-body{font-size:15px}
-          .vo-steps{grid-template-columns:1fr;gap:4px}
-          .vo-steps li{padding:5px 8px;align-items:center}
-          .vo-steps .vo-ne{font-size:14px;line-height:1.4}
-          .vo-steps .vo-en{display:none}
           .vo-sg-input{flex:1 1 100%}
           .vo-sg select{flex:1 1 38%;min-height:48px}
           .vo-sg button{flex:1 1 55%;min-height:48px}
           .vo-voice-chip-btn{width:40px!important;height:40px!important}
-          /* Generate stays reachable while writing. It un-sticks while the keyboard is open. */
-          .vo-genbar{position:sticky;bottom:0;z-index:50;margin:0 -16px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(250,250,250,.97);border-top:1px solid #e8e8ed;box-shadow:0 -4px 16px rgba(0,0,0,.06)}
-          .vo-genbar.vo-editing{position:static;box-shadow:none}
-          .vo-genbar button.vo-generate{min-height:52px;font-size:16px!important}
+          .vo-generate{min-height:52px;font-size:16px!important}
         }
         @media (max-width:480px){
           .vo-voicegrid{grid-template-columns:1fr}
@@ -802,16 +814,18 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
 </div>
 
 {/* Text area */}
-<div className="vo-o-50" style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',overflow:'hidden',marginBottom:12}}>
-  <label htmlFor="vo-script" className="vo-sr">Your Nepali script · तपाईंको नेपाली स्क्रिप्ट</label>
+<div className="vo-o-50" style={{marginBottom:12}}>
+  <label htmlFor="vo-script" className="vo-editor-title">
+    <span className="vo-ne" style={{fontWeight:800,fontSize:16}}>✍️ तपाईंको स्क्रिप्ट यहाँ लेख्नुहोस् वा पेस्ट गर्नुहोस्</span>
+    <span className="vo-en" style={{display:'block'}}>Type or paste your script in the box below</span>
+  </label>
+  <div className="vo-editor-box">
   <textarea
     id="vo-script"
     ref={textareaRef}
     className="vo-input"
     value={text}
     onChange={e => setText(e.target.value.slice(0, 3500))}
-    onFocus={() => setEditing(true)}
-    onBlur={() => setEditing(false)}
     placeholder="नमस्ते! यहाँ आफ्नो नेपाली पाठ टाइप गर्नुस्... (Devanagari script only — देवनागरी मा लेख्नुस्)"
     style={{width:'100%',minHeight:isMobile?180:220,padding:'16px',fontSize:15,lineHeight:1.8,border:'none',background:'transparent',color:'#1d1d1f'}}
   />
@@ -827,27 +841,37 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
     </span>
   </div>
 
-  {/* Auto Tag — directly under the editor */}
-  <div style={{borderTop:'1px solid #f0f0f0',padding:'14px 16px',background:'#fff'}}>
-    <p className="vo-ne" style={{fontWeight:700,fontSize:15,color:'#0D47A1'}}>नेपाली स्क्रिप्ट तयार छ? Auto Tag थिच्नुहोस्। AI ले उपयुक्त ठाउँमा भावना र अभिव्यक्ति आफैँ थपिदिन्छ।</p>
-    <p className="vo-en" style={{marginBottom:10}}>Script ready? Tap Auto Tag and let AI add the right emotions and expressions automatically.</p>
+  </div>
+</div>
+
+{/* Script Enhancement Tools: Auto Tag + Style Presets (act on the script above) */}
+<div className="vo-o-58" style={{background:'#fff',borderRadius:14,border:'1.5px solid #e8e8ed',padding:16,marginBottom:12}}>
+  <h2 className="vo-h vo-h-dark" style={{fontSize:16}}>🛠️ Script Enhancement Tools | स्क्रिप्टलाई अझ राम्रो बनाउनुहोस्</h2>
+
+  {/* Auto Tag */}
+  <section aria-labelledby="vo-at-h" style={{marginTop:10}}>
+    <h3 id="vo-at-h" className="vo-h2">✨ Auto Tag | स्वतः भावना थप्नुहोस्</h3>
+    <p className="vo-ne">नेपाली स्क्रिप्ट तयार छ? Auto Tag थिच्नुहोस्। AI ले स्क्रिप्ट बुझेर उपयुक्त ठाउँमा भावना र अभिव्यक्ति जनाउने ट्यागहरू आफैँ थपिदिन्छ।</p>
+    <p className="vo-en" style={{marginBottom:10}}>Already have your script? Tap Auto Tag. AI will analyze your script and automatically add suitable emotion and expression tags where they belong.</p>
+    <ol className="vo-flow" aria-label="Auto Tag steps · चरणहरू">
+      <li><span className="vo-step-n" aria-hidden="true">१</span><span>स्क्रिप्ट राख्नुहोस्</span></li>
+      <li className="vo-arrow" aria-hidden="true">→</li>
+      <li><span className="vo-step-n" aria-hidden="true">२</span><span>Auto Tag थिच्नुहोस्</span></li>
+      <li className="vo-arrow" aria-hidden="true">→</li>
+      <li><span className="vo-step-n" aria-hidden="true">३</span><span>ट्यागहरू हेरेर Generate गर्नुहोस्</span></li>
+    </ol>
+    <p className="vo-en" style={{margin:'6px 0 10px'}}>1. Add your script. 2. Tap Auto Tag. 3. Review the tags and generate your voiceover.</p>
     <div style={{display:'flex',gap:8,flexWrap:'wrap',alignItems:'center'}}>
-      <button type="button" className="vo-btn" onClick={handleAutoTag} disabled={tagging || !text.trim()}
-        style={{flex:'1 1 240px',background:'#1976D2',color:'#fff',border:'none',borderRadius:12,padding:'12px 16px',minHeight:52,fontSize:16,fontWeight:800,cursor:(tagging || !text.trim())?'not-allowed':'pointer',opacity:(tagging || !text.trim())?0.5:1,boxShadow:'0 3px 0 #0D47A1'}}>
-        {tagging ? 'Adding tags… · ट्याग थप्दै…' : '✨ Auto Tag | स्वतः भावना थप्नुहोस्'}
+      <button type="button" className={`vo-btn vo-autotag${tagMsg?.ok && preTagText !== null && !tagging ? ' vo-autotag-done' : ''}`} onClick={handleAutoTag}
+        disabled={tagging || !text.trim()} aria-busy={tagging}>
+        {tagging ? '⏳ ट्याग थप्दै… · Adding tags…' : (tagMsg?.ok && preTagText !== null) ? '✓ ट्यागहरू थपिए · Tags added' : '✨ Auto Tag'}
       </button>
       {preTagText !== null && tagMsg?.ok && (
-        <button type="button" className="vo-btn" onClick={() => { setText(preTagText); setPreTagText(null); setTagMsg(null) }}
-          style={{background:'transparent',color:'#444',border:'1.5px solid #d2d2d7',borderRadius:12,padding:'10px 16px',minHeight:48,fontSize:14,fontWeight:600}}>
+        <button type="button" className="vo-btn vo-undo" onClick={() => { setText(preTagText); setPreTagText(null); setTagMsg(null) }}>
           ↩ Undo · फिर्ता
         </button>
       )}
     </div>
-    <ol className="vo-steps" style={{marginTop:14}}>
-      <li><span className="vo-step-n" aria-hidden="true">१</span><div><div className="vo-ne">स्क्रिप्ट लेख्नुहोस् वा पेस्ट गर्नुहोस्</div><div className="vo-en">Write or paste your script</div></div></li>
-      <li><span className="vo-step-n" aria-hidden="true">२</span><div><div className="vo-ne">✨ Auto Tag थिच्नुहोस्</div><div className="vo-en">Click Auto Tag</div></div></li>
-      <li><span className="vo-step-n" aria-hidden="true">३</span><div><div className="vo-ne">ट्यागहरू हेरेर Generate Voiceover थिच्नुहोस्</div><div className="vo-en">Review the tags and generate your voiceover</div></div></li>
-    </ol>
     <div role="status" aria-live="polite" style={{fontSize:13,lineHeight:1.6,marginTop:8,color: tagMsg ? (tagMsg.ok ? '#166534' : '#CC3333') : '#555'}}>
       {tagMsg ? tagMsg.text : (<><span className="vo-ne" style={{fontSize:13}}>ब्र्याकेटभित्रका ट्यागहरूको क्रेडिट लाग्दैन।</span> <span className="vo-en" style={{display:'inline'}}>Emotion tags inside brackets are free.</span>{session === false ? <span className="vo-ne" style={{fontSize:13}}> (Auto Tag प्रयोग गर्न Sign in गर्नुहोस्।)</span> : null}</>)}
     </div>
@@ -872,7 +896,38 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
         <p className="vo-en">Style Presets apply predefined tag combinations. Auto Tag analyzes your actual content and adds contextually relevant tags.</p>
       </div>
     </Help>
-  </div>
+  </section>
+
+  <hr className="vo-hr" />
+
+  {/* Style Presets */}
+  <section aria-labelledby="vo-sp-h">
+    <h3 id="vo-sp-h" className="vo-h2">🎨 Style Presets | बोल्ने शैली छान्नुहोस्</h3>
+    <p className="vo-ne">तपाईंको कन्टेन्टअनुसार शैली छान्नुहोस्। एक क्लिकमै स्क्रिप्टमा मिल्ने भावना ट्यागहरू थप्नुहोस्।</p>
+    <p className="vo-en" style={{marginBottom:10}}>Choose a style that matches your content. One click adds the corresponding emotion tags to your script.</p>
+    <div className="vo-presets">
+      {PRESETS.map(p => (
+        <button key={p.label} type="button" className="vo-btn vo-chip" onClick={() => applyPreset(p)}>{p.label}</button>
+      ))}
+    </div>
+    <div role="status" aria-live="polite" style={{fontSize:13,color:'#B45309',marginTop:8,fontFamily:"'Noto Sans Devanagari','Manrope',sans-serif"}}>{presetMsg}</div>
+  <Help label="कसरी प्रयोग गर्ने? | How to use">
+    <p className="vo-ne">पहिले माथि आफ्नो स्क्रिप्ट लेख्नुहोस् वा पेस्ट गर्नुहोस्, अनि एउटा शैली थिच्नुहोस्। ट्यागहरू स्क्रिप्टको सुरुमा थपिन्छन्।</p>
+    <p className="vo-en">First enter your script above, then tap a style. The tags are added at the start of your script (any tags already at the very start are replaced).</p>
+    <ul style={{marginTop:8}}>
+      {PRESETS.map(p => (
+        <li key={p.label}>
+          <strong>{p.label}</strong> <span className="vo-ne" style={{display:'inline'}}>: {p.ne}</span>
+          <span className="vo-en">{p.en} · adds <code>{p.tags.trim()}</code></span>
+        </li>
+      ))}
+    </ul>
+    <div style={{background:'#FFF8E1',border:'1px solid #FFE082',borderRadius:10,padding:'10px 12px',marginTop:8}}>
+      <p className="vo-ne"><strong>Style Preset र Auto Tag फरक छन्।</strong> Style Preset ले पहिले नै तय गरिएका ट्यागहरू थप्छ। Auto Tag ले तपाईंको स्क्रिप्ट पढेर सान्दर्भिक ठाउँमा ट्यागहरू राख्छ।</p>
+      <p className="vo-en">Style Presets apply a predefined combination of tags. Auto Tag analyzes your actual script and adds tags that fit its content.</p>
+    </div>
+  </Help>
+  </section>
 </div>
 
           {/* Error */}
@@ -919,36 +974,6 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
 />
             </div>
           )}
-
-{/* Style Presets */}
-<div className="vo-o-82" style={{background:'#fff',border:'1.5px solid #e8e8ed',borderRadius:14,padding:'16px',marginBottom:12}}>
-  <h2 className="vo-h vo-h-dark">🎨 Style Presets | बोल्ने शैली छान्नुहोस्</h2>
-  <Bi
-    ne="तपाईंको कन्टेन्टअनुसार शैली छान्नुहोस्। एक क्लिकमै स्क्रिप्टमा मिल्ने भावना ट्यागहरू थप्नुहोस्।"
-    en="Choose a style that matches your content. One click adds the corresponding emotion tags to your script." />
-  <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-    {PRESETS.map(p => (
-      <button key={p.label} type="button" className="vo-btn vo-chip" onClick={() => applyPreset(p)}>{p.label}</button>
-    ))}
-  </div>
-  <div role="status" aria-live="polite" style={{fontSize:13,color:'#B45309',marginTop:8,minHeight:0,fontFamily:"'Noto Sans Devanagari','Manrope',sans-serif"}}>{presetMsg}</div>
-  <Help label="कसरी प्रयोग गर्ने? | How to use">
-    <p className="vo-ne">पहिले माथि आफ्नो स्क्रिप्ट लेख्नुहोस् वा पेस्ट गर्नुहोस्, अनि एउटा शैली थिच्नुहोस्। ट्यागहरू स्क्रिप्टको सुरुमा थपिन्छन्।</p>
-    <p className="vo-en">First enter your script above, then tap a style. The tags are added at the start of your script (any tags already at the very start are replaced).</p>
-    <ul style={{marginTop:8}}>
-      {PRESETS.map(p => (
-        <li key={p.label}>
-          <strong>{p.label}</strong> <span className="vo-ne" style={{display:'inline'}}>: {p.ne}</span>
-          <span className="vo-en">{p.en} · adds <code>{p.tags.trim()}</code></span>
-        </li>
-      ))}
-    </ul>
-    <div style={{background:'#FFF8E1',border:'1px solid #FFE082',borderRadius:10,padding:'10px 12px',marginTop:8}}>
-      <p className="vo-ne"><strong>Style Preset र Auto Tag फरक छन्।</strong> Style Preset ले पहिले नै तय गरिएका ट्यागहरू थप्छ। Auto Tag ले तपाईंको स्क्रिप्ट पढेर सान्दर्भिक ठाउँमा ट्यागहरू राख्छ।</p>
-      <p className="vo-en">Style Presets apply a predefined combination of tags. Auto Tag analyzes your actual script and adds tags that fit its content.</p>
-    </div>
-  </Help>
-</div>
 
 {/* Emotion tags & Pro Tips */}
 <div className="vo-o-100" style={{background:'#F8F9FF',border:'1.5px solid #90CAF9',borderRadius:12,padding:'16px',marginBottom:12}}>
@@ -1174,33 +1199,36 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
   </div>
 )}
 
-{/* Generate button (sticky bar on phones) */}
-<div className={`vo-genbar vo-o-80${editing ? ' vo-editing' : ''}`}>
-<button className="vo-generate vo-btn" onClick={handleGenerate} disabled={!canGenerate}
+{/* Generate button */}
+<div className="vo-o-80 vo-genwrap">
+<button className="vo-generate vo-btn" onClick={handleGenerate} disabled={!canGenerate} aria-busy={loading}
   style={{width:'100%',padding:'14px',borderRadius:12,border:'none',
     background:canGenerate?'#DC143C':'#ccc',
     color:'#fff',fontSize:15,fontWeight:700,cursor:canGenerate?'pointer':'not-allowed',
     fontFamily:'Sora,sans-serif',transition:'all .15s',
     boxShadow:canGenerate?'0 4px 20px rgba(220,20,60,.35)':'none'}}>
   {loading
-    ? '⏳ Generating...'
+    ? '⏳ बनाउँदै… · Generating…'
     : text.trim().length > 0 && session && !session.isLegacy
       ? `🎙️ Generate Voiceover · ${billableLength.toLocaleString()} ${billableLength === 1 ? 'credit' : 'credits'}`
       : text.trim().length > 0 && session && session.isLegacy
         ? '🎙️ Generate Voiceover · 25 credits'
         : '🎙️ Generate Voiceover'}
 </button>
-{!canGenerate && !loading && session !== null && !(session && session.isPendingPayment) && (
-  <div style={{marginTop:8,fontSize:13,lineHeight:1.5,textAlign:'center',color:'#6e6e73',fontFamily:"'Noto Sans Devanagari','Manrope',sans-serif"}}>
-    {session === false ? (
-      <>Generate गर्न पहिले <button type="button" onClick={() => setShowSignup(true)} style={{background:'none',border:'none',color:'#1976D2',fontWeight:700,textDecoration:'underline',cursor:'pointer',fontSize:13,fontFamily:'inherit',padding:'6px 2px'}}>Sign in</button> गर्नुहोस्। · Sign in to generate.</>
-    ) : billableLength === 0 ? (
-      <>पहिले आफ्नो स्क्रिप्ट लेख्नुहोस्। · Write your script first.</>
-    ) : (
-      <>तपाईंको Credit पुगेन। · Not enough credits.</>
-    )}
-  </div>
-)}
+<div role="status" aria-live="polite" className="vo-genhint">
+{loading ? (
+  <>अडियो बनाउँदै छ, कृपया पर्खनुहोस्। · Audio is being generated, please wait.</>
+) : (!canGenerate && session !== null && !(session && session.isPendingPayment)) ? (
+  session === false ? (
+    <>Generate गर्न पहिले Sign in गर्नुहोस्। · Sign in to generate audio.<br />
+      <button type="button" className="vo-signin-link" onClick={() => setShowSignup(true)}>Sign in · साइन इन</button></>
+  ) : billableLength === 0 ? (
+    <>पहिले आफ्नो नेपाली स्क्रिप्ट लेख्नुहोस्। · Enter a Nepali script first.</>
+  ) : (
+    <>तपाईंको Credit पुगेन। · Not enough credits.</>
+  )
+) : null}
+</div>
 </div>
 
           {/* Credits info */}
@@ -1334,7 +1362,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
 
           {/* HISTORY PANEL */}
           {session && !hasNoCredits && (
-            <div className="vo-o-130" style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
+            <div className="vo-o-88" style={{background:'#fff',borderRadius:12,border:'1.5px solid #e8e8ed',padding:'14px 16px'}}>
               <div style={{fontSize:11,fontWeight:700,color:'#888',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:10}}>
                 Recent Generations
               </div>
