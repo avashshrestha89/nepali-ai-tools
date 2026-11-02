@@ -843,7 +843,7 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
         </button>
       )}
     </div>
-    <ol className="vo-steps" style={{marginTop:10}}>
+    <ol className="vo-steps" style={{marginTop:14}}>
       <li><span className="vo-step-n" aria-hidden="true">१</span><div><div className="vo-ne">स्क्रिप्ट लेख्नुहोस् वा पेस्ट गर्नुहोस्</div><div className="vo-en">Write or paste your script</div></div></li>
       <li><span className="vo-step-n" aria-hidden="true">२</span><div><div className="vo-ne">✨ Auto Tag थिच्नुहोस्</div><div className="vo-en">Click Auto Tag</div></div></li>
       <li><span className="vo-step-n" aria-hidden="true">३</span><div><div className="vo-ne">ट्यागहरू हेरेर Generate Voiceover थिच्नुहोस्</div><div className="vo-en">Review the tags and generate your voiceover</div></div></li>
