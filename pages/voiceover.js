@@ -477,9 +477,11 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
           <Link href="/tool" style={{fontSize:13,color:'#888',textDecoration:'none',display:'flex',alignItems:'center',gap:4}}>
             ← All Tools
           </Link>
-          <Link href="/voice-changer" style={{fontSize:12,fontWeight:700,color:'#DC143C',background:'#FDECEF',padding:'4px 10px',borderRadius:20,textDecoration:'none'}}>
-            🔄 Voice Changer
-          </Link>
+          {!isMobile && (
+            <Link href="/voice-changer" style={{fontSize:12,fontWeight:700,color:'#DC143C',background:'#FDECEF',padding:'4px 10px',borderRadius:20,textDecoration:'none',whiteSpace:'nowrap'}}>
+              🔄 Voice Changer
+            </Link>
+          )}
         </div>
         <div style={{display:'flex',alignItems:'center',gap:10}}>
           {session && <div style={{fontSize:13,fontWeight:600,background:'#E8F4FD',color:'#1976D2',padding:'5px 12px',borderRadius:20}}>{credits} credits</div>}

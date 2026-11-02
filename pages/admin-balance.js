@@ -24,6 +24,22 @@ export default function AdminBalance() {
     setSortDirection('desc')
   }
 }
+  async function fetchChatLog() {
+    setChatLoading(true); setChatError(null)
+    try {
+      const res = await fetch('/api/admin-chat-log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ adminPassword: password })
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed')
+      setChatItems(data.items)
+    } catch (e) {
+      setChatError(e.message)
+    }
+    setChatLoading(false)
+  }
   async function fetchLeads() {
   setLeadsLoading(true)
   try {
@@ -99,6 +115,9 @@ export default function AdminBalance() {
   const [customers, setCustomers] = useState([])
   const [leads, setLeads] = useState([])
 const [leadsLoading, setLeadsLoading] = useState(false)
+const [chatItems, setChatItems] = useState(null)
+const [chatLoading, setChatLoading] = useState(false)
+const [chatError, setChatError] = useState(null)
 const [customersLoading, setCustomersLoading] = useState(false)
 const [customersError, setCustomersError] = useState(null)
 const [customerFilter, setCustomerFilter] = useState('all')
@@ -706,6 +725,32 @@ async function handleSetLegacy(action) {
   {leads.length === 0 && !leadsLoading && (
     <div style={{textAlign:'center',color:'#888',fontSize:13,padding:'20px 0'}}>
       Enter your admin password and click "Load Leads" to see demo users.
+    </div>
+  )}
+</div>
+
+{/* CHAT QUESTIONS WE COULD NOT ANSWER */}
+<div style={{marginTop:32,background:'#fff',borderRadius:16,border:'1.5px solid #e8e8ed',padding:24}}>
+  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16,flexWrap:'wrap',gap:12}}>
+    <div>
+      <div style={{fontSize:16,fontWeight:700,color:'#1d1d1f'}}>💬 Chat: Unanswered Questions</div>
+      <div style={{fontSize:12,color:'#888',marginTop:2}}>What visitors asked that the chat assistant could not answer. Add the answer to lib/knowledge.js.</div>
+    </div>
+    <button onClick={fetchChatLog} disabled={chatLoading || !password}
+      style={{background: chatLoading || !password ? '#ccc' : '#DC143C',color:'#fff',border:'none',padding:'10px 20px',borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer'}}>
+      {chatLoading ? '⏳ Loading...' : '🔄 Load Questions'}
+    </button>
+  </div>
+  {chatError && <div style={{color:'#C62828',fontSize:13}}>{chatError}</div>}
+  {chatItems && chatItems.length === 0 && <div style={{color:'#888',fontSize:13}}>No unanswered questions yet.</div>}
+  {chatItems && chatItems.length > 0 && (
+    <div style={{display:'flex',flexDirection:'column',gap:8}}>
+      {chatItems.map((it, i) => (
+        <div key={i} style={{border:'1px solid #f0f0f0',borderRadius:10,padding:'10px 12px'}}>
+          <div style={{fontSize:14,color:'#1d1d1f'}}>{it.q}</div>
+          <div style={{fontSize:11,color:'#999',marginTop:4}}>{new Date(it.at).toLocaleString()} {it.page ? '· ' + it.page : ''}</div>
+        </div>
+      ))}
     </div>
   )}
 </div>
