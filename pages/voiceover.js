@@ -582,6 +582,16 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
         .vo-editor-title{display:block;margin:0 2px 8px;font-family:'Noto Sans Devanagari','Manrope',sans-serif;color:#1d1d1f;line-height:1.6}
         .vo-editor-box{background:#fff;border-radius:14px;border:2.5px solid #DC143C;overflow:hidden;box-shadow:0 0 0 4px rgba(220,20,60,.10);transition:box-shadow .15s}
         .vo-editor-box:focus-within{box-shadow:0 0 0 4px rgba(220,20,60,.28)}
+        .vo-acc>summary,.vo-acc-in>summary{list-style:none;cursor:pointer}
+        .vo-acc>summary::-webkit-details-marker,.vo-acc-in>summary::-webkit-details-marker{display:none}
+        .vo-acc-sum{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 44px 12px 16px;min-height:52px;position:relative;font-family:'Sora','Noto Sans Devanagari',sans-serif;font-size:15px;font-weight:800;line-height:1.5}
+        .vo-acc-sum::after{content:'';position:absolute;right:18px;top:50%;width:9px;height:9px;border-right:2.5px solid #6e6e73;border-bottom:2.5px solid #6e6e73;transform:translateY(-70%) rotate(45deg);transition:transform .15s}
+        .vo-acc[open]>.vo-acc-sum::after,.vo-acc-in[open]>.vo-acc-sum::after{transform:translateY(-30%) rotate(225deg)}
+        .vo-acc-sum:focus-visible{outline:3px solid #1976D2;outline-offset:-3px;border-radius:12px}
+        .vo-acc-sum-in{padding-left:0}
+        .vo-acc-body{padding:0 16px 16px}
+        .vo-acc-body-in{padding:0 0 4px}
+        .vo-opt{font-family:'Manrope',sans-serif;font-size:12px;font-weight:700;color:#6e6e73;background:#f0f0f3;border-radius:999px;padding:2px 10px;white-space:nowrap}
         .vo-h2{font-family:'Sora',sans-serif;font-size:15px;font-weight:800;color:#312E81;margin-bottom:6px;line-height:1.4}
         .vo-hr{border:none;border-top:1px solid #e8e8ed;margin:16px 0}
         .vo-flow{list-style:none;margin:0!important;padding:0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
@@ -745,8 +755,10 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
   </div>
 )}
 {/* AI Script Generator */}
-<div className="vo-o-30" style={{background:'linear-gradient(135deg,#fff5f7,#fff)',border:'1.5px solid rgba(220,20,60,.15)',borderRadius:14,padding:16,marginBottom:12}}>
-  <h2 className="vo-h">✨ AI Script Generator | AI स्क्रिप्ट लेखक</h2>
+<details className="vo-acc vo-o-30" style={{background:'linear-gradient(135deg,#fff5f7,#fff)',border:'1.5px solid rgba(220,20,60,.15)',borderRadius:14,padding:0,marginBottom:12}}>
+  <summary className="vo-acc-sum"><span className="vo-acc-title" style={{color:'#DC143C'}}>✨ AI Script Generator | AI स्क्रिप्ट लेखक</span><span className="vo-opt">[optional]</span></summary>
+  <div className="vo-acc-body">
+
   <Bi
     ne="भिडियो वा विज्ञापनको आइडिया छ तर स्क्रिप्ट छैन? आफ्नो विषय लेख्नुहोस्, AI ले तपाईंको लागि नेपाली स्क्रिप्ट तयार गरिदिन्छ।"
     en="Have an idea but no script? Describe your video or advertisement, and AI will write a Nepali voiceover script for you." />
@@ -811,7 +823,8 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
     <p className="vo-ne">तपाईं आफ्नो आइडिया नेपाली वा अंग्रेजी, दुवैमा लेख्न सक्नुहुन्छ।</p>
     <p className="vo-en">You can describe your idea in Nepali or in English.</p>
   </Help>
-</div>
+  </div>
+</details>
 
 {/* Text area */}
 <div className="vo-o-50" style={{marginBottom:12}}>
@@ -901,8 +914,9 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
   <hr className="vo-hr" />
 
   {/* Style Presets */}
-  <section aria-labelledby="vo-sp-h">
-    <h3 id="vo-sp-h" className="vo-h2">🎨 Style Presets | बोल्ने शैली छान्नुहोस्</h3>
+  <details className="vo-acc-in">
+    <summary className="vo-acc-sum vo-acc-sum-in" id="vo-sp-h"><span className="vo-acc-title vo-h2" style={{margin:0}}>🎨 Style Presets | बोल्ने शैली छान्नुहोस्</span><span className="vo-opt">[optional]</span></summary>
+    <div className="vo-acc-body-in">
     <p className="vo-ne">तपाईंको कन्टेन्टअनुसार शैली छान्नुहोस्। एक क्लिकमै स्क्रिप्टमा मिल्ने भावना ट्यागहरू थप्नुहोस्।</p>
     <p className="vo-en" style={{marginBottom:10}}>Choose a style that matches your content. One click adds the corresponding emotion tags to your script.</p>
     <div className="vo-presets">
@@ -927,7 +941,8 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
       <p className="vo-en">Style Presets apply a predefined combination of tags. Auto Tag analyzes your actual script and adds tags that fit its content.</p>
     </div>
   </Help>
-  </section>
+  </div>
+  </details>
 </div>
 
           {/* Error */}
@@ -976,8 +991,10 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
           )}
 
 {/* Emotion tags & Pro Tips */}
-<div className="vo-o-100" style={{background:'#F8F9FF',border:'1.5px solid #90CAF9',borderRadius:12,padding:'16px',marginBottom:12}}>
-  <h2 className="vo-h" style={{color:'#1976D2'}}>💡 Pro Tips | राम्रो आवाज बनाउन उपयोगी सुझावहरू</h2>
+<details className="vo-acc vo-o-100" style={{background:'#F8F9FF',border:'1.5px solid #90CAF9',borderRadius:12,padding:0,marginBottom:12}}>
+  <summary className="vo-acc-sum"><span className="vo-acc-title" style={{color:'#1976D2'}}>💡 Pro Tips | राम्रो आवाज बनाउन उपयोगी सुझावहरू</span></summary>
+  <div className="vo-acc-body">
+
   <p className="vo-en" style={{marginBottom:6}}>v4 Powered</p>
   <Bi
     ne="ट्याग भनेको [ ] भित्र लेखिने सानो निर्देशन हो। यसले आवाजको भाव र शैली बदल्छ। तलका शीर्षक थिचेर खोल्नुहोस्। ट्याग थिच्दा त्यो तपाईंको स्क्रिप्टमा थपिन्छ।"
@@ -1073,7 +1090,8 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
     <p className="vo-ne" style={{marginTop:4}}>Generate थिच्नुअघि बटनमै तपाईंको खर्च देखिन्छ।</p>
     <p className="vo-en">The cost is shown on the Generate button before you press it.</p>
   </div>
-</div>
+  </div>
+</details>
       </div>
 
       {/* RIGHT PANEL */}
