@@ -58,6 +58,7 @@ const ALL_VOICES = [
   { voice_id: 'LK1Sn9bmEczSFI65RF0v', name: 'Sunita', desc: 'Soft Spoken Aunty', color: '#E91E8C', initial: 'S', gender: 'female' },
   { voice_id: 'duDBJHU6G1oq7ZdK4Kxf', name: 'Anjali', desc: 'Motivational', color: '#FF8C42', initial: 'A', gender: 'female' },
   { voice_id: 'TmPeb2hSxdVrThJLywkg', name: 'Vanishree', desc: 'Professional News Anchor', color: '#0077CC', initial: 'V', gender: 'female' },
+  { voice_id: 'ttdbme4R1Xu2uQuj8Mcz', name: 'Urvashi', desc: 'Sweet & Lively', color: '#26A69A', initial: 'U', gender: 'female' },
   { voice_id: 'ecp3DWciuUyW7BYM7II1', name: 'Anika', desc: 'Sweet & Lively', color: '#7B2FBE', initial: 'A', gender: 'female' },
   { voice_id: 'f0JpDwzbGK384Dd1WH2s', name: 'Mina', desc: 'Friendly & Polished', color: '#00897B', initial: 'M', gender: 'female' },
   { voice_id: 'Pc57DSBXmCXyEAmow7lW', name: 'Shraddha', desc: 'Credible & Trustworthy', color: '#5C6BC0', initial: 'S', gender: 'female' },
@@ -160,7 +161,7 @@ const filtered = ALL_VOICES.filter(v => {
   if (filter === 'all') return true
   if (filter === 'female') return v.gender === 'female'
   if (filter === 'male') return v.gender === 'male'
-  if (filter === 'news') return ['Vanishree','Bishnu','Dhurundhar','Karan','Prakash'].includes(v.name)
+  if (filter === 'news') return ['Vanishree','Urvashi','Bishnu','Dhurundhar','Karan','Prakash'].includes(v.name)
   if (filter === 'social') return ['Arjun','Anika','Rohan','Suraj','Saurav','Chameli','Kritika'].includes(v.name)
   if (filter === 'romantic') return ['Priyanka','Rudra','Sunita','Monika','Shreya','Reshma'].includes(v.name)
   if (filter === 'business') return ['Ridhi','Shraddha','Vikram','Anjali','Aryan','Nisha'].includes(v.name)
