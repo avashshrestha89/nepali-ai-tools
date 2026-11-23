@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
 import { stripTags, AUTO_TAGS } from '../lib/tags'
+import { track } from '../lib/track'
 
 import { VOICE_CATEGORIES, VOICES } from '../lib/voices'
 
@@ -269,6 +270,7 @@ const previewAudioRef = useRef(null)
     try {
       const res = await fetch('/api/auth/send-link', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: signupEmail }) })
       const d = await res.json(); setSignupStatus(d.success ? 'sent' : 'error')
+      if (d.success) track('sign_in_requested', { method: 'magic_link' })
     } catch { setSignupStatus('error') }
   }
 
@@ -289,6 +291,7 @@ const previewAudioRef = useRef(null)
       }
       const d = await res.json()
       setOtpStatus(d.success ? 'sent' : 'error')
+      if (d.success) track('sign_in_requested', { method: 'code' })
       if (!d.success) setOtpError(d.error || 'Something went wrong.')
     } catch {
       setOtpStatus('error'); setOtpError('Could not send code. Please try again.')
@@ -309,6 +312,7 @@ const previewAudioRef = useRef(null)
         // Session cookie set server-side; reload session
         const sess = await fetch('/api/auth/session').then(r => r.json())
         setSession(sess.loggedIn ? sess : false)
+        track('login', { method: 'code' })
         setShowSignup(false)
         setOtpStatus('idle'); setOtpCode('')
         return
@@ -451,8 +455,9 @@ setTimeout(() => {
         setSession(prev => ({ ...prev, credits: data.credits }))
       }
       setResult({ url, filename: `swor_${selectedVoice.name.toLowerCase()}_${Date.now()}.mp3` })
+      track('voiceover_generated', { voice: selectedVoice.name, chars: stripTags(text).trim().length })
       setTimeout(() => fetchHistory(), 2000)
-    } catch (e) { setError(e.message) }
+    } catch (e) { setError(e.message); track('voiceover_failed', { reason: String(e.message).slice(0, 60) }) }
     genLock.current = false
     setLoading(false)
   }
@@ -514,6 +519,16 @@ const canGenerate = billableLength > 0 && !loading && session !== null && sessio
   const credits = session ? session.credits || 0 : null
   const isAnon = session === false
   const hasNoCredits = session === false || (session && credits === 0)
+
+  // GA: a signed-in user has typed a script but cannot afford it. Sent once per page visit.
+  const outOfCreditsSent = useRef(false)
+  useEffect(() => {
+    if (outOfCreditsSent.current) return
+    if (session && !session.isPendingPayment && billableLength > 0 && !loading && !canGenerate && (session.credits || 0) < (session.isLegacy ? 25 : billableLength)) {
+      outOfCreditsSent.current = true
+      track('out_of_credits', { credits: session.credits || 0, needed: billableLength })
+    }
+  })
 
   function formatDate(iso) {
     const d = new Date(iso)

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
+import { track } from '../lib/track'
 
 export default function Verify() {
   const router = useRouter()
@@ -18,6 +19,7 @@ export default function Verify() {
 
         if (data.success) {
           setStatus('success')
+          track('login', { method: 'magic_link' })
           setTimeout(() => router.push('/voiceover'), 2000)
         } else {
           setStatus('error')
