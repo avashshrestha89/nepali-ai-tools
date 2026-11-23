@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/react'
 import Script from 'next/script'
 import ChatWidget from '../components/ChatWidget'
+import LinkTracker from '../components/LinkTracker'
 
 // Google Analytics 4. Does nothing until NEXT_PUBLIC_GA_ID (e.g. G-XXXXXXXXXX) is set in Vercel.
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
@@ -11,6 +12,7 @@ export default function App({ Component, pageProps }) {
       <Component {...pageProps} />
       <Analytics />
       <ChatWidget />
+      <LinkTracker />
       {GA_ID && (
         <>
           <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
