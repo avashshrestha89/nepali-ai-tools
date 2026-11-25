@@ -90,6 +90,32 @@ export default function AdminBalance() {
   }
   setEditSaving(false)
 }
+  async function downloadExport() {
+    setExportBusy(true)
+    try {
+      const res = await fetch('/api/admin-export', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ adminPassword: password })
+      })
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}))
+        throw new Error(d.error || 'Export failed')
+      }
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'swor-ai-export-' + new Date().toISOString().slice(0, 10) + '.csv'
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(url)
+    } catch (e) {
+      setCustomersError(e.message)
+    }
+    setExportBusy(false)
+  }
   async function fetchCustomers() {
   setCustomersLoading(true)
   setCustomersError(null)
@@ -120,6 +146,7 @@ const [chatLoading, setChatLoading] = useState(false)
 const [chatError, setChatError] = useState(null)
 const [customersLoading, setCustomersLoading] = useState(false)
 const [customersError, setCustomersError] = useState(null)
+const [exportBusy, setExportBusy] = useState(false)
 const [customerFilter, setCustomerFilter] = useState('all')
   const [editingCustomer, setEditingCustomer] = useState(null)
 const [editForm, setEditForm] = useState({ name: '', phone: '', notes: '', tags: '' })
@@ -413,6 +440,16 @@ async function handleSetLegacy(action) {
       borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer'
     }}>
     {customersLoading ? '⏳ Loading...' : '🔄 Load Customers'}
+  </button>
+  <button
+    onClick={downloadExport}
+    disabled={exportBusy || !password}
+    style={{
+      background: exportBusy || !password ? '#ccc' : '#2e7d32',
+      color:'#fff',border:'none',padding:'10px 20px',
+      borderRadius:10,fontSize:13,fontWeight:700,cursor:'pointer'
+    }}>
+    {exportBusy ? '⏳ Preparing...' : '⬇️ Download CSV (no emails)'}
   </button>
   {customers.length > 0 && (
     <button
